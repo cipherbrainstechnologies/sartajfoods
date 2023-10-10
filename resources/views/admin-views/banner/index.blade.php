@@ -129,7 +129,7 @@
                             <td>{{$key+1}}</td>
                             <td>
                                 <div>
-                                    <img class="img-vertical-150" src="{{asset('storage/app/public/banner')}}/{{$banner['image']}}" onerror="this.src='{{asset('public/assets/admin/img/160x160/img2.jpg')}}'">
+                                    <img class="img-vertical-150" src="{{asset('storage/banner')}}/{{$banner['image']}}" onerror="this.src='{{asset('public/assets/admin/img/160x160/img2.jpg')}}'">
                                 </div>
                             </td>
                             <td>

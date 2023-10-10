@@ -128,7 +128,7 @@
                                 </td>
                                 <td>
                                     <a href="{{route('admin.product.view',[$product['id']])}}" target="_blank" class="product-list-media">
-                                        <img src="{{asset('storage/app/public/product')}}/{{$product_image}}"
+                                        <img src="{{asset('storage/product')}}/{{$product_image}}"
                                              onerror="this.src='{{asset('/public/assets/admin/img/160x160/2.png')}}'"
                                         />
                                         <h6 class="name line--limit-2">

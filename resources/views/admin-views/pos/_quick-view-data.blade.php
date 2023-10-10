@@ -6,9 +6,9 @@
         <!-- Product gallery-->
         <div class="modal--media-avatar">
             @if (!empty(json_decode($product['image'],true)))
-                <img class="img-responsive" src="{{asset('storage/app/public/product')}}/{{json_decode($product['image'], true)[0]}}"
+                <img class="img-responsive" src="{{asset('storage/product')}}/{{json_decode($product['image'], true)[0]}}"
                  onerror="this.src='{{asset('public/assets/admin/img/160x160/2.png')}}'"
-                 data-zoom="{{asset('storage/app/public/product')}}/{{json_decode($product['image'], true)[0]}}"
+                 data-zoom="{{asset('storage/product')}}/{{json_decode($product['image'], true)[0]}}"
                  alt="Product image" width="">
             @else
                  <img src="{{asset('public/assets/admin/img/160x160/2.png')}}" >

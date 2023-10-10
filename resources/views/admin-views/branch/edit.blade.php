@@ -69,7 +69,7 @@
                                             </div>
                                             <label class="upload--squire">
                                                 <input type="file" name="image" id="customFileEg1"    class="" value="{{$branch['image']}}" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" hidden>
-                                                <img id="viewer" src="{{asset('storage/app/public/branch')}}/{{$branch['image']}}"
+                                                <img id="viewer" src="{{asset('storage/branch')}}/{{$branch['image']}}"
                                                     onerror="this.src='{{asset('public/assets/admin/img/160x160/img1.jpg')}}'"
                                                     alt="branch image"/>
                                             </label>

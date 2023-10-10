@@ -43,7 +43,7 @@
                                 </h5>
                                 <label class="upload--vertical mt-auto">
                                     <input type="file" name="image" id="customFileEg1" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" hidden>
-                                    <img id="viewer" onerror="this.src='{{asset('public/assets/admin/img/upload-vertical.png')}}'" src="{{asset('storage/app/public/notification')}}/{{$notification['image']}}" alt="notification image"/>
+                                    <img id="viewer" onerror="this.src='{{asset('public/assets/admin/img/upload-vertical.png')}}'" src="{{asset('storage/notification')}}/{{$notification['image']}}" alt="notification image"/>
                                 </label>
                             </div>
                         </div>

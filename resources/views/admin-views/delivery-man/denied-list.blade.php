@@ -76,7 +76,7 @@
                             <td>
                                 <div class="table--media">
                                     <img class="rounded-full"  onerror="this.src='{{asset('public/assets/admin/img/160x160/img1.jpg')}}'"
-                                         src="{{asset('storage/app/public/delivery-man')}}/{{$dm['image']}}" alt="img">
+                                         src="{{asset('storage/delivery-man')}}/{{$dm['image']}}" alt="img">
                                     <div class="table--media-body">
                                         <h5 class="title">
                                             {{$dm['f_name'] }} {{$dm['l_name'] }}
@@ -104,7 +104,7 @@
                             <td class="text-center">
                                 <div class="d-flex gap-2" data-toggle="" data-placement="top" title="{{translate('click for bigger view')}}">
                                     @foreach(json_decode($dm['identity_image'], true) as $identification_image)
-                                        @php($image_full_path = asset('storage/app/public/delivery-man'). '/' .$identification_image)
+                                        @php($image_full_path = asset('storage/delivery-man'). '/' .$identification_image)
                                         <div class="mx-h80 overflow-hidden">
                                             <img class="cursor-pointer rounded img-fit p-2 w-100px mh-80px"
                                                  onerror="this.src='{{asset("public/assets/admin/img/160x160/2.png")}}'"

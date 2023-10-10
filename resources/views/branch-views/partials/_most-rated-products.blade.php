@@ -14,7 +14,7 @@
             @if(isset($product))
                 <a href="{{route('admin.product.view',[$item['product_id']])}}">
                     <div class="rated-media d-flex align-items-center">
-                        <img src="{{asset('storage/app/public/product')}}/{{ json_decode($product['image'])[0]  ?? '' }}" onerror="this.src='{{asset('public/assets/admin/img/400x400/img2.jpg')}}'" alt="{{$product->name}} image">
+                        <img src="{{asset('storage/product')}}/{{ json_decode($product['image'])[0]  ?? '' }}" onerror="this.src='{{asset('public/assets/admin/img/400x400/img2.jpg')}}'" alt="{{$product->name}} image">
                         <span class="line--limit-1 w-0 flex-grow-1">
                             {{isset($product)?substr($product->name,0,30) . (strlen($product->name)>20?'...':''):'not exists'}}
                         </span>

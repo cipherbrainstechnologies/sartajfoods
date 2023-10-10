@@ -189,7 +189,7 @@
                                 @if (!empty(json_decode($product['image'],true)))
                                     @foreach(json_decode($product['image'],true) as $img)
                                         <div class="spartan_item_wrapper position-relative">
-                                            <img class="img-150 border rounded p-3" src="{{asset('storage/app/public/product')}}/{{$img}}">
+                                            <img class="img-150 border rounded p-3" src="{{asset('storage/product')}}/{{$img}}">
                                             <a href="{{route('admin.product.remove-image',[$product['id'],$img])}}" class="spartan__close"><i class="tio-add-to-trash"></i></a>
                                         </div>
                                     @endforeach

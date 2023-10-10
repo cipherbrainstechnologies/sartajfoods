@@ -726,7 +726,7 @@
                                         <center>
                                             <img id="viewer" class="mt-4 border rounded mw-100 p-2"
                                                  onerror="this.src='{{asset('public/assets/admin/img/160x160/img2.jpg')}}'"
-                                                 src="{{asset('storage/app/public/restaurant/'.$logo)}}" alt="logo image"/>
+                                                 src="{{asset('storage/restaurant/'.$logo)}}" alt="logo image"/>
                                         </center>
                                     </div>
                                 </div>
@@ -743,7 +743,7 @@
                                         <center>
                                             <img id="viewer_2" class="mt-4 border rounded p-2 aspect-1 mw-145 object-cover"
                                                  onerror="this.src='{{asset('public/assets/admin/img/160x160/img2.jpg')}}'"
-                                                 src="{{asset('storage/app/public/restaurant/'.$fav_icon)}}" alt="logo image"/>
+                                                 src="{{asset('storage/restaurant/'.$fav_icon)}}" alt="logo image"/>
                                         </center>
                                     </div>
                                 </div>

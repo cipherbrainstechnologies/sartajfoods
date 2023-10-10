@@ -183,7 +183,7 @@
                                     <img
                                         class="avatar-img"
                                         onerror="this.src='{{asset('public/assets/admin/img/admin.png')}}'"
-                                        src="{{asset('storage/app/public/profile/'.$customer->image)}}"
+                                        src="{{asset('storage/profile/'.$customer->image)}}"
                                         alt="Image Description">
                                 </div>
                                 <div class="media-body">

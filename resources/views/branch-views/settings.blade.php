@@ -87,7 +87,7 @@
                             <img id="viewer"
                                  onerror="this.src='{{asset('public/assets/admin/img/160x160/img1.jpg')}}'"
                                  class="avatar-img"
-                                 src="{{asset('storage/app/public/branch')}}/{{auth('branch')->user()->image}}"
+                                 src="{{asset('storage/branch')}}/{{auth('branch')->user()->image}}"
                                  alt="Image">
 
                             <input type="file" name="image" class="js-file-attach avatar-uploader-input"

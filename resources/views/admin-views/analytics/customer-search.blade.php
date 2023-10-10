@@ -175,7 +175,7 @@
                                     <div class="avatar avatar-lg">
                                         <a href="{{$value->customer ? route('admin.customer.view',[$value->customer['id']]) : '#'}}" class="product-list-media">
                                             <img class="rounded-full"
-                                                 src="{{asset('storage/app/public/profile/'.$value->customer?->image)}}"
+                                                 src="{{asset('storage/profile/'.$value->customer?->image)}}"
                                                  onerror="this.src='{{asset('/public/assets/admin/img/admin.png')}}'">
 
                                         </a>

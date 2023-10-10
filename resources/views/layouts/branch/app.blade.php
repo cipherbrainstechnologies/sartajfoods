@@ -7,7 +7,7 @@
     <title>@yield('title')</title>
     <!-- Favicon -->
     @php($icon = \App\Model\BusinessSetting::where(['key' => 'fav_icon'])->first()->value)
-    <link rel="icon" type="image/x-icon" href="{{ asset('storage/app/public/restaurant/' . $icon ?? '') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('storage/restaurant/' . $icon ?? '') }}">
     <link rel="shortcut icon" href="">
     <!-- Font -->
     <!-- CSS Implementing Plugins -->

@@ -2,7 +2,7 @@
     <!-- Header -->
     <div class="card-header m-2 rounded-0">
         <div class="conv-open-user w-100">
-            <img class="avatar-img" src="{{asset('storage/app/public/profile/'.$user['image'])}}"
+            <img class="avatar-img" src="{{asset('storage/profile/'.$user['image'])}}"
                  onerror="this.src='{{asset('public/assets/admin')}}/img/160x160/img1.jpg'"
                  alt="Image Description">
             <div class="info">
@@ -55,8 +55,8 @@
                                     @foreach($image_array as $key=>$image)
                                         @php($image_url = $image)
                                         <div>
-                                            <a href="{{asset('storage/app/public/conversation')}}/{{$image}}" data-lightbox >
-                                                <img class="__img-120" src="{{asset('storage/app/public/conversation')}}/{{$image}}" /></a>
+                                            <a href="{{asset('storage/conversation')}}/{{$image}}" data-lightbox >
+                                                <img class="__img-120" src="{{asset('storage/conversation')}}/{{$image}}" /></a>
                                         </div>
                                     @endforeach
                                 </div>

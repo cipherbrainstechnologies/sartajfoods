@@ -9,7 +9,7 @@
                     <a class="navbar-brand" href="{{route('branch.dashboard')}}" aria-label="Front">
                         <img class="w-100 side-logo"
                              onerror="this.src='{{asset('public/assets/admin/img/160x160/img2.jpg')}}'"
-                             src="{{asset('storage/app/public/restaurant/'.$restaurant_logo)}}"
+                             src="{{asset('storage/restaurant/'.$restaurant_logo)}}"
                              alt="Logo">
                     </a>
                     <!-- End Logo -->

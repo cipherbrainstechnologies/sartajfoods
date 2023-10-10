@@ -131,7 +131,7 @@
                                 <tr>
                                     <td class="text-center">{{$categories->firstItem()+$key}}</td>
                                     <td>
-                                        <img src="{{asset('storage/app/public/category')}}/{{$category['image']}}"
+                                        <img src="{{asset('storage/category')}}/{{$category['image']}}"
                                             onerror="this.src='{{asset('public/assets/admin/img/400x400/img2.jpg')}}'" class="img--50 ml-3" alt="">
                                     </td>
                                     <td>

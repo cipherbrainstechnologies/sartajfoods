@@ -92,7 +92,7 @@
                             <td class="table-column-pl-0">
                                 <a href="{{route('admin.customer.view',[$customer['id']])}}" class="product-list-media">
                                     <img class="rounded-full"
-                                         src="{{asset('storage/app/public/profile/'.$customer->image)}}"
+                                         src="{{asset('storage/profile/'.$customer->image)}}"
                                         onerror="this.src='{{asset('/public/assets/admin/img/admin.png')}}'">
                                     <div class="table--media-body">
                                         <h5 class="title m-0">

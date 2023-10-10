@@ -253,7 +253,7 @@
                         {{ \App\CentralLogics\translate('Expense_Statement')}}
                     </th>
                     <th class="p-0 text-right">
-                        <img class="logo" src="{{asset("storage/app/public/restaurant/".$data['company_logo'])}}" alt="">
+                        <img class="logo" src="{{asset("storage/restaurant/".$data['company_logo'])}}" alt="">
                     </th>
                 </tr>
             </table>

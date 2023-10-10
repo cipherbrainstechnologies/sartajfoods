@@ -82,7 +82,7 @@
                             <center class="mb-4">
                                 <img class="initial-24" id="viewer"
                                 onerror="this.src='{{asset('public/assets/admin/img/upload-vertical.png')}}'"
-                                src="{{asset('storage/app/public/admin')}}/{{$e['image']}}" alt="Employee thumbnail"/>
+                                src="{{asset('storage/admin')}}/{{$e['image']}}" alt="Employee thumbnail"/>
                             </center>
                             <div class="form-group mb-0">
                                 <label class="form-label d-block">
@@ -103,7 +103,7 @@
                                         @foreach(json_decode($e['identity_image'],true) as $img)
                                             <div class="two__item w-50">
                                                 <div class="max-h-140px existing-item">
-                                                    <img onerror="this.src='{{asset('public/assets/admin/img/160x160/img1.jpg')}}'" src="{{asset('storage/app/public/admin').'/'.$img}}">
+                                                    <img onerror="this.src='{{asset('public/assets/admin/img/160x160/img1.jpg')}}'" src="{{asset('storage/admin').'/'.$img}}">
                                                 </div>
                                             </div>
                                         @endforeach

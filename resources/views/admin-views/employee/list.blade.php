@@ -87,7 +87,7 @@
                                 <div class="table--media">
                                     <img class="rounded-full"
                                          onerror="this.src='{{asset('/public/assets/admin/img/admin.png')}}'"
-                                         src="{{asset('storage/app/public/admin')}}/{{$e['image']}}" alt="img">
+                                         src="{{asset('storage/admin')}}/{{$e['image']}}" alt="img">
                                     <div class="table--media-body">
                                         <h5 class="title">
                                             {{$e['f_name']}}

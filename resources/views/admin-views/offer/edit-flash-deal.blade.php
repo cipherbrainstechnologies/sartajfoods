@@ -58,7 +58,7 @@
                                 <label class="upload--vertical">
                                     <input type="file" name="image" id="customFileEg1" class="" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" hidden>
                                     <img id="viewer" onerror="{{asset('public/assets/admin/img/upload-vertical.png')}}"
-                                         src="{{asset('storage/app/public/offer')}}/{{$flash_deal['image']}}" alt="banner image" alt="image"/>
+                                         src="{{asset('storage/offer')}}/{{$flash_deal['image']}}" alt="banner image" alt="image"/>
                                 </label>
                             </div>
                         </div>

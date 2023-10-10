@@ -200,7 +200,7 @@
                                                 <div class="avatar avatar-xl mr-3">
                                                     @if($detail->product && $detail->product['image'] != null )
                                                     <img class="img-fluid rounded aspect-ratio-1"
-                                                         src="{{asset('storage/app/public/product')}}/{{json_decode($detail->product['image'],true)[0]?? ''}}"
+                                                         src="{{asset('storage/product')}}/{{json_decode($detail->product['image'],true)[0]?? ''}}"
                                                         onerror="this.src='{{asset('public/assets/admin/img/160x160/2.png')}}'"
                                                         alt="Image Description">
                                                     @else
@@ -462,7 +462,7 @@
                                                 <div class="avatar avatar-circle">
                                                     <img class="avatar-img"
                                                          onerror="this.src='{{ asset('public/assets/admin/img/160x160/img1.jpg') }}'"
-                                                         src="{{ asset('storage/app/public/delivery-man/' . $order->delivery_man->image) }}"
+                                                         src="{{ asset('storage/delivery-man/' . $order->delivery_man->image) }}"
                                                          alt="Image Description">
                                                 </div>
                                                 <div class="media-body">
@@ -582,7 +582,7 @@
                             @if(isset($order->customer) )
                                 <div class="media align-items-center deco-none customer--information-single">
                                 <div class="avatar avatar-circle">
-                                    <img class="avatar-img" onerror="this.src='{{asset('public/assets/admin/img/admin.jpg')}}'" src="{{asset('storage/app/public/profile/'.$order->customer->image)}}" alt="Image Description">
+                                    <img class="avatar-img" onerror="this.src='{{asset('public/assets/admin/img/admin.jpg')}}'" src="{{asset('storage/profile/'.$order->customer->image)}}" alt="Image Description">
                                 </div>
                                 <div class="media-body">
                                     <span class="fz--14px text--title font-semibold text-hover-primary d-block">
@@ -617,7 +617,7 @@
                     </h5>
                     <div class="media align-items-center deco-none resturant--information-single">
                         <div class="avatar avatar-circle">
-                        <img class="avatar-img w-75px" onerror="this.src='{{asset("public/assets/admin/img/100x100/1.png")}}'" src="{{asset('storage/app/public/branch/'.$order->branch->image)}}" alt="Image Description">
+                        <img class="avatar-img w-75px" onerror="this.src='{{asset("public/assets/admin/img/100x100/1.png")}}'" src="{{asset('storage/branch/'.$order->branch->image)}}" alt="Image Description">
                         </div>
                         <div class="media-body">
                             <span class="fz--14px text--title font-semibold text-hover-primary d-block">
@@ -828,7 +828,7 @@
                                         <span class="dm_list" role='button' data-id="{{ $dm['id'] }}">
                                             <img class="avatar avatar-sm avatar-circle mr-1"
                                                  onerror="this.src='{{ asset('public/assets/admin/img/160x160/img1.jpg') }}'"
-                                                 src="{{ asset('storage/app/public/delivery-man') }}/{{ $dm['image'] }}"
+                                                 src="{{ asset('storage/delivery-man') }}/{{ $dm['image'] }}"
                                                  alt="{{ $dm['f_name'] }}">
                                             {{ $dm['f_name'] }} {{ $dm['l_name'] }}
                                         </span>

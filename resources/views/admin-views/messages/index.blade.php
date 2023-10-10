@@ -26,7 +26,7 @@
                     <!-- Body -->
                     <div class="card-header border-0 px-0 mx-20px">
                         <div class="conv-open-user w-100">
-                            <img class="w-47px" src="{{asset('storage/app/public/admin')}}/{{auth('admin')->user()->image}}"
+                            <img class="w-47px" src="{{asset('storage/admin')}}/{{auth('admin')->user()->image}}"
                                  onerror="this.src='{{asset('public/assets/admin')}}/img/160x160/img1.jpg'"
                                     alt="Image Description">
                             <div class="info">
@@ -55,7 +55,7 @@
                                             onclick="viewConvs('{{route('admin.message.view',[$conv->user_id])}}','customer-{{$conv->user_id}}')"
                                             id="customer-{{$conv->user_id}}">
                                             <div class="conv-open-user w-100">
-                                                <img class="w-47px" src="{{asset('storage/app/public/profile/'.$user['image'])}}"
+                                                <img class="w-47px" src="{{asset('storage/profile/'.$user['image'])}}"
                                                 onerror="this.src='{{asset('public/assets/admin')}}/img/160x160/img1.jpg'"
                                                 alt="Image Description">
                                                 <span class="status active"></span>

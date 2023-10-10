@@ -12,7 +12,7 @@
         @foreach($top_customer as $key=>$item)
             @if(isset($item->customer))
                 <a class="grid--card" href="{{route('admin.customer.view',[$item['user_id']])}}">
-                <img src="{{asset('storage/app/public/profile/'.$item->customer->image  ?? '' )}}"
+                <img src="{{asset('storage/profile/'.$item->customer->image  ?? '' )}}"
                         onerror="this.src='{{asset('public/assets/admin/img/admin.jpg')}}'"
                         alt="{{$item->customer->name}} image">
                 <div class="cont pt-2">

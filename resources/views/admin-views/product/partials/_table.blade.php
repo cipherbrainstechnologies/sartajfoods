@@ -11,7 +11,7 @@
         <td>
             <div style="height: 100px; width: 100px; overflow-x: hidden;overflow-y: hidden">
                 <img
-                    src="{{asset('storage/app/public/product')}}/{{json_decode($product['image'],true)[0]}}"
+                    src="{{asset('storage/product')}}/{{json_decode($product['image'],true)[0]}}"
                     style="width: 100px"
                     onerror="this.src='{{asset('public/assets/admin/img/160x160/img2.jpg')}}'">
             </div>

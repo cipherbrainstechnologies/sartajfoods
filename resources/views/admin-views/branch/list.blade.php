@@ -69,7 +69,7 @@
                                     <td>
                                         <div class="short-media">
                                             <img onerror="this.src='{{asset('public/assets/admin/img/store-1.png')}}'"
-                                                 src="{{asset('storage/app/public/branch')}}/{{$branch['image']}}">
+                                                 src="{{asset('storage/branch')}}/{{$branch['image']}}">
                                             <div class="text-cont">
                                                 <span class="d-block font-size-sm text-body text-trim-50">
                                                     {{$branch['name']}}

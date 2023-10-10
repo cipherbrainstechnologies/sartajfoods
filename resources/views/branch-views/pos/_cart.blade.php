@@ -45,7 +45,7 @@
                             <div class="media align-items-center">
                                 @if (!empty(json_decode($cartItem['image'],true)))
                                     <img class="avatar avatar-sm mr-1"
-                                         src="{{asset('storage/app/public/product')}}/{{json_decode($cartItem['image'], true)[0]}}"
+                                         src="{{asset('storage/product')}}/{{json_decode($cartItem['image'], true)[0]}}"
                                          onerror="this.src='{{asset('public/assets/admin/img/160x160/2.png')}}'"
                                          alt="{{$cartItem['name']}} image">
                                 @else

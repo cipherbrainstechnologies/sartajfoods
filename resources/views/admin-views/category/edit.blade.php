@@ -83,7 +83,7 @@
                         <div class="col-sm-6">
                             <center>
                                 <img class="img--105" id="viewer" onerror="this.src='{{asset('public/assets/admin/img/900x400/img1.jpg')}}'"
-                                    src="{{asset('storage/app/public/category')}}/{{$category['image']}}" alt="image"/>
+                                    src="{{asset('storage/category')}}/{{$category['image']}}" alt="image"/>
                             </center>
                             <label>{{\App\CentralLogics\translate('image')}}</label><small style="color: red">* ( {{\App\CentralLogics\translate('ratio')}} 3:1 )</small>
                             <div class="custom-file">

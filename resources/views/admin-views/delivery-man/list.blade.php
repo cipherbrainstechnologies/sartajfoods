@@ -84,7 +84,7 @@
                             <td>
                                 <div class="table--media">
                                     <img class="rounded-full"  onerror="this.src='{{asset('public/assets/admin/img/160x160/img1.jpg')}}'"
-                                         src="{{asset('storage/app/public/delivery-man')}}/{{$dm['image']}}" alt="img">
+                                         src="{{asset('storage/delivery-man')}}/{{$dm['image']}}" alt="img">
                                     <div class="table--media-body">
                                         <h5 class="title">
                                             {{$dm['f_name'] }} {{$dm['l_name'] }}
