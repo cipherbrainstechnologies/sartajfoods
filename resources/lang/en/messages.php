@@ -1983,4 +1983,7 @@
   'Temporary login block time refers to a security measure implemented by systems to restrict access to for a specified period of time for wrong Password submission.' => 'Temporary login block time refers to a security measure implemented by systems to restrict access to for a specified period of time for wrong Password submission.',
   'If user haven,t received the OTP within a certain timeframe, user can usually request a resend.' => 'If user haven t received the OTP within a certain timeframe  user can usually request a resend.',
   'If the user fails to get the OTP within a particular amount of time, he or she can usually request a resend.' => 'If the user fails to get the OTP within a particular amount of time  he or she can usually request a resend.',
+  'customer_wallet_status_is_disable' => 'Customer wallet status is disable',
+  'store Id' => 'Store Id',
+  'wallet_transactions' => 'Wallet transactions',
 );
