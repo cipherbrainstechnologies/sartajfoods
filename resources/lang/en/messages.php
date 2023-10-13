@@ -1986,4 +1986,9 @@
   'customer_wallet_status_is_disable' => 'Customer wallet status is disable',
   'store Id' => 'Store Id',
   'wallet_transactions' => 'Wallet transactions',
+  'other_banner' => 'Other Banner',
+  'home_banner' => 'Home Banner',
+  'product_category_banner' => 'Product category banner',
+  'banner_order' => 'Banner order',
+  'banner_link' => 'Banner link',
 );

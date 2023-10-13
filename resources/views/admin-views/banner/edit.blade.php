@@ -27,6 +27,12 @@
                     @csrf @method('put')
                     <div class="row g-3">
                         <div class="col-md-6">
+                            @if(!empty($banner['type'])) 
+                                <input type="hidden" id="banner_type" name="banner_type" value="home_banner">
+                                <input type="hidden" id="is_home_banner" name="is_home_banner" value="1">
+                            @else 
+                                <input type="hidden" id="is_home_banner" name="is_home_banner" value="0">    
+                            @endif
                             <div class="row g-3">
                                 <div class="col-12">
                                     <div class="form-group mb-0">
@@ -35,6 +41,21 @@
                                             placeholder="{{ translate('New banner') }}" required>
                                     </div>
                                 </div>
+                                <div class="col-12">
+                                    <div class="form-group mb-0">
+                                        <label class="input-label" for=link">{{translate('banner_link')}}</label>
+                                        <input type="text" name="link" class="form-control" placeholder="{{ translate('banner_link') }}" value="{{$banner['link']}}">
+                                    </div>
+                                </div>
+                                @if(!empty($banner['type']))
+                                <div class="col-12">
+                                    <div class="form-group mb-0">
+                                        <label class="input-label" for=order">{{translate('banner_order')}}</label>
+                                        <input type="text" name="order" class="form-control" placeholder="{{ translate('banner_order') }}" value="{{$banner['banner_order']}}">
+                                    </div>
+                                </div>
+                                @endif
+                                @if(empty($banner['type']))
                                 <div class="col-12">
                                     <div class="form-group mb-0">
                                         <label class="input-label" for="exampleFormControlSelect1">{{translate('item')}} {{translate('type')}}<span
@@ -70,6 +91,7 @@
                                         </select>
                                     </div>
                                 </div>
+                                @endif
                             </div>
                         </div>
 

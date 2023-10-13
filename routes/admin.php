@@ -70,13 +70,15 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
         });
 
         Route::group(['prefix' => 'banner', 'as' => 'banner.','middleware'=>['module:promotion_management']], function () {
-            Route::get('add-new', 'BannerController@index')->name('add-new');
+            Route::get('other/add-new', 'BannerController@index')->name('add-new');
             Route::post('store', 'BannerController@store')->name('store');
             Route::get('edit/{id}', 'BannerController@edit')->name('edit');
             Route::put('update/{id}', 'BannerController@update')->name('update');
             Route::get('list', 'BannerController@list')->name('list');
             Route::get('status/{id}/{status}', 'BannerController@status')->name('status');
             Route::delete('delete/{id}', 'BannerController@delete')->name('delete');
+            
+            Route::get('home/add-new', 'BannerController@index')->name('home.add-new');
         });
 
         Route::group(['prefix' => 'discount', 'as' => 'discount.','middleware'=>['module:promotion_management']], function () {

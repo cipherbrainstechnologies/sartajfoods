@@ -26,6 +26,12 @@
                     @csrf
                     <div class="row g-3">
                         <div class="col-md-6">
+                            @if(Request::is('admin/banner/home*')) 
+                                <input type="hidden" id="banner_type" name="banner_type" value="home_banner">
+                                <input type="hidden" id="is_home_banner" name="is_home_banner" value="1">
+                            @else 
+                                <input type="hidden" id="is_home_banner" name="is_home_banner" value="0">    
+                            @endif
                             <div class="row g-3">
                                 <div class="col-12">
                                     <div class="form-group mb-0">
@@ -33,6 +39,21 @@
                                         <input type="text" name="title" value="{{old('title')}}" class="form-control" placeholder="{{ translate('New banner') }}" maxlength="255" required>
                                     </div>
                                 </div>
+                                <div class="col-12">
+                                    <div class="form-group mb-0">
+                                        <label class="input-label" for=link">{{translate('banner_link')}}</label>
+                                        <input type="text" name="link" value="{{old('link')}}" class="form-control" placeholder="{{ translate('banner_link') }}">
+                                    </div>
+                                </div>
+                                @if(Request::is('admin/banner/home*'))
+                                <div class="col-12">
+                                    <div class="form-group mb-0">
+                                        <label class="input-label" for=order">{{translate('banner_order')}}</label>
+                                        <input type="text" name="order" value="{{old('order')}}" class="form-control" placeholder="{{ translate('banner_order') }}">
+                                    </div>
+                                </div>
+                                @endif
+                                @if(!Request::is('admin/banner/home*'))
                                 <div class="col-12">
                                     <div class="form-group mb-0">
                                         <label class="input-label" for="exampleFormControlSelect1">{{translate('item')}} {{translate('type')}}<span
@@ -63,6 +84,7 @@
                                         </select>
                                     </div>
                                 </div>
+                                @endif
                             </div>
                         </div>
                         <div class="col-md-6">

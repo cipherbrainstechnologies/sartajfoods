@@ -327,15 +327,33 @@
                             </li>
 
                             <li class="navbar-vertical-aside-has-menu {{Request::is('admin/banner*')?'active':''}}">
-                                <a class="js-navbar-vertical-aside-menu-link nav-link"
-                                   href="{{route('admin.banner.add-new')}}"
-                                   title="{{translate('banner')}}"
+                                <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle"
+                                   href="javascript:" title="{{translate('banner')}}"
                                 >
-                                    <i class="tio-image nav-icon"></i>
+                                    <i class="tio-category nav-icon"></i>
                                     <span
                                         class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{translate('banner')}}</span>
                                 </a>
+                                <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
+                                    style="display: {{Request::is('admin/banner*')?'block':'none'}}">
+                                    <li class="nav-item {{Request::is('admin/banner/home*')?'active':''}}">
+                                        <a class="nav-link " href="{{route('admin.banner.home.add-new')}}"
+                                           title="{{translate('product_category_banner')}}">
+                                            <span class="tio-circle nav-indicator-icon"></span>
+                                            <span class="text-truncate">{{translate('home_banner')}}</span>
+                                        </a>
+                                    </li>
+
+                                  <li class="nav-item {{Request::is('admin/banner/other*')?'active':''}}">
+                                        <a class="nav-link " href="{{route('admin.banner.add-new')}}"
+                                           title="{{translate('home_banner')}}">
+                                            <span class="tio-circle nav-indicator-icon"></span>
+                                            <span class="text-truncate">{{translate('other_banner')}}</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
+                           
 
                             <li class="navbar-vertical-aside-has-menu {{Request::is('admin/coupon*')?'active':''}}">
                                 <a class="js-navbar-vertical-aside-menu-link nav-link"
