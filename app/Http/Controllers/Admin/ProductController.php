@@ -179,10 +179,15 @@ class ProductController extends Controller
             'images' => 'required',
             'total_stock' => 'required|numeric|min:1',
             'price' => 'required|numeric|min:0',
+            'meta_title' =>'required|unique:products',
+            'model' => 'required',
         ], [
             'name.required' => translate('Product name is required!'),
             'name.unique' => translate('Product name must be unique!'),
             'category_id.required' => translate('category  is required!'),
+            'meta_title.required' => translate('Product Meta Title is required!'),
+            'meta_title.unique' => translate('Product Meta Title must be unique!'),
+            'model.required' => translate('Model is required!'),
         ]);
 
         if ($request['discount_type'] == 'percent') {
@@ -327,6 +332,9 @@ class ProductController extends Controller
 
         $p->attributes = $request->has('attribute_id') ? json_encode($request->attribute_id) : json_encode([]);
         $p->status = $request->status? $request->status:0;
+
+        // $p->meta_tag_title = $request->
+        
 
         $p->save();
 
