@@ -173,6 +173,7 @@ class ProductController extends Controller
      */
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
+        // dd($request);
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:products',
             'category_id' => 'required',
@@ -333,9 +334,31 @@ class ProductController extends Controller
         $p->attributes = $request->has('attribute_id') ? json_encode($request->attribute_id) : json_encode([]);
         $p->status = $request->status? $request->status:0;
 
-        // $p->meta_tag_title = $request->
-        
+        $p->meta_title = !empty($request->meta_title) ? $request->meta_title[array_search('en', $request->lang)] : null;
+        $p->meta_tag_description = !empty($request->meta_description) ? $request->meta_description[array_search('en', $request->lang)] : null;
+        $p->meta_tag_keywords = !empty($request->meta_keywords) ? $request->meta_keywords[array_search('en', $request->lang)] : null;
+        $p->product_tag = !empty($request->product_tags) ? $request->product_tags[array_search('en', $request->lang)] : null;
 
+        $p->substrack_stock = !empty($request->substrak_stock) ? $request->substrak_stock : null;
+        $p->out_of_stock_status = !empty($request->out_of_stock_status) ? $request->out_of_stock_status : null;
+        $p->product_mark = !empty($request->product_mark) ? implode(",", $request->product_mark) : null;
+        $p->product_type = !empty($request->product_type) ? $request->product_type : null;
+        $p->date_available = !empty($request->date_available) ? $request->date_available : null;
+        $p->length_class = !empty($request->length_class) ? $request->length_class : null;
+        $p->requires_shipping = !empty($request->requires_shipping) ? $request->requires_shipping : null;
+        $p->weight = !empty($request->weight) ? $request->weight : null;
+        $p->weight_class = !empty($request->weight_class) ? $request->weight_class : null;
+        $p->sort_order = !empty($request->sort_order) ? $request->sort_order : null;
+
+        $p->model = !empty($request->model) ? $request->model : null;
+        $p->sku = !empty($request->sku) ? $request->sku : null;
+        $p->upc = !empty($request->upc) ? $request->upc : null;
+        $p->ena = !empty($request->ena) ? $request->ena : null;
+        $p->jan = !empty($request->jan) ? $request->jan : null;
+        $p->isbn = !empty($request->isbn) ? $request->isbn : null;
+        $p->mpn = !empty($request->mpn) ? $request->mpn : null;
+        $p->location = !empty($request->location) ? $request->location : null;      
+    
         $p->save();
 
         $p->tags()->sync($tag_ids);
@@ -586,6 +609,31 @@ class ProductController extends Controller
 
         $p->attributes = $request->has('attribute_id') ? json_encode($request->attribute_id) : json_encode([]);
         $p->status = $request->status? $request->status:0;
+
+        $p->meta_title = !empty($request->meta_title) ? $request->meta_title[array_search('en', $request->lang)] : null;
+        $p->meta_tag_description = !empty($request->meta_description) ? $request->meta_description[array_search('en', $request->lang)] : null;
+        $p->meta_tag_keywords = !empty($request->meta_keywords) ? $request->meta_keywords[array_search('en', $request->lang)] : null;
+        $p->product_tag = !empty($request->product_tags) ? $request->product_tags[array_search('en', $request->lang)] : null;
+
+        $p->substrack_stock = !empty($request->substrak_stock) ? $request->substrak_stock : null;
+        $p->out_of_stock_status = !empty($request->out_of_stock_status) ? $request->out_of_stock_status : null;
+        $p->product_mark = !empty($request->product_mark) ? implode(",", $request->product_mark) : null;
+        $p->product_type = !empty($request->product_type) ? $request->product_type : null;
+        $p->date_available = !empty($request->date_available) ? $request->date_available : null;
+        $p->length_class = !empty($request->length_class) ? $request->length_class : null;
+        $p->requires_shipping = !empty($request->requires_shipping) ? $request->requires_shipping : null;
+        $p->weight = !empty($request->weight) ? $request->weight : null;
+        $p->weight_class = !empty($request->weight_class) ? $request->weight_class : null;
+        $p->sort_order = !empty($request->sort_order) ? $request->sort_order : null;
+
+        $p->model = !empty($request->model) ? $request->model : null;
+        $p->sku = !empty($request->sku) ? $request->sku : null;
+        $p->upc = !empty($request->upc) ? $request->upc : null;
+        $p->ena = !empty($request->ena) ? $request->ena : null;
+        $p->jan = !empty($request->jan) ? $request->jan : null;
+        $p->isbn = !empty($request->isbn) ? $request->isbn : null;
+        $p->mpn = !empty($request->mpn) ? $request->mpn : null;
+        $p->location = !empty($request->location) ? $request->location : null;
 
         $p->save();
 

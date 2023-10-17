@@ -2037,4 +2037,7 @@
   'Millimeter' => 'Millimeter',
   'Centimeter' => 'Centimeter',
   'Length Class' => 'Length Class',
+  'Model is required!' => 'Model is required!',
+  'Product Meta Title must be unique!' => 'Product Meta Title must be unique!',
+  'Product Meta Title is required!' => 'Product Meta Title is required!',
 );

@@ -27,7 +27,7 @@
             @php($data = Helpers::get_business_settings('language'))
             @php($default_lang = Helpers::get_default_language())
 
-            <div class="col-lg-6">
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body pt-2">
                         @if($data && array_key_exists('code', $data[0]))
@@ -62,9 +62,26 @@
                                         <input type="text" {{$lang['status'] == true ? 'required':''}} name="name[]" id="{{$lang['code']}}_name" value="{{$translate[$lang['code']]['name']??$product['name']}}" class="form-control" placeholder="{{translate('New Product')}}" >
                                     </div>
                                     <input type="hidden" name="lang[]" value="{{$lang['code']}}">
-                                    <div class="form-group mb-0">
+                                    <div class="form-group">
                                         <label class="input-label" for="{{$lang['code']}}_description">{{translate('short')}} {{translate('description')}}  ({{strtoupper($lang['code'])}})</label>
                                         <textarea name="description[]" class="form-control h--172px" id="{{$lang['code']}}_hiddenArea">{{$translate[$lang['code']]['description']??$product['description']}}</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="input-label" for="{{$lang['code']}}_meta_title">{{translate('meta tag title')}} ({{strtoupper($lang['code'])}})</label>
+                                        <input type="text" name="meta_title[]" class="form-control" id=""  placeholder="{{translate('meta tag title')}}" value="{{$translate[$lang['code']]['meta_title']??$product['meta_title']}}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="input-label"
+                                            for="{{$lang['code']}}__meta_description">{{translate('meta tag description')}}  ({{strtoupper($lang['code'])}})</label>
+                                        <textarea name="meta_description[]" class="form-control h--172px" id="{{$lang['code']}}__meta_description">{{$translate[$lang['code']]['meta_tag_description']??$product['meta_tag_description']}}"</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="input-label" for="{{$lang['code']}}__meta_keywords">{{translate('meta tag keywords')}}  ({{strtoupper($lang['code'])}})</label>
+                                        <textarea name="meta_keywords[]" class="form-control h--172px" id="{{$lang['code']}}_meta_keywords">{{$translate[$lang['code']]['meta_tag_keywords']??$product['meta_tag_keywords']}}</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="input-label" for="{{$lang['code']}}_product_tags">{{translate('product tags')}} ({{strtoupper($lang['code'])}})</label>
+                                        <input type="text" name="product_tags[]" class="form-control" id="{{$lang['code']}}_product_tags" value="{{$translate[$lang['code']]['product_tags']??$product['product_tags']}}" placeholder="{{translate('product tags')}}">
                                     </div>
                                 </div>
                             @endforeach
@@ -79,6 +96,22 @@
                                     <label class="input-label"
                                         for="exampleFormControlInput1">{{translate('short')}} {{translate('description')}} (EN)</label>
                                     <textarea name="description[]" class="form-control h--172px" id="hiddenArea">{{ $product['description'] }}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="input-label" for="exampleFormControlInput1">{{translate('meta tag title')}} (EN)</label>
+                                    <input type="text" name="meta_title[]" class="form-control" value="{{$translate[$lang['code']]['meta_title']??$product['meta_title']}}" placeholder="{{translate('meta tag title')}}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="input-label" for="exampleFormControlInput1">{{translate('meta tag description')}} (EN)</label>
+                                    <textarea name="meta_description[]" class="form-control h--172px" id=""></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="input-label" for="exampleFormControlInput1">{{translate('meta tag keywords')}} (EN)</label>
+                                    <textarea name="meta_keywords[]" class="form-control h--172px" id=""></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label class="input-label" for="exampleFormControlInput1">{{translate('product tags')}} (EN)</label>
+                                    <input type="text" name="product_tags[]" class="form-control" placeholder="{{translate('product tags')}}">
                                 </div>
                             </div>
                         @endif
@@ -155,6 +188,101 @@
                                            placeholder="{{ translate('Ex : 3') }}" required>
                                 </div>
                             </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="input-label" for="substrak_stock">{{translate('Substrak Stock')}}<span class="input-label-secondary"></span></label>
+                                    <select name="substrak_stock" id="substrak_stock" class="form-control js-select2-custom">
+                                        <option value="Yes" {{ ($product['substrak_stock'] === 'yes') ? 'selected' : '' }}>{{translate('yes')}}</option>
+                                        <option value="No" {{ ($product['substrak_stock'] === 'no') ? 'selected' : '' }}>{{translate('no')}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="input-label" for="out_of_stock_status">{{translate('Out Of Stock Status')}}<span class="input-label-secondary"></span></label>
+                                    <select name="out_of_stock_status" id="out_of_stock_status" class="form-control js-select2-custom">
+                                        <option value="2-3 Days"  {{ ($product['out_of_stock_status'] === '2-3 Days') ? 'selected' : '' }}>{{translate('2-3 Days')}}</option>
+                                        <option value="In Stock" {{ ($product['out_of_stock_status'] === 'In Stock') ? 'selected' : '' }}>{{translate('In Stock')}}</option>
+                                        <option value="Out Of Stock" {{ ($product['out_of_stock_status'] === 'Out Of Stock') ? 'selected' : '' }}>{{translate('Out Of Stock')}}</option>
+                                        <option value="Pre-Order" {{ ($product['out_of_stock_status'] === 'Pre-Order') ? 'selected' : '' }}>{{translate('Pre-Order')}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="input-label" for="requires_shipping">{{translate('Requires Shipping')}}<span class="input-label-secondary"></span></label>
+                                    <select name="requires_shipping" id="requires_shipping" class="form-control js-select2-custom">
+                                        <option value="Yes" {{ ($product['substrak_stock'] === 'yes') ? 'selected' : '' }}>{{translate('yes')}}</option>
+                                        <option value="No" {{ ($product['substrak_stock'] === 'no') ? 'selected' : '' }}>{{translate('no')}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                @php($productMark = explode(",", $product['product_mark']))
+                                    <label class="input-label" for="product_mark">{{translate('Product Mark')}}<span class="input-label-secondary"></span></label>
+                                    <select name="product_mark[]" id="product_mark" class="form-control js-select2-custom" multiple="multiple">
+                                        <option value="Halal" {{ (in_array('Halal', $productMark)) ? 'selected' : '' }}>{{translate('Halal')}}</option>
+                                        <option value="Veg" {{ (in_array('Veg', $productMark)) ? 'selected' : '' }}>{{translate('Veg')}}</option>
+                                        <option value="Vegan" {{ (in_array('Vegan', $productMark)) ? 'selected' : '' }}>{{translate('Vegan')}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="input-label" for="product_type">{{translate('Product Type')}}<span class="input-label-secondary"></span></label>
+                                    <input type="checkbox" class="" name="product_type" value="1" {{ ($product['product_type'] === '1') ? 'checked' : '' }}>
+                                    <label >{{ translate('frozen') }}</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="input-label" for="date_available">{{translate('Date Available')}}<span class="input-label-secondary"></span></label>
+                                    <label class="">
+                                        <input type="date" name="date_available" id="date_available" value="{{$product['date_available']}}" class="js-flatpickr form-control flatpickr-custom" placeholder="{{ \App\CentralLogics\translate('dd/mm/yy') }}" data-hs-flatpickr-options='{ "dateFormat": "Y/m/d", "minDate": "today" }'>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="input-label" for="length_class">{{translate('Length Class')}}<span class="input-label-secondary"></span></label>
+                                    <select name="length_class" id="length_class" class="form-control js-select2-custom">
+                                        <option value="Centimeter" {{ ($product['length_class'] === 'Centimeter') ? 'selected' : '' }}>{{translate('Centimeter')}}</option>
+                                        <option value="Millimeter" {{ ($product['length_class'] === 'Millimeter') ? 'selected' : '' }}>{{translate('Millimeter')}}</option>
+                                        <option value="inch" {{ ($product['length_class'] === 'inch') ? 'selected' : '' }}>{{translate('inch')}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="input-label"
+                                        for="exampleFormControlInput1">{{translate('weight')}}</label>
+                                    <input type="text" name="weight"
+                                        class="form-control"
+                                        value="{{ $product['weight'] }}"
+                                        placeholder="{{ translate('0.000000') }}" >
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="input-label" for="weight_class">{{translate('Weight Class')}}<span class="input-label-secondary"></span></label>
+                                    <select name="weight_class" id="weight_class" class="form-control js-select2-custom">
+                                        <option value="Kilogram" {{ ($product['weight_class'] === 'Kilogram') ? 'selected' : '' }}>{{translate('Kilogram')}}</option>
+                                        <option value="Gram" {{ ($product['weight_class'] === 'Gram') ? 'selected' : '' }}>{{translate('Gram')}}</option>
+                                        <option value="Pound" {{ ($product['weight_class'] === 'Pound') ? 'selected' : '' }}>{{translate('Pound')}}</option>
+                                        <option value="Ounce" {{ ($product['weight_class'] === 'Ounce') ? 'selected' : '' }}>{{translate('Ounce')}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="input-label"
+                                           for="exampleFormControlInput1">{{translate('Sort Order')}}</label>
+                                    <input type="number" min="1" step="1" name="sort_order"
+                                           class="form-control" value="{{ $product['sort_order'] }}"
+                                           placeholder="{{ translate('Ex : 3') }}">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -181,6 +309,55 @@
             </div>
             <div class="col-lg-6">
                 <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <span class="card-header-icon">
+                                <i class="tio-user"></i>
+                            </span>
+                            <span>
+                                {{translate('Data Storage')}}
+                            </span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                         <div class="form-group">
+                            <label class="input-label" for="model">{{translate('Model')}}<span
+                                            class="input-label-secondary">*</span></label>
+                            <input type="txt" name="model" id="model" class="form-control" value="{{ $product['model'] }}" placeholder="{{ translate('model') }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="input-label" for="sku">{{translate('SKU(Stock Keeping Unit)')}}</label>
+                            <input type="txt" name="sku" id="sku" class="form-control" value="{{ $product['sku'] }}" placeholder="{{ translate('Stock Keeping Unit') }}" >
+                        </div>
+                        <div class="form-group">
+                            <label class="input-label" for="upc">{{translate('UPC(Universal Product Code)')}}</label>
+                            <input type="txt" name="upc" id="upc" class="form-control" value="{{ $product['upc'] }}" placeholder="{{ translate('Universal Product Code') }}" >
+                        </div>
+                        <div class="form-group">
+                            <label class="input-label" for="ena">{{translate('EAN(European Artical Number)')}}</label>
+                            <input type="txt" name="ena" id="ena" class="form-control" value="{{ $product['ena'] }}" placeholder="{{ translate('European Artical Number') }}" >
+                        </div>
+                        <div class="form-group">
+                            <label class="input-label" for="jan">{{translate('JAN(Japanese Artical Number)')}}</label>
+                            <input type="txt" name="jan" id="jan" class="form-control" value="{{ $product['jan'] }}" placeholder="{{ translate('Japanese Artical Number') }}" >
+                        </div>
+                        <div class="form-group">
+                            <label class="input-label" for="isbn">{{translate('ISBN(International Standard Book Number)')}}</label>
+                            <input type="txt" name="isbn" id="isbn" class="form-control" value="{{ $product['isbn'] }}" placeholder="{{ translate('International Standard Book Number') }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="input-label" for="mpn">{{translate('MPN(Manufacturer Part Numbaer)')}}</label>
+                            <input type="txt" name="mpn" id="mpn" class="form-control" value="{{ $product['mpn'] }}" placeholder="{{ translate('Manufacturer Part Numbaer') }}" >
+                        </div>
+                         <div class="form-group">
+                            <label class="input-label" for="location">{{translate('Location')}}</label>
+                            <input type="txt" name="location" id="location" class="form-control" value="{{ $product['location'] }}" placeholder="{{ translate('location') }}" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
                     <div class="card-body">
                     <h5 class="mb-3">{{translate('product')}} {{translate('image')}} <small
                         class="text-danger">* ( {{translate('ratio')}} 1:1 )</small></h5>
@@ -194,31 +371,6 @@
                                         </div>
                                     @endforeach
                                 @endif
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">
-                            <span class="card-header-icon">
-                                <i class="tio-label"></i>
-                            </span>
-                            <span>
-                                {{translate('tags')}}
-                            </span>
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="p-2">
-                            <div class="row g-3">
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" name="tags" placeholder="Enter tags" value="@foreach($product->tags as $c) {{$c->tag.','}} @endforeach" data-role="tagsinput">
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
