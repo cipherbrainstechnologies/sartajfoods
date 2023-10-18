@@ -80,7 +80,6 @@ class LoginController extends Controller
         if (auth('admin')->attempt(['email' => $request->email, 'password' => $request->password, 'status' => 1], $request->remember)) {
             return redirect()->route('admin.dashboard');
         }
-        echo "d";die;
         return redirect()->back()->withInput($request->only('email', 'remember'))
             ->withErrors(['Credentials does not match.']);
     }
