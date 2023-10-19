@@ -19,6 +19,21 @@ class ProductLogic
         return Product::active()->withCount(['wishlist'])->with(['rating', 'active_reviews', 'active_reviews.customer'])->where('id', $id)->first();
     }
 
+    public static function get_all_products($limit = 10, $offset = 1)
+    {
+        $paginator = Product::active()
+            ->withCount(['wishlist'])
+            ->with(['rating', 'active_reviews'])
+            ->paginate($limit, ['*'], 'page', $offset);
+
+        return [
+            'total_size' => $paginator->total(),
+            'limit' => $limit,
+            'offset' => $offset,
+            'products' => $paginator->items()
+        ];
+    }
+
     public static function get_latest_products($limit = 10, $offset = 1)
     {
         $paginator = Product::active()

@@ -39,6 +39,18 @@ class ProductController extends Controller
         private VisitedProduct $visited_product
     ){}
 
+    
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    
+     public function get_all_products(Request $request): \Illuminate\Http\JsonResponse
+     {
+         $products = ProductLogic::get_all_products($request['limit'], $request['offset']);
+         $products['products'] = Helpers::product_data_formatting($products['products'], true);
+         return response()->json($products, 200);
+     }
 
     /**
      * @param Request $request
@@ -181,7 +193,7 @@ class ProductController extends Controller
                 $visited_product->product_id = $product->id;
                 $visited_product->save();
             }
-
+        
             return response()->json($product, 200);
 
         } catch (\Exception $e) {
