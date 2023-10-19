@@ -369,12 +369,14 @@ class CustomerAuthController extends Controller
         $validator = Validator::make($request->all(), [
             'f_name' => 'required',
             'l_name' => 'required',
+            'dob'    => 'required',
             'email' => '',
             'phone' => 'required|unique:users',
             'password' => 'required|min:6',
         ], [
             'f_name.required' => 'The first name field is required.',
             'l_name.required' => 'The last name field is required.',
+            'dob.required'    => 'The date of birth field is required.'
         ]);
 
         if ($validator->fails()) {
@@ -401,7 +403,8 @@ class CustomerAuthController extends Controller
         $user = $this->user->create([
             'f_name' => $request->f_name,
             'l_name' => $request->l_name,
-            'email' => $request->email??'',
+            'dob'    => $request->dob,
+            'email' => $request->email ?? '',
             'phone' => $request->phone,
             'password' => bcrypt($request->password),
             'temporary_token' => $temporary_token,
