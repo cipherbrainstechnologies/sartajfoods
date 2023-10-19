@@ -353,31 +353,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title">
-                            <span class="card-header-icon">
-                                <i class="tio-label"></i>
-                            </span>
-                            <span>
-                                {{translate('tags')}}
-                            </span>
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="p-2">
-                            <div class="row g-3">
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" name="tags" placeholder="Enter tags" data-role="tagsinput">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-header">

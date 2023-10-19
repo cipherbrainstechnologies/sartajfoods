@@ -2040,4 +2040,6 @@
   'Model is required!' => 'Model is required!',
   'Product Meta Title must be unique!' => 'Product Meta Title must be unique!',
   'Product Meta Title is required!' => 'Product Meta Title is required!',
+  'product filters' => 'Product filters',
+  'product filter' => 'Product filter',
 );

@@ -100,6 +100,16 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::get('status/{id}/{status}', 'AttributeController@status')->name('status');
         });
 
+        Route::group(['prefix' => 'filter', 'as' => 'filter.','middleware'=>['module:product_management']], function () {
+            Route::get('add-new', 'FilterController@index')->name('add-new');
+            Route::post('store', 'FilterController@store')->name('store');
+            Route::get('edit/{id}', 'FilterController@edit')->name('edit');
+            Route::post('update/{id}', 'FilterController@update')->name('update');
+            Route::delete('delete/{id}', 'FilterController@delete')->name('delete');
+            Route::get('status/{id}/{status}', 'FilterController@status')->name('status');
+        });
+
+
         Route::group(['prefix' => 'branch', 'as' => 'branch.','middleware'=>['module:system_management']], function () {
             Route::get('add-new', 'BranchController@index')->name('add-new');
             Route::get('list', 'BranchController@list')->name('list');
