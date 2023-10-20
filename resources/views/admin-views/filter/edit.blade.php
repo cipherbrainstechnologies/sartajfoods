@@ -1,6 +1,6 @@
 @extends('layouts.admin.app')
 
-@section('title', translate('Update Attribute'))
+@section('title', translate('Update filter'))
 
 @push('css_or_js')
 
@@ -15,14 +15,14 @@
                     <img src="{{asset('public/assets/admin/img/attribute.png')}}" class="w--24" alt="">
                 </span>
                 <span>
-                    {{translate('attribute')}} {{translate('update')}}
+                    {{translate('filter')}} {{translate('update')}}
                 </span>
             </h1>
         </div>
         <!-- End Page Header -->
         <div class="card">
             <div class="card-body pt-2">
-                <form action="{{route('admin.attribute.update',[$attribute['id']])}}" method="post">
+                <form action="{{route('admin.filter.update',[$filter['id']])}}" method="post">
                     @csrf
                     @php($data = Helpers::get_business_settings('language'))
                     @php($default_lang = Helpers::get_default_language())
@@ -42,9 +42,9 @@
                             <div class="col-12">
                                 @foreach($data as $lang)
                                     <?php
-                                        if(count($attribute['translations'])){
+                                        if(count($filter['translations'])){
                                             $translate = [];
-                                            foreach($attribute['translations'] as $t)
+                                            foreach($filter['translations'] as $t)
                                             {
                                                 if($t->locale == $lang['code'] && $t->key=="name"){
                                                     $translate[$lang['code']]['name'] = $t->value;
@@ -55,8 +55,8 @@
                                     <div class="form-group lang_form {{$lang['default'] == false ? 'd-none':''}}" id="{{$lang['code']}}-form">
                                         <label class="input-label" for="exampleFormControlInput1">{{translate('name')}} ({{strtoupper($lang['code'])}})</label>
                                         <input type="text" name="name[]" class="form-control"
-                                               placeholder="{{translate('New attribute')}}"
-                                               value="{{$lang['code'] == 'en' ? $attribute['name'] : ($translate[$lang['code']]['name']??'')}}"
+                                               placeholder="{{translate('New filter')}}"
+                                               value="{{$lang['code'] == 'en' ? $filter['name'] : ($translate[$lang['code']]['name']??'')}}"
                                                {{$lang['status'] == true ? 'required':''}} maxlength="255"
                                                @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
                                     </div>
@@ -69,7 +69,7 @@
                             <div class="col-12">
                                 <div class="form-group lang_form" id="{{$default_lang}}-form">
                                     <label class="input-label" for="exampleFormControlInput1">{{translate('name')}} ({{strtoupper($default_lang)}})</label>
-                                    <input type="text" name="name[]" class="form-control" value="{{ $attribute['name'] }}" placeholder="{{translate('New attribute')}}" maxlength="255">
+                                    <input type="text" name="name[]" class="form-control" value="{{ $filter['name'] }}" placeholder="{{translate('New filter')}}" maxlength="255">
                                 </div>
                                 <input type="hidden" name="lang[]" value="{{$default_lang}}">
                             </div>

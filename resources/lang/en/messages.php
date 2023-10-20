@@ -2042,4 +2042,13 @@
   'Product Meta Title is required!' => 'Product Meta Title is required!',
   'product filters' => 'Product filters',
   'product filter' => 'Product filter',
+  'New filter' => 'New filter',
+  'add_filter' => 'Add filter',
+  'filter Table' => 'Filter Table',
+  'filter Setup' => 'Filter Setup',
+  'Update filter' => 'Update filter',
+  'filter updated successfully!' => 'Filter updated successfully!',
+  'Add new filter' => 'Add new filter',
+  'filter added successfully!' => 'Filter added successfully!',
+  'filter removed!' => 'Filter removed!',
 );

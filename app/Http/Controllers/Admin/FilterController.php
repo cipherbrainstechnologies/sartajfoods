@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\CentralLogics\Helpers;
 use App\Http\Controllers\Controller;
-use App\Model\Attribute;
+use App\Model\Filter;
 use App\Model\Translation;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Contracts\Foundation\Application;
@@ -14,10 +14,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-class AttributeController extends Controller
+class filterController extends Controller
 {
     public function __construct(
-        private Attribute   $attribute,
+        private filter   $filter,
         private Translation $translation
     ){}
 
@@ -31,17 +31,17 @@ class AttributeController extends Controller
         $search = $request['search'];
         if ($request->has('search')) {
             $key = explode(' ', $request['search']);
-            $attributes = $this->attribute->where(function ($q) use ($key) {
+            $filters = $this->filter->where(function ($q) use ($key) {
                 foreach ($key as $value) {
                     $q->orWhere('name', 'like', "%{$value}%");
                 }
             })->orderBy('name');
             $query_param = ['search' => $request['search']];
         } else {
-            $attributes = $this->attribute->orderBy('name');
+            $filters = $this->filter->orderBy('name');
         }
-        $attributes = $attributes->latest()->paginate(Helpers::getPagination())->appends($query_param);
-        return view('admin-views.attribute.index', compact('attributes', 'search'));
+        $filters = $filters->latest()->paginate(Helpers::getPagination())->appends($query_param);
+        return view('admin-views.filter.index', compact('filters', 'search'));
     }
 
     /**
@@ -51,7 +51,7 @@ class AttributeController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => 'required|unique:attributes',
+            'name' => 'required|unique:filters',
         ], [
             'name.required' => translate('Name is required'),
             'name.unique' => translate('Name is already taken'),
@@ -64,16 +64,16 @@ class AttributeController extends Controller
             }
         }
 
-        $attribute = $this->attribute;
-        $attribute->name = $request->name[array_search('en', $request->lang)];
-        $attribute->save();
+        $filter = $this->filter;
+        $filter->name = $request->name[array_search('en', $request->lang)];
+        $filter->save();
 
         $data = [];
         foreach ($request->lang as $index => $key) {
             if ($request->name[$index] && $key != 'en') {
                 $data[] = array(
-                    'translationable_type' => 'App\Model\Attribute',
-                    'translationable_id' => $attribute->id,
+                    'translationable_type' => 'App\Model\filter',
+                    'translationable_id' => $filter->id,
                     'locale' => $key,
                     'key' => 'name',
                     'value' => $request->name[$index],
@@ -84,7 +84,7 @@ class AttributeController extends Controller
             $this->translation->insert($data);
         }
 
-        Toastr::success(translate('Attribute added successfully!'));
+        Toastr::success(translate('filter added successfully!'));
         return back();
     }
 
@@ -94,8 +94,8 @@ class AttributeController extends Controller
      */
     public function edit($id): View|Factory|Application
     {
-        $attribute = $this->attribute->withoutGlobalScopes()->with('translations')->find($id);
-        return view('admin-views.attribute.edit', compact('attribute'));
+        $filter = $this->filter->withoutGlobalScopes()->with('translations')->find($id);
+        return view('admin-views.filter.edit', compact('filter'));
     }
 
     /**
@@ -106,7 +106,7 @@ class AttributeController extends Controller
     public function update(Request $request, $id): \Illuminate\Http\RedirectResponse
     {
         $request->validate([
-            'name' => 'required|unique:attributes,name,' . $request->id,
+            'name' => 'required|unique:filters,name,' . $request->id,
         ], [
             'name.required' => translate('Name is required'),
         ]);
@@ -118,15 +118,15 @@ class AttributeController extends Controller
             }
         }
 
-        $attribute = $this->attribute->find($id);
-        $attribute->name = $request->name[array_search('en', $request->lang)];
-        $attribute->save();
+        $filter = $this->filter->find($id);
+        $filter->name = $request->name[array_search('en', $request->lang)];
+        $filter->save();
 
         foreach ($request->lang as $index => $key) {
             if ($request->name[$index] && $key != 'en') {
                 $this->translation->updateOrInsert(
-                    ['translationable_type' => 'App\Model\Attribute',
-                        'translationable_id' => $attribute->id,
+                    ['translationable_type' => 'App\Model\filter',
+                        'translationable_id' => $filter->id,
                         'locale' => $key,
                         'key' => 'name'],
                     ['value' => $request->name[$index]]
@@ -134,7 +134,7 @@ class AttributeController extends Controller
             }
         }
 
-        Toastr::success(translate('Attribute updated successfully!'));
+        Toastr::success(translate('filter updated successfully!'));
         return back();
     }
 
@@ -144,9 +144,9 @@ class AttributeController extends Controller
      */
     public function delete(Request $request): RedirectResponse
     {
-        $attribute = $this->attribute->find($request->id);
-        $attribute->delete();
-        Toastr::success(translate('Attribute removed!'));
+        $filter = $this->filter->find($request->id);
+        $filter->delete();
+        Toastr::success(translate('filter removed!'));
         return back();
     }
 
