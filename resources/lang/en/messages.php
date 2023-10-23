@@ -2068,4 +2068,5 @@
   'Update manufacturer' => 'Update manufacturer',
   'manufacturer updated successfully!' => 'Manufacturer updated successfully!',
   'manufacturer image' => 'Manufacturer image',
+  'Select Manufacturer' => 'Select Manufacturer',
 );

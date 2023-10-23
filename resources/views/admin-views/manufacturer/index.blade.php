@@ -106,7 +106,7 @@
     <div class="modal fade" tabindex="-1" id="manufacturer-modal">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="{{route('admin.manufacturer.store')}}" method="post" >
+                <form action="{{route('admin.manufacturer.store')}}" method="post" enctype="multipart/form-data">
                     <div class="modal-body pt-3">
                         @csrf
                         @php($data = Helpers::get_business_settings('language'))
@@ -234,9 +234,6 @@
                     width: '100%'
                 },
                 dropFileLabel: "Drop Here",
-                onAddRow: function (index, file) {
-
-                },
                 onRenderedPreview: function (index) {
 
                 },

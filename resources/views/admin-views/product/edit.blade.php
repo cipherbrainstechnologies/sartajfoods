@@ -498,6 +498,41 @@
                     </div>
                 </div>
             </div>
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <span class="card-header-icon">
+                                <i class="tio-puzzle"></i>
+                            </span>
+                            <span>
+                                {{translate('manufacturer')}}
+                            </span>
+                        </h5>
+                    </div>
+                    <div class="card-body pb-0">
+                        <div class="form-group __select-attr">
+                            <label class="input-label"
+                                    for="exampleFormControlSelect1">{{translate('Select Manufacturer')}}<span
+                                    class="input-label-secondary"></span></label>
+                            <select name="manufacturer_id" id="choice_attributes"
+                                    class="form-control js-select2-custom">
+                                @foreach( $manufacturers as $Manufacturer)
+                                    <option value="{{$Manufacturer['id']}}" ({{$Manufacturer['id']}} === $product['manufacturer_id]) ? selected : ''>{{$Manufacturer['name']}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="customer_choice_options" id="customer_choice_options"></div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="variant_combination" id="variant_combination"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-12">
                 <div class="btn--container justify-content-end">
                     <button type="reset" class="btn btn--reset">{{translate('clear')}}</button>

@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::table('banners', function (Blueprint $table) {
             $table->after('title', function($table){
-                $table->String('link')->nullable();
                 $table->longText('description')->nullable();
             });
         });
@@ -29,8 +28,6 @@ return new class extends Migration
     public function down()
     {
         Schema::table('banners', function (Blueprint $table) {
-            
-            $table->dropColumn('link');
             $table->dropColumn('description');
             
         });

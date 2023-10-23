@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\CentralLogics\Helpers;
 use App\Http\Controllers\Controller;
-use App\Model\manufacturer;
+use App\Model\Manufacturer;
 use App\Model\Translation;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Contracts\Foundation\Application;
@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Storage;
 class manufacturerController extends Controller
 {
     public function __construct(
-        private manufacturer   $manufacturer,
+        private Manufacturer   $manufacturer,
         private Translation $translation
     ){}
 

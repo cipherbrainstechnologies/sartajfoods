@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use App\Model\Manufacturer;
 
 class ProductController extends Controller
 {
@@ -38,6 +39,7 @@ class ProductController extends Controller
         private Product $product,
         private Review $review,
         private Tag $tag,
+        private Manufacturer $manufacturer,
         private Translation $translation
     ){}
 
@@ -101,7 +103,8 @@ class ProductController extends Controller
     public function index(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $categories = $this->category->where(['position' => 0])->get();
-        return view('admin-views.product.index', compact('categories'));
+        $manufacturers = $this->manufacturer->get();
+        return view('admin-views.product.index', compact('categories', 'manufacturers'));
     }
 
     /**
@@ -357,7 +360,8 @@ class ProductController extends Controller
         $p->jan = !empty($request->jan) ? $request->jan : null;
         $p->isbn = !empty($request->isbn) ? $request->isbn : null;
         $p->mpn = !empty($request->mpn) ? $request->mpn : null;
-        $p->location = !empty($request->location) ? $request->location : null;      
+        $p->location = !empty($request->location) ? $request->location : null;  
+        $p->manufacturer_id = !empty($request->manufacturer_id) ? $request->manufacturer_id : null;    
     
         $p->save();
 
@@ -403,7 +407,8 @@ class ProductController extends Controller
         $product = $this->product->withoutGlobalScopes()->with('translations')->find($id);
         $product_category = json_decode($product->category_ids);
         $categories = $this->category->where(['parent_id' => 0])->get();
-        return view('admin-views.product.edit', compact('product', 'product_category', 'categories'));
+        $manufacturers = $this->manufacturer->get();
+        return view('admin-views.product.edit', compact('product', 'product_category', 'categories', 'manufacturers'));
     }
 
     /**
@@ -634,6 +639,7 @@ class ProductController extends Controller
         $p->isbn = !empty($request->isbn) ? $request->isbn : null;
         $p->mpn = !empty($request->mpn) ? $request->mpn : null;
         $p->location = !empty($request->location) ? $request->location : null;
+        $p->manufacturer_id = !empty($request->manufacturer_id) ? $request->manufacturer_id : null;
 
         $p->save();
 
