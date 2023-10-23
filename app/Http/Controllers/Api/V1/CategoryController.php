@@ -13,11 +13,24 @@ class CategoryController extends Controller
         private Category $category
     ){}
 
+    public function addImageUrl($categories){
+        $baseUrl = config('app.url');
+        $response = [];
+        if(!empty($categories)){
+            foreach($categories->toArray() as $key => $category){
+                $response[] = $category;
+                $response[$key]['image'] = $baseUrl . '/storage/category/' . $category['image'];
+            }
+        }      
+        return $response;
+    }
+
     public function get_categories(): \Illuminate\Http\JsonResponse
     {
         try {
             $categories = $this->category->where(['position'=>0,'status'=>1])->orderBy('name')->get();
-            return response()->json($categories, 200);
+            $Categories = self::addImageUrl($categories);
+            return response()->json($Categories, 200);
         } catch (\Exception $e) {
             return response()->json([], 200);
         }

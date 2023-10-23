@@ -14,13 +14,27 @@ class BannerController extends Controller
         private Banner $banner
     ){}
 
+    public function addImageUrl($banners){
+        $baseUrl = config('app.url');
+        $response = [];
+        if(!empty($banners)){
+            foreach($banners->toArray() as $key => $banner){
+                $response[] = $banner;
+                $response[$key]['image'] = $baseUrl . '/storage/banner/' . $banner['image'];
+            }
+        }      
+        return $response;
+    }
+
     /**
      * @return JsonResponse
      */
     public function get_banners(): JsonResponse
     {
         try {
-            return response()->json($this->banner->active()->get(), 200);
+            $banners = $this->banner->active()->get();
+            $Banner = self::addImageUrl($banners);
+            return response()->json($Banner, 200);
         } catch (\Exception $e) {
             return response()->json([], 200);
         }

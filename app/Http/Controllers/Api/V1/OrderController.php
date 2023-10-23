@@ -303,7 +303,7 @@ class OrderController extends Controller
      * @return JsonResponse
      */
     public function get_order_list(Request $request): \Illuminate\Http\JsonResponse
-    {
+    {       
         $orders = $this->order->with(['customer', 'delivery_man.rating'])
             ->withCount('details')
             ->where(['user_id' => $request->user()->id])->get();

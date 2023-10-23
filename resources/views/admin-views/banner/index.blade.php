@@ -41,8 +41,16 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group mb-0">
-                                        <label class="input-label" for=link">{{translate('banner_link')}}</label>
+                                        <label class="input-label" for="link">{{translate('banner_link')}}</label>
                                         <input type="text" name="link" value="{{old('link')}}" class="form-control" placeholder="{{ translate('banner_link') }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-group mb-0">
+                                        <label class="input-label" for="description">{{translate('Description')}}</label>
+                                        <!-- <input type="text" name="link" value="{{old('link')}}" class="form-control" placeholder="{{ translate('banner_link') }}"> -->
+                                        <textarea class="form-control" name="description" placeholder="{{__('Description')}}">{{old('description')}}</textarea>
                                     </div>
                                 </div>
                                 @if(Request::is('admin/banner/home*'))

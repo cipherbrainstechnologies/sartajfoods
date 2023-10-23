@@ -60,11 +60,16 @@ class Helpers
     public static function product_data_formatting($data, $multi_data = false)
     {
         $storage = [];
+        $baseUrl = config('app.url');
         if ($multi_data == true) {
             foreach ($data as $item) {
                 $variations = [];
                 $item['category_ids'] = json_decode($item['category_ids']);
-                $item['image'] = json_decode($item['image']);
+                // $item['image'] = json_decode($item['image']);
+                $item['image'] = array_map(function ($imageName) use ($baseUrl) {
+                    return $baseUrl . '/storage/product/' . $imageName;
+                }, json_decode($item['image']));
+
                 $item['attributes'] = json_decode($item['attributes']);
                 $item['choice_options'] = json_decode($item['choice_options']);
 
@@ -107,7 +112,10 @@ class Helpers
         } else {
             $variations = [];
             $data['category_ids'] = json_decode($data['category_ids']);
-            $data['image'] = json_decode($data['image']);
+            // $data['image'] = json_decode($data['image']);
+            $data['image'] = array_map(function ($imageName) use ($baseUrl) {
+                return $baseUrl . '/storage/product/' . $imageName;
+            }, json_decode($data['image']));
             $data['attributes'] = json_decode($data['attributes']);
             $data['choice_options'] = json_decode($data['choice_options']);
 
@@ -143,7 +151,6 @@ class Helpers
                 }
             }
         }
-
         return $data;
     }
 
@@ -639,7 +646,6 @@ class Helpers
         } else {
             $imageName = 'def.png';
         }
-
         return $imageName;
     }
 

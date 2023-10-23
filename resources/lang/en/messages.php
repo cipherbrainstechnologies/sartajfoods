@@ -2051,4 +2051,5 @@
   'Add new filter' => 'Add new filter',
   'filter added successfully!' => 'Filter added successfully!',
   'filter removed!' => 'Filter removed!',
+  'Description' => 'Description',
 );

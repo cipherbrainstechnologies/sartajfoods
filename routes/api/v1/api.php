@@ -102,9 +102,9 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
             Route::get('get-order-message', 'ConversationController@get_message_by_order');
             Route::post('send/{sender_type}', 'ConversationController@store_message_by_order');
 
-//            Route::get('get', 'ConversationController@messages');
-//            Route::post('send', 'ConversationController@messages_store');
-//            Route::post('chat-image', 'ConversationController@chat_image');
+                //            Route::get('get', 'ConversationController@messages');
+                //            Route::post('send', 'ConversationController@messages_store');
+                //            Route::post('chat-image', 'ConversationController@chat_image');
         });
 
         Route::group(['prefix' => 'wish-list'], function () {

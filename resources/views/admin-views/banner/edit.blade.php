@@ -43,8 +43,14 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group mb-0">
-                                        <label class="input-label" for=link">{{translate('banner_link')}}</label>
+                                        <label class="input-label" for="link">{{translate('banner_link')}}</label>
                                         <input type="text" name="link" class="form-control" placeholder="{{ translate('banner_link') }}" value="{{$banner['link']}}">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mb-0">
+                                        <label class="input-label" for="description">{{translate('Description')}}</label>
+                                        <textarea class="form-control" name="description" placeholder="{{__('Description') }}">{{$banner['description']}}</textarea>
                                     </div>
                                 </div>
                                 @if(!empty($banner['type']))
