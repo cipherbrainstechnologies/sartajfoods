@@ -109,6 +109,15 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::get('status/{id}/{status}', 'FilterController@status')->name('status');
         });
 
+        Route::group(['prefix' => 'manufacturer', 'as' => 'manufacturer.','middleware'=>['module:product_management']], function () {
+            Route::get('add-new', 'ManufacturerController@index')->name('add-new');
+            Route::post('store', 'ManufacturerController@store')->name('store');
+            Route::get('edit/{id}', 'ManufacturerController@edit')->name('edit');
+            Route::post('update/{id}', 'ManufacturerController@update')->name('update');
+            Route::delete('delete/{id}', 'ManufacturerController@delete')->name('delete');
+            Route::get('status/{id}/{status}', 'ManufacturerController@status')->name('status');
+        });
+
 
         Route::group(['prefix' => 'branch', 'as' => 'branch.','middleware'=>['module:system_management']], function () {
             Route::get('add-new', 'BranchController@index')->name('add-new');

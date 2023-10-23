@@ -295,6 +295,16 @@
                                         </a>
                                     </li>
 
+                                    <li class="nav-item {{Request::is('admin/manufacturer*')?'active':''}}">
+                                        <a class="nav-link"
+                                           href="{{route('admin.manufacturer.add-new')}}"
+                                           title="{{translate('manufacturer')}}"
+                                        >
+                                            <span class="tio-circle nav-indicator-icon"></span>
+                                            <span class="text-truncate">{{translate('manufacturer')}}</span>
+                                        </a>
+                                    </li>
+
                                     <li class="nav-item {{Request::is('admin/product/list*')?'active':''}} {{Request::is('admin/product/add-new')?'active':''}}">
                                         <a class="nav-link " href="{{route('admin.product.list')}}"
                                            title="{{translate('list')}}">
