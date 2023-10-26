@@ -2069,4 +2069,6 @@
   'manufacturer updated successfully!' => 'Manufacturer updated successfully!',
   'manufacturer image' => 'Manufacturer image',
   'Select Manufacturer' => 'Select Manufacturer',
+  'Select Filters' => 'Select Filters',
+  'Filters' => 'Filters',
 );

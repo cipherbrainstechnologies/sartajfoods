@@ -30,6 +30,7 @@ use Intervention\Image\Facades\Image;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Model\Manufacturer;
+use App\Model\Filter;
 
 class ProductController extends Controller
 {
@@ -40,7 +41,8 @@ class ProductController extends Controller
         private Review $review,
         private Tag $tag,
         private Manufacturer $manufacturer,
-        private Translation $translation
+        private Translation $translation,
+        private Filter $filter,
     ){}
 
     /**
@@ -104,7 +106,9 @@ class ProductController extends Controller
     {
         $categories = $this->category->where(['position' => 0])->get();
         $manufacturers = $this->manufacturer->get();
-        return view('admin-views.product.index', compact('categories', 'manufacturers'));
+        $filters = $this->filter->get();
+        // dd($filters);
+        return view('admin-views.product.index', compact('categories', 'manufacturers', 'filters'));
     }
 
     /**
@@ -335,6 +339,7 @@ class ProductController extends Controller
         $p->total_stock = $request->total_stock;
 
         $p->attributes = $request->has('attribute_id') ? json_encode($request->attribute_id) : json_encode([]);
+        $p->filters = $request->has('filter_id') ? json_encode($request->filter_id) : json_encode([]);
         $p->status = $request->status? $request->status:0;
 
         $p->meta_title = !empty($request->meta_title) ? $request->meta_title[array_search('en', $request->lang)] : null;
@@ -408,7 +413,8 @@ class ProductController extends Controller
         $product_category = json_decode($product->category_ids);
         $categories = $this->category->where(['parent_id' => 0])->get();
         $manufacturers = $this->manufacturer->get();
-        return view('admin-views.product.edit', compact('product', 'product_category', 'categories', 'manufacturers'));
+        $filters = $this->filter->get();
+        return view('admin-views.product.edit', compact('product', 'product_category', 'categories', 'manufacturers', 'filters'));
     }
 
     /**
@@ -456,6 +462,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id): \Illuminate\Http\JsonResponse
     {
+        // dd($request);
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:products,name,'.$request->id,
             'category_id' => 'required',
@@ -613,6 +620,7 @@ class ProductController extends Controller
         $p->total_stock = $request->total_stock;
 
         $p->attributes = $request->has('attribute_id') ? json_encode($request->attribute_id) : json_encode([]);
+        $p->filters = $request->has('filter_id') ? json_encode($request->filter_id) : json_encode([]);
         $p->status = $request->status? $request->status:0;
 
         $p->meta_title = !empty($request->meta_title) ? $request->meta_title[array_search('en', $request->lang)] : null;
