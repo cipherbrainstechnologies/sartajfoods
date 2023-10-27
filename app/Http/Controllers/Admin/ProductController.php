@@ -31,6 +31,7 @@ use Rap2hpoutre\FastExcel\FastExcel;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Model\Manufacturer;
 use App\Model\Filter;
+use App\Model\Downloads;
 
 class ProductController extends Controller
 {
@@ -43,6 +44,7 @@ class ProductController extends Controller
         private Manufacturer $manufacturer,
         private Translation $translation,
         private Filter $filter,
+        private Downloads $downloads,
     ){}
 
     /**
@@ -107,8 +109,8 @@ class ProductController extends Controller
         $categories = $this->category->where(['position' => 0])->get();
         $manufacturers = $this->manufacturer->get();
         $filters = $this->filter->get();
-        // dd($filters);
-        return view('admin-views.product.index', compact('categories', 'manufacturers', 'filters'));
+        $downloadLinks = $this->downloads->get();
+        return view('admin-views.product.index', compact('categories', 'manufacturers', 'filters', 'downloadLinks'));
     }
 
     /**
@@ -367,7 +369,7 @@ class ProductController extends Controller
         $p->mpn = !empty($request->mpn) ? $request->mpn : null;
         $p->location = !empty($request->location) ? $request->location : null;  
         $p->manufacturer_id = !empty($request->manufacturer_id) ? $request->manufacturer_id : null;    
-    
+        $p->downloads = $request->has('download_id') ? json_encode($request->download_id) : json_encode([]);
         $p->save();
 
         $p->tags()->sync($tag_ids);
@@ -414,7 +416,8 @@ class ProductController extends Controller
         $categories = $this->category->where(['parent_id' => 0])->get();
         $manufacturers = $this->manufacturer->get();
         $filters = $this->filter->get();
-        return view('admin-views.product.edit', compact('product', 'product_category', 'categories', 'manufacturers', 'filters'));
+        $downloadLinks = $this->downloads->get();
+        return view('admin-views.product.edit', compact('product', 'product_category', 'categories', 'manufacturers', 'filters', 'downloadLinks'));
     }
 
     /**
@@ -620,6 +623,7 @@ class ProductController extends Controller
         $p->total_stock = $request->total_stock;
 
         $p->attributes = $request->has('attribute_id') ? json_encode($request->attribute_id) : json_encode([]);
+        $p->downloads = $request->has('download_id') ? json_encode($request->download_id) : json_encode([]);
         $p->filters = $request->has('filter_id') ? json_encode($request->filter_id) : json_encode([]);
         $p->status = $request->status? $request->status:0;
 

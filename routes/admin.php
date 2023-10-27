@@ -118,6 +118,15 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::get('status/{id}/{status}', 'ManufacturerController@status')->name('status');
         });
 
+        Route::group(['prefix' => 'download', 'as' => 'download.','middleware'=>['module:product_management']], function () {
+            Route::get('add-new', 'DownloadController@index')->name('add-new');
+            Route::post('store', 'DownloadController@store')->name('store');
+            Route::get('edit/{id}', 'DownloadController@edit')->name('edit');
+            Route::post('update/{id}', 'DownloadController@update')->name('update');
+            Route::delete('delete/{id}', 'DownloadController@delete')->name('delete');
+            Route::get('status/{id}/{status}', 'DownloadController@status')->name('status');
+        });
+
 
         Route::group(['prefix' => 'branch', 'as' => 'branch.','middleware'=>['module:system_management']], function () {
             Route::get('add-new', 'BranchController@index')->name('add-new');

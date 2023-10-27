@@ -473,7 +473,7 @@
                                         <label class="input-label"
                                                 for="exampleFormControlSelect1">{{translate('select attribute')}}<span
                                                 class="input-label-secondary"></span></label>
-                                        <select name="attribute_id[]" id="choice_attributes"
+                                        <select name="attribute_id[]" id="choice_attributes2"
                                                 class="form-control js-select2-custom" multiple="multiple">
                                             @foreach(\App\Model\Attribute::orderBy('name')->get() as $attribute)
                                                 <option
@@ -537,15 +537,53 @@
                         </h5>
                     </div>
                     <div class="card-body pb-0">
-                        @php($productFilter = json_decode($product['filters']))
+                        @php($productFilter = !empty($product['filters']) ?  json_decode($product['filters']) : [])
+                        @php($productFilter =  gettype($productFilter) !== 'array' ? explode(" ", $productFilter) : $productFilter)
                         <div class="form-group __select-attr">
                             <label class="input-label"
                                     for="exampleFormControlSelect1">{{translate('Select Filters')}}<span
                                     class="input-label-secondary"></span></label>
-                            <select name="filter_id[]" id="choice_attributes"
+                            <select name="filter_id[]" id="choice_attributes1"
                                     class="form-control js-select2-custom" multiple="multiple">
                                 @foreach( $filters as $filter)
                                     <option value="{{$filter['id']}}" {{ (in_array($filter['id'], $productFilter)) ? 'selected' : '' }} >{{$filter['name']}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                         <div class="row">
+                            <div class="col-md-12">
+                                <div class="customer_choice_options" id="customer_choice_options"></div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="variant_combination" id="variant_combination"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <span class="card-header-icon">
+                                <i class="tio-puzzle"></i>
+                            </span>
+                            <span>
+                                {{translate('Downloads')}}
+                            </span>
+                        </h5>
+                    </div>
+                    <div class="card-body pb-0">
+                    @php($productDownloads = !empty($product['downloads']) ? json_decode($product['downloads']) : [])
+                     @php($productDownloads =  gettype($productDownloads) !== 'array' ? explode(" ", $productDownloads) : $productDownloads)
+                        <div class="form-group __select-attr">
+                            <label class="input-label"
+                                    for="exampleFormControlSelect1">{{translate('Select downloads')}}<span
+                                    class="input-label-secondary"></span></label>
+                            <select name="download_id" id="choice_attributes"
+                                    class="form-control js-select2-custom" multiple="multiple">
+                                @foreach( $downloadLinks as $download)
+                                    <option value="{{$download['id']}}" {{ (in_array($download['id'], $productDownloads)) ? 'selected' : '' }}  >{{$download['name']}}</option>
                                 @endforeach
                             </select>
                         </div>

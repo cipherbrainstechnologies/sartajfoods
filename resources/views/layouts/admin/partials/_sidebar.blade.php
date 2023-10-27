@@ -305,6 +305,16 @@
                                         </a>
                                     </li>
 
+                                     <li class="nav-item {{Request::is('admin/download*')?'active':''}}">
+                                        <a class="nav-link"
+                                           href="{{route('admin.download.add-new')}}"
+                                           title="{{translate('downloads')}}"
+                                        >
+                                            <span class="tio-circle nav-indicator-icon"></span>
+                                            <span class="text-truncate">{{translate('downloads')}}</span>
+                                        </a>
+                                    </li>
+
                                     <li class="nav-item {{Request::is('admin/product/list*')?'active':''}} {{Request::is('admin/product/add-new')?'active':''}}">
                                         <a class="nav-link " href="{{route('admin.product.list')}}"
                                            title="{{translate('list')}}">
