@@ -28,7 +28,7 @@ class CategoryController extends Controller
     public function get_categories(): \Illuminate\Http\JsonResponse
     {
         try {
-            $categories = $this->category->where(['position'=>0,'status'=>1])->orderBy('name')->get();
+            $categories = $this->category->where(['position'=> 0,'status'=>1])->orderBy('name')->get();
             $Categories = self::addImageUrl($categories);
             return response()->json($Categories, 200);
         } catch (\Exception $e) {

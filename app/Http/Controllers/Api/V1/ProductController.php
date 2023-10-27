@@ -433,7 +433,7 @@ class ProductController extends Controller
         try {
             $paginator = $this->product->active()
                 ->withCount(['wishlist'])
-                ->with(['rating'])
+                ->with(['rating','manufacturer'])
                 ->where(['is_featured' => 1])
                 ->orderBy('id', 'desc')
                 ->paginate($request['limit'], ['*'], 'page', $request['offset']);

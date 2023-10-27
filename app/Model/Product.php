@@ -86,4 +86,14 @@ class Product extends Model
         return $this->BelongsTo(Manufacturer::class);
     }
 
+    public function getManufacturerImageAttribute()
+    {
+        $baseURL = 'http://192.168.1.30:8000';
+
+        if (!empty($this->manufacturer->image)) {
+            return $baseURL . '/storage/manufacturer/' . $this->manufacturer->image;
+        }
+        return null;
+    }
+
 }

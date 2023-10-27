@@ -2071,4 +2071,5 @@
   'Select Manufacturer' => 'Select Manufacturer',
   'Select Filters' => 'Select Filters',
   'Filters' => 'Filters',
+  'Temporary login block time refers to a security measure implemented by systems to restrict access for a specified period of time for wrong Password submission.' => 'Temporary login block time refers to a security measure implemented by systems to restrict access for a specified period of time for wrong Password submission.',
 );
