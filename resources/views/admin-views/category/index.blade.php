@@ -41,7 +41,7 @@
                                     </li>
                                     @endforeach
                                 </ul>
-                                <div class="row align-items-end g-4">
+                                <div class="row  g-4">
                                     @foreach ($data as $lang)
                                         <div class="col-sm-6 {{ $lang['default'] == false ? 'd-none' : '' }} lang_form"
                                                 id="{{ $lang['code'] }}-form">
@@ -59,7 +59,22 @@
                                                 ({{ strtoupper($lang['code']) }})</label>
                                                  <textarea name="description[]" class="form-control h--172px"></textarea>
                                             </div>
-                                                      
+                                            <div class="col-lg-12 mt-3">
+                                                <label class="form-label" for="exampleFormControlInput1">{{translate('meta tag title')}} ({{ strtoupper($lang['code']) }})</label>
+                                                <input type="text" name="meta_title[]" class="form-control" maxlength="255" required>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                 <label class="form-label mt-3"
+                                                    for="exampleFormControlInput1">{{translate('meta tag description')}}
+                                                ({{ strtoupper($lang['code']) }})</label>
+                                                 <textarea name="meta_description[]" class="form-control"></textarea>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                 <label class="form-label mt-3"
+                                                    for="exampleFormControlInput1">{{translate('meta tag keywords')}}
+                                                ({{ strtoupper($lang['code']) }})</label>
+                                                 <textarea name="meta_keywords[]" class="form-control"></textarea>
+                                            </div>
                                         </div>
                                         
                                         <input type="hidden" name="lang[]" value="{{ $lang['code'] }}">
@@ -79,23 +94,38 @@
                                                 ({{ strtoupper($default_lang) }})</label>
                                                  <textarea name="description[]" class="form-control h--172px"></textarea>
                                             </div>
+                                            <div class="col-lg-12 mt-3">
+                                                <label class="form-label" for="exampleFormControlInput1">{{translate('meta tag title')}} ({{ strtoupper($default_lang) }})</label>
+                                                <input type="text" name="meta_title[]" class="form-control" maxlength="255" required>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                 <label class="form-label mt-3"
+                                                    for="exampleFormControlInput1">{{translate('meta tag description')}}
+                                                ({{ strtoupper($default_lang) }})</label>
+                                                 <textarea name="meta_description[]" class="form-control"></textarea>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                 <label class="form-label mt-3"
+                                                    for="exampleFormControlInput1">{{translate('meta tag keywords')}}
+                                                ({{ strtoupper($default_lang) }})</label>
+                                                 <textarea name="meta_keywords[]" class="form-control"></textarea>
+                                            </div>
                                         </div>
                                         <input type="hidden" name="lang[]" value="{{ $default_lang }}">
                                     @endif
                                     <input name="position" value="0" hidden>
                                     <div class="col-sm-6">
-                                        <div>
-                                            <div class="text-center mb-3">
-                                                <img id="viewer" class="img--105" src="{{ asset('public/assets/admin/img/160x160/1.png') }}" alt="image" />
-                                            </div>
-                                        </div>
                                         <label class="form-label text-capitalize">{{ translate('category image') }}</label><small class="text-danger">* ( {{ translate('ratio') }}
                                             3:1 )</small>
-                                        <div class="custom-file">
+                                        <div class="custom-file mb-3">
                                             <input type="file" name="image" id="customFileEg1" class="custom-file-input"
                                                     accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" required oninvalid="document.getElementById('en-link').click()">
                                             <label class="custom-file-label" for="customFileEg1">{{ translate('choose') }}
                                                 {{ translate('file') }}</label>
+                                        </div>
+                                            <center>
+                                                <img id="viewer" class="img--105" src="{{ asset('public/assets/admin/img/160x160/1.png') }}" alt="image" />
+                                            </center>
                                         </div>
                                     </div>
                                     <div class="col-12">

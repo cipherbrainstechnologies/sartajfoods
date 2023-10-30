@@ -49,16 +49,48 @@
                                                 if($t->locale == $lang['code'] && $t->key=="name"){
                                                     $translate[$lang['code']]['name'] = $t->value;
                                                 }
+                                                if ($t->locale == $lang['code'] && $t->key == "meta_title") {
+                                                    $translate[$lang['code']]['meta_title'] = $t->value;
+                                                }
+                                                if ($t->locale == $lang['code'] && $t->key == "meta_description") {
+                                                    $translate[$lang['code']]['meta_description'] = $t->value;
+                                                }
+                                                if ($t->locale == $lang['code'] && $t->key == "meta_keywords") {
+                                                    $translate[$lang['code']]['meta_keywords'] = $t->value;
+                                                }
                                             }
                                         }
                                     ?>
                                     <div class="form-group lang_form {{$lang['default'] == false ? 'd-none':''}}" id="{{$lang['code']}}-form">
-                                        <label class="input-label" for="exampleFormControlInput1">{{translate('name')}} ({{strtoupper($lang['code'])}})</label>
-                                        <input type="text" name="name[]" class="form-control"
-                                               placeholder="{{translate('New manufacturer')}}"
-                                               value="{{$lang['code'] == 'en' ? $manufacturer['name'] : ($translate[$lang['code']]['name']??'')}}"
-                                               {{$lang['status'] == true ? 'required':''}} maxlength="255"
-                                               @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label class="input-label" for="exampleFormControlInput1">{{translate('manufacturer name')}} ({{strtoupper($lang['code'])}})</label>
+                                                    <input type="text" name="name[]" class="form-control"
+                                                    placeholder="{{translate('manufacturer name')}}" value="{{$lang['code'] == 'en' ? $manufacturer['name'] : ($translate[$lang['code']]['name']??'')}}"
+                                                        {{$lang['status'] == true ? 'required':''}} maxlength="255"
+                                                    @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label" for="exampleFormControlInput1">{{translate('meta tag title')}} ({{strtoupper($lang['code'])}})</label>
+                                                    <input type="text" name="meta_title[]" class="form-control" maxlength="255" value="{{$lang['code'] == 'en' ? $manufacturer['meta_title'] : ($translate[$lang['code']]['meta_title']??'')}}" required>
+                                                </div>
+                                            </div> 
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label class="form-group"
+                                                        for="exampleFormControlInput1">{{translate('meta tag description')}}
+                                                    ({{strtoupper($lang['code'])}})</label>
+                                                    <textarea name="meta_description[]" class="form-control">{{$lang['code'] == 'en' ? $manufacturer['meta_description'] : ($translate[$lang['code']]['meta_description']??'')}}</textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label"
+                                                        for="exampleFormControlInput1">{{translate('meta tag keywords')}}
+                                                    ({{strtoupper($lang['code'])}})</label>
+                                                    <textarea name="meta_keywords[]" class="form-control">{{$lang['code'] == 'en' ? $manufacturer['meta_keywords'] : ($translate[$lang['code']]['meta_keywords']??'')}}</textarea>
+                                                </div>
+                                            </div>
+                                            </div>    
                                     </div>
                                     <input type="hidden" name="lang[]" value="{{$lang['code']}}">
                                 @endforeach
@@ -68,8 +100,35 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group lang_form" id="{{$default_lang}}-form">
-                                    <label class="input-label" for="exampleFormControlInput1">{{translate('name')}} ({{strtoupper($default_lang)}})</label>
-                                    <input type="text" name="name[]" class="form-control" value="{{ $manufacturer['name'] }}" placeholder="{{translate('New manufacturer')}}" maxlength="255">
+                                    <div class="row">
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label class="input-label" for="exampleFormControlInput1">{{translate('manufacturer name')}} ({{strtoupper($default_lang)}})</label>
+                                                    <input type="text" name="name[]" class="form-control"
+                                                    placeholder="{{translate('manufacturer name')}}" value="{{$manufacturer['name']}}"
+                                                        {{$lang['status'] == true ? 'required':''}} maxlength="255"
+                                                    @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label" for="exampleFormControlInput1">{{translate('meta tag title')}} ({{strtoupper($default_lang)}})</label>
+                                                    <input type="text" name="meta_title[]" class="form-control" maxlength="255" value="$manufacturer['meta_title']" required>
+                                                </div>
+                                            </div> 
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label class="form-group"
+                                                        for="exampleFormControlInput1">{{translate('meta tag description')}}
+                                                    ({{strtoupper($default_lang)}})</label>
+                                                    <textarea name="meta_description[]" class="form-control">$manufacturer['meta_description']</textarea>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="form-label"
+                                                        for="exampleFormControlInput1">{{translate('meta tag keywords')}}
+                                                    ({{strtoupper($default_lang)}})</label>
+                                                    <textarea name="meta_keywords[]" class="form-control">$manufacturer['meta_keywords']</textarea>
+                                                </div>
+                                            </div>
+                                        </div>  
                                 </div>
                                 <input type="hidden" name="lang[]" value="{{$default_lang}}">
                             </div>

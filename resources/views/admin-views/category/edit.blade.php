@@ -47,7 +47,7 @@
                     @endif
 
                     @if($data && array_key_exists('code', $data[0]))
-                    <div class="row align-items-end g-4">
+                    <div class="row  g-4">
                         @foreach($data as $lang)
                             <?php
                                 if (count($category['translations'])) {
@@ -58,6 +58,15 @@
                                         }
                                         if ($t->locale == $lang['code'] && $t->key == "description") {
                                             $translate[$lang['code']]['description'] = $t->value;
+                                        }
+                                        if ($t->locale == $lang['code'] && $t->key == "meta_title") {
+                                            $translate[$lang['code']]['meta_title'] = $t->value;
+                                        }
+                                        if ($t->locale == $lang['code'] && $t->key == "meta_description") {
+                                            $translate[$lang['code']]['meta_description'] = $t->value;
+                                        }
+                                        if ($t->locale == $lang['code'] && $t->key == "meta_keywords") {
+                                            $translate[$lang['code']]['meta_keywords'] = $t->value;
                                         }
                                     }
                                 }
@@ -72,6 +81,22 @@
                                 <div class="col-lg-12">
                                     <label class="form-label mt-3" for="exampleFormControlInput1">{{ translate('category') }} {{ translate('description') }} ({{ strtoupper($lang['code']) }})</label>
                                     <textarea name="description[]" class="form-control h--172px">{{$lang['code'] == 'en' ? $category['description'] : ($translate[$lang['code']]['description']??'')}}</textarea>
+                                </div>
+                                <div class="col-lg-12">
+                                    <label class="form-label mt-3" for="exampleFormControlInput1">{{translate('meta tag title')}} ({{ strtoupper($lang['code']) }})</label>
+                                    <input type="text" name="meta_title[]" class="form-control" maxlength="255" value="{{$lang['code'] == 'en' ? $category['meta_title'] : ($translate[$lang['code']]['meta_title']??'')}}" required>
+                                </div>
+                                <div class="col-lg-12">
+                                        <label class="form-label mt-3"
+                                        for="exampleFormControlInput1">{{translate('meta tag description')}}
+                                    ({{ strtoupper($lang['code']) }})</label>
+                                        <textarea name="meta_description[]" class="form-control">{{$lang['code'] == 'en' ? $category['meta_description'] : ($translate[$lang['code']]['meta_description']??'')}}</textarea>
+                                </div>
+                                <div class="col-lg-12">
+                                        <label class="form-label mt-3"
+                                        for="exampleFormControlInput1">{{translate('meta tag keywords')}}
+                                    ({{ strtoupper($lang['code']) }})</label>
+                                        <textarea name="meta_keywords[]" class="form-control">{{$lang['code'] == 'en' ? $category['meta_keywords'] : ($translate[$lang['code']]['meta_keywords']??'')}}</textarea>
                                 </div>
                             </div>
                             <input type="hidden" name="lang[]" value="{{$lang['code']}}">
@@ -90,23 +115,41 @@
                                         for="exampleFormControlInput1">{{ translate('category') }} {{ translate('description') }}
                                     ({{ strtoupper($default_lang) }})</label>
                                         <textarea name="description[]" class="form-control h--172px">value="{{$category['description']}}"</textarea>
-                                </div>        
+                                </div>
+                                <div class="col-lg-12">
+                                    <label class="form-label mt-3" for="exampleFormControlInput1">{{translate('meta tag title')}} ({{ strtoupper($default_lang) }})</label>
+                                    <input type="text" name="meta_title[]" class="form-control" maxlength="255" value="{{$category['meta_title']}}" required>
+                                </div>
+                                <div class="col-lg-12">
+                                        <label class="form-label mt-3"
+                                        for="exampleFormControlInput1">{{translate('meta tag description')}}
+                                    ({{ strtoupper($default_lang) }})</label>
+                                        <textarea name="meta_description[]" class="form-control">value="{{$category['meta_description']}}"</textarea>
+                                </div>
+                                <div class="col-lg-12">
+                                        <label class="form-label mt-3"
+                                        for="exampleFormControlInput1">{{translate('meta tag keywords')}}
+                                    ({{ strtoupper($default_lang) }})</label>
+                                        <textarea name="meta_keywords[]" class="form-control">value="{{$category['keywords']}}"</textarea>
+                                </div>
+                                        
                             </div>
                             <input type="hidden" name="lang[]" value="{{$default_lang}}">
                         @endif
                         <input name="position" value="0" hidden>
                         @if($category->parent_id == 0)
                         <div class="col-sm-6">
-                            <center>
-                                <img class="img--105" id="viewer" onerror="this.src='{{asset('public/assets/admin/img/900x400/img1.jpg')}}'"
-                                    src="{{asset('storage/category')}}/{{$category['image']}}" alt="image"/>
-                            </center>
+                           
                             <label>{{\App\CentralLogics\translate('image')}}</label><small style="color: red">* ( {{\App\CentralLogics\translate('ratio')}} 3:1 )</small>
-                            <div class="custom-file">
+                            <div class="custom-file mb-3">
                                 <input type="file" name="image" id="customFileEg1" class="custom-file-input"
                                         accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*">
                                 <label class="custom-file-label" for="customFileEg1">{{\App\CentralLogics\translate('choose')}} {{\App\CentralLogics\translate('file')}}</label>
                             </div>
+                             <center>
+                                <img class="img--105" id="viewer" onerror="this.src='{{asset('public/assets/admin/img/900x400/img1.jpg')}}'"
+                                    src="{{asset('storage/category')}}/{{$category['image']}}" alt="image"/>
+                            </center>
                         </div>
                         @endif
                         <div class="col-12">

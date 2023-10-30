@@ -2092,4 +2092,5 @@
   'Select downloads' => 'Select downloads',
   'Downloads' => 'Downloads',
   'download removed!' => 'Download removed!',
+  'add category' => 'Add category',
 );

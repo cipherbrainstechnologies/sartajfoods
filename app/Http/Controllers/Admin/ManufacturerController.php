@@ -53,11 +53,13 @@ class manufacturerController extends Controller
     {
         $request->validate([
             'name' => 'required|unique:manufacturers',
-            'image' => 'required'
+            'image' => 'required',
+            'meta_title'  => 'required',
         ], [
             'name.required' => translate('Name is required'),
             'name.unique' => translate('Name is already taken'),
             'image.required' => translate('image is required'),
+            'meta_title.required' => translate('Meta Title is required'),
         ]);
 
         foreach ($request->name as $name) {
@@ -69,6 +71,9 @@ class manufacturerController extends Controller
 
         $manufacturer = $this->manufacturer;
         $manufacturer->name = $request->name[array_search('en', $request->lang)];
+        $manufacturer->meta_title = $request->meta_title[array_search('en', $request->lang)];
+        $manufacturer->meta_description = $request->meta_description[array_search('en', $request->lang)];
+        $manufacturer->meta_keywords = $request->meta_keywords[array_search('en', $request->lang)];
 
         $image_data = '';
         if (!empty($request->file('image'))) {
@@ -87,6 +92,33 @@ class manufacturerController extends Controller
                     'locale' => $key,
                     'key' => 'name',
                     'value' => $request->name[$index],
+                );
+            }
+            if ($request->meta_title[$index] && $key != 'en') {
+                Translation::updateOrInsert(
+                    ['translationable_type' => 'App\Model\manufacturer',
+                        'translationable_id' => $manufacturer->id,
+                        'locale' => $key,
+                        'key' => 'meta_title'],
+                    ['value' => $request->meta_title[$index]]
+                );
+            }
+            if ($request->meta_description[$index] && $key != 'en') {
+                Translation::updateOrInsert(
+                    ['translationable_type' => 'App\Model\manufacturer',
+                        'translationable_id' => $manufacturer->id,
+                        'locale' => $key,
+                        'key' => 'meta_description'],
+                    ['value' => $request->meta_description[$index]]
+                );
+            }
+            if ($request->meta_keywords[$index] && $key != 'en') {
+                Translation::updateOrInsert(
+                    ['translationable_type' => 'App\Model\manufacturer',
+                        'translationable_id' => $manufacturer->id,
+                        'locale' => $key,
+                        'key' => 'meta_keywords'],
+                    ['value' => $request->meta_keywords[$index]]
                 );
             }
         }
@@ -130,6 +162,9 @@ class manufacturerController extends Controller
 
         $manufacturer = $this->manufacturer->find($id);
         $manufacturer->name = $request->name[array_search('en', $request->lang)];
+        $manufacturer->meta_title = $request->meta_title[array_search('en', $request->lang)];
+        $manufacturer->meta_description = $request->meta_description[array_search('en', $request->lang)];
+        $manufacturer->meta_keywords = $request->meta_keywords[array_search('en', $request->lang)];
         $image_data = '';
         if (!empty($request->file('image'))) {
             $image_data = Helpers::upload('manufacturer/', 'png', $request->file('image'));
@@ -146,6 +181,33 @@ class manufacturerController extends Controller
                         'locale' => $key,
                         'key' => 'name'],
                     ['value' => $request->name[$index]]
+                );
+            }
+            if ($request->meta_title[$index] && $key != 'en') {
+                Translation::updateOrInsert(
+                    ['translationable_type' => 'App\Model\manufacturer',
+                        'translationable_id' => $manufacturer->id,
+                        'locale' => $key,
+                        'key' => 'meta_title'],
+                    ['value' => $request->meta_title[$index]]
+                );
+            }
+            if ($request->meta_description[$index] && $key != 'en') {
+                Translation::updateOrInsert(
+                    ['translationable_type' => 'App\Model\manufacturer',
+                        'translationable_id' => $manufacturer->id,
+                        'locale' => $key,
+                        'key' => 'meta_description'],
+                    ['value' => $request->meta_description[$index]]
+                );
+            }
+            if ($request->meta_keywords[$index] && $key != 'en') {
+                Translation::updateOrInsert(
+                    ['translationable_type' => 'App\Model\manufacturer',
+                        'translationable_id' => $manufacturer->id,
+                        'locale' => $key,
+                        'key' => 'meta_keywords'],
+                    ['value' => $request->meta_keywords[$index]]
                 );
             }
         }
