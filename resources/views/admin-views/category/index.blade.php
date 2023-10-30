@@ -33,7 +33,7 @@
                             {{-- @php($default_lang = 'en') --}}
                             @if ($data && array_key_exists('code', $data[0]))
                                 {{-- @php($default_lang = json_decode($language)[0]) --}}
-                                <ul class="nav nav-tabs d-inline-flex mb--n-30">
+                                <ul class="nav nav-tabs d-inline-flex mb-5">
                                     @foreach ($data as $lang)
                                     <li class="nav-item">
                                         <a class="nav-link lang_link {{ $lang['default'] == true ? 'active' : '' }}" href="#"
@@ -45,22 +45,40 @@
                                     @foreach ($data as $lang)
                                         <div class="col-sm-6 {{ $lang['default'] == false ? 'd-none' : '' }} lang_form"
                                                 id="{{ $lang['code'] }}-form">
-                                            <label class="form-label"
+                                            <div class="col-lg-12">
+                                                 <label class="form-label"
                                                     for="exampleFormControlInput1">{{ translate('category') }} {{ translate('name') }}
                                                 ({{ strtoupper($lang['code']) }})</label>
-                                            <input type="text" name="name[]" class="form-control" placeholder="{{ translate('Ex: Size') }}" maxlength="255"
+                                                <input type="text" name="name[]" class="form-control" placeholder="{{ translate('Ex: Size') }}" maxlength="255"
                                                     {{$lang['status'] == true ? 'required':''}}
                                                     @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                 <label class="form-label mt-3"
+                                                    for="exampleFormControlInput1">{{ translate('category') }} {{ translate('description') }}
+                                                ({{ strtoupper($lang['code']) }})</label>
+                                                 <textarea name="description[]" class="form-control h--172px"></textarea>
+                                            </div>
+                                                      
                                         </div>
+                                        
                                         <input type="hidden" name="lang[]" value="{{ $lang['code'] }}">
                                     @endforeach
                                     @else
                                         <div class="lang_form col-sm-6" id="{{ $default_lang }}-form">
-                                            <label class="form-label"
+                                            <div class="col-lg-12">
+                                                <label class="form-label"
                                                     for="exampleFormControlInput1">{{translate('category')}} {{ translate('name') }}
                                                 ({{ strtoupper($default_lang) }})</label>
-                                            <input type="text" name="name[]" class="form-control" maxlength="255"
+                                                <input type="text" name="name[]" class="form-control" maxlength="255"
                                                     placeholder="{{ translate('New Category') }}" required>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                 <label class="form-label mt-3"
+                                                    for="exampleFormControlInput1">{{ translate('category') }} {{ translate('description') }}
+                                                ({{ strtoupper($default_lang) }})</label>
+                                                 <textarea name="description[]" class="form-control h--172px"></textarea>
+                                            </div>
                                         </div>
                                         <input type="hidden" name="lang[]" value="{{ $default_lang }}">
                                     @endif

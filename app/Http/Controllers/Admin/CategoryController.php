@@ -147,6 +147,7 @@ class CategoryController extends Controller
         //into db
         $category = $this->category;
         $category->name = $request->name[array_search('en', $request->lang)];
+        $category->description = $request->description[array_search('en', $request->lang)];
         $category->image = $image_name;
         $category->parent_id = $request->parent_id == null ? 0 : $request->parent_id;
         $category->position = $request->position;
@@ -162,6 +163,15 @@ class CategoryController extends Controller
                     'locale' => $key,
                     'key' => 'name',
                     'value' => $request->name[$index],
+                );
+            }
+            if ($request->description[$index] && $key != 'en') {
+                $data[] = array(
+                    'translationable_type' => 'App\Model\Category',
+                    'translationable_id' => $category->id,
+                    'locale' => $key,
+                    'key' => 'description',
+                    'value' => $request->description[$index],
                 );
             }
         }
@@ -216,6 +226,7 @@ class CategoryController extends Controller
 
         $category = $this->category->find($id);
         $category->name = $request->name[array_search('en', $request->lang)];
+        $category->description = $request->description[array_search('en', $request->lang)];
         $category->image = $request->has('image') ? Helpers::update('category/', $category->image, 'png', $request->file('image')) : $category->image;
         $category->save();
         foreach ($request->lang as $index => $key) {
@@ -228,6 +239,16 @@ class CategoryController extends Controller
                     ['value' => $request->name[$index]]
                 );
             }
+            if ($request->description[$index] && $key != 'en') {
+                Translation::updateOrInsert(
+                    ['translationable_type' => 'App\Model\Category',
+                        'translationable_id' => $category->id,
+                        'locale' => $key,
+                        'key' => 'description'],
+                    ['value' => $request->description[$index]]
+                );
+            }
+            
         }
         Toastr::success($category->parent_id == 0 ? translate('Category updated successfully!') : translate('Sub Category updated successfully!'));
         return back();
