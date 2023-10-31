@@ -58,11 +58,17 @@ class ProductController extends Controller
      */
     public function get_latest_products(Request $request): \Illuminate\Http\JsonResponse
     {
-        $products = ProductLogic::get_latest_products($request['limit'], $request['offset']);
+        $products = ProductLogic::get_latest_products($request['limit'], $request['offset'],3);
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
         return response()->json($products, 200);
     }
 
+    public function get_latest_three_products(Request $request) : \Illuminate\Http\JsonResponse
+    {
+        $products = ProductLogic::get_latest_products($request['limit'], $request['offset']);
+        $products['products'] = Helpers::product_data_formatting($products['products'], true);
+        return response()->json($products, 200);
+    }
     /**
      * @param Request $request
      * @return JsonResponse
@@ -477,6 +483,12 @@ class ProductController extends Controller
         return response()->json($products, 200);
     }
 
+    public function get_trending_three_products(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $products = ProductLogic::get_trending_products($request['limit'], $request['offset'],3);
+        $products['products'] = Helpers::product_data_formatting($products['products'], true);
+        return response()->json($products, 200);
+    }
     /**
      * @param Request $request
      * @return JsonResponse

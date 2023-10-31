@@ -51,7 +51,7 @@ class ProductLogic
     }
 
     // Get All the latest added products
-    public static function get_latest_products($limit = 10, $offset = 1){
+    public static function get_latest_products($limit = 10, $offset = 1,$take = null){
         $currentDate = now();
         $twoWeeksAgo = $currentDate->subDays(14);
 
@@ -59,8 +59,11 @@ class ProductLogic
             ->withCount(['wishlist'])
             ->with(['rating', 'active_reviews','manufacturer'])
             ->where('created_at', '>=', $twoWeeksAgo)  // Filter for products created in the last two weeks
-            ->latest()->paginate($limit, ['*'], 'page', $offset);
-
+            ->latest();//;->paginate($limit, ['*'], 'page', $offset);
+            if(!is_null($take)){
+                $limit = $take;                    
+            }
+            $paginator = $paginator->paginate($limit, ['*'], 'page', $offset);
             $products = $paginator->getCollection()->map(function ($product) {
                 $product['badges'] = ['new'];
                 return $product;
@@ -156,7 +159,7 @@ class ProductLogic
         }
         return [$rating5, $rating4, $rating3, $rating2, $rating1];
     }
-    
+
     public static function get_overall_rating($reviews){
         $totalRating = count($reviews);
         $rating = 0;
@@ -196,7 +199,7 @@ class ProductLogic
         ];
     }
 
-    public static function get_trending_products($limit = 10, $offset = 1){
+    public static function get_trending_products($limit = 10, $offset = 1,$take=null){
         if(OrderDetail::count() > 0) {
             $paginator = Product::active()
                 ->with(['rating', 'active_reviews','manufacturer'])
@@ -204,14 +207,21 @@ class ProductLogic
                     $query->where('created_at', '>', now()->subDays(30)->endOfDay());
                 })
                 ->withCount('order_details')
-                ->orderBy('order_details_count', 'desc')
-                ->paginate($limit, ['*'], 'page', $offset);
-
+                ->orderBy('order_details_count', 'desc');
+                
+                if(!is_null($take)){
+                    $limit = $take;                    
+                }
+                $paginator = $paginator->paginate($limit, ['*'], 'page', $offset);
         } else {
             $paginator = Product::active()
                 ->with(['rating', 'active_reviews','manufacturer'])
-                ->inRandomOrder()
-                ->paginate($limit, ['*'], 'page', $offset);
+                ->inRandomOrder();
+                // ->paginate($limit, ['*'], 'page', $offset);
+                if(!is_null($take)){
+                    $limit = $take;                    
+                }
+                $paginator = $paginator->paginate($limit, ['*'], 'page', $offset);
         }
         //Add the badges Hot
         $products = $paginator->getCollection()->map(function ($product) {
@@ -282,5 +292,4 @@ class ProductLogic
             'products' => $paginator->items()
         ];
     }
-
 }

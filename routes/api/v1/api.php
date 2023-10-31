@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function () {
@@ -32,6 +31,8 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
     Route::group(['prefix' => 'products'], function () {
         Route::get('all', 'ProductController@get_all_products');
         Route::get('latest', 'ProductController@get_latest_products');
+        Route::get('latest-three_products', 'ProductController@get_latest_three_products');
+
         Route::get('popular', 'ProductController@get_popular_products');
         Route::get('discounted', 'ProductController@get_discounted_products');
         Route::get('search', 'ProductController@get_searched_products');
@@ -50,7 +51,9 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
 
         Route::get('featured', 'ProductController@featured_products');
         Route::get('most-viewed', 'ProductController@get_most_viewed_products');
+
         Route::get('trending', 'ProductController@get_trending_products');
+        Route::get('trending-three_products', 'ProductController@get_trending_three_products');
         Route::get('recommended', 'ProductController@get_recommended_products');
         Route::get('most-reviewed', 'ProductController@get_most_reviewed_products');
     });
