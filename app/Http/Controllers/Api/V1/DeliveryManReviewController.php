@@ -16,16 +16,16 @@ class DeliveryManReviewController extends Controller
     public function __construct(
         private DeliveryMan $delivery_man,
         private DMReview $dm_review
-    ){}
+    ){
+    }
 
     /**
      * @param $id
      * @return JsonResponse
      */
     public function get_reviews($id): \Illuminate\Http\JsonResponse
-    {
+    {        
         $reviews = $this->dm_review->with(['customer', 'delivery_man'])->where(['delivery_man_id' => $id])->get();
-
         $storage = [];
         foreach ($reviews as $item) {
             $item['attachment'] = json_decode($item['attachment']);

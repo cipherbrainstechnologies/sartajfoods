@@ -259,6 +259,16 @@ class ProductController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
+    public function get_rated_three_products(){
+        $products = ProductLogic::get_most_reviewed_products(3);
+        $products = Helpers::product_data_formatting($products, true);
+        return response()->json($products, 200);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function submit_product_review(Request $request): \Illuminate\Http\JsonResponse
     {
         $validator = Validator::make($request->all(), [
@@ -511,5 +521,20 @@ class ProductController extends Controller
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
         return response()->json($products, 200);
     }
+
+
+    public function get_sale_products(Request $request): \Illuminate\Http\JsonResponse {
+        $products = ProductLogic::get_sale_products($request['limit'], $request['offset']);
+        $products['products'] = Helpers::product_data_formatting($products['products'], true);
+        return response()->json($products, 200);
+    }
+
+    // public function get_flash_sale_products(Request $request): \Illuminate\Http\JsonResponse
+    // {
+    //     $products = ProductLogic::get_flash_sale_products($request['limit'], $request['offset']);
+    //     echo "<pre>";print_r($products);die;
+    //     $products = Helpers::product_data_formatting($products, true);
+    //     return response()->json($products, 200);
+    // }
 
 }

@@ -31,7 +31,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
     Route::group(['prefix' => 'products'], function () {
         Route::get('all', 'ProductController@get_all_products');
         Route::get('latest', 'ProductController@get_latest_products');
-        Route::get('latest-three_products', 'ProductController@get_latest_three_products');
+        Route::get('latest-three-products', 'ProductController@get_latest_three_products');
 
         Route::get('popular', 'ProductController@get_popular_products');
         Route::get('discounted', 'ProductController@get_discounted_products');
@@ -42,6 +42,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         Route::get('rating/{product_id}', 'ProductController@get_product_rating');
         Route::get('daily-needs', 'ProductController@get_daily_need_products');
         Route::post('reviews/submit', 'ProductController@submit_product_review')->middleware('auth:api');
+        Route::get('rated-three-products','ProductController@get_rated_three_products');
 
         Route::group(['prefix' => 'favorite', 'middleware' => ['auth:api', 'customer_is_block']], function () {
             Route::get('/', 'ProductController@get_favorite_products');
@@ -53,9 +54,12 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         Route::get('most-viewed', 'ProductController@get_most_viewed_products');
 
         Route::get('trending', 'ProductController@get_trending_products');
-        Route::get('trending-three_products', 'ProductController@get_trending_three_products');
+        Route::get('trending-three-products', 'ProductController@get_trending_three_products');
         Route::get('recommended', 'ProductController@get_recommended_products');
         Route::get('most-reviewed', 'ProductController@get_most_reviewed_products');
+
+        Route::get('sale-products','ProductController@get_sale_products');
+        // Route::get('flash-sale','ProductController@get_flash_sale_products');
     });
 
     Route::group(['prefix' => 'banners'], function () {
@@ -180,5 +184,5 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         Route::get('/', 'ManufacturerController@list');
         Route::get('/{id}', 'ManufacturerController@search');
     });
-
+    
 });

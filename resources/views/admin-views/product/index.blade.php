@@ -562,6 +562,63 @@
                 </div>
             </div>
 
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <span class="card-header-icon">
+                                <i class="tio-user"></i>
+                            </span>
+                            <span>
+                                {{translate('Special')}}
+                            </span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="input-label" for="sale_start_date">{{translate('Start Date')}}<span class="input-label-secondary"></span></label>
+                                <label class="">
+                                    <input type="date" name="sale_start_date" id="sale_start_date" value="{{ old('sale_start_date') }}" class="js-flatpickr form-control flatpickr-custom" placeholder="{{ \App\CentralLogics\translate('dd/mm/yy') }}" data-hs-flatpickr-options='{ "dateFormat": "Y/m/d", "minDate": "today" }'>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="input-label" for="sale_end_date">{{translate('End Date')}}<span class="input-label-secondary"></span></label>
+                                <label class="">
+                                    <input type="date" name="sale_end_date" id="sale_end_date" value="{{ old('sale_end_date') }}" class="js-flatpickr form-control flatpickr-custom" placeholder="{{ \App\CentralLogics\translate('dd/mm/yy') }}" data-hs-flatpickr-options='{ "dateFormat": "Y/m/d", "minDate": "today" }'>
+                                </label>
+                            </div>
+                        </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <div class="card min-h-116px">
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <div class="d-flex flex-wrap-reverse justify-content-between">
+                                <div class="w-200 flex-grow-1 mr-3">
+                                    {{translate('Turning Visibility off will not show this product in the user app and website')}}
+                                </div>
+                                <div class="d-flex align-items-center mb-2 mb-sm-0">
+                                    <h5 class="mb-0 mr-2">{{ translate('Visibility') }}</h5>
+                                    <label class="toggle-switch my-0">
+                                        <input type="checkbox" class="toggle-switch-input" name="status" value="1" checked>
+                                        <span class="toggle-switch-label mx-auto text">
+                                            <span class="toggle-switch-indicator"></span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="col-12">
                 <div class="btn--container justify-content-end">
                     <a href="" class="btn btn--reset min-w-120px">{{translate('reset')}}</a>

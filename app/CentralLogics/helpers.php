@@ -62,7 +62,7 @@ class Helpers
         $storage = [];
         $baseUrl = config('app.url');
         $currentDate = now();
-        $twoWeeksAgo = $currentDate->subDays(14);
+        // $twoWeeksAgo = $currentDate->subDays(14);
         if ($multi_data == true) {
             foreach ($data as $item) {
                 $variations = [];

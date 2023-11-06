@@ -9,6 +9,7 @@ use App\Model\Order;
 use App\Model\OrderDetail;
 use App\Model\Product;
 use App\Model\Review;
+use App\Model\FlashDeal;
 use App\User;
 use Illuminate\Support\Facades\DB;
 
@@ -26,6 +27,7 @@ class ProductLogic
         $paginator = Product::active()
             ->withCount(['wishlist','order_details'])
             ->with(['rating', 'active_reviews','manufacturer'])
+            ->orderBy('id','desc')
             ->paginate($limit, ['*'], 'page', $offset);
 
         $products = $paginator->getCollection()->map(function ($product) use($twoWeeksAgo){
@@ -279,12 +281,15 @@ class ProductLogic
         ];
     }
 
-    public static function get_most_reviewed_products($limit = 10, $offset = 1){
+    public static function get_most_reviewed_products($limit = 10, $offset = 1,$take=null){
         $paginator = Product::active()
             ->with(['rating', 'active_reviews','manufacturer'])
             ->withCount('active_reviews')
-            ->orderBy('active_reviews_count', 'desc')
-            ->paginate($limit, ['*'], 'page', $offset);
+            ->orderBy('active_reviews_count', 'desc');
+            if(!is_null($take)){
+                $limit = $take;                    
+            }
+            $paginator = $paginator->paginate($limit, ['*'], 'page', $offset);
         return [
             'total_size' => $paginator->total(),
             'limit' => $limit,
@@ -292,4 +297,36 @@ class ProductLogic
             'products' => $paginator->items()
         ];
     }
+
+    public static function get_sale_products($limit = 10, $offset = 1,$take=null){
+        
+        $paginator = Product::active()
+        ->with(['rating', 'active_reviews','manufacturer'])
+        ->whereNotNull('sale_start_date')
+        ->whereNotNull('sale_end_date')
+        ->where('sale_start_date', '<=', now())  
+        ->where('sale_end_date', '>=', now())
+        ->paginate($limit, ['*'], 'page', $offset);        
+        return [
+                    'total_size' => $paginator->total(),
+                    'limit' => $limit,
+                    'offset' => $offset,
+                    'products' => $paginator->items()
+                ];
+    }
+
+    // public static function get_flash_sale_products($limit = 10, $offset = 1){
+    //     $newArray = [];
+    //     $flashDeals = FlashDeal::active()->get();
+    //     if(!empty($flashDeals)){
+
+    //     }
+    //     // ->paginate($limit, ['*'], 'page', $offset);        
+    //     return [
+    //         'total_size' => $paginator->total(),
+    //         'limit' => $limit,
+    //         'offset' => $offset,
+    //         'products' => $paginator->items()
+    //     ];
+    // }
 }

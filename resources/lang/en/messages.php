@@ -2093,4 +2093,8 @@
   'Downloads' => 'Downloads',
   'download removed!' => 'Download removed!',
   'add category' => 'Add category',
+  'Phone number must be unique!' => 'Phone number must be unique!',
+  'deliveryman_added_successfully' => 'Deliveryman added successfully',
+  'Meta Title is required' => 'Meta Title is required',
+  'Special' => 'Special',
 );

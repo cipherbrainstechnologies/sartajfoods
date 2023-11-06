@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use App\Model\FlashDeal;
 
 class Product extends Model
 {

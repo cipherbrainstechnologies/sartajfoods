@@ -101,8 +101,6 @@ class DeliveryManLoginController extends Controller
         $dm = $this->delivery_man
             ->where(['email' => $request->email])
             ->first();
-
-
         if (isset($dm) && $dm->application_status != 'approved'){
             $errors = [];
             $errors[] = ['code' => 'auth-001', 'message' => 'Not verified.'];
@@ -116,13 +114,11 @@ class DeliveryManLoginController extends Controller
             'password' => $request->password,
             'is_active' => 1
         ];
-
         $max_login_hit = Helpers::get_business_settings('maximum_login_hit') ?? 5;
         $temp_block_time = Helpers::get_business_settings('temporary_login_block_time') ?? 600; // seconds
 
         if (isset($dm)){
             if (auth('delivery_men')->attempt($data)) {
-
                 if(isset($dm->temp_block_time ) && Carbon::parse($dm->temp_block_time)->DiffInSeconds() <= $temp_block_time){
                     $time = $temp_block_time - Carbon::parse($dm->temp_block_time)->DiffInSeconds();
 
@@ -148,7 +144,6 @@ class DeliveryManLoginController extends Controller
 
             }
             else{
-
                 if(isset($dm->temp_block_time ) && Carbon::parse($dm->temp_block_time)->DiffInSeconds() <= $temp_block_time){
                     $time= $temp_block_time - Carbon::parse($dm->temp_block_time)->DiffInSeconds();
 

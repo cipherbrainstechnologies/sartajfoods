@@ -182,13 +182,12 @@ class ProductController extends Controller
      */
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
-        // dd($request);
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:products',
             'category_id' => 'required',
-            'images' => 'required',
-            'total_stock' => 'required|numeric|min:1',
-            'price' => 'required|numeric|min:0',
+            // 'images' => 'required',
+            // 'total_stock' => 'required|numeric|min:1',
+            // 'price' => 'required|numeric|min:0',
             'meta_title' =>'required|unique:products',
             'model' => 'required',
         ], [
@@ -199,7 +198,7 @@ class ProductController extends Controller
             'meta_title.unique' => translate('Product Meta Title must be unique!'),
             'model.required' => translate('Model is required!'),
         ]);
-
+        
         if ($request['discount_type'] == 'percent') {
             $dis = ($request['price'] / 100) * $request['discount'];
         } else {
@@ -369,6 +368,8 @@ class ProductController extends Controller
         $p->mpn = !empty($request->mpn) ? $request->mpn : null;
         $p->location = !empty($request->location) ? $request->location : null;  
         $p->manufacturer_id = !empty($request->manufacturer_id) ? $request->manufacturer_id : null;    
+        $p->sale_start_date = !empty($request->sale_start_date) ? $request->sale_start_date : null;
+        $p->sale_end_date = !empty($request->sale_end_date) ? $request->sale_end_date : null;
         $p->downloads = $request->has('download_id') ? json_encode($request->download_id) : json_encode([]);
         $p->save();
 
