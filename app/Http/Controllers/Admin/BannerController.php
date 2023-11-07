@@ -45,12 +45,18 @@ class BannerController extends Controller
         }else{
             $banners = $this->banner->orderBy('id', 'desc');
         }
-        $banners = $banners->paginate(Helpers::getPagination())->appends($query_param);
+        if ($request->is('admin/banner/home/*')) {
+            $banners = $banners->whereNotNull('type')->paginate(Helpers::getPagination())->appends($query_param);
+            
+        } else {
+            $banners = $banners->whereNull('type')->paginate(Helpers::getPagination())->appends($query_param);
+        }
+        
 
 
-        $products = $this->product->orderBy('name')->get();
-        $categories = $this->category->where(['parent_id'=>0])->orderBy('name')->get();
-        return view('admin-views.banner.index', compact('products', 'categories', 'banners','search'));
+        // $products = $this->product->orderBy('name')->get();
+        // $categories = $this->category->where(['parent_id'=>0])->orderBy('name')->get();
+        return view('admin-views.banner.index', compact('banners','search'));
     }
 
     /**
@@ -84,37 +90,33 @@ class BannerController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        try{
-            $request->validate([
-                'title' => 'required|max:255',
-                'image' => 'required',
-            ],[
-                'title.required'=>translate('Title is required'),
-                'image.required'=>translate('Image is required'),
-            ]);
-    
-            $isHomeBanner = !empty($request['is_home_banner']) ?  $request['is_home_banner'] : 0;
-            $banner = $this->banner;
-            $banner->title = $request->title;
-            $banner->link = !empty($request->link) ? $request->link : null;
-            if(!$isHomeBanner) {
-                if ($request['item_type'] == 'product') {
-                    $banner->product_id = $request->product_id;
-                } elseif ($request['item_type'] == 'category') {
-                    $banner->category_id = $request->category_id;
-                }
-            } else {
-                $banner->type = (!empty($request->banner_type)) ? $request->banner_type : null;
-                $banner->banner_order = (!empty($request->order)) ? $request->order : null;
-            }  
-            $banner->description = $request->description;      
-            $banner->image = Helpers::upload('banner/', 'png', $request->file('image'));      
-            $banner->save();        
-            Toastr::success(translate('Banner added successfully!'));
-            return back();
-        }catch(\Exception $e){
-            dd($e->getMessage());
-        }
+        $request->validate([
+            'title' => 'required|max:255',
+            'image' => 'required',
+        ],[
+            'title.required'=>translate('Title is required'),
+            'image.required'=>translate('Image is required'),
+        ]);
+
+        $isHomeBanner = !empty($request['is_home_banner']) ?  $request['is_home_banner'] : 0;
+        $banner = $this->banner;
+        $banner->title = $request->title;
+        $banner->link = !empty($request->link) ? $request->link : null;
+        if(!$isHomeBanner) {
+            if ($request['item_type'] == 'product') {
+                $banner->product_id = $request->product_id;
+            } elseif ($request['item_type'] == 'category') {
+                $banner->category_id = $request->category_id;
+            }
+        } else {
+            $banner->type = (!empty($request->banner_type)) ? $request->banner_type : null;
+            $banner->banner_order = (!empty($request->order)) ? $request->order : null;
+        }  
+        $banner->description = $request->description;      
+        $banner->image = Helpers::upload('banner/', 'png', $request->file('image'));      
+        $banner->save();        
+        Toastr::success(translate('Banner added successfully!'));
+        return back();
         
     }
 

@@ -2097,4 +2097,5 @@
   'Select downloads' => 'ダウンロードを選択する',
   'Downloads' => 'ダウンロード',
   'download removed!' => 'ダウンロードが削除されました!',
+  'Special' => '特別',
 );

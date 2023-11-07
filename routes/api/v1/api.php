@@ -57,13 +57,13 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         Route::get('trending-three-products', 'ProductController@get_trending_three_products');
         Route::get('recommended', 'ProductController@get_recommended_products');
         Route::get('most-reviewed', 'ProductController@get_most_reviewed_products');
-
         Route::get('sale-products','ProductController@get_sale_products');
         // Route::get('flash-sale','ProductController@get_flash_sale_products');
     });
 
     Route::group(['prefix' => 'banners'], function () {
-        Route::get('/', 'BannerController@get_banners');
+        Route::get('/get-home-banners', 'BannerController@get_home_banners');
+        Route::get('/get-other-banners','BannerController@get_other_banners');
     });
 
     Route::group(['prefix' => 'notifications'], function () {

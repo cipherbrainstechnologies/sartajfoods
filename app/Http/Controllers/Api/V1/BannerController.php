@@ -29,10 +29,21 @@ class BannerController extends Controller
     /**
      * @return JsonResponse
      */
-    public function get_banners(): JsonResponse
+    public function get_home_banners(): JsonResponse
     {
         try {
-            $banners = $this->banner->active()->get();
+            $banners = $this->banner->whereNotNull('type')->active()->get();
+            $Banner = self::addImageUrl($banners);
+            return response()->json($Banner, 200);
+        } catch (\Exception $e) {
+            return response()->json([], 200);
+        }
+    }
+
+    public function get_other_banners(): JsonResponse
+    {
+        try {
+            $banners = $this->banner->whereNull('type')->active()->get();
             $Banner = self::addImageUrl($banners);
             return response()->json($Banner, 200);
         } catch (\Exception $e) {

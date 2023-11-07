@@ -827,6 +827,7 @@
                 contentType: false,
                 processData: false,
                 success: function (data) {
+                    console.log(data);return false;
                     if (data.errors) {
                         for (var i = 0; i < data.errors.length; i++) {
                             toastr.error(data.errors[i].message, {

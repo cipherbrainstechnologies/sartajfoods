@@ -261,7 +261,7 @@ class ProductController extends Controller
      */
     public function get_rated_three_products(){
         $products = ProductLogic::get_most_reviewed_products(3);
-        $products = Helpers::product_data_formatting($products, true);
+        $products = Helpers::product_data_formatting($products['products'], true);
         return response()->json($products, 200);
     }
 

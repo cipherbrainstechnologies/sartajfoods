@@ -61,38 +61,38 @@
                                     </div>
                                 </div>
                                 @endif
-                                @if(!Request::is('admin/banner/home*'))
-                                <div class="col-12">
-                                    <div class="form-group mb-0">
-                                        <label class="input-label" for="exampleFormControlSelect1">{{translate('item')}} {{translate('type')}}<span
-                                                class="input-label-secondary">*</span></label>
-                                        <select name="item_type" class="form-control" onchange="show_item(this.value)">
-                                            <option value="product">{{translate('product')}}</option>
-                                            <option value="category">{{translate('category')}}</option>
-                                        </select>
+                             {{--   @if(!Request::is('admin/banner/home*'))
+                                    <div class="col-12">
+                                        <div class="form-group mb-0">
+                                            <label class="input-label" for="exampleFormControlSelect1">{{translate('item')}} {{translate('type')}}<span
+                                                    class="input-label-secondary">*</span></label>
+                                            <select name="item_type" class="form-control" onchange="show_item(this.value)">
+                                                <option value="product">{{translate('product')}}</option>
+                                                <option value="category">{{translate('category')}}</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group mb-0" id="type-product">
-                                        <label class="input-label" for="exampleFormControlSelect1">{{translate('product')}} <span
-                                                class="input-label-secondary">*</span></label>
-                                        <select name="product_id" class="form-control js-select2-custom">
-                                            @foreach($products as $product)
-                                                <option value="{{$product['id']}}">{{$product['name']}}</option>
-                                            @endforeach
-                                        </select>
+                                    <div class="col-12">
+                                        <div class="form-group mb-0" id="type-product">
+                                            <label class="input-label" for="exampleFormControlSelect1">{{translate('product')}} <span
+                                                    class="input-label-secondary">*</span></label>
+                                            <select name="product_id" class="form-control js-select2-custom">
+                                                @foreach($products as $product)
+                                                    <option value="{{$product['id']}}">{{$product['name']}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group mb-0" id="type-category" style="display: none">
+                                            <label class="input-label" for="exampleFormControlSelect1">{{translate('category')}} <span
+                                                    class="input-label-secondary">*</span></label>
+                                            <select name="category_id" class="form-control js-select2-custom">
+                                                @foreach($categories as $category)
+                                                    <option value="{{$category['id']}}">{{$category['name']}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div class="form-group mb-0" id="type-category" style="display: none">
-                                        <label class="input-label" for="exampleFormControlSelect1">{{translate('category')}} <span
-                                                class="input-label-secondary">*</span></label>
-                                        <select name="category_id" class="form-control js-select2-custom">
-                                            @foreach($categories as $category)
-                                                <option value="{{$category['id']}}">{{$category['name']}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                @endif
+                                @endif--}} 
                             </div>
                         </div>
                         <div class="col-md-6">

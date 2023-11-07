@@ -466,7 +466,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id): \Illuminate\Http\JsonResponse
     {
-        // dd($request);
+        dd($request);
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:products,name,'.$request->id,
             'category_id' => 'required',

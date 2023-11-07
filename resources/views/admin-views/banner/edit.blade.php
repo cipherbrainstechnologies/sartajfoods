@@ -61,43 +61,43 @@
                                     </div>
                                 </div>
                                 @endif
-                                @if(empty($banner['type']))
-                                <div class="col-12">
-                                    <div class="form-group mb-0">
-                                        <label class="input-label" for="exampleFormControlSelect1">{{translate('item')}} {{translate('type')}}<span
-                                                class="input-label-secondary">*</span></label>
-                                        <select name="item_type" class="form-control" onchange="show_item(this.value)">
-                                            <option value="product" {{$banner['product_id']==null?'':'selected'}}>{{translate('product')}}</option>
-                                            <option value="category" {{$banner['category_id']==null?'':'selected'}}>{{translate('category')}}</option>
-                                        </select>
+                               {{-- @if(empty($banner['type']))
+                                    <div class="col-12">
+                                        <div class="form-group mb-0">
+                                            <label class="input-label" for="exampleFormControlSelect1">{{translate('item')}} {{translate('type')}}<span
+                                                    class="input-label-secondary">*</span></label>
+                                            <select name="item_type" class="form-control" onchange="show_item(this.value)">
+                                                <option value="product" {{$banner['product_id']==null?'':'selected'}}>{{translate('product')}}</option>
+                                                <option value="category" {{$banner['category_id']==null?'':'selected'}}>{{translate('category')}}</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-group mb-0" id="type-product"
-                                        style="display: {{$banner['product_id']==null?'none':'block'}}">
-                                        <label class="input-label" for="exampleFormControlSelect1">{{translate('product')}} <span
-                                                class="input-label-secondary">*</span></label>
-                                        <select name="product_id" class="form-control js-select2-custom">
-                                            @foreach($products as $product)
-                                                <option
-                                                    value="{{$product['id']}}" {{$banner['product_id']==$product['id']?'selected':''}}>
-                                                    {{$product['name']}}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                    <div class="col-12">
+                                        <div class="form-group mb-0" id="type-product"
+                                            style="display: {{$banner['product_id']==null?'none':'block'}}">
+                                            <label class="input-label" for="exampleFormControlSelect1">{{translate('product')}} <span
+                                                    class="input-label-secondary">*</span></label>
+                                            <select name="product_id" class="form-control js-select2-custom">
+                                                @foreach($products as $product)
+                                                    <option
+                                                        value="{{$product['id']}}" {{$banner['product_id']==$product['id']?'selected':''}}>
+                                                        {{$product['name']}}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group mb-0" id="type-category"
+                                            style="display: {{$banner['category_id']==null?'none':'block'}}">
+                                            <label class="input-label" for="exampleFormControlSelect1">{{translate('category')}} <span
+                                                    class="input-label-secondary">*</span></label>
+                                            <select name="category_id" class="form-control js-select2-custom">
+                                                @foreach($categories as $category)
+                                                    <option value="{{$category['id']}}" {{$banner['category_id']==$category['id']?'selected':''}}>{{$category['name']}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div class="form-group mb-0" id="type-category"
-                                        style="display: {{$banner['category_id']==null?'none':'block'}}">
-                                        <label class="input-label" for="exampleFormControlSelect1">{{translate('category')}} <span
-                                                class="input-label-secondary">*</span></label>
-                                        <select name="category_id" class="form-control js-select2-custom">
-                                            @foreach($categories as $category)
-                                                <option value="{{$category['id']}}" {{$banner['category_id']==$category['id']?'selected':''}}>{{$category['name']}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                @endif
+                                @endif --}}
                             </div>
                         </div>
 
