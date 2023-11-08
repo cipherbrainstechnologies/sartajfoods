@@ -147,7 +147,7 @@
                         <th class="border-0">{{translate('#')}}</th>
                         <th class="border-0">{{translate('banner image')}}</th>
                         <th class="border-0">{{translate('title')}}</th>
-                        <th class="border-0">{{translate('banner type')}}</th>
+                        <th class="border-0">{{translate('banner description')}}</th>
                         <th class="text-center border-0">{{translate('status')}}</th>
                         <th class="text-center border-0">{{translate('action')}}</th>
                     </tr>
@@ -168,11 +168,12 @@
                                 </span>
                             </td>
                             <td>
-                                @if($banner['product_id'])
+                               {{{-- @if($banner['product_id'])
                                     {{ translate('Product') }} : {{$banner->product?$banner->product->name:''}}
                                 @elseif($banner['category_id'])
                                     {{ translate('Category') }} : {{$banner->category?$banner->category->name:''}}
-                                @endif
+                                @endif--}}
+                                {{$banner->description}}
                             </td>
                             <td>
                                 <label class="toggle-switch my-0">

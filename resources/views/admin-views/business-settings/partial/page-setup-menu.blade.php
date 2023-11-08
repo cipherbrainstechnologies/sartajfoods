@@ -29,6 +29,11 @@
         </a>
     </li>
     <li class="nav-item">
+        <a class="nav-link {{Request::is('admin/business-settings/page-setup/delivery-information')?'active':''}}" href="{{route('admin.business-settings.page-setup.delivery-information')}}">
+            {{translate('Delivery Information')}}
+        </a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link {{Request::is('admin/business-settings/page-setup/cancellation-policy')?'active':''}}" href="{{route('admin.business-settings.page-setup.cancellation-policy')}}">
             {{translate('Cancellation Policy')}}
         </a>

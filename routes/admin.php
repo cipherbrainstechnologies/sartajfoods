@@ -382,6 +382,9 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
                 Route::get('faq', 'BusinessSettingsController@faq')->name('faq');
                 Route::post('faq', 'BusinessSettingsController@faq_update');
 
+                Route::get('delivery-information', 'BusinessSettingsController@delivery_information')->name('delivery-information');
+                Route::post('delivery-information', 'BusinessSettingsController@delivery_information_update');
+
                 Route::get('cancellation-policy', 'BusinessSettingsController@cancellation_policy')->name('cancellation-policy');
                 Route::post('cancellation-policy', 'BusinessSettingsController@cancellation_policy_update');
                 Route::get('cancellation-policy/status/{status}', 'BusinessSettingsController@cancellation_policy_status')->name('cancellation-policy.status');

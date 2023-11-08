@@ -686,6 +686,29 @@ class BusinessSettingsController extends Controller
         return back();
     }
 
+    public function delivery_information(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    {
+        $data = $this->business_settings->where(['key' => 'delivery_information'])->first();
+        if (!$data) {
+            $data = [
+                'key' => 'delivery_information',
+                'value' => '',
+            ];
+            $this->business_settings->insert($data);
+        }
+        return view('admin-views.business-settings.delivery-information', compact('data'));
+    }
+
+    public function delivery_information_update(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        $this->business_settings->where(['key' => 'delivery_information'])->update([
+            'value' => $request->delivery_information,
+        ]);
+
+        Toastr::success(translate('Delivery information us updated!'));
+        return back();
+    }
+
     public function cancellation_policy(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $data = $this->business_settings->where(['key' => 'cancellation_policy'])->first();

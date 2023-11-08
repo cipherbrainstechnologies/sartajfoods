@@ -2099,4 +2099,6 @@
   'Special' => 'Special',
   'messages.click_on_the_map_select_your_default_location' => 'Messages.click on the map select your default location',
   'About us updated!' => 'About us updated!',
+  'Delivery Information' => 'Delivery Information',
+  'Delivery information us updated!' => 'Delivery information us updated!',
 );
