@@ -86,6 +86,7 @@ class ConfigController extends Controller
             'terms_and_conditions' => BusinessSetting::where(['key' => 'terms_and_conditions'])->first()->value,
             'privacy_policy' => BusinessSetting::where(['key' => 'privacy_policy'])->first()->value,
             'about_us' => BusinessSetting::where(['key' => 'about_us'])->first()->value,
+            'delivery_information' => BusinessSetting::where(['key' => 'delivery_information'])->first()->value,
             'faq' => BusinessSetting::where(['key' => 'faq'])->first()->value,
             'email_verification' => (boolean)Helpers::get_business_settings('email_verification') ?? 0,
             'phone_verification' => (boolean)Helpers::get_business_settings('phone_verification') ?? 0,
