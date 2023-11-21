@@ -2099,4 +2099,5 @@
   'download removed!' => 'ダウンロードが削除されました!',
   'Special' => '特別',
   'Delivery Information' => '配送に関する情報',
+  'banner description' => 'Banner description',
 );

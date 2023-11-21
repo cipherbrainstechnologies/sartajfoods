@@ -53,6 +53,18 @@
                                         <textarea class="form-control" name="description" placeholder="{{__('Description')}}">{{old('description')}}</textarea>
                                     </div>
                                 </div>
+
+                                <div class="col-12" >
+                                    <div class="form-group">
+                                        <label class="input-label" for="exampleFormControlInput1">{{translate('ad')}} {{translate('banners')}}</label>
+                                        <select name="ad_section" id="ad_section" class="form-control">
+                                            <option value="slider_ad_banner">{{translate('slider ad banner')}}</option>
+                                            <option value="best_seller_ad">{{translate('best seller ad')}}</option>
+                                            <option value="left_section_ad">{{translate('left ad banner')}}</option>
+                                            <option value="right_section_ad">{{translate('right ad banner')}}</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 @if(Request::is('admin/banner/home*'))
                                 <div class="col-12">
                                     <div class="form-group mb-0">

@@ -112,7 +112,8 @@ class BannerController extends Controller
             $banner->type = (!empty($request->banner_type)) ? $request->banner_type : null;
             $banner->banner_order = (!empty($request->order)) ? $request->order : null;
         }  
-        $banner->description = $request->description;      
+        $banner->description = $request->description;
+        $banner->ad_section = !empty($request->ad_section)  ? $request->ad_section : null;
         $banner->image = Helpers::upload('banner/', 'png', $request->file('image'));      
         $banner->save();        
         Toastr::success(translate('Banner added successfully!'));

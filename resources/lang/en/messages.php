@@ -2101,4 +2101,10 @@
   'About us updated!' => 'About us updated!',
   'Delivery Information' => 'Delivery Information',
   'Delivery information us updated!' => 'Delivery information us updated!',
+  'banner description' => 'Banner description',
+  'right ad banner' => 'Right ad banner',
+  'left ad banner' => 'Left ad banner',
+  'best seller ad' => 'Best seller ad',
+  'slider ad banner' => 'Slider ad banner',
+  'ad' => 'Ad',
 );
