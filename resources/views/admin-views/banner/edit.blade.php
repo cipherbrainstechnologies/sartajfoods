@@ -41,7 +41,7 @@
                                             placeholder="{{ translate('New banner') }}" required>
                                     </div>
                                 </div>
-                                @if(!empty($request->type))
+                                @if(empty($request->type))
                                 <div class="col-12" >
                                     <div class="form-group">
                                         <label class="input-label" for="exampleFormControlInput1">{{translate('ad')}} {{translate('banners')}}</label>
