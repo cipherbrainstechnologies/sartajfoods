@@ -41,6 +41,20 @@
                                             placeholder="{{ translate('New banner') }}" required>
                                     </div>
                                 </div>
+                                @if(!empty($request->type))
+                                <div class="col-12" >
+                                    <div class="form-group">
+                                        <label class="input-label" for="exampleFormControlInput1">{{translate('ad')}} {{translate('banners')}}</label>
+                                        <select name="ad_section" id="ad_section" class="form-control">
+                                            <option value="slider_ad_banner" @if($banner['link']=="slider_ad_banner") @endif>{{translate('slider ad banner')}}</option>
+                                            <option value="best_seller_ad" @if($banner['link']=="best_seller_ad") @endif>{{translate('best seller ad')}}</option>
+                                            <option value="left_section_ad" @if($banner['link']=="left_section_ad") @endif>{{translate('left ad banner')}}</option>
+                                            <option value="right_section_ad" @if($banner['link'] =="right_section_ad") @endif>{{translate('right ad banner')}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                @endif
+
                                 <div class="col-12">
                                     <div class="form-group mb-0">
                                         <label class="input-label" for="link">{{translate('banner_link')}}</label>
@@ -56,7 +70,7 @@
                                 @if(!empty($banner['type']))
                                 <div class="col-12">
                                     <div class="form-group mb-0">
-                                        <label class="input-label" for=order">{{translate('banner_order')}}</label>
+                                        <label class="input-label" for="order">{{translate('banner_order')}}</label>
                                         <input type="text" name="order" class="form-control" placeholder="{{ translate('banner_order') }}" value="{{$banner['banner_order']}}">
                                     </div>
                                 </div>

@@ -164,6 +164,7 @@ class BannerController extends Controller
 
         $banner = $this->banner->find($id);
         $banner->title = $request->title;
+        $banner->ad_section = !empty($request->ad_section) ? $request->ad_section : null;
         $banner->link = !empty($request->link) ? $request->link : null;
         if(!$isHomeBanner) { 
             if ($request['item_type'] == 'product') {

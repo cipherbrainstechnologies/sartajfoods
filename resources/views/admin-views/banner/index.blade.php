@@ -53,7 +53,7 @@
                                         <textarea class="form-control" name="description" placeholder="{{__('Description')}}">{{old('description')}}</textarea>
                                     </div>
                                 </div>
-
+                                @if(Request::is('admin/banner/other*'))
                                 <div class="col-12" >
                                     <div class="form-group">
                                         <label class="input-label" for="exampleFormControlInput1">{{translate('ad')}} {{translate('banners')}}</label>
@@ -65,10 +65,11 @@
                                         </select>
                                     </div>
                                 </div>
+                                @endif
                                 @if(Request::is('admin/banner/home*'))
                                 <div class="col-12">
                                     <div class="form-group mb-0">
-                                        <label class="input-label" for=order">{{translate('banner_order')}}</label>
+                                        <label class="input-label" for="order">{{translate('banner_order')}}</label>
                                         <input type="text" name="order" value="{{old('order')}}" class="form-control" placeholder="{{ translate('banner_order') }}">
                                     </div>
                                 </div>
