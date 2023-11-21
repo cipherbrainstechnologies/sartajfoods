@@ -119,6 +119,12 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
             Route::post('add', 'WishlistController@add_to_wishlist');
             Route::delete('remove', 'WishlistController@remove_from_wishlist');
         });
+        
+        Route::group(['prefix' => 'reviews'], function () {
+            // Route::get('/{delivery_man_id}', 'DeliveryManReviewController@get_reviews');
+            // Route::get('rating/{delivery_man_id}', 'DeliveryManReviewController@get_rating');
+            Route::post('/submit', 'CustomerController@submit_review');
+        });
 
         Route::post('transfer-point-to-wallet', 'CustomerWalletController@transfer_loyalty_point_to_wallet');
         Route::get('wallet-transactions', 'CustomerWalletController@wallet_transactions');

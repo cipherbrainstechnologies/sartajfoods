@@ -10,6 +10,7 @@ use App\Model\Newsletter;
 use App\Model\Order;
 use App\Model\OrderDetail;
 use App\User;
+use App\Model\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +28,8 @@ class CustomerController extends Controller
         private Newsletter $newsletter,
         private Order $order,
         private OrderDetail $order_detail,
-        private User $user
+        private User $user,
+        private Review $product_review
     ){}
 
     /**
@@ -299,5 +301,58 @@ class CustomerController extends Controller
         }
 
         return response()->json(['status_code' => 200, 'message' => translate('Successfully deleted')], 200);
+    }
+
+    public function submit_review(Request $request): \Illuminate\Http\JsonResponse
+    {
+        
+        $validator = Validator::make($request->all(), [
+            'product_id' => 'required',
+            'user_id' => 'required',
+            'comment' => 'required',
+            'rating' => 'required|numeric|max:5',
+        ]);
+
+        $customer = $this->user->find($request->user()->id);
+        if (!isset($customer)) {
+            $validator->errors()->add('user_id', 'There is no such user!');
+        }
+
+        if ($validator->errors()->count() > 0) {
+            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+        }
+
+        // $image_array = [];
+        // if (!empty($request->file('attachment'))) {
+        //     foreach ($request->file('attachment') as $image) {
+        //         if ($image != null) {
+        //             if (!Storage::disk('public')->exists('review')) {
+        //                 Storage::disk('public')->makeDirectory('review');
+        //             }
+        //             $image_array[] = Storage::disk('public')->put('review', $image);
+        //         }
+        //     }
+        // }
+        $review = new $this->product_review();
+        // $multi_review = $this->dm_review->where([
+        //     'delivery_man_id' => $request->delivery_man_id,
+        //     'order_id' => $request->order_id,
+        //     'user_id' => $request->user()->id
+        // ])->first();
+        // if (isset($multi_review)) {
+        //     $review = $multi_review;
+        // } else {
+        //     $review = $this->dm_review;
+        // }
+        $review->user_id = $request->user()->id;
+        // $review->delivery_man_id = $request->delivery_man_id;
+        // $review->order_id = $request->order_id;
+        $review->product_id = $request->product_id;
+        $review->comment = $request->comment;
+        $review->rating = $request->rating;
+        // $review->attachment = json_encode($image_array);
+        $review->save();
+
+        return response()->json(['message' => 'successfully review submitted!'], 200);
     }
 }
