@@ -46,10 +46,10 @@
                                     <div class="form-group">
                                         <label class="input-label" for="exampleFormControlInput1">{{translate('ad')}} {{translate('banners')}}</label>
                                         <select name="ad_section" id="ad_section" class="form-control">
-                                            <option value="slider_ad_banner" @if($banner['link']=="slider_ad_banner") @endif>{{translate('slider ad banner')}}</option>
-                                            <option value="best_seller_ad" @if($banner['link']=="best_seller_ad") @endif>{{translate('best seller ad')}}</option>
-                                            <option value="left_section_ad" @if($banner['link']=="left_section_ad") @endif>{{translate('left ad banner')}}</option>
-                                            <option value="right_section_ad" @if($banner['link'] =="right_section_ad") @endif>{{translate('right ad banner')}}</option>
+                                            <option value="slider_ad_banner" {{($banner['ad_section'] == "slider_ad_banner" ) ? 'selected' : ''}} >{{translate('slider ad banner')}}</option>
+                                            <option value="best_seller_ad" {{($banner['ad_section'] == "best_seller_ad" ) ? 'selected' : ''}}>{{translate('best seller ad')}}</option>
+                                            <option value="left_section_ad" {{($banner['ad_section'] == "left_section_ad" ) ? 'selected' : ''}}>{{translate('left ad banner')}}</option>
+                                            <option value="right_section_ad" {{($banner['ad_section'] == "right_section_ad" ) ? 'selected' : ''}}>{{translate('right ad banner')}}</option>
                                         </select>
                                     </div>
                                 </div>
