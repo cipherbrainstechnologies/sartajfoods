@@ -181,11 +181,11 @@
                                 </span>
                             </td>
                             <td>
-                               {{{-- @if($banner['product_id'])
+                               {{-- @if($banner['product_id'])
                                     {{ translate('Product') }} : {{$banner->product?$banner->product->name:''}}
                                 @elseif($banner['category_id'])
                                     {{ translate('Category') }} : {{$banner->category?$banner->category->name:''}}
-                                @endif--}}
+                                @endif --}}
                                 {{$banner->description}}
                             </td>
                             <td>
