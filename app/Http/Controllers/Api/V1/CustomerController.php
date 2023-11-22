@@ -180,15 +180,16 @@ class CustomerController extends Controller
      */
     public function update_profile(Request $request): JsonResponse
     {
+        
         $validator = Validator::make($request->all(), [
             'f_name' => 'required',
             'l_name' => 'required',
-            'phone' => ['required', 'unique:users,phone,'.auth()->user()->id]
+            'email' => ['required', 'unique:users,email,'.auth()->user()->id]
         ], [
             'f_name.required' => 'First name is required!',
             'l_name.required' => 'Last name is required!',
-            'phone.required' => 'Phone is required!',
-            'phone.unique' => translate('Phone must be unique!'),
+            'email.required' => 'Email is required!',
+            'email.unique' => translate('Email must be unique!'),
         ]);
 
         if ($validator->fails()) {
@@ -209,7 +210,7 @@ class CustomerController extends Controller
             $imageName = $request->user()->image;
         }
 
-        if ($request['password'] != null && strlen($request['password']) > 5) {
+        if ($request['password'] != null && strlen($request['password']) > 7) {
             $pass = bcrypt($request['password']);
         } else {
             $pass = $request->user()->password;
@@ -218,7 +219,7 @@ class CustomerController extends Controller
         $userDetails = [
             'f_name' => $request->f_name,
             'l_name' => $request->l_name,
-            'phone' => $request->phone,
+            'email' => $request->email,
             'image' => $imageName,
             'password' => $pass,
             'updated_at' => now()

@@ -102,8 +102,11 @@ class OrderController extends Controller
         }
 
         foreach ($request['cart'] as $c) {
-            $product = $this->product->find($c['product_id']);
-            $type = $c['variation'][0]['type'];
+            // echo "<pre>";print_r($c);die;
+            // $product = $this->product->find($c['product_id']);
+            $product = $this->product->find($c['id']);
+            // $type = $c['variation'][0]['type'];
+            $type = $c['variations'][0]['type'];
             foreach (json_decode($product['variations'], true) as $var) {
                 if ($type == $var['type'] && $var['stock'] < $c['quantity']) {
                     $validator->getMessageBag()->add('stock', 'Stock is insufficient! available stock ' . $var['stock']);
@@ -141,7 +144,7 @@ class OrderController extends Controller
 //        }
 
 
-        try {
+        // try {
             //DB::beginTransaction();
             $order_id = 100000 + Order::all()->count() + 1;
             $or = [
@@ -178,23 +181,25 @@ class OrderController extends Controller
             $total_tax_amount = 0;
 
             foreach ($request['cart'] as $c) {
-                $product = $this->product->find($c['product_id']);
-
+                // $product = $this->product->find($c['product_id']);
+                $product = $this->product->find($c['id']);
+               
                 if ($product['maximum_order_quantity'] < $c['quantity']){
                     return response()->json(['errors' => $product['name']. ' '. \App\CentralLogics\translate('quantity_must_be_equal_or_less_than '. $product['maximum_order_quantity'])], 401);
                 }
-
+               
                 if (count(json_decode($product['variations'], true)) > 0) {
-                    $price = Helpers::variation_price($product, json_encode($c['variation']));
+                    // $price = Helpers::variation_price($product, json_encode($c['variation']));
+                    $price = Helpers::variation_price($product, json_encode($c['variations']));
                 } else {
                     $price = $product['price'];
                 }
 
                 $tax_on_product = Helpers::tax_calculate($product, $price);
 
-//                if (Helpers::get_business_settings('product_vat_tax_status') === 'included'){
-//                    //$price = $price - $tax_on_product;
-//                }
+                    //                if (Helpers::get_business_settings('product_vat_tax_status') === 'included'){
+                    //                    //$price = $price - $tax_on_product;
+                    //                }
 
                 $category_id = null;
                 foreach (json_decode($product['category_ids'], true) as $cat) {
@@ -212,10 +217,10 @@ class OrderController extends Controller
                     $discount = max($category_discount, $product_discount);
                     $discount_type = $product_discount > $category_discount ? 'discount_on_product' : 'discount_on_category';
                 }
-
                 $or_d = [
                     'order_id' => $order_id,
-                    'product_id' => $c['product_id'],
+                    // 'product_id' => $c['product_id'],
+                    'product_id' => $c['id'],
                     'time_slot_id' => $o_time,
                     'delivery_date' => $o_delivery,
                     'product_details' => $product,
@@ -226,16 +231,18 @@ class OrderController extends Controller
                     'discount_on_product' => $discount,
                     'discount_type' => $discount_type,
                     'variant' => json_encode($c['variant']),
-                    'variation' => json_encode($c['variation']),
+                    // 'variation' => json_encode($c['variation']),
+                    'variation' => json_encode($c['variations']),
                     'is_stock_decreased' => 1,
                     'vat_status' => Helpers::get_business_settings('product_vat_tax_status') === 'included' ? 'included' : 'excluded',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
-
                 $total_tax_amount += $or_d['tax_amount'] * $c['quantity'];
 
-                $type = $c['variation'][0]['type'];
+                // $type = $c['variation'][0]['type'];
+                $type = $c['variations'][0]['type'];
+               
                 $var_store = [];
                 foreach (json_decode($product['variations'], true) as $var) {
                     if ($type == $var['type']) {
@@ -243,24 +250,23 @@ class OrderController extends Controller
                     }
                     $var_store[] = $var;
                 }
-
+                
                 $this->product->where(['id' => $product['id']])->update([
                     'variations' => json_encode($var_store),
                     'total_stock' => $product['total_stock'] - $c['quantity'],
                     'popularity_count'=>$product['popularity_count']+1
                 ]);
-
                 DB::table('order_details')->insert($or_d);
             }
             $or['total_tax_amount'] = $total_tax_amount;
-            DB::table('orders')->insertGetId($or);
-
+            $latestOrder =DB::table('orders')->insertGetId($or);
             if($request->payment_method == 'wallet_payment'){
                 $amount = $or['order_amount'];
                 CustomerLogic::create_wallet_transaction($or['user_id'], $amount, 'order_place', $or['id']);
             }
 
             //push notification
+            
             $fcm_token = $request->user()->cm_firebase_token;
             $order_status_message = $request->payment_method=='cash_on_delivery'?'pending':'confirmed';
             $value = Helpers::order_status_update_message($order_status_message);
@@ -292,10 +298,10 @@ class OrderController extends Controller
             ], 200);
 
            // DB::commit();
-        } catch (\Exception $e) {
-           // DB::rollBack();
-            return response()->json([$e], 403);
-        }
+        // } catch (\Exception $e) {
+        //    // DB::rollBack();
+        //     return response()->json([$e], 403);
+        // }
     }
 
     /**
