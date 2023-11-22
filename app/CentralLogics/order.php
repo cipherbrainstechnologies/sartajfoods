@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Mail;
 
 class OrderLogic
 {
-    public static function track_order($order_id)
+    public static function track_order($order_id,$user_id)
     {
-        return Order::with(['details', 'delivery_man.rating'])->where(['id' => $order_id])->first();
+        return Order::with(['details', 'delivery_man.rating'])->where(['id' => $order_id,'user_id' => $user_id])->first();
     }
 
     public static function place_order($customer_id, $email, $customer_info, $cart, $payment_method, $discount, $coupon_code = null)

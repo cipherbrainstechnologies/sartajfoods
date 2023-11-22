@@ -49,7 +49,7 @@ class OrderController extends Controller
             return response()->json(['errors' => Helpers::error_processor($validator)], 403);
         }
 
-        return response()->json(OrderLogic::track_order($request['order_id']), 200);
+        return response()->json(OrderLogic::track_order($request['order_id'],$request->user()->id), 200);
     }
 
     /**
@@ -63,7 +63,7 @@ class OrderController extends Controller
             'payment_method'=>'required',
             'delivery_address_id' => 'required',
             'order_type' => 'required|in:self_pickup,delivery',
-            'branch_id' => 'required',
+            // 'branch_id' => 'required',
             'distance' => 'required',
         ]);
 
@@ -158,7 +158,7 @@ class OrderController extends Controller
                 'transaction_reference' => $request->transaction_reference ?? null,
                 'order_note' => $request['order_note'],
                 'order_type' => $request['order_type'],
-                'branch_id' => $request['branch_id'],
+                'branch_id' => !empty($request['branch_id']) ? $request['branch_id'] : null,
                 'delivery_address_id' => $request->delivery_address_id,
                 'time_slot_id' => $request->time_slot_id,
                 'delivery_date' => $request->delivery_date,

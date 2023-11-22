@@ -97,7 +97,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
             Route::get('details', 'OrderController@get_order_details');
             Route::post('place', 'OrderController@place_order');
             Route::put('cancel', 'OrderController@cancel_order');
-            Route::get('track', 'OrderController@track_order');
+            Route::post('track', 'OrderController@track_order');
             Route::put('payment-method', 'OrderController@update_payment_method');
         });
         // Chatting
@@ -122,7 +122,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         
         Route::group(['prefix' => 'reviews'], function () {
             Route::get('/', 'CustomerController@get_reviews');
-            // Route::get('rating/{delivery_man_id}', 'DeliveryManReviewController@get_rating');
+            Route::get('rating/{product_id}', 'CustomerController@get_rating');
             Route::post('/submit', 'CustomerController@submit_review');
         });
 

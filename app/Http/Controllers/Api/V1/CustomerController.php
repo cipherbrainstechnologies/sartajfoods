@@ -367,4 +367,42 @@ class CustomerController extends Controller
 
         return response()->json($storage, 200);
     }
+
+    public function get_rating($id): \Illuminate\Http\JsonResponse
+    {
+        // try {
+            $response = [];
+            $totalReviews = $this->product_review->where(['product_id' => $id])->get();
+            $AllReviews = $totalReviews;
+            $all_ratings = '';
+            $ratings = [];
+            $ratingPercentage = [];
+            if(!empty($AllReviews)){
+                $all_ratings = $AllReviews->pluck('rating')->toArray();
+                $ratingsCounts = array_count_values($all_ratings);
+                $totalRatings = count($ratingsCounts);
+                
+                for ($i = 1; $i <= 5; $i++) {
+                    $ratingPercentage[$i] = isset($ratingsCounts[$i]) ? round(($ratingsCounts[$i] / $totalRatings) * 100,2) : 0;
+                }
+            }
+            $rating = 0;
+            foreach ($totalReviews as $key => $review) {
+                $rating += $review->rating;
+            }
+
+            if ($rating == 0) {
+                $overallRating = 0;
+            } else {
+                $overallRating = number_format($rating / $totalReviews->count(), 2);
+            }
+            $response['overall_rating'] = floatval($overallRating);
+            $response['ratings_details'] = $ratingPercentage;
+            return response()->json($response, 200);
+            // return response()->json(floatval($overallRating), 200);
+        // } catch (\Exception $e) {
+        //     return response()->json(['errors' => $e], 403);
+        // }
+    }
+
 }

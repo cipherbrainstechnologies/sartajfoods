@@ -230,7 +230,6 @@ class ProductController extends Controller
     public function get_product_reviews($id): \Illuminate\Http\JsonResponse
     {
         $reviews = $this->review->with(['customer'])->where(['product_id' => $id])->get();
-
         $storage = [];
         foreach ($reviews as $item) {
             $item['attachment'] = json_decode($item['attachment']);
