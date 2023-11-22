@@ -40,7 +40,7 @@ class CustomerController extends Controller
     {
         $response = [];
         $response['billing_address'] = $this->customer_address->where('user_id', $request->user()->id)->latest()->get();
-
+     
          return response()->json($response, 200);
     }
 
