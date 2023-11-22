@@ -38,7 +38,10 @@ class CustomerController extends Controller
      */
     public function address_list(Request $request): JsonResponse
     {
-        return response()->json($this->customer_address->where('user_id', $request->user()->id)->latest()->get(), 200);
+        $response = [];
+        $response['billing_address'] = $this->customer_address->where('user_id', $request->user()->id)->latest()->get();
+
+         return response()->json($response, 200);
     }
 
     /**
