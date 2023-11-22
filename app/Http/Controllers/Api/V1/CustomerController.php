@@ -346,7 +346,7 @@ class CustomerController extends Controller
         // }
         $review->user_id = $request->user()->id;
         // $review->delivery_man_id = $request->delivery_man_id;
-        // $review->order_id = $request->order_id;
+        $review->order_id = !empty($request->order_id) ? $request->order_id : null;
         $review->product_id = $request->product_id;
         $review->comment = $request->comment;
         $review->rating = $request->rating;
@@ -354,5 +354,17 @@ class CustomerController extends Controller
         $review->save();
 
         return response()->json(['message' => 'successfully review submitted!'], 200);
+    }
+
+    public function get_reviews(Request $request): \Illuminate\Http\JsonResponse
+    {        
+        $reviews = $this->product_review->with('customer','product')->where(['user_id' => $request->user()->id])->get();        
+        $storage = [];
+        foreach ($reviews as $item) {
+            $item['attachment'] = json_decode($item['attachment']);
+            $storage[] = $item;
+        }
+
+        return response()->json($storage, 200);
     }
 }

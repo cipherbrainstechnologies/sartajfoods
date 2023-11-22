@@ -121,7 +121,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         });
         
         Route::group(['prefix' => 'reviews'], function () {
-            // Route::get('/{delivery_man_id}', 'DeliveryManReviewController@get_reviews');
+            Route::get('/', 'CustomerController@get_reviews');
             // Route::get('rating/{delivery_man_id}', 'DeliveryManReviewController@get_rating');
             Route::post('/submit', 'CustomerController@submit_review');
         });
