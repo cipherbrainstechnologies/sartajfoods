@@ -21,6 +21,7 @@ use Illuminate\Support\Str;
 use GuzzleHttp\Client;
 use Illuminate\Support\Carbon;
 use Carbon\CarbonInterval;
+use Illuminate\Support\Facades\Hash;
 
 class CustomerAuthController extends Controller
 {
@@ -635,5 +636,44 @@ class CustomerAuthController extends Controller
         return response()->json([
             'errors' => $errors
         ], 401);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+
+    public function password_reset(Request $request) 
+    {
+        $validator = Validator::make($request->all(), [
+            'old_password' => 'required',
+            'new_password' => 'required|min:6',
+            'confirm_password' => 'required|min:6',
+        ],[
+            'old_password.required' => 'The Old Password is required.',
+            'new_password.required' => 'The Old Password field is required.',
+            'confirm_password.required'    => 'The Confirm Password field is required.'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+        }
+
+        $user = auth('api')->user();
+
+        $data = $request->all();
+
+        if (!Hash::check($data['old_password'], $user->password)) {
+            return response()->json(['errors' => 'Old Password not match'], 403);
+        } else {
+            $userupdate = User::find($user->id);
+            $user->password = bcrypt($request->new_password);
+            $user->save();
+            return response()->json(array('sucess' => true, 'meassge' => 'Password Reset sucessfully', 'status' => 200), 200);
+        }
+
+        // dd($user->password);
+        // dd($user);
+        
     }
 }
