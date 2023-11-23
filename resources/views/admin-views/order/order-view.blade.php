@@ -41,7 +41,8 @@
                         <div class="order-invoice-left">
                             <h1 class="page-header-title">
                                 <span class="mr-3">{{translate('order ID')}} #{{$order['id']}}</span>
-                                <span class="badge badge-soft-info py-2 px-3">{{$order->branch?$order->branch->name:'Branch deleted!'}}</span>
+                                <!-- <span class="badge badge-soft-info py-2 px-3">{{$order->branch ? $order->branch->name: 'Branch deleted!'}}</span> -->
+                                <span class="badge badge-soft-info py-2 px-3">{{$order->branch ? $order->branch->name: ''}}</span>
                             </h1>
                             <span><i class="tio-date-range"></i>
                                 {{date('d M Y',strtotime($order['created_at']))}} {{ date(config('time_format'), strtotime($order['created_at'])) }}</span>
@@ -607,7 +608,9 @@
 
 
                 <!-- End Card -->
-                <div class="card mt-2">
+
+                <!-- Branch information -->
+                {{-- <div class="card mt-2">
                     <div class="card-body">
                     <h5 class="form-label mb-3">
                         <span class="card-header-icon">
@@ -615,10 +618,11 @@
                         </span>
                         <span>{{translate('Branch information')}}</span>
                     </h5>
+                    
                     <div class="media align-items-center deco-none resturant--information-single">
-                        <div class="avatar avatar-circle">
-                        <img class="avatar-img w-75px" onerror="this.src='{{asset("public/assets/admin/img/100x100/1.png")}}'" src="{{asset('storage/branch/'.$order->branch->image)}}" alt="Image Description">
-                        </div>
+                            <div class="avatar avatar-circle">
+                                <img class="avatar-img w-75px" onerror="this.src='{{asset("public/assets/admin/img/100x100/1.png")}}'" src="{{asset('storage/branch/'.$order->branch->image)}}" alt="Image Description">
+                            </div>
                         <div class="media-body">
                             <span class="fz--14px text--title font-semibold text-hover-primary d-block">
                                 {{$order->branch->name}}
@@ -633,7 +637,7 @@
                                 <a href="mailto:{{$order->branch->email}}">{{$order->branch->email}}</a>
                             </span>
                         </div>
-                    </div>
+                    </div> 
                     <hr>
                     <span class="d-block">
                         <a target="_blank"
@@ -643,7 +647,8 @@
                     </span>
                     </div>
 
-                </div>
+                </div> --}}
+                <!-- End Branch information -->
             </div>
 
         </div>

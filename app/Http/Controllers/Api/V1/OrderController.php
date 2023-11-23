@@ -316,6 +316,7 @@ class OrderController extends Controller
 
         $orders->map(function ($data) {
             $data['deliveryman_review_count'] = $this->dm_review->where(['delivery_man_id' => $data['delivery_man_id'], 'order_id' => $data['id']])->count();
+            $data['invoice_link'] = route('customer_invoice',$data['id']);
             return $data;
         });
 
