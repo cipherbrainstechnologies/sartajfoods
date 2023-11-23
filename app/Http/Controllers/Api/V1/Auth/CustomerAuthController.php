@@ -21,7 +21,7 @@ use Illuminate\Support\Str;
 use GuzzleHttp\Client;
 use Illuminate\Support\Carbon;
 use Carbon\CarbonInterval;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Hash;gitrgit 
 
 class CustomerAuthController extends Controller
 {
@@ -643,7 +643,7 @@ class CustomerAuthController extends Controller
      * @return JsonResponse
      */
 
-    public function password_reset(Request $request) 
+    public function password_reset(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'old_password' => 'required',
@@ -671,9 +671,5 @@ class CustomerAuthController extends Controller
             $user->save();
             return response()->json(array('sucess' => true, 'meassge' => 'Password Reset sucessfully', 'status' => 200), 200);
         }
-
-        // dd($user->password);
-        // dd($user);
-        
-    }
+    }            
 }

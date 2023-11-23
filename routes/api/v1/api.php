@@ -18,7 +18,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         Route::post('verify-token', 'PasswordResetController@verify_token');
         // Route::put('reset-password', 'PasswordResetController@reset_password_submit');
 
-        Route::post('reset-password', 'CustomerAuthController@password_reset');
+        Route::post('reset-password', 'CustomerAuthController@password_reset'); 
 
         Route::group(['prefix' => 'delivery-man'], function () {
             Route::post('register', 'DeliveryManLoginController@registration');
