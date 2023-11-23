@@ -26,7 +26,8 @@ Auth::routes();
 Route::get('/', function () {
     return redirect(\route('admin.dashboard'));
 });
-
+// generate invoice
+Route::get('orders/generate-invoice/{id}',[\App\Http\Controllers\Admin\OrderController::class,'generate_invoice'])->name('customer_invoice');
 Route::get('authentication-failed', function () {
     $errors = [];
     array_push($errors, ['code' => 'auth-001', 'message' => 'Unauthenticated.']);
