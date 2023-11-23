@@ -409,7 +409,8 @@
                                     </span>
                                 </a>
                             </li>
-                            <li class="navbar-vertical-aside-has-menu {{Request::is('admin/offer*')?'active':''}}">
+                            <!-- Flash Sale  Panel -->
+                            <!-- <li class="navbar-vertical-aside-has-menu {{Request::is('admin/offer*')?'active':''}}">
                                 <a class="js-navbar-vertical-aside-menu-link nav-link"
                                    href="{{route('admin.offer.flash.index')}}"
                                    title="{{translate('flash_sale')}}"
@@ -419,7 +420,8 @@
                                         {{translate('flash_sale')}}
                                     </span>
                                 </a>
-                            </li>
+                            </li> -->
+                            <!-- Flash sale Panel -->
 
 
                             <li class="navbar-vertical-aside-has-menu {{Request::is('admin/discount*')?'active':''}}">
@@ -431,8 +433,8 @@
                             </li>
                             <!-- End Pages -->
                         @endif
-
-                        @if(Helpers::module_permission_check(MANAGEMENT_SECTION['support_management']))
+                            <!-- Support of messages start -->
+                        {{-- @if(Helpers::module_permission_check(MANAGEMENT_SECTION['support_management']))
                             <li class="nav-item">
                                 <small class="nav-subtitle"
                                        title="Layouts">{{translate('Help & Support Section')}}</small>
@@ -452,8 +454,9 @@
                                 </a>
                             </li>
                             <!-- End Pages -->
-                        @endif
-
+                        @endif --}}
+                        <!-- Support of messages end -->
+                        
                         @if(Helpers::module_permission_check(MANAGEMENT_SECTION['report_management']))
                             <li class="nav-item">
                                 <small class="nav-subtitle"

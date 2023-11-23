@@ -30,7 +30,7 @@
                 <h5 class="form-bold w-100 mb-3">{{ translate('Select Date Range') }}</h5>
                 <form class="w-100">
                     <div class="row g-3 g-sm-4 g-md-3 g-lg-4">
-                        <div class="col-sm-6 col-md-4 col-lg-2">
+                        <!-- <div class="col-sm-6 col-md-4 col-lg-2">
                             <select class="custom-select custom-select-sm text-capitalize min-h-45px" name="branch_id">
                                 <option disabled>--- {{translate('select')}} {{translate('branch')}} ---</option>
                                 <option value="all" {{ $branch_id == 'all' ? 'selected': ''}}>{{translate('all')}} {{translate('branch')}}</option>
@@ -38,7 +38,7 @@
                                     <option value="{{$branch['id']}}" {{ $branch['id'] == $branch_id ? 'selected' : ''}}>{{$branch['name']}}</option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> -->
                         <div class="col-sm-6 col-md-4 col-lg-3">
                             <div class="input-date-group">
                                 <label class="input-label" for="start_date">{{ translate('Start Date') }}</label>
@@ -76,7 +76,7 @@
                                             <span>{{translate('pending')}}</span>
                                         </h6>
                                         <span class="card-title text-0661CB">
-    {{--                                    {{\App\Model\Order::where(['order_status'=>'pending'])->count()}}--}}
+                                            {{-- {{\App\Model\Order::where(['order_status'=>'pending'])->count()}}--}}
                                             {{ $count_data['pending'] }}
                                     </span>
                                     </div>
@@ -244,7 +244,7 @@
                             <th>{{translate('Delivery')}} {{translate('date')}}</th>
                             <th>{{translate('Time Slot')}}</th>
                             <th>{{translate('customer')}}</th>
-                            <th>{{translate('branch')}}</th>
+                            <!-- <th>{{translate('branch')}}</th> -->
                             <th>{{translate('total amount')}}</th>
                             <th>
                                 <div class="text-center">
@@ -297,9 +297,9 @@
                                         </label>
                                     @endif
                                 </td>
-                                <td>
+                                <!-- <td>
                                     <label class="badge badge-soft-primary">{{$order->branch?$order->branch->name:'Branch deleted!'}}</label>
-                                </td>
+                                </td> -->
 
                                 <td>
                                     <div class="mw-90">
