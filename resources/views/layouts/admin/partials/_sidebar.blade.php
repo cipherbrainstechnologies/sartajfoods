@@ -56,9 +56,10 @@
                             </li>
                             <!-- End Dashboards -->
                     @endif
-
-                    @if(Helpers::module_permission_check(MANAGEMENT_SECTION['pos_management']))
-                        <!-- POS Section -->
+                        
+                     <!-- POS Section -->
+                        <!-- @if(Helpers::module_permission_check(MANAGEMENT_SECTION['pos_management']))
+                           
                             <li class="navbar-vertical-aside-has-menu {{Request::is('admin/pos*')?'active':''}}">
                                 <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle"
                                    href="javascript:" title="{{translate('POS')}}">
@@ -90,8 +91,9 @@
                                     </li>
                                 </ul>
                             </li>
-                            <!-- End POS -->
-                        @endif
+                            
+                        @endif -->
+                        <!-- End POS -->
                         @if(Helpers::module_permission_check(MANAGEMENT_SECTION['order_management']))
                             <li class="nav-item">
                                 <small
