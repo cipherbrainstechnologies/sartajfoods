@@ -536,7 +536,8 @@ class OrderController extends Controller
     {
         $order = $this->order->where('id', $id)->first();
         $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
-        return view('admin-views.order.invoice', compact('order', 'footer_text'));
+        // return view('admin-views.order.invoice', compact('order', 'footer_text'));
+        return view('admin-views.order.latest_invoice', compact('order', 'footer_text'));
     }
 
     /**

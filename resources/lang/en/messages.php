@@ -2107,4 +2107,11 @@
   'best seller ad' => 'Best seller ad',
   'slider ad banner' => 'Slider ad banner',
   'ad' => 'Ad',
+  'Date' => 'Date',
+  'Total Payable Amt.' => 'Total Payable Amt.',
+  'AMT.' => 'AMT.',
+  'TOTAL' => 'TOTAL',
+  'PRICE' => 'PRICE',
+  'QTY.' => 'QTY.',
+  'PRODUCT NAME' => 'PRODUCT NAME',
 );
