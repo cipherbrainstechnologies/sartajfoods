@@ -21,7 +21,7 @@ use Illuminate\Support\Str;
 use GuzzleHttp\Client;
 use Illuminate\Support\Carbon;
 use Carbon\CarbonInterval;
-use Illuminate\Support\Facades\Hash;gitrgit 
+use Illuminate\Support\Facades\Hash;
 
 class CustomerAuthController extends Controller
 {
