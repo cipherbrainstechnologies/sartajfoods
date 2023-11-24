@@ -71,4 +71,11 @@ class WishlistController extends Controller
     {
         return response()->json($this->wishlist->where('user_id', $request->user()->id)->get(), 200);
     }
+
+    public function remove_wishlists(Request $request){
+        $user = auth()->user();
+        $cart =   $this->wishlist->where('user_id', $user->id)->delete();
+
+        return response()->json(['message' => 'wishlist removed from cart']);
+    }
 }

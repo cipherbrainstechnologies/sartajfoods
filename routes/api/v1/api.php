@@ -121,6 +121,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
             Route::get('/', 'WishlistController@wish_list');
             Route::post('add', 'WishlistController@add_to_wishlist');
             Route::delete('remove', 'WishlistController@remove_from_wishlist');
+            Route::delete('remove-wishlist', 'WishlistController@remove_wishlists');
         });
 
         // cart
