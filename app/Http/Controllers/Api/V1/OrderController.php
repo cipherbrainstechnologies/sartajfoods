@@ -21,6 +21,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use function App\CentralLogics\translate;
+use PDF;
+use App\Model\BusinessSetting;
+use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
 {
@@ -32,7 +35,8 @@ class OrderController extends Controller
         private OrderDetail $order_detail,
         private Product $product,
         private Review $review,
-        private User $user
+        private User $user,
+        private BusinessSetting $business_setting,
     ){}
 
     /**
@@ -313,10 +317,21 @@ class OrderController extends Controller
         $orders = $this->order->with(['customer', 'delivery_man.rating'])
             ->withCount('details')
             ->where(['user_id' => $request->user()->id])->get();
+           
+            // dd($pdf);
 
         $orders->map(function ($data) {
             $data['deliveryman_review_count'] = $this->dm_review->where(['delivery_man_id' => $data['delivery_man_id'], 'order_id' => $data['id']])->count();
-            $data['invoice_link'] = route('customer_invoice',$data['id']);
+            $order = $this->order->where('id', $data['id'])->first();
+            $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
+            $pdf = PDF::loadView('admin-views.order.latest_invoice', compact('order', 'footer_text'));
+            $pdfName = 'Invoice_' . $data['id'] . '.pdf';
+            if (!Storage::disk('public')->exists('invoices')) {
+                Storage::disk('public')->makeDirectory('invoices');
+            }
+            $pdfPath = Storage::disk('public')->put('invoices/' . $pdfName, $pdf->output());
+            $pdfUrl = asset('storage/invoices/' . $pdfName);
+            $data['invoice_link'] = $pdfUrl;
             return $data;
         });
 
