@@ -49,6 +49,19 @@ class ProductController extends Controller
      {
          $products = ProductLogic::get_all_products($request['limit'], $request['offset']);
          $products['products'] = Helpers::product_data_formatting($products['products'], true);
+         $product_fileter = array();
+         if(!empty($request['category_id'])) {
+            foreach($products['products'] as $key => $product) {
+                foreach($product['category_ids'] as $category) {
+                    if((int)$category->id === $request['category_id']) {
+                        $product_fileter[] = $product;
+                    }
+                }
+            }
+            unset($products['products']);
+            $products['products']= $product_fileter;
+         }
+         
          return response()->json($products, 200);
      }
 
