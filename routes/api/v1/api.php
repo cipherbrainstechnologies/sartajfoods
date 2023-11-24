@@ -77,7 +77,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         Route::get('childes/{category_id}', 'CategoryController@get_childes');
         Route::get('products/{category_id}', 'CategoryController@get_products');
         Route::get('products/{category_id}/all', 'CategoryController@get_all_products');
-    });
+    }); 
 
     Route::group(['prefix' => 'customer', 'middleware' => ['auth:api', 'customer_is_block']], function () {
         Route::get('info', 'CustomerController@info');
