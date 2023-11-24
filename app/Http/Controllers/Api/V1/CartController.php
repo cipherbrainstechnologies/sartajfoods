@@ -55,19 +55,20 @@ class CartController extends Controller
         return response()->json(['message' => 'Product added to cart', 'cart' => $cart]);
     }
 
-    public function updateToCart($id, Request $request)
+    public function updateToCart( Request $request)
     {
         $user = auth()->user();
 
         // Validate the request
         $request->validate([
+            'product_id' => 'required',
             'quantity' => 'required|integer|min:1',
         ]);
-
+        $productId = $request->input('product_id');
         $quantity = $request->input('quantity');
 
         // Find the cart entry by id
-        $cart = Cart::where('id', $id)->where('user_id', $user->id)->first();
+        $cart = Cart::where(['user_id'=>  $user->id,"product_id" => $productId])->first();
 
         // Check if the cart entry exists
         if (!$cart) {
@@ -78,5 +79,23 @@ class CartController extends Controller
         $cart->update(['quantity' => $quantity]);
 
         return response()->json(['message' => 'Cart entry updated', 'cart' => $cart]);
+    }
+
+    public function removeToCart($productId,Request $request)
+    {        
+
+        $user = auth()->user();
+
+        // Find the cart entry by id
+        $cart =  Cart::where(['user_id'=>  $user->id,"product_id" => $productId])->first();
+        // Check if the cart entry exists
+        if (!$cart) {
+            return response()->json(['error' => 'Cart entry not found'], 404);
+        }
+
+        // Delete the cart entry
+        $cart->delete();
+
+        return response()->json(['message' => 'Cart removed from cart']);
     }
 }
