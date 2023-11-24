@@ -45,6 +45,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         Route::get('daily-needs', 'ProductController@get_daily_need_products');
         Route::post('reviews/submit', 'ProductController@submit_product_review')->middleware('auth:api');
         Route::get('rated-three-products','ProductController@get_rated_three_products');
+        Route::get('max-price', 'ProductController@get_max_price');
 
         Route::group(['prefix' => 'favorite', 'middleware' => ['auth:api', 'customer_is_block']], function () {
             Route::get('/', 'ProductController@get_favorite_products');

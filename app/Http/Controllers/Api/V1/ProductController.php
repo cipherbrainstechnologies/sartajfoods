@@ -84,7 +84,6 @@ class ProductController extends Controller
             $sort_by_fileter = $this->product->active()
            ->withCount(['wishlist'])
            ->with(['rating', 'active_reviews','manufacturer'])
-           ->where('popularity_count', '<>' , 0)
            ->orderBy('popularity_count', 'DESC')
            ->paginate($request['limit'], ['*'], 'page', $request['offset']);
 
@@ -628,4 +627,9 @@ class ProductController extends Controller
     //     return response()->json($products, 200);
     // }
 
+    public function get_max_price()
+    {
+        $max = Product::select('price')->max('price');
+        return response()->json(array('max_price' => $max), 200);
+    }
 }
