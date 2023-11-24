@@ -91,6 +91,8 @@ class CategoryLogic
                 return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer'])->whereIn('id', $product_ids)->orderBy('price', 'ASC')->paginate($limit, ['*'], 'page', $offset);
             } else if($sort === 'high_to_low') {
                 return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer'])->whereIn('id', $product_ids)->orderBy('price', 'DESC')->paginate($limit, ['*'], 'page', $offset);
+            } else if($sort === 'trending') {
+                return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer'])->whereIn('id', $product_ids)->where('popularity_count', '<>' , 0)->orderBy('popularity_count', 'DESC')->paginate($limit, ['*'], 'page', $offset);
             } 
             else {
                 return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer'])->whereIn('id', $product_ids)->paginate($limit, ['*'], 'page', $offset);
