@@ -79,6 +79,46 @@ class ProductController extends Controller
            unset($products['products']);
            $products['products']= $product_fileter;
          }
+
+         if(!empty($request['sort_by']) && $request['sort_by'] === 'low_to_high') {
+            $sort_by_fileter = $this->product->active()
+           ->withCount(['wishlist'])
+           ->with(['rating', 'active_reviews','manufacturer'])
+           ->orderBy('price', 'ASC')
+           ->paginate($request['limit'], ['*'], 'page', $request['offset']);
+
+           $products['total_size'] = $sort_by_fileter->total();
+
+           if(!empty($request['category_id'])) {
+            $product_fileter = array();
+            $product_fileter = $product_categoty_fileter_with_sort_by = Helpers::product_data_formatting(CategoryLogic::productsSort($request['category_id'], $request['limit'], $request['offset'], $request['sort_by']), true);
+           } else {
+            $product_fileter = Helpers::product_data_formatting($sort_by_fileter, true);
+           }
+
+           unset($products['products']);
+           $products['products']= $product_fileter;
+        }
+
+        if(!empty($request['sort_by']) && $request['sort_by'] === 'high_to_low') {
+            $sort_by_fileter = $this->product->active()
+           ->withCount(['wishlist'])
+           ->with(['rating', 'active_reviews','manufacturer'])
+           ->orderBy('price', 'DESC')
+           ->paginate($request['limit'], ['*'], 'page', $request['offset']);
+
+           $products['total_size'] = $sort_by_fileter->total();
+
+           if(!empty($request['category_id'])) {
+            $product_fileter = array();
+            $product_fileter = $product_categoty_fileter_with_sort_by = Helpers::product_data_formatting(CategoryLogic::productsSort($request['category_id'], $request['limit'], $request['offset'], $request['sort_by']), true);
+           } else {
+            $product_fileter = Helpers::product_data_formatting($sort_by_fileter, true);
+           }
+
+           unset($products['products']);
+           $products['products']= $product_fileter;
+        }
          
          return response()->json($products, 200);
      }
