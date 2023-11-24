@@ -96,6 +96,14 @@ class CartController extends Controller
         // Delete the cart entry
         $cart->delete();
 
-        return response()->json(['message' => 'Cart removed from cart']);
+        return response()->json(['message' => 'Product removed from cart']);
+    }
+
+    public function clearCart(Request $request)
+    {
+        $user = auth()->user();
+        $cart =   Cart::where('user_id', $user->id)->delete();
+
+        return response()->json(['message' => 'Product removed from cart']);
     }
 }

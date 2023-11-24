@@ -129,6 +129,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
             Route::post('add-to-cart', 'CartController@addToCart');
             Route::put('update-cart', 'CartController@updateToCart');
             Route::delete('remove-to-cart/{product_id}', 'CartController@removeToCart');
+            Route::delete('clear-cart','CartController@clearCart');
         });
         
         Route::group(['prefix' => 'reviews'], function () {
@@ -148,7 +149,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
 
     Route::group(['prefix' => 'coupon', 'middleware' => ['auth:api', 'customer_is_block']], function () {
         Route::get('list', 'CouponController@list');
-        Route::get('apply', 'CouponController@apply');
+        Route::post('apply', 'CouponController@apply');
     });
     //timeSlot
     Route::group(['prefix' => 'timeSlot'], function () {
