@@ -84,6 +84,7 @@ class ProductController extends Controller
             $sort_by_fileter = $this->product->active()
            ->withCount(['wishlist'])
            ->with(['rating', 'active_reviews','manufacturer'])
+           ->where('popularity_count', '<>' , 0)
            ->orderBy('popularity_count', 'DESC')
            ->paginate($request['limit'], ['*'], 'page', $request['offset']);
 
