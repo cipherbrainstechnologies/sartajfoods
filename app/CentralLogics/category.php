@@ -102,4 +102,23 @@ class CategoryLogic
         }
     }
 
+    public static function productsSortByPrice($category_id, $limit = 0, $offset =1, $max = 0 , $min = 0)
+    {
+        $products = Product::active()->get();
+        $product_ids = [];
+        foreach ($products as $product) {
+            foreach (json_decode($product['category_ids'], true) as $category) {
+                if ($category['id'] == $category_id) {
+                    array_push($product_ids, $product['id']);
+                }
+            }
+        }
+
+        if($limit !== 0) {
+            return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer'])->whereIn('id', $product_ids)->whereBetween('price', [$min, $max])->paginate($limit, ['*'], 'page', $offset);
+        } else {
+            return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer'])->whereIn('id', $product_ids)->get();
+        }
+    }
+
 }
