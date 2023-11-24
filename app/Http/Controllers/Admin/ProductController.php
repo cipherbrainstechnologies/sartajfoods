@@ -264,10 +264,10 @@ class ProductController extends Controller
         if ($request->has('choice')) {
             foreach ($request->choice_no as $key => $no) {
                 $str = 'choice_options_' . $no;
-                if ($request[$str][0] == null) {
-                    $validator->getMessageBag()->add('name', 'Attribute choice option values can not be null!');
-                    return response()->json(['errors' => Helpers::error_processor($validator)]);
-                }
+                // if ($request[$str][0] == null) {
+                //     $validator->getMessageBag()->add('name', 'Attribute choice option values can not be null!');
+                //     return response()->json(['errors' => Helpers::error_processor($validator)]);
+                // }
                 $item['name'] = 'choice_' . $no;
                 $item['title'] = $request->choice[$key];
                 $item['options'] = explode(',', implode('|', preg_replace('/\s+/', ' ', $request[$str])));
@@ -347,6 +347,8 @@ class ProductController extends Controller
         $p->meta_tag_description = !empty($request->meta_description) ? $request->meta_description[array_search('en', $request->lang)] : null;
         $p->meta_tag_keywords = !empty($request->meta_keywords) ? $request->meta_keywords[array_search('en', $request->lang)] : null;
         $p->product_tag = !empty($request->product_tags) ? $request->product_tags[array_search('en', $request->lang)] : null;
+        
+        $p->seo = !empty($request->seo) ? $request->seo[array_search('en', $request->lang)] : null;
 
         $p->substrack_stock = !empty($request->substrak_stock) ? $request->substrak_stock : null;
         $p->out_of_stock_status = !empty($request->out_of_stock_status) ? $request->out_of_stock_status : null;
@@ -631,6 +633,8 @@ class ProductController extends Controller
         $p->meta_tag_description = !empty($request->meta_description) ? $request->meta_description[array_search('en', $request->lang)] : null;
         $p->meta_tag_keywords = !empty($request->meta_keywords) ? $request->meta_keywords[array_search('en', $request->lang)] : null;
         $p->product_tag = !empty($request->product_tags) ? $request->product_tags[array_search('en', $request->lang)] : null;
+
+        $p->seo = !empty($request->seo) ? $request->seo[array_search('en', $request->lang)] : null;
 
         $p->substrack_stock = !empty($request->substrak_stock) ? $request->substrak_stock : null;
         $p->out_of_stock_status = !empty($request->out_of_stock_status) ? $request->out_of_stock_status : null;

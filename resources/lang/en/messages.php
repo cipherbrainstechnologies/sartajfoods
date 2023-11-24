@@ -2114,4 +2114,5 @@
   'PRICE' => 'PRICE',
   'QTY.' => 'QTY.',
   'PRODUCT NAME' => 'PRODUCT NAME',
+  'SEO' => 'SEO',
 );

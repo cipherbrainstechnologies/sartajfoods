@@ -73,6 +73,11 @@
                                         <label class="input-label" for="{{$lang['code']}}_product_tags">{{translate('product tags')}} ({{strtoupper($lang['code'])}})</label>
                                         <input type="text" name="product_tags[]" class="form-control" id="{{$lang['code']}}_product_tags" placeholder="{{translate('product tags')}}">
                                     </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="input-label" for="{{$lang['code']}}_seo">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                        <input type="text" name="seo[]" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}}">
+                                    </div>
                                 </div>
                             @endforeach
                         @else
@@ -101,6 +106,11 @@
                                 <div class="form-group">
                                     <label class="input-label" for="exampleFormControlInput1">{{translate('product tags')}} (EN)</label>
                                     <input type="text" name="product_tags[]" class="form-control" placeholder="{{translate('product tags')}}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="input-label" for="exampleFormControlInput1">{{translate('SEO')}} (EN)</label>
+                                    <input type="text" name="seo[]" class="form-control" placeholder="{{translate('SEO')}}">
                                 </div>
                             </div>
                         @endif
@@ -399,7 +409,7 @@
                                     <div class="form-group mb-0">
                                         <label class="input-label" for="exampleFormControlInput1">{{translate('discount')}} <span id="discount_symbol">(%)</span></label>
                                         <input type="number" min="0" max="100000" value="0" name="discount" step="any" id="discount" class="form-control"
-                                               placeholder="{{ translate('Ex : 5%') }}" required>
+                                               placeholder="{{ translate('Ex : 5%') }}" >
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
