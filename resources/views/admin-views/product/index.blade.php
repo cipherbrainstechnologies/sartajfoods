@@ -282,7 +282,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-2">
+                <!-- <div class="mt-2">
                     <div class="card min-h-116px">
                         <div class="card-body d-flex flex-column justify-content-center">
                             <div class="d-flex flex-wrap-reverse justify-content-between">
@@ -301,7 +301,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="col-lg-6">
                 <div class="card">
@@ -436,7 +436,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <!-- <div class="col-lg-6">
                 <div class="card h-100">
                     <div class="card-header">
                         <h5 class="card-title">
@@ -471,7 +471,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="col-lg-6">
                 <div class="card h-100">
@@ -536,7 +536,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
+            <!-- <div class="col-lg-6">
                 <div class="card h-100">
                     <div class="card-header">
                         <h5 class="card-title">
@@ -570,9 +570,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
-            <div class="col-lg-6">
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title">
@@ -586,7 +586,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="input-label" for="sale_start_date">{{translate('Start Date')}}<span class="input-label-secondary"></span></label>
                                 <label class="">
@@ -595,7 +595,7 @@
                             </div>
                         </div>
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="input-label" for="sale_end_date">{{translate('End Date')}}<span class="input-label-secondary"></span></label>
                                 <label class="">
@@ -603,6 +603,7 @@
                                 </label>
                             </div>
                         </div>
+                        
 
                         </div>
                     </div>

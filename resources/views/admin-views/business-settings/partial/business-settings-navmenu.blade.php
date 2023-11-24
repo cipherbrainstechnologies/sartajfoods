@@ -32,15 +32,15 @@
                 {{translate('Product Setup')}}
             </a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a class="nav-link {{Request::is('admin/business-settings/store/cookies-setup')?'active':''}}" href="{{route('admin.business-settings.store.cookies-setup')}}">
                 {{translate('Cookies Setup')}}
             </a>
-        </li>
-        <li class="nav-item">
+        </li> -->
+        <!-- <li class="nav-item">
             <a class="nav-link {{Request::is('admin/business-settings/store/otp-setup')?'active':''}}" href="{{route('admin.business-settings.store.otp-setup')}}">
                 {{translate('OTP and Login Setup')}}
             </a>
-        </li>
+        </li> -->
     </ul>
 </div>

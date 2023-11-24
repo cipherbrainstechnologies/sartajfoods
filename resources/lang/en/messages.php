@@ -2115,4 +2115,5 @@
   'QTY.' => 'QTY.',
   'PRODUCT NAME' => 'PRODUCT NAME',
   'SEO' => 'SEO',
+  'If the user fails to get the OTP within a certain time, user can request a resend.' => 'If the user fails to get the OTP within a certain time  user can request a resend.',
 );

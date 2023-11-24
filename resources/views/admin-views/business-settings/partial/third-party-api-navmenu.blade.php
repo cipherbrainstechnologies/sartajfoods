@@ -38,14 +38,14 @@
             {{translate('Recaptcha')}}
         </a>
     </li>
-    <li class="nav-item">
+    <!-- <li class="nav-item">
         <a class="nav-link {{Request::is('admin/business-settings/web-app/third-party/fcm-index*')?'active':''}}" href="{{route('admin.business-settings.web-app.third-party.fcm-index')}}">
             {{translate('Push Notification')}}
         </a>
-    </li>
-    <li class="nav-item">
+    </li> -->
+    <!-- <li class="nav-item">
         <a class="nav-link {{Request::is('admin/business-settings/web-app/third-party/chat-index*')?'active':''}}" href="{{route('admin.business-settings.web-app.third-party.chat-index')}}">
             {{translate('Social Media Chat')}}
         </a>
-    </li>
+    </li> -->
 </ul>

@@ -277,7 +277,7 @@
                                 <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
                                     style="display: {{Request::is('admin/product*') || Request::is('admin/attribute*') ? 'block' : 'none'}}">
 
-                                    <li class="nav-item {{Request::is('admin/attribute*')?'active':''}}">
+                                    <!-- <li class="nav-item {{Request::is('admin/attribute*')?'active':''}}">
                                         <a class="nav-link"
                                            href="{{route('admin.attribute.add-new')}}"
                                            title="{{translate('product attribute')}}"
@@ -285,7 +285,7 @@
                                             <span class="tio-circle nav-indicator-icon"></span>
                                             <span class="text-truncate">{{translate('product attribute')}}</span>
                                         </a>
-                                    </li>
+                                    </li> -->
 
                                     <li class="nav-item {{Request::is('admin/filter*')?'active':''}}">
                                         <a class="nav-link"
@@ -307,7 +307,7 @@
                                         </a>
                                     </li>
 
-                                     <li class="nav-item {{Request::is('admin/download*')?'active':''}}">
+                                     <!-- <li class="nav-item {{Request::is('admin/download*')?'active':''}}">
                                         <a class="nav-link"
                                            href="{{route('admin.download.add-new')}}"
                                            title="{{translate('downloads')}}"
@@ -315,7 +315,7 @@
                                             <span class="tio-circle nav-indicator-icon"></span>
                                             <span class="text-truncate">{{translate('downloads')}}</span>
                                         </a>
-                                    </li>
+                                    </li> -->
 
                                     <li class="nav-item {{Request::is('admin/product/list*')?'active':''}} {{Request::is('admin/product/add-new')?'active':''}}">
                                         <a class="nav-link " href="{{route('admin.product.list')}}"
@@ -398,7 +398,7 @@
                                 </a>
                             </li>
 
-                            <li class="navbar-vertical-aside-has-menu {{Request::is('admin/notification*')?'active':''}}">
+                            <!-- <li class="navbar-vertical-aside-has-menu {{Request::is('admin/notification*')?'active':''}}">
                                 <a class="js-navbar-vertical-aside-menu-link nav-link"
                                    href="{{route('admin.notification.add-new')}}"
                                    title="{{translate('send notifications')}}"
@@ -408,7 +408,7 @@
                                         {{translate('send')}} {{translate('notifications')}}
                                     </span>
                                 </a>
-                            </li>
+                            </li> -->
                             <!-- Flash Sale  Panel -->
                             <!-- <li class="navbar-vertical-aside-has-menu {{Request::is('admin/offer*')?'active':''}}">
                                 <a class="js-navbar-vertical-aside-menu-link nav-link"
@@ -424,13 +424,13 @@
                             <!-- Flash sale Panel -->
 
 
-                            <li class="navbar-vertical-aside-has-menu {{Request::is('admin/discount*')?'active':''}}">
+                            <!-- <li class="navbar-vertical-aside-has-menu {{Request::is('admin/discount*')?'active':''}}">
                                 <a class="js-navbar-vertical-aside-menu-link nav-link" href="{{route('admin.discount.add-new')}}"
                                    title="{{translate('category_discount')}}">
                                     <i class="tio-layers-outlined nav-icon"></i>
                                     <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{translate('category_discount')}}</span>
                                 </a>
-                            </li>
+                            </li> -->
                             <!-- End Pages -->
                         @endif
                             <!-- Support of messages start -->
@@ -649,7 +649,7 @@
                             </li>
                             <!-- End Pages -->
 
-                            <li class="navbar-vertical-aside-has-menu {{Request::is('admin/delivery-man/*')?'active':''}}">
+                            <!-- <li class="navbar-vertical-aside-has-menu {{Request::is('admin/delivery-man/*')?'active':''}}">
                                 <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle"
                                    href="javascript:" title="{{translate('deliveryman')}}">
                                     <i class="tio-user nav-icon"></i>
@@ -709,7 +709,7 @@
                                     </li>
 
                                 </ul>
-                            </li>
+                            </li> -->
                             @if(auth('admin')->user()->admin_role_id == 1)
                                 <li class="navbar-vertical-aside-has-menu {{Request::is('admin/employee*')?'active':''}}  {{Request::is('admin/custom-role*')?'active':''}}">
                                 <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle"
