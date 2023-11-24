@@ -30,6 +30,9 @@ class CategoryController extends Controller
         try {
             $categories = $this->category->where(['position'=> 0,'status'=>1])->orderBy('name')->get();
             $Categories = self::addImageUrl($categories);
+            foreach($Categories as $key => $category) {
+                $Categories[$key]['total_produts'] = CategoryLogic::getProductCount($category["id"]);
+            }
             return response()->json($Categories, 200);
         } catch (\Exception $e) {
             return response()->json([], 200);

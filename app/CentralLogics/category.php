@@ -120,5 +120,4 @@ class CategoryLogic
             return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer'])->whereIn('id', $product_ids)->get();
         }
     }
-
 }
