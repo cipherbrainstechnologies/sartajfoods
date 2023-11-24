@@ -21,6 +21,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\CentralLogics\CategoryLogic;
 
 class ProductController extends Controller
 {
@@ -51,13 +52,9 @@ class ProductController extends Controller
          $products['products'] = Helpers::product_data_formatting($products['products'], true);
          $product_fileter = array();
          if(!empty($request['category_id'])) {
-            foreach($products['products'] as $key => $product) {
-                foreach($product['category_ids'] as $category) {
-                    if((int)$category->id === $request['category_id']) {
-                        $product_fileter[] = $product;
-                    }
-                }
-            }
+            $product_fileter = Helpers::product_data_formatting(CategoryLogic::products($request['category_id'], $request['limit'], $request['offset']), true);
+            $size = CategoryLogic::getProductCount($request['category_id']);
+            $products['total_size'] = $size;
             unset($products['products']);
             $products['products']= $product_fileter;
          }

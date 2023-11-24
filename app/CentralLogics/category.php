@@ -17,7 +17,7 @@ class CategoryLogic
         return Category::where(['parent_id' => $parent_id])->get();
     }
 
-    public static function products($category_id)
+    public static function products($category_id, $limit = 0, $offset =1)
     {
         $products = Product::active()->get();
         $product_ids = [];
@@ -28,7 +28,12 @@ class CategoryLogic
                 }
             }
         }
-        return Product::active()->withCount(['wishlist', 'active_reviews'])->with('rating')->whereIn('id', $product_ids)->get();
+        if($limit !== 0) {
+            return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer'])->whereIn('id', $product_ids)->paginate($limit, ['*'], 'page', $offset);
+        } else {
+
+        }
+        return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer'])->whereIn('id', $product_ids)->get();
     }
 
     public static function all_products($id)
@@ -53,5 +58,19 @@ class CategoryLogic
         }
 
         return Product::active()->withCount(['wishlist'])->with('rating', 'active_reviews')->whereIn('id', $product_ids)->get();
+    }
+
+    public static function getProductCount($category_id) 
+    {
+        $products = Product::active()->get();
+        $product_ids = [];
+        foreach ($products as $product) {
+            foreach (json_decode($product['category_ids'], true) as $category) {
+                if ($category['id'] == $category_id) {
+                    array_push($product_ids, $product['id']);
+                }
+            }
+        }
+        return sizeof($product_ids);
     }
 }
