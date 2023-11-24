@@ -97,4 +97,9 @@ class Product extends Model
         return null;
     }
 
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
+
 }

@@ -28,6 +28,8 @@ use Illuminate\Support\Facades\DB;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use function App\CentralLogics\translate;
+use Illuminate\Support\Facades\Response;
+use PDF;
 
 class OrderController extends Controller
 {
@@ -538,6 +540,25 @@ class OrderController extends Controller
         $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
         // return view('admin-views.order.invoice', compact('order', 'footer_text'));
         return view('admin-views.order.latest_invoice', compact('order', 'footer_text'));
+    }
+
+    public function downloadInvoicePDF($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    {
+        $order = $this->order->where('id', $id)->first();
+        $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
+
+        // Generate PDF
+        $pdf = PDF::loadView('admin-views.order.latest_invoice', compact('order', 'footer_text'));
+
+        // Save the PDF temporarily
+        $tempPath = storage_path('app/public/invoices');
+        $filename = 'invoice_' . $order->id . '.pdf';
+        $pdf->save($tempPath . '/' . $filename);
+
+        // Provide a link to download
+        $downloadLink = url("/download-temp-pdf/{$filename}");
+
+        return  $downloadLink;
     }
 
     /**

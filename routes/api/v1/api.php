@@ -121,6 +121,14 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
             Route::post('add', 'WishlistController@add_to_wishlist');
             Route::delete('remove', 'WishlistController@remove_from_wishlist');
         });
+
+        // cart
+        Route::group(['prefix' => 'cart'], function () {
+            Route::get('/', 'CartController@listCarts');
+            Route::post('add-to-cart', 'CartController@addToCart');
+            Route::put('update-cart/{id}', 'CartController@updateToCart');
+            Route::delete('remove', 'CartController@remove_from_wishlist');
+        });
         
         Route::group(['prefix' => 'reviews'], function () {
             Route::get('/', 'CustomerController@get_reviews');

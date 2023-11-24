@@ -465,12 +465,11 @@ class ProductController extends Controller
      * @return JsonResponse
      */
     public function update(Request $request, $id): \Illuminate\Http\JsonResponse
-    {
-        dd($request);
+    {        
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:products,name,'.$request->id,
             'category_id' => 'required',
-            'total_stock' => 'required|numeric|min:1',
+            // 'total_stock' => 'required|numeric|min:1',
             'price' => 'required|numeric|min:0',
         ], [
             'name.required' => 'Product name is required!',
@@ -512,9 +511,9 @@ class ProductController extends Controller
 
         }
 
-        if (!count($images)) {
-            $validator->getMessageBag()->add('images', 'Image can not be empty!');
-        }
+        // if (!count($images)) {
+        //     $validator->getMessageBag()->add('images', 'Image can not be empty!');
+        // }
 
         $p->name = $request->name[array_search('en', $request->lang)];
 

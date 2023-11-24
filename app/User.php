@@ -76,4 +76,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(SearchedKeywordUser::class, 'user_id', 'id');
     }
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
 }
