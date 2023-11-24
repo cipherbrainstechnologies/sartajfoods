@@ -31,9 +31,8 @@ class CategoryLogic
         if($limit !== 0) {
             return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer'])->whereIn('id', $product_ids)->paginate($limit, ['*'], 'page', $offset);
         } else {
-
+            return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer'])->whereIn('id', $product_ids)->get();
         }
-        return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer'])->whereIn('id', $product_ids)->get();
     }
 
     public static function all_products($id)
@@ -73,4 +72,27 @@ class CategoryLogic
         }
         return sizeof($product_ids);
     }
+
+    public static function productsSort($category_id, $limit = 0, $offset =1, $sort = '')
+    {
+        $products = Product::active()->get();
+        $product_ids = [];
+        foreach ($products as $product) {
+            foreach (json_decode($product['category_ids'], true) as $category) {
+                if ($category['id'] == $category_id) {
+                    array_push($product_ids, $product['id']);
+                }
+            }
+        }
+        if($limit !== 0 && !empty($sort)) {
+            if($sort === 'featured') {
+                return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer'])->whereIn('id', $product_ids)->where(['is_featured' => 1])->paginate($limit, ['*'], 'page', $offset);
+            } else {
+                return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer'])->whereIn('id', $product_ids)->paginate($limit, ['*'], 'page', $offset);
+            }
+        } else {
+            return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer'])->whereIn('id', $product_ids)->get();
+        }
+    }
+
 }
