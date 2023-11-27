@@ -329,4 +329,20 @@ class ProductLogic
     //         'products' => $paginator->items()
     //     ];
     // }
+
+    public static function cal_rating_and_review($products)
+    {
+        $products = !empty($products['products']) ? $products['products'] : $products;
+        foreach($products as $key => $product) {
+            $all_over_rating = '';
+            $total_reviews = '';
+            if(!empty($product['rating'][0])) {
+                $all_over_rating = ($product['rating'][0]->total/($product['rating'][0]->count * 5)) * 100;
+                $total_reviews = $product['rating'][0]->count;
+            }
+
+            $product['overall_rating'] = $all_over_rating;
+            $product['total_reviews'] = $total_reviews;
+        }
+    }
 }

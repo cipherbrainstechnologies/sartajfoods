@@ -161,8 +161,9 @@ class ProductController extends Controller
            unset($products['products']);
            $products['products']= $product_fileter;
         }
-         
-         return response()->json($products, 200);
+        ProductLogic::cal_rating_and_review($products);
+
+        return response()->json($products, 200);
      }
 
     /**
@@ -173,6 +174,7 @@ class ProductController extends Controller
     {
         $products = ProductLogic::get_latest_products($request['limit'], $request['offset'],3);
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
+        ProductLogic::cal_rating_and_review($products);
         return response()->json($products, 200);
     }
 
@@ -180,6 +182,7 @@ class ProductController extends Controller
     {
         $products = ProductLogic::get_latest_products($request['limit'], $request['offset']);
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
+        ProductLogic::cal_rating_and_review($products);
         return response()->json($products, 200);
     }
     /**
@@ -285,6 +288,7 @@ class ProductController extends Controller
         }
 
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
+        ProductLogic::cal_rating_and_review($products);
         return response()->json($products, 200);
     }
 
@@ -312,6 +316,16 @@ class ProductController extends Controller
                 $visited_product->product_id = $product->id;
                 $visited_product->save();
             }
+
+            $all_over_rating = '';
+            $total_reviews = '';
+            if(!empty($product['rating'][0])) {
+                $all_over_rating = ($product['rating'][0]->total/($product['rating'][0]->count * 5)) * 100;
+                $total_reviews = $product['rating'][0]->count;
+            }
+
+            $product['overall_rating'] = $all_over_rating;
+            $product['total_reviews'] = $total_reviews;
         
             return response()->json($product, 200);
 
@@ -329,6 +343,7 @@ class ProductController extends Controller
         if ($this->product->find($id)) {
             $products = ProductLogic::get_related_products($id);
             $products = Helpers::product_data_formatting($products, true);
+            ProductLogic::cal_rating_and_review($products);
             return response()->json($products, 200);
         }
         return response()->json([
@@ -374,6 +389,7 @@ class ProductController extends Controller
     public function get_rated_three_products(){
         $products = ProductLogic::get_most_reviewed_products(3);
         $products = Helpers::product_data_formatting($products['products'], true);
+        ProductLogic::cal_rating_and_review($products);
         return response()->json($products, 200);
     }
 
@@ -436,6 +452,7 @@ class ProductController extends Controller
     {
         try {
             $products = Helpers::product_data_formatting($this->product->active()->withCount(['wishlist'])->with(['rating'])->where('discount', '>', 0)->get(), true);
+            ProductLogic::cal_rating_and_review($products);
             return response()->json($products, 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -459,8 +476,7 @@ class ProductController extends Controller
                 'products' => $paginator->items()
             ];
             $paginator = Helpers::product_data_formatting($products['products'], true);
-
-
+            ProductLogic::cal_rating_and_review($products);
             return response()->json($products, 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -478,6 +494,7 @@ class ProductController extends Controller
     public function get_favorite_products(Request $request): \Illuminate\Http\JsonResponse
     {
         $products = ProductLogic::get_favorite_products($request['limit'], $request['offset'], $request->user()->id);
+        ProductLogic::cal_rating_and_review($products);
         return response()->json($products, 200);
     }
 
@@ -489,6 +506,7 @@ class ProductController extends Controller
     {
         $products = ProductLogic::get_popular_products($request['limit'], $request['offset']);
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
+        ProductLogic::cal_rating_and_review($products);
         return response()->json($products, 200);
 
     }
@@ -573,8 +591,7 @@ class ProductController extends Controller
                 'products' => $paginator->items()
             ];
             $paginator = Helpers::product_data_formatting($products['products'], true);
-
-
+            ProductLogic::cal_rating_and_review($products);            
             return response()->json($products, 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -591,6 +608,7 @@ class ProductController extends Controller
     {
         $products = ProductLogic::get_most_viewed_products($request['limit'], $request['offset']);
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
+        ProductLogic::cal_rating_and_review($products);
         return response()->json($products, 200);
     }
 
@@ -602,6 +620,7 @@ class ProductController extends Controller
     {
         $products = ProductLogic::get_trending_products($request['limit'], $request['offset']);
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
+        ProductLogic::cal_rating_and_review($products);
         return response()->json($products, 200);
     }
 
@@ -609,6 +628,7 @@ class ProductController extends Controller
     {
         $products = ProductLogic::get_trending_products($request['limit'], $request['offset'],3);
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
+        ProductLogic::cal_rating_and_review($products);
         return response()->json($products, 200);
     }
     /**
@@ -620,6 +640,7 @@ class ProductController extends Controller
         $user = $request->user();
         $products = ProductLogic::get_recommended_products($user, $request['limit'], $request['offset']);
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
+        ProductLogic::cal_rating_and_review($products);
         return response()->json($products, 200);
     }
 
@@ -631,6 +652,7 @@ class ProductController extends Controller
     {
         $products = ProductLogic::get_most_reviewed_products($request['limit'], $request['offset']);
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
+        ProductLogic::cal_rating_and_review($products);
         return response()->json($products, 200);
     }
 
@@ -638,6 +660,7 @@ class ProductController extends Controller
     public function get_sale_products(Request $request): \Illuminate\Http\JsonResponse {
         $products = ProductLogic::get_sale_products($request['limit'], $request['offset']);
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
+        ProductLogic::cal_rating_and_review($products);
         return response()->json($products, 200);
     }
 

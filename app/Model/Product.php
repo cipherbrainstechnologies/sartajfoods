@@ -52,14 +52,14 @@ class Product extends Model
     {
         return $this->hasMany(Review::class)
             ->where('is_active', 1)
-            ->select(DB::raw('avg(rating) average, product_id'))
+            ->select(DB::raw('avg(rating) average, sum(rating) total, product_id, count(product_id) count'))
             ->groupBy('product_id');
     }
 
     public function all_rating(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Review::class)
-            ->select(DB::raw('avg(rating) average, product_id'))
+            ->select(DB::raw('avg(rating) average, sum(rating) total, product_id, count(product_id) count'))
             ->groupBy('product_id');
     }
 
