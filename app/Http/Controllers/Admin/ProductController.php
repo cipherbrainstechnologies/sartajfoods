@@ -661,6 +661,8 @@ class ProductController extends Controller
         $p->location = !empty($request->location) ? $request->location : null;
         $p->manufacturer_id = !empty($request->manufacturer_id) ? $request->manufacturer_id : null;
 
+        $p->sale_price = !empty($request->sale_price) ? $request->sale_price : null;
+        
         $p->save();
 
         $p->tags()->sync($tag_ids);

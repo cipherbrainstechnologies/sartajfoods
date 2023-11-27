@@ -63,7 +63,8 @@ class CategoryController extends Controller
         }
     }
 
-    public function getTags($id){
+    public function getTags($id) : \Illuminate\Http\JsonResponse
+    {
         try {
            $tags = CategoryLogic::all_tags($id);
            return response()->json($tags, 200);

@@ -2119,4 +2119,6 @@
   'Hours' => 'Hours',
   'JA' => 'JA',
   'EN' => 'EN',
+  'Special Price' => 'Special Price',
+  'Remove' => 'Remove',
 );

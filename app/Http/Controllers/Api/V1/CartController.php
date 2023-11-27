@@ -112,6 +112,23 @@ class CartController extends Controller
     }
 
     public function addCartItems(Request $request){
+        $user = auth()->user(); 
+        foreach ($request->all() as $key => $data) {
+            $product = Product::find($data['product_id']);
         
+            if (!$product) {
+                return response()->json(['error' => 'Product not found'], 404);
+            }
+            
+            $cart = Cart::updateOrCreate(
+                [
+                    'user_id' => $user->id,
+                    'product_id' => $data['product_id'],
+                    'quantity' => $data['qty'],
+                    'price' => ($product->price * $data['qty'])
+                ],
+            );
+        }
+        return response()->json(['message' => 'Product added to cart']);
     }
 }

@@ -601,24 +601,40 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="input-label" for="sale_start_date">{{translate('Start Date')}}<span class="input-label-secondary"></span></label>
-                                <label class="">
-                                    <input type="date" name="sale_start_date" id="sale_start_date" value="{{ old('sale_start_date') }}" class="js-flatpickr form-control flatpickr-custom" placeholder="{{ \App\CentralLogics\translate('dd/mm/yy') }}" data-hs-flatpickr-options='{ "dateFormat": "Y/m/d", "minDate": "today" }'>
-                                </label>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label class="input-label" for="sale_start_date">{{translate('Start Date')}}<span class="input-label-secondary"></span></label>
+                                    <label class="">
+                                        <input type="date" name="sale_start_date" id="sale_start_date" value="{{ old('sale_start_date') }}" class="js-flatpickr form-control flatpickr-custom" placeholder="{{ \App\CentralLogics\translate('dd/mm/yy') }}" data-hs-flatpickr-options='{ "dateFormat": "Y/m/d", "minDate": "today" }'>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="input-label" for="sale_end_date">{{translate('End Date')}}<span class="input-label-secondary"></span></label>
-                                <label class="">
-                                    <input type="date" name="sale_end_date" id="sale_end_date" value="{{ old('sale_end_date') }}" class="js-flatpickr form-control flatpickr-custom" placeholder="{{ \App\CentralLogics\translate('dd/mm/yy') }}" data-hs-flatpickr-options='{ "dateFormat": "Y/m/d", "minDate": "today" }'>
-                                </label>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label class="input-label" for="sale_end_date">{{translate('End Date')}}<span class="input-label-secondary"></span></label>
+                                    <label class="">
+                                        <input type="date" name="sale_end_date" id="sale_end_date" value="{{ old('sale_end_date') }}" class="js-flatpickr form-control flatpickr-custom" placeholder="{{ \App\CentralLogics\translate('dd/mm/yy') }}" data-hs-flatpickr-options='{ "dateFormat": "Y/m/d", "minDate": "today" }'>
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                        
+
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label class="input-label" for="special_price">{{translate('Special Price')}}<span class="input-label-secondary"></span></label>
+                                    <label class="">
+                                        <input type="text" name="sale_price" id="sale_price" pattern="[0-9]+" value="{{ old('sale_price') }}" class="form-control" placeholder="{{translate('Special Price')}}">
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <div class="btn--container justify-content-end m-4">
+                                        <button type="button" id="remove_from_special" class="btn btn--danger">{{translate('Remove')}}</button>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
@@ -684,6 +700,12 @@
 
 
         })
+        $("#remove_from_special").click(function(e){
+            e.preventDefault();
+            $("#sale_start_date").val("");
+            $("#sale_end_date").val("");
+            $("#sale_price").val("");
+        });
     </script>
 
     <script>

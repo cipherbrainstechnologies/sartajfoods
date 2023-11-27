@@ -81,6 +81,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
 
         Route::get('products/tag/{category_id}','CategoryController@getTags');
         
+        
     }); 
 
     Route::group(['prefix' => 'customer', 'middleware' => ['auth:api', 'customer_is_block']], function () {
