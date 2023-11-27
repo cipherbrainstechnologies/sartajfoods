@@ -65,7 +65,8 @@ class CategoryController extends Controller
 
     public function getTags($id){
         try {
-            return response()->json(Helpers::product_data_formatting(CategoryLogic::all_tags($id), true), 200);
+           $tags = CategoryLogic::all_tags($id);
+           return response()->json($tags, 200);
         } catch (\Exception $e) {
             return response()->json([], 200);
         }

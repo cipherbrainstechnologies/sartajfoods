@@ -142,7 +142,9 @@ class CategoryLogic
             }
         }
         
-        $cat_products = Product::active()->select('product_tag')->whereIn('id', $product_ids)->get()->toArray();
-        echo "<pre>";print_r($cat_products);die;
+        $cat_products = Product::active()->select('product_tag')->whereIn('id', $product_ids)->get();
+        
+        $product_tags = $cat_products->pluck('product_tag')->toArray();
+        return $product_tags;
     }
 }
