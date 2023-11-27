@@ -102,4 +102,12 @@ class Product extends Model
         return $this->hasMany(Cart::class);
     }
 
+    public function soldProduct(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        $sold_product = $this->hasMany(OrderDetail::class)
+        ->select(DB::raw('sum(quantity) sold_products, product_id'))
+        ->groupBy('product_id');
+        return $sold_product;
+    }
+
 }

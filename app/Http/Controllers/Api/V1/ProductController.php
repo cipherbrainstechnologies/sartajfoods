@@ -62,7 +62,7 @@ class ProductController extends Controller
          if(!empty($request['sort_by']) && $request['sort_by'] === 'featured') {
            $sort_by_fileter = $this->product->active()
            ->withCount(['wishlist'])
-           ->with(['rating', 'active_reviews','manufacturer'])
+           ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
            ->where(['is_featured' => 1])
            ->orderBy('id', 'desc')
            ->paginate($request['limit'], ['*'], 'page', $request['offset']);
@@ -83,7 +83,7 @@ class ProductController extends Controller
          if(!empty($request['sort_by']) && $request['sort_by'] === 'trending') {
             $sort_by_fileter = $this->product->active()
            ->withCount(['wishlist'])
-           ->with(['rating', 'active_reviews','manufacturer'])
+           ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
            ->where('popularity_count', '<>' , 0)
            ->orderBy('popularity_count', 'DESC')
            ->paginate($request['limit'], ['*'], 'page', $request['offset']);
@@ -104,7 +104,7 @@ class ProductController extends Controller
          if(!empty($request['sort_by']) && $request['sort_by'] === 'lowToHigh') {
             $sort_by_fileter = $this->product->active()
            ->withCount(['wishlist'])
-           ->with(['rating', 'active_reviews','manufacturer'])
+           ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
            ->orderBy('price', 'ASC')
            ->paginate($request['limit'], ['*'], 'page', $request['offset']);
 
@@ -124,7 +124,7 @@ class ProductController extends Controller
         if(!empty($request['sort_by']) && $request['sort_by'] === 'highToLow') {
             $sort_by_fileter = $this->product->active()
            ->withCount(['wishlist'])
-           ->with(['rating', 'active_reviews','manufacturer'])
+           ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
            ->orderBy('price', 'DESC')
            ->paginate($request['limit'], ['*'], 'page', $request['offset']);
 
@@ -144,7 +144,7 @@ class ProductController extends Controller
         if(!empty($request['max'])) {
             $sort_by_fileter = $this->product->active()
            ->withCount(['wishlist'])
-           ->with(['rating', 'active_reviews','manufacturer'])
+           ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
            ->whereBetween('price', [$request['min'], $request['max']])
            ->orderBy('price', 'DESC')
            ->paginate($request['limit'], ['*'], 'page', $request['offset']);
@@ -180,7 +180,7 @@ class ProductController extends Controller
             unset($products['products']);
             $products['products'] = $product_fileter;
         }
-
+        ProductLogic::getSoldProducts($products['products']);
         ProductLogic::cal_rating_and_review($products['products']);
         
         return response()->json($products, 200);
@@ -195,6 +195,7 @@ class ProductController extends Controller
         $products = ProductLogic::get_latest_products($request['limit'], $request['offset'],3);
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
         ProductLogic::cal_rating_and_review($products);
+        ProductLogic::getSoldProducts($products['products']);
         return response()->json($products, 200);
     }
 
@@ -203,6 +204,7 @@ class ProductController extends Controller
         $products = ProductLogic::get_latest_products($request['limit'], $request['offset']);
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
         ProductLogic::cal_rating_and_review($products);
+        ProductLogic::getSoldProducts($products['products']);
         return response()->json($products, 200);
     }
     /**
@@ -309,6 +311,7 @@ class ProductController extends Controller
 
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
         ProductLogic::cal_rating_and_review($products);
+        ProductLogic::getSoldProducts($products['products']);
         return response()->json($products, 200);
     }
 
@@ -346,6 +349,9 @@ class ProductController extends Controller
 
             $product['overall_rating'] = $all_over_rating;
             $product['total_reviews'] = $total_reviews;
+
+            $product['sold_products'] = !empty($product["soldProduct"][0]["sold_products"]) ? $product["soldProduct"][0]["sold_products"] : 0;
+            $product['total_product_count'] = $product['sold_products'] + $product['total_stock'];
         
             return response()->json($product, 200);
 
@@ -364,6 +370,7 @@ class ProductController extends Controller
             $products = ProductLogic::get_related_products($id);
             $products = Helpers::product_data_formatting($products, true);
             ProductLogic::cal_rating_and_review($products);
+            ProductLogic::getSoldProducts($products['products']);
             return response()->json($products, 200);
         }
         return response()->json([
@@ -410,6 +417,7 @@ class ProductController extends Controller
         $products = ProductLogic::get_most_reviewed_products(3);
         $products = Helpers::product_data_formatting($products['products'], true);
         ProductLogic::cal_rating_and_review($products);
+        ProductLogic::getSoldProducts($products['products']);
         return response()->json($products, 200);
     }
 
@@ -473,6 +481,7 @@ class ProductController extends Controller
         try {
             $products = Helpers::product_data_formatting($this->product->active()->withCount(['wishlist'])->with(['rating'])->where('discount', '>', 0)->get(), true);
             ProductLogic::cal_rating_and_review($products);
+            ProductLogic::getSoldProducts($products['products']);
             return response()->json($products, 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -497,6 +506,7 @@ class ProductController extends Controller
             ];
             $paginator = Helpers::product_data_formatting($products['products'], true);
             ProductLogic::cal_rating_and_review($products);
+            ProductLogic::getSoldProducts($products['products']);
             return response()->json($products, 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -515,6 +525,7 @@ class ProductController extends Controller
     {
         $products = ProductLogic::get_favorite_products($request['limit'], $request['offset'], $request->user()->id);
         ProductLogic::cal_rating_and_review($products);
+        ProductLogic::getSoldProducts($products['products']);
         return response()->json($products, 200);
     }
 
@@ -527,6 +538,7 @@ class ProductController extends Controller
         $products = ProductLogic::get_popular_products($request['limit'], $request['offset']);
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
         ProductLogic::cal_rating_and_review($products);
+        ProductLogic::getSoldProducts($products['products']);
         return response()->json($products, 200);
 
     }
@@ -611,7 +623,8 @@ class ProductController extends Controller
                 'products' => $paginator->items()
             ];
             $paginator = Helpers::product_data_formatting($products['products'], true);
-            ProductLogic::cal_rating_and_review($products);            
+            ProductLogic::cal_rating_and_review($products); 
+            ProductLogic::getSoldProducts($products['products']);           
             return response()->json($products, 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -629,6 +642,7 @@ class ProductController extends Controller
         $products = ProductLogic::get_most_viewed_products($request['limit'], $request['offset']);
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
         ProductLogic::cal_rating_and_review($products);
+        ProductLogic::getSoldProducts($products['products']);
         return response()->json($products, 200);
     }
 
@@ -641,6 +655,7 @@ class ProductController extends Controller
         $products = ProductLogic::get_trending_products($request['limit'], $request['offset']);
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
         ProductLogic::cal_rating_and_review($products);
+        ProductLogic::getSoldProducts($products['products']);
         return response()->json($products, 200);
     }
 
@@ -649,6 +664,7 @@ class ProductController extends Controller
         $products = ProductLogic::get_trending_products($request['limit'], $request['offset'],3);
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
         ProductLogic::cal_rating_and_review($products);
+        ProductLogic::getSoldProducts($products['products']);
         return response()->json($products, 200);
     }
     /**
@@ -661,6 +677,7 @@ class ProductController extends Controller
         $products = ProductLogic::get_recommended_products($user, $request['limit'], $request['offset']);
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
         ProductLogic::cal_rating_and_review($products);
+        ProductLogic::getSoldProducts($products['products']);
         return response()->json($products, 200);
     }
 
@@ -673,6 +690,7 @@ class ProductController extends Controller
         $products = ProductLogic::get_most_reviewed_products($request['limit'], $request['offset']);
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
         ProductLogic::cal_rating_and_review($products);
+        ProductLogic::getSoldProducts($products['products']);
         return response()->json($products, 200);
     }
 
