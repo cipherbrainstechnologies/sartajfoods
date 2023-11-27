@@ -348,7 +348,9 @@ class ProductController extends Controller
         $p->meta_tag_keywords = !empty($request->meta_keywords) ? $request->meta_keywords[array_search('en', $request->lang)] : null;
         $p->product_tag = !empty($request->product_tags) ? $request->product_tags[array_search('en', $request->lang)] : null;
         
-        $p->seo = !empty($request->seo) ? $request->seo[array_search('en', $request->lang)] : null;
+        // $p->seo = !empty($request->seo) ? $request->seo[array_search('en', $request->lang)] : null;
+        $p->seo_en = !empty($request->en_seo) ? $request->en_seo : null;
+        $p->seo_ja = !empty($request->ja_seo) ? $request->ja_seo : null;
 
         $p->substrack_stock = !empty($request->substrak_stock) ? $request->substrak_stock : null;
         $p->out_of_stock_status = !empty($request->out_of_stock_status) ? $request->out_of_stock_status : null;
@@ -595,7 +597,7 @@ class ProductController extends Controller
         } else {
             $stock_count = (integer)$request['total_stock'];
         }
-
+        
         if ((integer)$request['total_stock'] != $stock_count) {
             $validator->getMessageBag()->add('total_stock', 'Stock calculation mismatch!');
         }
@@ -634,7 +636,9 @@ class ProductController extends Controller
         $p->meta_tag_keywords = !empty($request->meta_keywords) ? $request->meta_keywords[array_search('en', $request->lang)] : null;
         $p->product_tag = !empty($request->product_tags) ? $request->product_tags[array_search('en', $request->lang)] : null;
 
-        $p->seo = !empty($request->seo) ? $request->seo[array_search('en', $request->lang)] : null;
+        // $p->seo = !empty($request->seo) ? $request->seo[array_search('en', $request->lang)] : null;
+        $p->seo_en = !empty($request->en_seo) ? $request->en_seo : null;
+        $p->seo_ja = !empty($request->ja_seo) ? $request->ja_seo : null;
 
         $p->substrack_stock = !empty($request->substrak_stock) ? $request->substrak_stock : null;
         $p->out_of_stock_status = !empty($request->out_of_stock_status) ? $request->out_of_stock_status : null;

@@ -2102,4 +2102,6 @@
   'banner description' => 'Banner description',
   'AMT.' => 'AMT.',
   'SEO' => 'SEO',
+  'JA' => 'JA',
+  'EN' => 'EN',
 );

@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             $table->after('mpn', function($table){
-                $table->String('seo')->nullable();
+                $table->String('seo_en')->nullable();
+                $table->String('seo_ja')->nullable();
             });
         });
     }
@@ -28,7 +29,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn(['seo']);
+            $table->dropColumn(['seo_en']);
+            $table->dropColumn(['seo_ja']);
         });
     }
 };

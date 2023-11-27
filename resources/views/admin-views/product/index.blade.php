@@ -43,6 +43,7 @@
 
                             </ul>
                             @foreach($data as $lang)
+                                
                                 <div class="{{$lang['default'] == false ? 'd-none':''}} lang_form" id="{{$lang['code']}}-form">
                                     <div class="form-group">
                                         <label class="input-label" for="{{$lang['code']}}_name">{{translate('name')}} ({{strtoupper($lang['code'])}})</label>
@@ -73,11 +74,17 @@
                                         <label class="input-label" for="{{$lang['code']}}_product_tags">{{translate('product tags')}} ({{strtoupper($lang['code'])}})</label>
                                         <input type="text" name="product_tags[]" class="form-control" id="{{$lang['code']}}_product_tags" placeholder="{{translate('product tags')}}">
                                     </div>
-                                    
-                                    <div class="form-group">
-                                        <label class="input-label" for="{{$lang['code']}}_seo">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
-                                        <input type="text" name="seo[]" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}}">
-                                    </div>
+                                    @if($lang['code'] == "en")
+                                        <div class="form-group">
+                                            <label class="input-label" for="{{$lang['code']}}_seo_en">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                            <input type="text" name="en_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('EN')}})">
+                                        </div>
+                                    @else
+                                        <div class="form-group">
+                                            <label class="input-label" for="{{$lang['code']}}_seo_ja">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                            <input type="text" name="ja_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('JA')}})">
+                                        </div>
+                                    @endif
                                 </div>
                             @endforeach
                         @else
@@ -108,10 +115,18 @@
                                     <input type="text" name="product_tags[]" class="form-control" placeholder="{{translate('product tags')}}">
                                 </div>
 
-                                <div class="form-group">
-                                    <label class="input-label" for="exampleFormControlInput1">{{translate('SEO')}} (EN)</label>
-                                    <input type="text" name="seo[]" class="form-control" placeholder="{{translate('SEO')}}">
-                                </div>
+                                @if($lang['code'] == "en")
+                                    <div class="form-group">
+                                        <label class="input-label" for="{{$lang['code']}}_seo_en">{{translate('SEO')}} (EN)</label>
+                                        <input type="text" name="en_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('EN')}})">
+                                    </div>
+                                @else
+                                    <div class="form-group">
+                                        <label class="input-label" for="{{$lang['code']}}_seo_ja">{{translate('SEO')}} (EN)</label>
+                                        <input type="text" name="ja_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('JA')}})">
+                                    </div>
+                                @endif
+                                
                             </div>
                         @endif
                     </div>

@@ -552,6 +552,32 @@
                                             required>
                                     </div>
                                 </div>
+
+                                @php($business_hours=\App\Model\BusinessSetting::where('key','business_hours')->first())
+                                <div class="col-md-4 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="input-label"
+                                            for="exampleFormControlInput1">{{translate('Business')}} {{translate('Hours')}}</label>
+                                        <input type="text" value="{{ (!empty($business_hours)) ? $business_hours->value : ''}}"
+                                            name="business_hours" class="form-control" placeholder=""
+                                            required>
+                                    </div>
+                                </div>
+
+                                @php($business_description=\App\Model\BusinessSetting::where('key','business_description')->first())
+                                <div class="col-md-4 col-sm-6">
+                                    <div class="form-group">
+                                        <label class="input-label"
+                                            for="exampleFormControlInput1">{{translate('Business')}} {{translate('Description')}}</label>
+                                        {{--  <input type="text" value="{{ (!empty($business_description)) ? $business_description->value : ''}}"
+                                            name="business_description" class="form-control" placeholder=""
+                                            required>  --}}
+                                            <textarea name="business_description" class="form-control" value="{{ (!empty($business_description)) ? $business_description->value : ''}}">{{(!empty($business_description)) ? $business_description->value : ''}}</textarea>
+                                    </div>
+                                </div>
+
+
+                               
                                 @php($pagination_limit=\App\Model\BusinessSetting::where('key','pagination_limit')->first()->value)
                                 <div class="col-md-4 col-12">
                                     <div class="form-group">

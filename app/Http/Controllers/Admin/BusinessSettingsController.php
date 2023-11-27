@@ -179,6 +179,14 @@ class BusinessSettingsController extends Controller
             'value' => $request['footer_text'],
         ]);
 
+        DB::table('business_settings')->updateOrInsert(['key' => 'business_hours'], [
+            'value' => $request['business_hours'],
+        ]);
+
+        DB::table('business_settings')->updateOrInsert(['key' => 'business_description'], [
+            'value' => $request['business_description'],
+        ]);
+
         DB::table('business_settings')->updateOrInsert(['key' => 'pagination_limit'], [
             'value' => $request['pagination_limit'],
         ]);

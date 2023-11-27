@@ -84,10 +84,17 @@
                                         <input type="text" name="product_tags[]" class="form-control" id="{{$lang['code']}}_product_tags" value="{{$translate[$lang['code']]['product_tags']??$product['product_tags']}}" placeholder="{{translate('product tags')}}">
                                     </div>
 
-                                    <div class="form-group">
-                                        <label class="input-label" for="{{$lang['code']}}_seo">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
-                                        <input type="text" name="seo[]" class="form-control" id="{{$lang['code']}}_seo"  value="{{$translate[$lang['code']]['seo']??$product['seo']}}" placeholder="{{translate('SEO')}}">
-                                    </div>
+                                    @if($lang['code'] == "en")
+                                        <div class="form-group">
+                                            <label class="input-label" for="{{$lang['code']}}_seo_en">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                            <input type="text" name="en_seo" class="form-control" id="{{$lang['code']}}_seo_en" placeholder="{{translate('SEO')}} ({{translate('EN')}})" value="{{$product['seo_en']}}">
+                                        </div>
+                                    @else
+                                        <div class="form-group">
+                                            <label class="input-label" for="{{$lang['code']}}_seo_ja">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                            <input type="text" name="ja_seo" class="form-control" id="{{$lang['code']}}_seo_ja" placeholder="{{translate('SEO')}} ({{translate('JA')}})" value="{{$product['seo_ja']}}">
+                                        </div>
+                                    @endif
                                 </div>
                             @endforeach
                         @else
@@ -119,10 +126,17 @@
                                     <input type="text" name="product_tags[]" class="form-control" placeholder="{{translate('product tags')}}">
                                 </div>
 
-                                <div class="form-group">
-                                    <label class="input-label" for="exampleFormControlInput1">{{translate('SEO')}} (EN)</label>
-                                    <input type="text" name="seo[]" class="form-control" placeholder="{{translate('SEO')}}">
-                                </div>
+                                @if($lang['code'] == "en")
+                                    <div class="form-group">
+                                        <label class="input-label" for="{{$lang['code']}}_seo_en">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                        <input type="text" name="en_seo" class="form-control" id="{{$lang['code']}}_seo_en" placeholder="{{translate('SEO')}} ({{translate('EN')}})" value="{{$product['seo_ja']}}">
+                                    </div>
+                                @else
+                                    <div class="form-group">
+                                        <label class="input-label" for="{{$lang['code']}}_seo_ja">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                        <input type="text" name="ja_seo" class="form-control" id="{{$lang['code']}}_seo_ja" placeholder="{{translate('SEO')}} ({{translate('JA')}})"  value="{{$product['seo_ja']}}">
+                                    </div>
+                                @endif
                             </div>
                         @endif
                     </div>
