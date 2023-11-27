@@ -62,4 +62,12 @@ class CategoryController extends Controller
             return response()->json([], 200);
         }
     }
+
+    public function getTags($id){
+        try {
+            return response()->json(Helpers::product_data_formatting(CategoryLogic::all_tags($id), true), 200);
+        } catch (\Exception $e) {
+            return response()->json([], 200);
+        }
+    }
 }

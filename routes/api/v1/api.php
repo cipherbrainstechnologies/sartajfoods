@@ -78,6 +78,8 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         Route::get('childes/{category_id}', 'CategoryController@get_childes');
         Route::get('products/{category_id}', 'CategoryController@get_products');
         Route::get('products/{category_id}/all', 'CategoryController@get_all_products');
+
+        Route::get('products/tag/{category_id}','CategoryController@getTags');
         
     }); 
 
@@ -127,11 +129,15 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
 
         // cart
         Route::group(['prefix' => 'cart'], function () {
-            Route::get('/', 'CartController@listCarts');
-            Route::post('add-to-cart', 'CartController@addToCart');
-            Route::put('update-cart', 'CartController@updateToCart');
-            Route::delete('remove-to-cart/{product_id}', 'CartController@removeToCart');
-            Route::delete('clear-cart','CartController@clearCart');
+            // Route::get('/', 'CartController@listCarts');
+            // Route::post('add-to-cart', 'CartController@addToCart');
+            // Route::put('update-cart', 'CartController@updateToCart');
+            // Route::delete('remove-to-cart/{product_id}', 'CartController@removeToCart');
+            // Route::delete('clear-cart','CartController@clearCart');
+
+            Route::get('cart-items','CartController@cartItems');
+            Route::post('add-items','CartController@addCartItems');
+
         });
         
         Route::group(['prefix' => 'reviews'], function () {

@@ -120,4 +120,29 @@ class CategoryLogic
             return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer'])->whereIn('id', $product_ids)->get();
         }
     }
+
+    public static function all_tags($id)
+    {
+        $cate_ids=[];
+        array_push($cate_ids,(int)$id);
+        foreach (CategoryLogic::child($id) as $ch1){
+            array_push($cate_ids,$ch1['id']);
+            foreach (CategoryLogic::child($ch1['id']) as $ch2){
+                array_push($cate_ids,$ch2['id']);
+            }
+        }
+
+        $products = Product::active()->get();
+        $product_ids = [];
+        foreach ($products as $product) {
+            foreach (json_decode($product['category_ids'], true) as $category) {
+                if (in_array($category['id'],$cate_ids)) {
+                    array_push($product_ids, $product['id']);
+                }
+            }
+        }
+        
+        $cat_products = Product::active()->select('product_tag')->whereIn('id', $product_ids)->get()->toArray();
+        echo "<pre>";print_r($cat_products);die;
+    }
 }

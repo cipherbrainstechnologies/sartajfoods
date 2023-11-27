@@ -401,7 +401,7 @@ class ProductController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'product_id' => 'required',
-            'order_id' => 'required',
+            // 'order_id' => 'required',
             'comment' => 'required',
             'rating' => 'required|numeric|max:5',
         ]);
@@ -436,7 +436,7 @@ class ProductController extends Controller
 
         $review->user_id = $request->user()->id;
         $review->product_id = $request->product_id;
-        $review->order_id = $request->order_id;
+        $review->order_id = !empty($request->order_id) ? $request->order_id : null;
         $review->comment = $request->comment;
         $review->rating = $request->rating;
         $review->attachment = json_encode($image_array);

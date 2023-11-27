@@ -106,4 +106,12 @@ class CartController extends Controller
 
         return response()->json(['message' => 'Product removed from cart']);
     }
+
+    public function cartItems(Request $request){
+
+    }
+
+    public function addCartItems(Request $request){
+        
+    }
 }
