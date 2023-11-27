@@ -101,7 +101,7 @@ class ProductController extends Controller
            $products['products']= $product_fileter;
         }
 
-         if(!empty($request['sort_by']) && $request['sort_by'] === 'low_to_high') {
+         if(!empty($request['sort_by']) && $request['sort_by'] === 'lowToHigh') {
             $sort_by_fileter = $this->product->active()
            ->withCount(['wishlist'])
            ->with(['rating', 'active_reviews','manufacturer'])
@@ -121,7 +121,7 @@ class ProductController extends Controller
            $products['products']= $product_fileter;
         }
 
-        if(!empty($request['sort_by']) && $request['sort_by'] === 'high_to_low') {
+        if(!empty($request['sort_by']) && $request['sort_by'] === 'highToLow') {
             $sort_by_fileter = $this->product->active()
            ->withCount(['wishlist'])
            ->with(['rating', 'active_reviews','manufacturer'])
@@ -157,12 +157,32 @@ class ProductController extends Controller
            } else {
             $product_fileter = Helpers::product_data_formatting($sort_by_fileter, true);
            }
+           
+           if(!empty($request['category_id'])) {
+            $product_fileter = array();
+            $product_fileter = $product_categoty_fileter_with_sort_by = Helpers::product_data_formatting(CategoryLogic::productsSortByPrice($request['category_id'], $request['limit'], $request['offset'], $request['max'], $request['min']), true);
+           }
 
            unset($products['products']);
            $products['products']= $product_fileter;
         }
-        ProductLogic::cal_rating_and_review($products);
 
+        if(!empty($request['search'])) {
+            if(!empty($request['category_id'])) {
+                $sort_by_fileter = ProductLogic::search_products_all($request['search'], $request['limit'], $request['offset'], $request['category_id']);
+            } else {
+                $sort_by_fileter = ProductLogic::search_products_all($request['search'], $request['limit'], $request['offset']);
+            }
+            
+            $products['total_size'] = sizeof($sort_by_fileter);
+            $product_fileter =  Helpers::product_data_formatting($sort_by_fileter, true);
+          
+            unset($products['products']);
+            $products['products'] = $product_fileter;
+        }
+
+        ProductLogic::cal_rating_and_review($products['products']);
+        
         return response()->json($products, 200);
      }
 

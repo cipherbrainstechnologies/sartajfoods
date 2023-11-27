@@ -345,4 +345,49 @@ class ProductLogic
             $product['total_reviews'] = $total_reviews;
         }
     }
+
+    public static function search_products_all($name, $limit = 10, $offset = 1, $category_id = null){
+
+        if(!empty($category_id)){
+            $products = Product::active()->get();
+            $product_ids = [];
+            foreach ($products as $product) {
+                foreach (json_decode($product['category_ids'], true) as $category) {
+                    if ($category['id'] == $category_id) {
+                        array_push($product_ids, $product['id']);
+                    }
+                }
+            }
+
+            $key = explode(' ', $name);
+            $paginator = Product::active()->withCount(['wishlist'])->with(['rating', 'active_reviews','manufacturer'])->where(function ($q) use ($key) {
+                foreach ($key as $value) {
+                    $q->orWhere('name', 'like', "%{$value}%");
+                }
+                $q->orWhereHas('tags',function($query) use ($key){
+                    $query->where(function($q) use ($key){
+                        foreach ($key as $value) {
+                            $q->where('tag', 'like', "%{$value}%");
+                        };
+                    });
+                });
+            })->whereIn('id', $product_ids)->paginate($limit, ['*'], 'page', $offset);
+        } else {
+            $key = explode(' ', $name);
+            $paginator = Product::active()->withCount(['wishlist'])->with(['rating', 'active_reviews','manufacturer'])->where(function ($q) use ($key) {
+                foreach ($key as $value) {
+                    $q->orWhere('name', 'like', "%{$value}%");
+                }
+                $q->orWhereHas('tags',function($query) use ($key){
+                    $query->where(function($q) use ($key){
+                        foreach ($key as $value) {
+                            $q->where('tag', 'like', "%{$value}%");
+                        };
+                    });
+                });
+            })->paginate($limit, ['*'], 'page', $offset);
+        }
+
+        return $paginator->items();
+    }
 }

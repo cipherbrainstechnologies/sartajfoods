@@ -87,9 +87,9 @@ class CategoryLogic
         if($limit !== 0 && !empty($sort)) {
             if($sort === 'featured') {
                 return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer'])->whereIn('id', $product_ids)->where(['is_featured' => 1])->paginate($limit, ['*'], 'page', $offset);
-            } else if($sort === 'low_to_high') {
+            } else if($sort === 'lowToHigh') {
                 return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer'])->whereIn('id', $product_ids)->orderBy('price', 'ASC')->paginate($limit, ['*'], 'page', $offset);
-            } else if($sort === 'high_to_low') {
+            } else if($sort === 'highToLow') {
                 return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer'])->whereIn('id', $product_ids)->orderBy('price', 'DESC')->paginate($limit, ['*'], 'page', $offset);
             } else if($sort === 'trending') {
                 return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer'])->whereIn('id', $product_ids)->where('popularity_count', '<>' , 0)->orderBy('popularity_count', 'DESC')->paginate($limit, ['*'], 'page', $offset);
