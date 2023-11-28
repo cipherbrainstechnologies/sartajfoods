@@ -2125,4 +2125,5 @@
   'Out For Delivery' => 'Out For Delivery',
   'available _sale' => 'Available  sale',
   'Logo' => 'Logo',
+  'banner logo' => 'Banner logo',
 );

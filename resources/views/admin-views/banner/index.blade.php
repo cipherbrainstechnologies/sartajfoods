@@ -172,6 +172,9 @@
                     <tr>
                         <th class="border-0">{{translate('#')}}</th>
                         <th class="border-0">{{translate('banner image')}}</th>
+                        @if(Request::is('admin/banner/other*'))
+                        <th class="border-0">{{translate('banner logo')}}</th>
+                        @endif
                         <th class="border-0">{{translate('title')}}</th>
                         <th class="border-0">{{translate('banner description')}}</th>
                         <th class="text-center border-0">{{translate('status')}}</th>
@@ -188,6 +191,13 @@
                                     <img class="img-vertical-150" src="{{asset('storage/banner')}}/{{$banner['image']}}" onerror="this.src='{{asset('public/assets/admin/img/160x160/img2.jpg')}}'">
                                 </div>
                             </td>
+                            @if($banner['type'] != "home_banner")
+                            <td>
+                                <div>
+                                    <img class="img-vertical-150" src="{{asset('storage/banner/logo')}}/{{$banner['banner_logo']}}" onerror="this.src='{{asset('public/assets/admin/img/160x160/img2.jpg')}}'">
+                                </div>
+                            </td>
+                            @endif
                             <td>
                                 <span class="d-block font-size-sm text-body text-trim-25">
                                     {{$banner['title']}}
