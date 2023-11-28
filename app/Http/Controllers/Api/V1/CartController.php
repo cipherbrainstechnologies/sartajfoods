@@ -16,8 +16,7 @@ class CartController extends Controller
         $user = auth()->user();
 
         // Fetch cart products for the authenticated user
-        $cartProducts = Cart::with('product')->where('user_id', $user->id)->get();
-        echo "<pre>";print_r($cartProducts);die;
+        $cartProducts = Cart::with('product')->where('user_id', $user->id)->get();        
         return response()->json(['user' => $user, 'cartProducts' => $cartProducts]);
     }
 
