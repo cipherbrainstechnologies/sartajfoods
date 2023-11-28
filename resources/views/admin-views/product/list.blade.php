@@ -105,6 +105,7 @@
                                 <th>{{translate('product_name')}}</th>
                                 <th>{{translate('selling_price')}}</th>
                                 <th class="text-center">{{translate('total_sale')}}</th>
+                                <th class="text-center">{{translate('available _sale')}}</th>
                                 <th class="text-center">{{translate('show_in_daily_needs')}}</th>
                                 <th class="text-center">{{translate('featured')}}</th>
                                 <th class="text-center">{{translate('status')}}</th>
@@ -137,6 +138,9 @@
                                     </td>
                                     <td class="text-center">
                                         {{ $product->total_sold }}
+                                    </td>
+                                     <td class="text-center">
+                                        {{ ($product->total_stock >= 0) ? $product->total_stock  : 0}}
                                     </td>
                                     <td class="pt-1 pb-3  {{$key == 0 ? 'pt-4' : '' }}">
                                         <div class="text-center">

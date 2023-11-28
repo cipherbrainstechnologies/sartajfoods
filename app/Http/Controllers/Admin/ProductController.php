@@ -144,7 +144,7 @@ class ProductController extends Controller
             }
              $product->total_sold = $total_sold;
         }
-
+        
         return view('admin-views.product.list', compact('products','search'));
     }
 

@@ -2104,4 +2104,5 @@
   'SEO' => 'SEO',
   'JA' => 'JA',
   'EN' => 'EN',
+  'available _sale' => 'セール中',
 );

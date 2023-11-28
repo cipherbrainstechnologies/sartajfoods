@@ -110,6 +110,13 @@ class OrderController extends Controller
             // $product = $this->product->find($c['product_id']);
             $product = $this->product->find($c['id']);
             // $type = $c['variation'][0]['type'];
+
+            $type = $c['quantity'];
+            if ($c['total_stock'] >= $type) {
+                return response()->json([
+                    'message' => 'Stock is insufficient! available stock ' . $c['total_stock'],
+                ], 404);
+            }
             $type = $c['variations'][0]['type'];
             foreach (json_decode($product['variations'], true) as $var) {
                 if ($type == $var['type'] && $var['stock'] < $c['quantity']) {
