@@ -417,7 +417,7 @@ class ProductController extends Controller
         $products = ProductLogic::get_most_reviewed_products(3);
         $products = Helpers::product_data_formatting($products['products'], true);
         ProductLogic::cal_rating_and_review($products);
-        ProductLogic::getSoldProducts($products['products']);
+        ProductLogic::getSoldProducts($products);
         return response()->json($products, 200);
     }
 
