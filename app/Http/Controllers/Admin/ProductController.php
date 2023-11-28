@@ -374,6 +374,9 @@ class ProductController extends Controller
         $p->manufacturer_id = !empty($request->manufacturer_id) ? $request->manufacturer_id : null;    
         $p->sale_start_date = !empty($request->sale_start_date) ? $request->sale_start_date : null;
         $p->sale_end_date = !empty($request->sale_end_date) ? $request->sale_end_date : null;
+
+        $p->sale_price = !empty($request->sale_price) ? $request->sale_price : null;
+        
         $p->downloads = $request->has('download_id') ? json_encode($request->download_id) : json_encode([]);
         $p->save();
 
@@ -662,7 +665,7 @@ class ProductController extends Controller
         $p->manufacturer_id = !empty($request->manufacturer_id) ? $request->manufacturer_id : null;
 
         $p->sale_price = !empty($request->sale_price) ? $request->sale_price : null;
-        
+
         $p->save();
 
         $p->tags()->sync($tag_ids);
