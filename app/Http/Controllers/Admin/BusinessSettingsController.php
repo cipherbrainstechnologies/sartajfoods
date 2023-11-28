@@ -1277,6 +1277,78 @@ class BusinessSettingsController extends Controller
         return view('admin-views.business-settings.main-branch-setup', compact('main_branch'));
     }
 
+    public function menu_setup(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    {
+        $config=\App\CentralLogics\Helpers::get_business_settings('firebase_message_config');
+        return view('admin-views.business-settings.menu-setup', compact('config'));
+    }
+
+    public function menu_setup_update(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        DB::table('business_settings')->updateOrInsert(['key' => 'link_about_us'], [
+            'value' => $request['link_about_us'],
+        ]);
+
+        DB::table('business_settings')->updateOrInsert(['key' => 'link_delivery_information'], [
+            'value' => $request['link_delivery_information'],
+        ]);
+
+        DB::table('business_settings')->updateOrInsert(['key' => 'link_privacy_policy'], [
+            'value' => $request['link_privacy_policy'],
+        ]);
+
+        DB::table('business_settings')->updateOrInsert(['key' => 'link_term_conditions'], [
+            'value' => $request['link_term_conditions'],
+        ]);
+
+        DB::table('business_settings')->updateOrInsert(['key' => 'link_contact_us'], [
+            'value' => $request['link_contact_us'],
+        ]);
+
+        DB::table('business_settings')->updateOrInsert(['key' => 'link_support_center'], [
+            'value' => $request['link_support_center'],
+        ]);
+
+        DB::table('business_settings')->updateOrInsert(['key' => 'link_career'], [
+            'value' => $request['link_career'],
+        ]);
+
+        DB::table('business_settings')->updateOrInsert(['key' => 'link_sign_in'], [
+            'value' => $request['link_sign_in'],
+        ]);
+
+        DB::table('business_settings')->updateOrInsert(['key' => 'link_view_cart'], [
+            'value' => $request['link_view_cart'],
+        ]);
+
+        DB::table('business_settings')->updateOrInsert(['key' => 'link_my_wishlist'], [
+            'value' => $request['link_my_wishlist'],
+        ]);
+
+        DB::table('business_settings')->updateOrInsert(['key' => 'link_track_my_order'], [
+            'value' => $request['link_track_my_order'],
+        ]);
+
+        DB::table('business_settings')->updateOrInsert(['key' => 'link_shipping_detail'], [
+            'value' => $request['link_shipping_detail'],
+        ]);
+
+        DB::table('business_settings')->updateOrInsert(['key' => 'link_compare_product'], [
+            'value' => $request['link_compare_product'],
+        ]);
+
+        DB::table('business_settings')->updateOrInsert(['key' => 'link_google_play'], [
+            'value' => $request['link_google_play'],
+        ]);
+
+        DB::table('business_settings')->updateOrInsert(['key' => 'link_app_store'], [
+            'value' => $request['link_app_store'],
+        ]);
+
+        Toastr::success(translate('Settings updated!'));
+        return back();
+    }
+
     public function delivery_setup_update(Request $request): \Illuminate\Http\RedirectResponse
     {
         if($request->delivery_charge == null) {

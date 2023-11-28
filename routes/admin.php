@@ -276,6 +276,10 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
                 Route::get('location-setup', 'LocationSettingsController@location_index')->name('location-setup')->middleware('actch');
                 Route::post('update-location', 'LocationSettingsController@location_setup')->name('update-location');
                 Route::get('main-branch-setup', 'BusinessSettingsController@main_branch_setup')->name('main-branch-setup')->middleware('actch');
+
+                Route::get('menu-setup', 'BusinessSettingsController@menu_setup')->name('menu-setup');
+                Route::post('menu-setup-update', 'BusinessSettingsController@menu_setup_update')->name('menu-setup-update');
+
                 Route::get('product-setup', 'BusinessSettingsController@product_setup')->name('product-setup');
                 Route::post('product-setup-update', 'BusinessSettingsController@product_setup_update')->name('product-setup-update');
                 Route::get('cookies-setup', 'BusinessSettingsController@cookies_setup')->name('cookies-setup');
