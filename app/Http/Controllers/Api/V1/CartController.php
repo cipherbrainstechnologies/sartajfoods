@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Model\Cart;
 use App\Model\Product;
+use App\CentralLogics\Helpers;
+
 
 class CartController extends Controller
 {
@@ -14,10 +16,15 @@ class CartController extends Controller
     {
         // Retrieve the authenticated user
         $user = auth()->user();
-
         // Fetch cart products for the authenticated user
-        $cartProducts = Cart::with('product')->where('user_id', $user->id)->get();        
-        return response()->json(['user' => $user, 'cartProducts' => $cartProducts]);
+        $cartProducts = Cart::with('product')->where('user_id', $user->id)->get();
+        $deliveryCharge = !empty(Helpers::get_business_settings('delivery_charge'))
+                                    ? Helpers::get_business_settings('delivery_charge') : 0;
+
+        $SubTotalAmt =  Cart::with('product')->where('user_id', $user->id)->sum('sub_total'); 
+        $totalAmt = round($SubTotalAmt + $deliveryCharge,2);
+        
+        return response()->json(['user' => $user, 'cartProducts' => $cartProducts,'delivery_charge' =>$deliveryCharge,'total_sub_amt' => $SubTotalAmt,'total_amt' => $totalAmt]);
     }
 
     public function addToCart(Request $request)
