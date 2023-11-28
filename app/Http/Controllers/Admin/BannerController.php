@@ -114,6 +114,7 @@ class BannerController extends Controller
         }  
         $banner->description = $request->description;
         $banner->ad_section = !empty($request->ad_section)  ? $request->ad_section : null;
+        $banner->banner_logo = Helpers::upload('banner/logo/', 'png', $request->file('banner_logo'));
         $banner->image = Helpers::upload('banner/', 'png', $request->file('image'));      
         $banner->save();        
         Toastr::success(translate('Banner added successfully!'));
@@ -180,6 +181,7 @@ class BannerController extends Controller
         }
         $banner->description = $request->description;
         $banner->image = $request->has('image') ? Helpers::update('banner/', $banner->image, 'png', $request->file('image')) : $banner->image;
+        $banner->banner_logo = $request->has('banner_logo') ? Helpers::update('banner/logo/', $banner->banner_logo, 'png', $request->file('banner_logo')) : $banner->banner_logo;
         $banner->save();
         Toastr::success(translate('Banner updated successfully!'));
         return redirect()->route('admin.banner.add-new');

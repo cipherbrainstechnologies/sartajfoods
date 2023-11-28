@@ -109,7 +109,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="d-flex flex-column justify-content-center h-100">
+                            <div class="d-flex flex-column justify-content-center h-30">
                                 <h5 class="text-center mb-3 text--title text-capitalize">
                                     {{translate('banner')}} {{translate('image')}}
                                     <small class="text-danger">* ( {{translate('ratio')}} 3:1 )</small>
@@ -119,7 +119,20 @@
                                     <img id="viewer" src="{{asset('public/assets/admin/img/upload-vertical.png')}}" alt="banner image"/>
                                 </label>
                             </div>
+                            @if(Request::is('admin/banner/other*'))
+                                <div class="d-flex flex-column justify-content-center h-60">
+                                    <h5 class="text-center mb-3 text--title text-capitalize">
+                                        {{translate('banner')}} {{translate('Logo')}}
+                                        <small class="text-danger">* ( {{translate('ratio')}} 3:1 )</small>
+                                    </h5>
+                                    <label class="upload--vertical">
+                                        <input type="file" name="banner_logo" id="banner_logo" class="" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" hidden>
+                                        <img id="banner-logo-viewer" src="{{asset('public/assets/admin/img/upload-vertical.png')}}" alt="banner image"/>
+                                    </label>
+                                </div>
+                            @endif
                         </div>
+                        
                         <div class="col-12">
                             <div class="btn--container justify-content-end">
                                 <button type="reset" class="btn btn--reset">{{translate('reset')}}</button>
@@ -253,10 +266,26 @@
             }
         }
 
+        function readBannerLogoURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#banner-logo-viewer').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+
         $("#customFileEg1").change(function () {
             readURL(this);
         });
 
+        $("#banner_logo").change(function () {
+            readBannerLogoURL(this);
+        });
 
         function show_item(type) {
             if (type === 'product') {

@@ -2124,4 +2124,5 @@
   'quantity_must_be_equal_or_less_than 10' => 'Quantity must be equal or less than 10',
   'Out For Delivery' => 'Out For Delivery',
   'available _sale' => 'Available  sale',
+  'Logo' => 'Logo',
 );

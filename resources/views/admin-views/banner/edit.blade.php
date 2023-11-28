@@ -116,17 +116,29 @@
                         </div>
 
                         <div class="col-md-6">
-                            <div class="d-flex flex-column justify-content-center h-100">
-                                <div class="text-center mb-3">
+                           
+                            <div class="d-flex flex-column justify-content-center h-30">
+                                <h5 class="text-center mb-3 text--title text-capitalize">
                                     {{translate('banner')}} {{translate('image')}}
                                     <small class="text-danger">* ( {{translate('ratio')}} 3:1 )</small>
-                                </div>
+                                </h5>
                                 <label class="upload--vertical">
-                                    <input type="file" name="image" id="customFileEg1" class=""
-                                            accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" hidden>
-                                    <img id="viewer" onerror="this.src='{{asset('public/assets/admin/img/upload-vertical.png')}}'" src="{{asset('storage/banner')}}/{{$banner['image']}}" alt="banner image"/>
+                                    <input type="file" name="image" id="customFileEg1" class="" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" hidden>
+                                    <img id="viewer" src="{{asset('public/assets/admin/img/upload-vertical.png')}}"  src="{{asset('storage/banner')}}/{{$banner['image']}}" alt="banner image"/>
                                 </label>
                             </div>
+                            @if($banner['type']!="home_banner")
+                            <div class="d-flex flex-column justify-content-center h-60">
+                                <h5 class="text-center mb-3 text--title text-capitalize">
+                                    {{translate('banner')}} {{translate('Logo')}}
+                                    <small class="text-danger">* ( {{translate('ratio')}} 3:1 )</small>
+                                </h5>
+                                <label class="upload--vertical">
+                                    <input type="file" name="banner_logo" id="banner_logo" class="" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" hidden>
+                                    <img id="banner-logo-viewer" src="{{asset('public/assets/admin/img/upload-vertical.png')}}"  src="{{asset('storage/banner')}}/{{$banner['image']}}" alt="banner image"/>
+                                </label>
+                            </div>
+                            @endif
                         </div>
                     </div>
 
@@ -145,6 +157,7 @@
 
 @push('script_2')
     <script>
+        
         function readURL(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -157,8 +170,24 @@
             }
         }
 
+        function readBannerLogoURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#banner-logo-viewer').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
         $("#customFileEg1").change(function () {
             readURL(this);
+        });
+
+        $("#banner_logo").change(function () {
+            readBannerLogoURL(this);
         });
 
         function show_item(type) {

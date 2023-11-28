@@ -79,7 +79,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         Route::get('products/{category_id}', 'CategoryController@get_products');
         Route::get('products/{category_id}/all', 'CategoryController@get_all_products');
 
-        Route::get('products/tag/{category_id}','CategoryController@getTags');
+        // Route::get('products/tag/{category_id}','CategoryController@getTags'); 
         
         
     }); 
