@@ -107,6 +107,9 @@ class CartController extends Controller
     {
         
         $user = auth()->user();
+        $cart = [];
+        $discount_type = "amount";
+
 
         // Validate the request
         $request->validate([
@@ -120,19 +123,84 @@ class CartController extends Controller
         // Check if the product exists
         $product = Product::find($productId);
         
+        
         if (!$product) {
             return response()->json(['error' => 'Product not found'], 404);
         }
+        
+                // Check Order Exists or not
+                if(Cart::where(['product_id' => $product->id, 'user_id' => $user->id])->Exists()){
+                    $ExistingProduct = Cart::where(['product_id' => $product->id, 'user_id' => $user->id])->first();
+                    $qty = $ExistingProduct->quantity ?? 0;
+                    $quantity = $qty + $quantity;
+                }else{
+                    $quantity = $quantity;
+                }
 
-        // Add the product to the user's cart
-        $cart = Cart::updateOrCreate(
-            [
-                'user_id' => $user->id,
-                'product_id' => $productId,
-                'quantity' => $quantity,
-                'price' => ($product->price * $quantity)
-            ],
-        );
+                if($quantity > $product->maximum_order_quantity ){
+                    return response()->json(['error' => 'maximum order quantity is'.$product->maximum_order_quantity]);
+                }
+                
+
+                if(!empty($product->sale_price)){
+                    $currentDate = new DateTime(); // Current date and time
+                    $saleStartDate = new DateTime($product->sale_start_date);
+                    $saleEndDate = new DateTime($product->sale_end_date);
+                    if($currentDate >= $saleStartDate && $currentDate <= $saleEndDate){
+                        $productPrice = $product->sale_price;
+                        $discount = 0;
+                        $subTotal = $product->sale_price * $quantity;
+                    }
+                    
+                }else{
+                    // echo $product->discount_type;die;
+                    if($product->discount_type ="percent"){
+                        $discount = ((($product->price * $product->discount) / 100) * $quantity);
+                        $subTotal = (($product->price *  $quantity) - $discount);
+
+                    }else{
+                        
+                        $discount = $product->discount;
+                        $subTotal = (($product->price *  $quantity) - $discount);
+                    }
+                }
+                
+                if(Cart::where(['product_id' => $product->id, 'user_id' => $user->id])->exists()){
+                    $cart =  Cart::where(['product_id' => $product->id, 'user_id' => $user->id])
+                                    ->update(
+                                        [
+                                            'quantity' => $quantity,
+                                            'price' => (isset($productSalePrice) && !empty($productSalePrice)) ? 0 : $product->price,
+                                            'special_price' =>  (isset($productSalePrice) && !empty($productSalePrice)) ? $productSalePrice : '0',
+                                            'discount_type' => $discount_type,
+                                            'discount'      => $discount,
+                                            'sub_total'     => $subTotal
+                                        ]
+                                    );
+                }else{
+                    $cart = Cart::Create(
+                        [
+                            'user_id' => $user->id,
+                            'product_id' => $product->id,
+                            'quantity' => $quantity,
+                            'price' => (isset($productSalePrice) && !empty($productSalePrice)) ? 0 : $product->price,
+                            'special_price' =>  (isset($productSalePrice) && !empty($productSalePrice)) ? $productSalePrice : '0',
+                            'discount_type' => $discount_type,
+                            'discount'      => $discount,
+                            'sub_total'     => $subTotal
+                        ],
+                    );
+                }
+            
+        // // Add the product to the user's cart
+        // $cart = Cart::updateOrCreate(
+        //     [
+        //         'user_id' => $user->id,
+        //         'product_id' => $productId,
+        //         'quantity' => $quantity,
+        //         'price' => ($product->price * $quantity)
+        //     ],
+        // );
 
         return response()->json(['message' => 'Product added to cart', 'cart' => $cart]);
     }
@@ -154,7 +222,7 @@ class CartController extends Controller
 
         // Check if the cart entry exists
         if (!$cart) {
-            return response()->json(['error' => 'Cart entry not found'], 404);
+            return response()->json(['error' => 'Cart list is empty'], 404);
         }
 
         // Update the quantity
