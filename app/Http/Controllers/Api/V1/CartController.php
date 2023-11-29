@@ -17,7 +17,7 @@ class CartController extends Controller
         // Retrieve the authenticated user
         $user = auth()->user();
         // Fetch cart products for the authenticated user
-        $cartProducts = Cart::with('product')->where('user_id', $user->id)->get();
+        $cartProducts = Cart::with('product.rating')->where('user_id', $user->id)->get();
         $deliveryCharge = !empty(Helpers::get_business_settings('delivery_charge'))
                                     ? Helpers::get_business_settings('delivery_charge') : 0;
 

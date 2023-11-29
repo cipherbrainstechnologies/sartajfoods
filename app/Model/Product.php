@@ -87,6 +87,17 @@ class Product extends Model
         return $this->BelongsTo(Manufacturer::class);
     }
 
+    public function getImageAttribute($value)
+    {
+        // Get the base URL for the images
+        $baseUrl = config('app.url') . '/storage/product/';
+
+        // Append the base URL to each image filename
+        return array_map(function ($filename) use ($baseUrl) {
+            return $baseUrl . $filename;
+        }, json_decode($value));
+    }
+    
     public function getManufacturerImageAttribute()
     {
         $baseURL = 'http://192.168.1.30:8000';
