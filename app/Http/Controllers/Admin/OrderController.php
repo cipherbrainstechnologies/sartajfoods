@@ -670,4 +670,11 @@ class OrderController extends Controller
         //return $storage;
         return (new FastExcel($storage))->download('orders.xlsx');
     }
+
+    public function shpping_list($order_id)
+    {
+        $order = $this->order->where('id', $order_id)->first();
+        $order->delivery_address = (array)$order->delivery_address;
+        return view('admin-views.order.shipping', compact('order'));
+    }
 }
