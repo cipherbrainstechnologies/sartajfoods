@@ -2137,4 +2137,5 @@
   'App Store' => 'App Store',
   'Google Play' => 'Google Play',
   'Compare Product' => 'Compare Product',
+  'Shipping Detail' => 'Shipping Detail',
 );
