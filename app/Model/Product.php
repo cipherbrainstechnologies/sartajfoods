@@ -89,16 +89,16 @@ class Product extends Model
         return $this->BelongsTo(Manufacturer::class);
     }
 
-    public function getImageAttribute($value)
-    {
-        // Get the base URL for the images
-        $baseUrl = config('app.url') . '/storage/product/';
+    // public function getImageAttribute($value)
+    // {
+    //     // Get the base URL for the images
+    //     $baseUrl = config('app.url') . '/storage/product/';
 
-        // Append the base URL to each image filename
-        return array_map(function ($filename) use ($baseUrl) {
-            return $baseUrl . $filename;
-        }, json_decode($value));
-    }
+    //     // Append the base URL to each image filename
+    //     return array_map(function ($filename) use ($baseUrl) {
+    //         return $baseUrl . $filename;
+    //     }, json_decode($value));
+    // }
     
     public function getOverallRatingAttribute()
     {
