@@ -7,6 +7,8 @@ use App\Model\CategoryDiscount;
 use App\Model\Currency;
 use App\Model\DMReview;
 use App\Model\Order;
+use App\Model\Cart;
+use App\Model\Product;
 use App\Model\Review;
 use App\User;
 use Exception;
@@ -814,6 +816,88 @@ class Helpers
         $mpdf_view = $mpdf_view->render();
         $mpdf->WriteHTML($mpdf_view);
         $mpdf->Output($file_prefix . $file_postfix . '.pdf', 'D');
+    }
+
+    public static function addToCart($request,$user){
+        if(!empty($request['cart'])){
+            $userId = $user->id; 
+            $discount = 0;
+            $discount_type = "amount";
+            $subTotal = 0;
+            $quantity = 0;
+            foreach ($request['cart'] as $key => $data) {
+               
+                $productSalePrice = 0;
+                $product = Product::find($data['product_id']);
+                
+                if (!$product) {
+                    return response()->json(['error' => 'Product not found'], 404);
+                }
+                // Check Order Exists or not
+                if(Cart::where(['product_id' => $data['product_id'], 'user_id' => $userId])->Exists()){
+                    $ExistingProduct = Cart::where(['product_id' => $data['product_id'], 'user_id' => $userId])->first();
+                    $qty = $ExistingProduct->quantity ?? 0;
+                    $quantity = $qty + $data['qty'];
+                }else{
+                    $quantity = $data['qty'];
+                }
+
+                if($data['qty'] > $product->maximum_order_quantity ){
+                    return response()->json(['error' => 'maximum order quantity is'.$product->maximum_order_quantity]);
+                }
+                
+
+                if(!empty($product->sale_price)){
+                    $currentDate = new DateTime(); // Current date and time
+                    $saleStartDate = new DateTime($product->sale_start_date);
+                    $saleEndDate = new DateTime($product->sale_end_date);
+                    if($currentDate >= $saleStartDate && $currentDate <= $saleEndDate){
+                        $productPrice = $product->sale_price;
+                        $discount = 0;
+                        $subTotal = $product->sale_price * $quantity;
+                    }
+                    
+                }else{
+                    if($product->discount_type ="percent"){
+                        $discount = ((($product->price * $product->discount) / 100) * $quantity);
+                        $subTotal = (($product->price *  $quantity) - $discount);
+
+                    }else{
+                        
+                        $discount = $product->discount;
+                        $subTotal = (($product->price *  $quantity) - $discount);
+                    }
+                }
+                
+                if(Cart::where(['product_id' => $data['product_id'], 'user_id' => $userId])->exists()){
+                    $cart =  Cart::where(['product_id' => $data['product_id'], 'user_id' => $userId])
+                                    ->update(
+                                        [
+                                            'quantity' => $quantity,
+                                            'price' => (isset($productSalePrice) && !empty($productSalePrice)) ? 0 : $product->price,
+                                            'special_price' =>  (isset($productSalePrice) && !empty($productSalePrice)) ? $productSalePrice : '0',
+                                            'discount_type' => $discount_type,
+                                            'discount'      => $discount,
+                                            'sub_total'     => $subTotal
+                                        ]
+                                    );
+                }else{
+                    $cart = Cart::Create(
+                        [
+                            'user_id' => $userId,
+                            'product_id' => $data['product_id'],
+                            'quantity' => $quantity,
+                            'price' => (isset($productSalePrice) && !empty($productSalePrice)) ? 0 : $product->price,
+                            'special_price' =>  (isset($productSalePrice) && !empty($productSalePrice)) ? $productSalePrice : '0',
+                            'discount_type' => $discount_type,
+                            'discount'      => $discount,
+                            'sub_total'     => $subTotal
+                        ],
+                    );
+                }
+            }
+        }
+        return true;
     }
 
 }

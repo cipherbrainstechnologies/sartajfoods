@@ -10,6 +10,8 @@ use App\Model\BusinessSetting;
 use App\Model\EmailVerifications;
 use App\Model\PhoneVerification;
 use App\User;
+use App\Model\Cart;
+use App\Model\Product;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -435,6 +437,7 @@ class CustomerAuthController extends Controller
      */
     public function login(Request $request): JsonResponse
     {
+        
         if($request->has('email_or_phone'))
         {
             $user_id = $request['email_or_phone'];
@@ -453,12 +456,12 @@ class CustomerAuthController extends Controller
                 'password' => 'required|min:6'
             ]);
         }
-
+      
 
         if ($validator->fails()) {
             return response()->json(['errors' => Helpers::error_processor($validator)], 403);
         }
-
+        
         $user = $this->user->where(['email' => $user_id])->orWhere(['phone' => $user_id])->first();
 
         $max_login_hit = Helpers::get_business_settings('maximum_login_hit') ?? 5;
@@ -484,7 +487,8 @@ class CustomerAuthController extends Controller
             $data = [
                 'email' => $user->email,
                 'password' => $request->password,
-                'is_block' => 0
+                'is_block' => 0,
+                // 'is_email_verified' => 1
             ];
 
             if (auth()->attempt($data)) {
@@ -495,7 +499,7 @@ class CustomerAuthController extends Controller
                 $user->temp_block_time = null;
                 $user->updated_at = now();
                 $user->save();
-
+                Helpers::addToCart($request,$user);
                 return response()->json(['token' => $token], 200);
 
             }

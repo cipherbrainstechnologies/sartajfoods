@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->after('is_phone_verified', function($table){
-                $table->String('is_email_verified')->default('0');
+                $table->tinyInteger('is_email_verified')->default('0');
             });
         });
     }
