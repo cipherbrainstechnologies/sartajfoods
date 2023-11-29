@@ -226,7 +226,6 @@ class CartController extends Controller
         $user = auth()->user();
 
         // Find the cart entry by id
-        echo $user->id . ' '. $productId;die;
         $cart =  Cart::where(['user_id'=>  $user->id,"product_id" => $productId])->first();
 
         // Check if the cart entry exists
