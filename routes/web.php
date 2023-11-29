@@ -139,3 +139,5 @@ Route::get('/test', function () {
 
 Route::any('6cash/make-payment', 'SixCashPaymentController@make_payment')->name('6cash.make-payment');
 Route::any('6cash/callback','SixCashPaymentController@callback')->name('6cash.callback');
+
+Route::get('verify-email/{id}/{token}', [App\Http\Controllers\Api\V1\Auth\CustomerAuthController::class, 'email_varification'])->name('email-verification');

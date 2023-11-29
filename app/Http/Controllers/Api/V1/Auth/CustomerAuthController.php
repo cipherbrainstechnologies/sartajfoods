@@ -24,6 +24,8 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Carbon;
 use Carbon\CarbonInterval;
 use Illuminate\Support\Facades\Hash;
+use App\Mail\EmailConfirmation;
+use Illuminate\Support\Facades\Redirect;
 
 class CustomerAuthController extends Controller
 {
@@ -423,6 +425,18 @@ class CustomerAuthController extends Controller
         //     return response()->json(['temporary_token' => $temporary_token], 200);
         // }
         if ($email_verification && !$user->is_email_verified) {
+            try {
+                $emailServices = Helpers::get_business_settings('mail_config');
+    
+                if (isset($emailServices['status']) && $emailServices['status'] == 1) {
+                    Mail::to($user->email)->send(new EmailConfirmation($user->id, $temporary_token));
+                }
+    
+            } catch (\Exception $exception) {
+                return response()->json([
+                    'message' => 'Token sent failed'
+                ], 403);
+            }
             return response()->json(['temporary_token' => $temporary_token], 200);
         }
 
@@ -463,7 +477,13 @@ class CustomerAuthController extends Controller
         }
         
         $user = $this->user->where(['email' => $user_id])->orWhere(['phone' => $user_id])->first();
-
+        if($user->is_email_verified) {
+            $errors = [];
+            $errors[] = ['code' => 'auth-001', 'message' => 'Email is not verify'];
+            return response()->json([
+                'errors' => $errors
+            ], 401);
+        }
         $max_login_hit = Helpers::get_business_settings('maximum_login_hit') ?? 5;
         $temp_block_time = Helpers::get_business_settings('temporary_login_block_time') ?? 600; // seconds
 
@@ -678,4 +698,15 @@ class CustomerAuthController extends Controller
             return response()->json(array('sucess' => true, 'meassge' => 'Password Reset sucessfully', 'status' => 200), 200);
         }
     }            
+
+    public function email_varification($id, $token)
+    {
+        $user = User::find($id);
+        $user->is_email_verified = 1;
+        $user->email_verified_at = Carbon::now()->format('Y-m-d H:i:s');
+        $user->email_verification_token = $token;
+        $user->save();
+        $url = 'https://sartaj.vercel.app/page-login';
+        return Redirect::to($url);
+    }
 }
