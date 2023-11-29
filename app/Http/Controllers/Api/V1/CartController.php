@@ -12,41 +12,96 @@ use App\CentralLogics\Helpers;
 
 class CartController extends Controller
 {
+    // public function listCarts()
+    // {
+    //     // Retrieve the authenticated user
+    //     $user = auth()->user();
+    //     // Fetch cart products for the authenticated user
+    //     $cartProducts = Cart::with('product.rating')->where('user_id', $user->id)->get();
+        
+    //     $cartProducts->map(function ($cartProduct) {
+    //         if (!empty($cartProduct->product->rating[0])) {
+    //             $allOverRating = ($cartProduct->product->rating[0]->total / ($cartProduct->product->rating[0]->count * 5)) * 100;
+    //             $totalReviews = $cartProduct->product->rating[0]->count;
+    //         } else {
+    //             $allOverRating = 0;
+    //             $totalReviews = 0;
+    //         }
+        
+    //         // Add the overall_rating and total_reviews to each product
+    //         $cartProduct->product->overall_rating = $allOverRating;
+    //         $cartProduct->product->total_reviews = $totalReviews;
+    //         $cartProduct->product->image_urls = array_map(function ($imageName) {
+    //             return asset("storage/product/{$imageName}");
+    //         }, $cartProduct->product->image);
+        
+    //         return $cartProduct;
+    //     });
+
+
+    //     $deliveryCharge = !empty(Helpers::get_business_settings('delivery_charge'))
+    //                                 ? Helpers::get_business_settings('delivery_charge') : 0;
+
+    //     $SubTotalAmt =  Cart::with('product')->where('user_id', $user->id)->sum('sub_total'); 
+    //     $totalAmt = round($SubTotalAmt + $deliveryCharge,2);
+        
+    //     return response()->json(['user' => $user, 'cartProducts' => $cartProducts,'delivery_charge' =>$deliveryCharge,'total_sub_amt' => $SubTotalAmt,'total_amt' => $totalAmt]);
+    // }
+
     public function listCarts()
     {
         // Retrieve the authenticated user
         $user = auth()->user();
+
         // Fetch cart products for the authenticated user
         $cartProducts = Cart::with('product.rating')->where('user_id', $user->id)->get();
-        
-        $cartProducts->map(function ($cartProduct) {
-            if (!empty($cartProduct->product->rating[0])) {
-                $allOverRating = ($cartProduct->product->rating[0]->total / ($cartProduct->product->rating[0]->count * 5)) * 100;
-                $totalReviews = $cartProduct->product->rating[0]->count;
-            } else {
-                $allOverRating = 0;
-                $totalReviews = 0;
-            }
-        
+
+        $cartProducts->each(function ($cartProduct) {
+            $product = $cartProduct->product;
+
+            // Calculate overall rating
+            $allOverRating = $product->rating->isNotEmpty()
+                ? ($product->rating[0]->total / ($product->rating[0]->count * 5)) * 100
+                : 0;
+
             // Add the overall_rating and total_reviews to each product
-            $cartProduct->product->overall_rating = $allOverRating;
-            $cartProduct->product->total_reviews = $totalReviews;
-            $cartProduct->product->image_urls = array_map(function ($imageName) {
-                return asset("storage/product/{$imageName}");
-            }, $cartProduct->product->image);
-        
+            $product->overall_rating = $allOverRating;
+            $product->total_reviews = $product->rating->isNotEmpty()
+                ? $product->rating[0]->count
+                : 0;
+
+            // Check if image is an array before using map function
+            if (is_string($product->image)) {
+                // Decode the JSON string to an array
+                $imageArray = json_decode($product->image, true);
+            
+                // Check if decoding was successful and if the result is an array
+                if (is_array($imageArray)) {
+                    // Use array_map to create image URLs
+                    $product->image = array_map(function ($imageName) {
+                        return asset("storage/product/{$imageName}");
+                    }, $imageArray);
+                }
+            }
+
             return $cartProduct;
         });
 
+        $deliveryCharge = Helpers::get_business_settings('delivery_charge', 0);
 
-        $deliveryCharge = !empty(Helpers::get_business_settings('delivery_charge'))
-                                    ? Helpers::get_business_settings('delivery_charge') : 0;
+        $subTotalAmt = $cartProducts->sum('sub_total');
+        $totalAmt = round($subTotalAmt + $deliveryCharge, 2);
 
-        $SubTotalAmt =  Cart::with('product')->where('user_id', $user->id)->sum('sub_total'); 
-        $totalAmt = round($SubTotalAmt + $deliveryCharge,2);
-        
-        return response()->json(['user' => $user, 'cartProducts' => $cartProducts,'delivery_charge' =>$deliveryCharge,'total_sub_amt' => $SubTotalAmt,'total_amt' => $totalAmt]);
+        return response()->json([
+            'user' => $user,
+            'cartProducts' => $cartProducts,
+            'delivery_charge' => $deliveryCharge,
+            'total_sub_amt' => $subTotalAmt,
+            'total_amt' => $totalAmt
+        ]);
     }
+
+
 
     public function addToCart(Request $request)
     {
