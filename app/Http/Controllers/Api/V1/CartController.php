@@ -31,6 +31,9 @@ class CartController extends Controller
             // Add the overall_rating and total_reviews to each product
             $cartProduct->product->overall_rating = $allOverRating;
             $cartProduct->product->total_reviews = $totalReviews;
+            $cartProduct->product->image_urls = array_map(function ($imageName) {
+                return asset("storage/product/{$imageName}");
+            }, $cartProduct->product->image);
         
             return $cartProduct;
         });
