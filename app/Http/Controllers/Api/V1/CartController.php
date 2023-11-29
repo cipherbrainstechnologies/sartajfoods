@@ -18,6 +18,24 @@ class CartController extends Controller
         $user = auth()->user();
         // Fetch cart products for the authenticated user
         $cartProducts = Cart::with('product.rating')->where('user_id', $user->id)->get();
+        
+        $cartProducts->map(function ($cartProduct) {
+            if (!empty($cartProduct->product->rating[0])) {
+                $allOverRating = ($cartProduct->product->rating[0]->total / ($cartProduct->product->rating[0]->count * 5)) * 100;
+                $totalReviews = $cartProduct->product->rating[0]->count;
+            } else {
+                $allOverRating = 0;
+                $totalReviews = 0;
+            }
+        
+            // Add the overall_rating and total_reviews to each product
+            $cartProduct->product->overall_rating = $allOverRating;
+            $cartProduct->product->total_reviews = $totalReviews;
+        
+            return $cartProduct;
+        });
+
+
         $deliveryCharge = !empty(Helpers::get_business_settings('delivery_charge'))
                                     ? Helpers::get_business_settings('delivery_charge') : 0;
 

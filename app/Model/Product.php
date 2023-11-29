@@ -23,6 +23,8 @@ class Product extends Model
         'is_featured'  => 'integer',
     ];
 
+    
+
     public function translations(): \Illuminate\Database\Eloquent\Relations\MorphMany
     {
         return $this->morphMany('App\Model\Translation', 'translationable');
@@ -97,6 +99,25 @@ class Product extends Model
             return $baseUrl . $filename;
         }, json_decode($value));
     }
+    
+    public function getOverallRatingAttribute()
+    {
+        if (!empty($this->rating[0])) {
+            return ($this->rating[0]->total / ($this->rating[0]->count * 5)) * 100;
+        }
+
+        return 0;
+    }
+
+    public function getTotalReviewsAttribute()
+    {
+        if (!empty($this->rating[0])) {
+            return $this->rating[0]->count;
+        }
+
+        return 0;
+    }
+
     
     public function getManufacturerImageAttribute()
     {
