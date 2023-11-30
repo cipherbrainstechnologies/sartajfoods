@@ -548,7 +548,7 @@
                     </div>
                 </div>
             </div>
-              <div class="col-lg-6">
+              <!-- <div class="col-lg-6">
                 <div class="card h-100">
                     <div class="card-header">
                         <h5 class="card-title">
@@ -584,7 +584,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- <div class="col-lg-6">
                 <div class="card h-100">
                     <div class="card-header">

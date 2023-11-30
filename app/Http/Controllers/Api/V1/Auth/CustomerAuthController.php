@@ -484,7 +484,7 @@ class CustomerAuthController extends Controller
         }
         
         $user = $this->user->where(['email' => $user_id])->orWhere(['phone' => $user_id])->first();
-        // dd($user->is_email_verified);
+        
         if(empty($user->is_email_verified)) {
             $errors = [];
             $errors[] = ['code' => 'auth-001', 'message' => 'Email is not verify'];

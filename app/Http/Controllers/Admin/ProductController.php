@@ -315,6 +315,7 @@ class ProductController extends Controller
             $stock_count = (integer)$request['total_stock'];
         }
 
+        
         if ((integer)$request['total_stock'] != $stock_count) {
             $validator->getMessageBag()->add('total_stock', 'Stock calculation mismatch!');
         }

@@ -49,7 +49,7 @@
                                                  <label class="form-label"
                                                     for="exampleFormControlInput1">{{ translate('category') }} {{ translate('name') }}
                                                 ({{ strtoupper($lang['code']) }})</label>
-                                                <input type="text" name="name[]" class="form-control" placeholder="{{ translate('Ex: Size') }}" maxlength="255"
+                                                <input type="text" name="name[]" class="form-control" placeholder="{{ translate('category') }} {{ translate('name') }}" maxlength="255"
                                                     {{$lang['status'] == true ? 'required':''}}
                                                     @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
                                             </div>

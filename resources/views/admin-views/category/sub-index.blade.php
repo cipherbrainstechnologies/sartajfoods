@@ -42,8 +42,7 @@
                                 @foreach($data as $lang)
                                     <div class="col-sm-6 {{$lang['default'] == false ? 'd-none':''}} lang_form" id="{{$lang['code']}}-form">
                                         <div class="col-lg-12">
-                                            <label class="form-label"
-                                                for="exampleFormControlInput1"> <label class="form-label" for="exampleFormControlInput1">{{translate('sub_category')}} {{translate('name')}} ({{strtoupper($lang['code'])}})</label>
+                                            <label class="form-label" for="exampleFormControlInput1">{{translate('sub_category')}} {{translate('name')}} ({{strtoupper($lang['code'])}})</label>
                                             <input type="text" name="name[]" class="form-control" placeholder="{{ translate('New Sub Category') }}" maxlength="255"
                                                 {{$lang['status'] == true ? 'required':''}}
                                                 @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
