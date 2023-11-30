@@ -26,6 +26,7 @@ use Carbon\CarbonInterval;
 use Illuminate\Support\Facades\Hash;
 use App\Mail\EmailConfirmation;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Cookie;
 
 class CustomerAuthController extends Controller
 {
@@ -405,6 +406,14 @@ class CustomerAuthController extends Controller
         // }
 
         $temporary_token = Str::random(40);
+        // Store cart Data in the cookie
+        if ($request->has('cart') && !empty($request->cart)) {
+            // Get cart data from the request
+            $cartData = $request->input('cart');
+    
+            // Store the cart data in a cookie
+            Cookie::queue('cart_data', json_encode($cartData), 60 * 24 * 30); // Cookie expires in 30 days
+        }
 
         $user = $this->user->create([
             'f_name' => $request->f_name,
@@ -477,7 +486,8 @@ class CustomerAuthController extends Controller
         }
         
         $user = $this->user->where(['email' => $user_id])->orWhere(['phone' => $user_id])->first();
-        if($user->is_email_verified) {
+        // dd($user->is_email_verified);
+        if(empty($user->is_email_verified)) {
             $errors = [];
             $errors[] = ['code' => 'auth-001', 'message' => 'Email is not verify'];
             return response()->json([
@@ -507,8 +517,7 @@ class CustomerAuthController extends Controller
             $data = [
                 'email' => $user->email,
                 'password' => $request->password,
-                'is_block' => 0,
-                // 'is_email_verified' => 1
+                'is_block' => 0
             ];
 
             if (auth()->attempt($data)) {
@@ -706,6 +715,17 @@ class CustomerAuthController extends Controller
         $user->email_verified_at = Carbon::now()->format('Y-m-d H:i:s');
         $user->email_verification_token = $token;
         $user->save();
+        // Create a new request instance
+        $request = new Request();
+
+        // Retrieve data from the cookie
+        $cartData = Cookie::get('cart');
+        if (!empty($cartData)) {
+            $cartArray = json_decode($cartData, true);
+            $request->merge(['cart' => $cartArray]);
+        }
+        // Add user data to the request
+        Helpers::addToCart($request,$user);
         $url = 'https://sartaj.vercel.app/page-login';
         return Redirect::to($url);
     }
