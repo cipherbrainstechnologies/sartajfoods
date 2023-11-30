@@ -310,7 +310,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-2">
+                <!-- <div class="mt-2">
                     <div class="card min-h-116px">
                         <div class="card-body d-flex flex-column justify-content-center">
                             <div class="d-flex flex-wrap-reverse justify-content-between">
@@ -329,7 +329,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="col-lg-6">
                 <div class="card">
@@ -659,7 +659,7 @@
                                 <div class="form-group">
                                     <label class="input-label" for="special_price">{{translate('Special Price')}}<span class="input-label-secondary"></span></label>
                                     <label class="">
-                                        <input type="text" name="sale_price" id="sale_price" pattern="[0-9]+" value="{{ old('sale_price') }}" class="form-control" placeholder="{{translate('Special Price')}}">
+                                        <input type="text" name="sale_price" id="sale_price" pattern="[0-9]+" value="{{ $product['sale_price'] }}" class="form-control" placeholder="{{translate('Special Price')}}">
                                     </label>
                                 </div>
                             </div>
