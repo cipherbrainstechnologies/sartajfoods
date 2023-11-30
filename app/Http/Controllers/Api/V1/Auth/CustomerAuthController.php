@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Mail\EmailConfirmation;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Cache;
 
 class CustomerAuthController extends Controller
 {
@@ -400,21 +401,18 @@ class CustomerAuthController extends Controller
                 ], 403);
             }
         }
+        // Refer Code
 
-        // if ($request->referral_code){
-        //     $refer_user = $this->user->where(['referral_code' => $request->referral_code])->first();
-        // }
+            // if ($request->referral_code){
+            //     $refer_user = $this->user->where(['referral_code' => $request->referral_code])->first();
+            // }
 
         $temporary_token = Str::random(40);
-        // Store cart Data in the cookie
         if ($request->has('cart') && !empty($request->cart)) {
-            // Get cart data from the request
             $cartData = $request->input('cart');
-    
-            // Store the cart data in a cookie
-            Cookie::queue('cart_data', json_encode($cartData), 60 * 24 * 30); // Cookie expires in 30 days
+            Cache::put($temporary_token, $cartData, 60 * 24 * 30);
         }
-
+        
         $user = $this->user->create([
             'f_name' => $request->f_name,
             'l_name' => $request->l_name,
@@ -709,23 +707,13 @@ class CustomerAuthController extends Controller
     }            
 
     public function email_varification($id, $token)
-    {
+    {   
         $user = User::find($id);
         $user->is_email_verified = 1;
         $user->email_verified_at = Carbon::now()->format('Y-m-d H:i:s');
         $user->email_verification_token = $token;
-        $user->save();
-        // Create a new request instance
-        $request = new Request();
-
-        // Retrieve data from the cookie
-        $cartData = Cookie::get('cart');
-        if (!empty($cartData)) {
-            $cartArray = json_decode($cartData, true);
-            $request->merge(['cart' => $cartArray]);
-        }
-        // Add user data to the request
-        Helpers::addToCart($request,$user);
+        $user->save();       
+    
         $url = 'https://sartaj.vercel.app/page-login';
         return Redirect::to($url);
     }
