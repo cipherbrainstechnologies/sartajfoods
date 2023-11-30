@@ -79,6 +79,9 @@
                                 <a class="btn btn--info print--btn" target="_blank" href={{route('admin.orders.generate-invoice',[$order['id']])}}>
                                     <i class="tio-print mr-1"></i> {{translate('print')}} {{translate('invoice')}}
                                 </a>
+                                 <a class="btn btn--info print--btn" target="_blank" href="{{route('admin.orders.shpping_list',[$order['id']])}}">
+                                    <i class="tio-invisible mr-1"></i> {{translate('shipping_list')}}
+                                </a>
                             </div>
                             <div class="text-right mt-3 order-invoice-right-contents text-capitalize">
                                 <h6>
@@ -357,92 +360,12 @@
                     </div>
 
                     <div class="card-body">
-                        @if($order['order_type'] != 'pos')
-                        <div class="hs-unfold w-100">
-                            <span class="d-block form-label font-bold mb-2">{{translate('Change Order Status')}}:</span>
-                            <div class="dropdown">
-                                <button class="form-control h--45px dropdown-toggle d-flex justify-content-between align-items-center w-100" type="button"
-                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
-                                    {{$order['order_status'] == 'processing' ? translate('packaging') : translate($order['order_status'])}}
-                                </button>
-                                <div class="dropdown-menu text-capitalize" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item"
-                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'pending'])}}','{{ translate("Change status to pending ?") }}')"
-                                        href="javascript:">{{translate('pending')}}</a>
-                                    <a class="dropdown-item"
-                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'confirmed'])}}','{{ translate("Change status to confirmed ?") }}')"
-                                        href="javascript:">{{translate('confirmed')}}</a>
-                                    <a class="dropdown-item"
-                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'processing'])}}','{{ translate("Change status to packaging ?") }}')"
-                                        href="javascript:">{{translate('packaging')}}</a>
-                                    <a class="dropdown-item"
-                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'out_for_delivery'])}}','{{ translate("Change status to out for delivery ?") }}')"
-                                        href="javascript:">{{translate('out_for_delivery')}}</a>
-                                    <a class="dropdown-item"
-                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'delivered'])}}','{{ translate("Change status to delivered ?") }}')"
-                                        href="javascript:">{{translate('delivered')}}</a>
-                                    <a class="dropdown-item"
-                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'returned'])}}','{{ translate("Change status to returned ?") }}')"
-                                        href="javascript:">{{translate('returned')}}</a>
-                                    <a class="dropdown-item"
-                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'failed'])}}','{{ translate("Change status to failed ?") }}')"
-                                        href="javascript:">{{translate('failed')}}</a>
-                                    <a class="dropdown-item"
-                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'canceled'])}}','{{ translate("Change status to canceled ?") }}')"
-                                        href="javascript:">{{translate('canceled')}}</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="hs-unfold w-100 mt-3">
-                            <span class="d-block form-label font-bold mb-2">{{translate('Payment Status')}}:</span>
-                            <div class="dropdown">
-                                <button class="form-control h--45px dropdown-toggle d-flex justify-content-between align-items-center w-100" type="button"
-                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
-                                    {{translate($order['payment_status'])}}
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item"
-                                    onclick="route_alert('{{route('admin.orders.payment-status',['id'=>$order['id'],'payment_status'=>'paid'])}}','{{ translate("Change status to paid ?") }}')"
-                                    href="javascript:">{{translate('paid')}}</a>
-                                    <a class="dropdown-item"
-                                    onclick="route_alert('{{route('admin.orders.payment-status',['id'=>$order['id'],'payment_status'=>'unpaid'])}}','{{ translate("Change status to unpaid ?") }}')"
-                                    href="javascript:">{{translate('unpaid')}}</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Unfold -->
-
-                        <div class="mt-3">
-                            <span class="d-block form-label mb-2 font-bold">{{translate('Delivery Date & Time')}}:</span>
-                            <div class="d-flex flex-wrap g-2">
-                                <div class="hs-unfold w-0 flex-grow min-w-160px">
-                                    <label class="input-date">
-                                        <input class="js-flatpickr form-control flatpickr-custom min-h-45px" type="text" value="{{ date('d M Y',strtotime($order['delivery_date'])) }}"
-                                               name="deliveryDate" id="from_date" data-id="{{ $order['id'] }}" class="form-control" required>
-                                    </label>
-                                </div>
-                                <div class="hs-unfold w-0 flex-grow min-w-160px">
-                                    <select class="custom-select custom-select time_slote" name="timeSlot" data-id="{{$order['id']}}">
-                                        <option disabled selected>{{translate('select')}} {{translate('Time Slot')}}</option>
-                                        @foreach(\App\Model\TimeSlot::all() as $timeSlot)
-                                            <option value="{{$timeSlot['id']}}" {{$timeSlot->id == $order->time_slot_id ?'selected':''}}>{{date(config('time_format'), strtotime($timeSlot['start_time']))}}
-                                                - {{date(config('time_format'), strtotime($timeSlot['end_time']))}}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        @endif
                         @if(($order['order_type'] !='self_pickup') && ($order['order_type'] !='pos'))
-                                @if (!$order->delivery_man)
+                                {{-- @if (!$order->delivery_man)
                                     <div class="mt-3">
                                         <button class="btn btn--primary w-100" type="button" data-target="#assign_delivey_man_modal" data-toggle="modal">{{ translate('assign delivery man manually') }}</button>
                                     </div>
-                                @endif
+                                @endif --}}
                                 @if ($order->delivery_man)
                                     <div class="card mt-2">
                                         <div class="card-body">
@@ -605,7 +528,90 @@
                         <!-- End Body -->
                     </div>
 
+                     <div class="card mt-2">
+                        <div class="card-body">
+                            @if($order['order_type'] != 'pos')
+                        <div class="hs-unfold w-100">
+                            <span class="d-block form-label font-bold mb-2">{{translate('Change Order Status')}}:</span>
+                            <div class="dropdown">
+                                <button class="form-control h--45px dropdown-toggle d-flex justify-content-between align-items-center w-100" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                    {{$order['order_status'] == 'processing' ? translate('packaging') : translate($order['order_status'])}}
+                                </button>
+                                <div class="dropdown-menu text-capitalize" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item"
+                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'pending'])}}','{{ translate("Change status to pending ?") }}')"
+                                        href="javascript:">{{translate('pending')}}</a>
+                                    <a class="dropdown-item"
+                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'confirmed'])}}','{{ translate("Change status to confirmed ?") }}')"
+                                        href="javascript:">{{translate('confirmed')}}</a>
+                                    <a class="dropdown-item"
+                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'processing'])}}','{{ translate("Change status to packaging ?") }}')"
+                                        href="javascript:">{{translate('packaging')}}</a>
+                                    <a class="dropdown-item"
+                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'out_for_delivery'])}}','{{ translate("Change status to out for delivery ?") }}')"
+                                        href="javascript:">{{translate('out_for_delivery')}}</a>
+                                    <a class="dropdown-item"
+                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'delivered'])}}','{{ translate("Change status to delivered ?") }}')"
+                                        href="javascript:">{{translate('delivered')}}</a>
+                                    <a class="dropdown-item"
+                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'returned'])}}','{{ translate("Change status to returned ?") }}')"
+                                        href="javascript:">{{translate('returned')}}</a>
+                                    <a class="dropdown-item"
+                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'failed'])}}','{{ translate("Change status to failed ?") }}')"
+                                        href="javascript:">{{translate('failed')}}</a>
+                                    <a class="dropdown-item"
+                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'canceled'])}}','{{ translate("Change status to canceled ?") }}')"
+                                        href="javascript:">{{translate('canceled')}}</a>
+                                </div>
+                            </div>
+                        </div>
 
+                        <div class="hs-unfold w-100 mt-3">
+                            <span class="d-block form-label font-bold mb-2">{{translate('Payment Status')}}:</span>
+                            <div class="dropdown">
+                                <button class="form-control h--45px dropdown-toggle d-flex justify-content-between align-items-center w-100" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                    {{translate($order['payment_status'])}}
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item"
+                                    onclick="route_alert('{{route('admin.orders.payment-status',['id'=>$order['id'],'payment_status'=>'paid'])}}','{{ translate("Change status to paid ?") }}')"
+                                    href="javascript:">{{translate('paid')}}</a>
+                                    <a class="dropdown-item"
+                                    onclick="route_alert('{{route('admin.orders.payment-status',['id'=>$order['id'],'payment_status'=>'unpaid'])}}','{{ translate("Change status to unpaid ?") }}')"
+                                    href="javascript:">{{translate('unpaid')}}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Unfold -->
+
+                        <div class="mt-3">
+                            <span class="d-block form-label mb-2 font-bold">{{translate('Delivery Date & Time')}}:</span>
+                            <div class="d-flex flex-wrap g-2">
+                                <div class="hs-unfold w-0 flex-grow min-w-160px">
+                                    <label class="input-date">
+                                        <input class="js-flatpickr form-control flatpickr-custom min-h-45px" type="text" value="{{ date('d M Y',strtotime($order['delivery_date'])) }}"
+                                               name="deliveryDate" id="from_date" data-id="{{ $order['id'] }}" class="form-control" required>
+                                    </label>
+                                </div>
+                                <div class="hs-unfold w-0 flex-grow min-w-160px">
+                                    <select class="custom-select custom-select time_slote" name="timeSlot" data-id="{{$order['id']}}">
+                                        <option disabled selected>{{translate('select')}} {{translate('Time Slot')}}</option>
+                                        @foreach(\App\Model\TimeSlot::all() as $timeSlot)
+                                            <option value="{{$timeSlot['id']}}" {{$timeSlot->id == $order->time_slot_id ?'selected':''}}>{{date(config('time_format'), strtotime($timeSlot['start_time']))}}
+                                                - {{date(config('time_format'), strtotime($timeSlot['end_time']))}}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                        </div>
+                    </div>    
 
                 <!-- End Card -->
 
@@ -985,6 +991,12 @@
             });
         });
 
+    </script>
+    <script>
+        $("#from_date").datepicker({
+                "changeMonth": true,
+                "changeYear": true
+            });
     </script>
 
 @endpush

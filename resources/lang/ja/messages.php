@@ -2105,4 +2105,6 @@
   'JA' => 'JA',
   'EN' => 'EN',
   'available _sale' => 'セール中',
+  'shipping_list' => '送料リスト',
+  'Date Added' => '追加日',
 );

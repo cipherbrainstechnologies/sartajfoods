@@ -210,6 +210,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::post('time-search', 'OrderController@time_search')->name('time_search');
             Route::post('search', 'OrderController@search')->name('search');
             Route::get('export/{status}', 'OrderController@export_orders')->name('export');
+            Route::get('shipping_list/{id}', 'OrderController@shpping_list')->name('shpping_list');
         });
 
         Route::group(['prefix' => 'order', 'as' => 'order.','middleware'=>['module:order_management']], function () {

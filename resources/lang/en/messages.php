@@ -2138,4 +2138,6 @@
   'Google Play' => 'Google Play',
   'Compare Product' => 'Compare Product',
   'Shipping Detail' => 'Shipping Detail',
+  'shipping_list' => 'Shipping list',
+  'Date Added' => 'Date Added',
 );
