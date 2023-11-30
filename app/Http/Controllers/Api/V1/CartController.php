@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Model\Cart;
 use App\Model\Product;
 use App\CentralLogics\Helpers;
+use DateTime;
 
 
 class CartController extends Controller
@@ -104,18 +105,19 @@ class CartController extends Controller
 
     public function addToCart(Request $request)
     {
-        
         $user = auth()->user();
         $cart = [];
         $discount_type = "amount";
+        $discount = 0;
+        $subTotal = 0;
 
 
         // Validate the request
-        $request->validate([
-            'product_id' => 'required|exists:products,id',
-            'quantity' => 'required|integer|min:1',
-        ]);
-
+        // $request->validate([
+        //     'product_id' => 'required|exists:products,id',
+        //     'quantity' => 'required|integer|min:1',
+        // ]);
+        
         $productId = $request->product_id;
         $quantity = $request->quantity;
 
@@ -143,6 +145,7 @@ class CartController extends Controller
 
         if(!empty($product->sale_price)){
             $currentDate = new DateTime(); // Current date and time
+
             $saleStartDate = new DateTime($product->sale_start_date);
             $saleEndDate = new DateTime($product->sale_end_date);
             if($currentDate >= $saleStartDate && $currentDate <= $saleEndDate){
