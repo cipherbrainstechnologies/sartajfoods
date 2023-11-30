@@ -4,6 +4,7 @@ namespace App\CentralLogics;
 
 use App\Model\Order;
 use App\Model\Product;
+use App\Model\OrderHistory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
@@ -69,5 +70,24 @@ class OrderLogic
         }
 
         return $o_id;
+    }
+
+    public static function orderHistory($order_id, $status)
+    {
+        // $orderHistoryData = OrderHistory::with('order')->where('order_id', $request->id)->first();
+       try {
+            $data = [
+                'order_id' => $order_id,
+                'status' => $status,
+                'comment' => null,
+                'is_customer_notify' => 0, 
+            ];
+
+            $history = OrderHistory::create($data)->order();
+       } catch (\Exception $e){
+        return response()->json([
+            'message' => 'Somthing want to wrong',
+        ], 403);
+       }
     }
 }

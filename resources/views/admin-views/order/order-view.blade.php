@@ -347,8 +347,46 @@
                     <!-- End Body -->
                 </div>
                 <!-- End Card -->
-            </div>
 
+                 <!-- Card -->
+                <div class="card mt-4 mb-3 mb-lg-5">
+                    <!-- Header -->
+                    <div class="card-header border-0">
+                        <div class="card--header justify-content-between max--sm-grow">
+                            <h5 class="card-title">{{translate('Order History')}}</h5>
+                        </div>
+                    </div>
+                    <!-- End Header -->
+
+                    <!-- Table -->
+                    <div class="table-responsive datatable-custom">
+                        <table class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="border-0">{{translate('date added')}}</th>
+                                    <th class="border-0">{{translate('comment')}}</th>
+                                    <th class="border-0">{{translate('status')}}</th>
+                                    <th class="text-center border-0">{{translate('customer notified')}}</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach($order->history as $history)
+                                <tr>
+                                    <td>{{ date('d M Y',strtotime($history['created_at'])) }}</td>
+                                    <td>{{ $history['comment'] }}</td>
+                                    <td>{{ str_ireplace( array('_'), ' ', $history['status']) }}</td>
+                                    <td class="text-center">{{ ($history['Customer Notified'] == 1) ? 'Yes' : 'No' }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- End Table -->
+                </div>
+                <!-- End Card -->
+            </div>
 
             <div class="col-lg-4 order-print-area-right">
                 <!-- Card -->
@@ -531,85 +569,91 @@
                      <div class="card mt-2">
                         <div class="card-body">
                             @if($order['order_type'] != 'pos')
-                        <div class="hs-unfold w-100">
-                            <span class="d-block form-label font-bold mb-2">{{translate('Change Order Status')}}:</span>
-                            <div class="dropdown">
-                                <button class="form-control h--45px dropdown-toggle d-flex justify-content-between align-items-center w-100" type="button"
-                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
-                                    {{$order['order_status'] == 'processing' ? translate('packaging') : translate($order['order_status'])}}
-                                </button>
-                                <div class="dropdown-menu text-capitalize" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item"
-                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'pending'])}}','{{ translate("Change status to pending ?") }}')"
-                                        href="javascript:">{{translate('pending')}}</a>
-                                    <a class="dropdown-item"
-                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'confirmed'])}}','{{ translate("Change status to confirmed ?") }}')"
-                                        href="javascript:">{{translate('confirmed')}}</a>
-                                    <a class="dropdown-item"
-                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'processing'])}}','{{ translate("Change status to packaging ?") }}')"
-                                        href="javascript:">{{translate('packaging')}}</a>
-                                    <a class="dropdown-item"
-                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'out_for_delivery'])}}','{{ translate("Change status to out for delivery ?") }}')"
-                                        href="javascript:">{{translate('out_for_delivery')}}</a>
-                                    <a class="dropdown-item"
-                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'delivered'])}}','{{ translate("Change status to delivered ?") }}')"
-                                        href="javascript:">{{translate('delivered')}}</a>
-                                    <a class="dropdown-item"
-                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'returned'])}}','{{ translate("Change status to returned ?") }}')"
-                                        href="javascript:">{{translate('returned')}}</a>
-                                    <a class="dropdown-item"
-                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'failed'])}}','{{ translate("Change status to failed ?") }}')"
-                                        href="javascript:">{{translate('failed')}}</a>
-                                    <a class="dropdown-item"
-                                        onclick="route_alert('{{route('admin.orders.status',['id'=>$order['id'],'order_status'=>'canceled'])}}','{{ translate("Change status to canceled ?") }}')"
-                                        href="javascript:">{{translate('canceled')}}</a>
+                                <div class="hs-unfold w-100 mt-3">
+                                    <span class="d-block form-label font-bold mb-2">{{translate('Payment Status')}}:</span>
+                                    <div class="dropdown">
+                                        <button class="form-control h--45px dropdown-toggle d-flex justify-content-between align-items-center w-100" type="button"
+                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            {{translate($order['payment_status'])}}
+                                         </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item"
+                                            onclick="route_alert('{{route('admin.orders.payment-status',['id'=>$order['id'],'payment_status'=>'paid'])}}','{{ translate("Change status to paid ?") }}')"
+                                            href="javascript:">{{translate('paid')}}</a>
+                                            <a class="dropdown-item"
+                                            onclick="route_alert('{{route('admin.orders.payment-status',['id'=>$order['id'],'payment_status'=>'unpaid'])}}','{{ translate("Change status to unpaid ?") }}')"
+                                            href="javascript:">{{translate('unpaid')}}</a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                                <!-- End Unfold -->
+
+                                <div class="mt-3">
+                                    <span class="d-block form-label mb-2 font-bold">{{translate('Delivery Date & Time')}}:</span>
+                                    <div class="d-flex flex-wrap g-2">
+                                        <div class="hs-unfold w-0 flex-grow min-w-160px">
+                                            <label class="input-date">
+                                                <input class="js-flatpickr form-control flatpickr-custom min-h-45px" type="text" value="{{ date('d M Y',strtotime($order['delivery_date'])) }}"
+                                                name="deliveryDate" id="from_date" data-id="{{ $order['id'] }}" class="form-control" required>
+                                            </label>
+                                        </div>
+                                        <div class="hs-unfold w-0 flex-grow min-w-160px">
+                                            <select class="custom-select custom-select time_slote" name="timeSlot" data-id="{{$order['id']}}">
+                                                <option disabled selected>{{translate('select')}} {{translate('Time Slot')}}</option>
+                                                @foreach(\App\Model\TimeSlot::all() as $timeSlot)
+                                                    <option value="{{$timeSlot['id']}}" {{$timeSlot->id == $order->time_slot_id ?'selected':''}}>{{date(config('time_format'), strtotime($timeSlot['start_time']))}}
+                                                        - {{date(config('time_format'), strtotime($timeSlot['end_time']))}}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    </div>    
+
+                    <div class="card mt-3">
+
+                        <div class="card-header border-0 pb-0 justify-content-center">
+                            <h4 class="card-title">{{translate('Order History')}}</h4>
                         </div>
 
-                        <div class="hs-unfold w-100 mt-3">
-                            <span class="d-block form-label font-bold mb-2">{{translate('Payment Status')}}:</span>
-                            <div class="dropdown">
-                                <button class="form-control h--45px dropdown-toggle d-flex justify-content-between align-items-center w-100" type="button"
-                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false">
-                                    {{translate($order['payment_status'])}}
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item"
-                                    onclick="route_alert('{{route('admin.orders.payment-status',['id'=>$order['id'],'payment_status'=>'paid'])}}','{{ translate("Change status to paid ?") }}')"
-                                    href="javascript:">{{translate('paid')}}</a>
-                                    <a class="dropdown-item"
-                                    onclick="route_alert('{{route('admin.orders.payment-status',['id'=>$order['id'],'payment_status'=>'unpaid'])}}','{{ translate("Change status to unpaid ?") }}')"
-                                    href="javascript:">{{translate('unpaid')}}</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Unfold -->
-
-                        <div class="mt-3">
-                            <span class="d-block form-label mb-2 font-bold">{{translate('Delivery Date & Time')}}:</span>
-                            <div class="d-flex flex-wrap g-2">
-                                <div class="hs-unfold w-0 flex-grow min-w-160px">
-                                    <label class="input-date">
-                                        <input class="js-flatpickr form-control flatpickr-custom min-h-45px" type="text" value="{{ date('d M Y',strtotime($order['delivery_date'])) }}"
-                                               name="deliveryDate" id="from_date" data-id="{{ $order['id'] }}" class="form-control" required>
+                        <div class="card-body">
+                            <div class="hs-unfold w-100">
+                                <span class="d-block form-label font-bold mb-2">{{translate('Change Order Status')}}:</span>
+                                <div class="hs-unfold w-0 flex-grow w-100">
+                                    <select class="custom-select custom-select" name="order_status" id="order_status" data-id="{{$order['id']}}">
+                                        <option value="pending" {{ ($order->order_status === 'pending') ? 'selected' : '' }}>{{translate('pending')}}</option>
+                                        <option value="confirmed" {{ ($order->order_status === 'confirmed') ? 'selected' : '' }}>{{translate('confirmed')}}</option>
+                                        <option value="processing" {{ ($order->order_status === 'processing') ? 'selected' : '' }}>{{translate('processing')}}</option>
+                                        <option value="out_for_delivery" {{ ($order->order_status === 'out_for_delivery') ? 'selected' : '' }}>{{translate('out_for_delivery')}}</option>
+                                        <option value="delivered" {{ ($order->order_status === 'delivered') ? 'selected' : '' }}>{{translate('delivered')}}</option>
+                                        <option value="returned" {{ ($order->order_status === 'returned') ? 'selected' : '' }}>{{translate('returned')}}</option>
+                                        <option value="failed" {{ ($order->order_status === 'failed') ? 'selected' : '' }}>{{translate('failed')}}</option>
+                                        <option value="canceled" {{ ($order->order_status === 'canceled') ? 'selected' : '' }}>{{translate('canceled')}}</option>
+                                    </select>
+                                </div>    
+                                <div class="mt-3">
+                                    <span class="d-block form-label font-bold mb-2">{{translate('Notify Customer')}}</span>
+                                    <label class="switch--custom-label toggle-switch toggle-switch-sm d-inline-flex">
+                                        <span class="mr-2 switch--custom-label-text text-primary on text-uppercase">on</span>
+                                        <span class="mr-2 switch--custom-label-text off text-uppercase">off</span>
+                                        <input type="checkbox" name="notify_customer" id="notify_customer" class="toggle-switch-input">
+                                        <span class="toggle-switch-label text">
+                                            <span class="toggle-switch-indicator"></span>
+                                        </span>
                                     </label>
                                 </div>
-                                <div class="hs-unfold w-0 flex-grow min-w-160px">
-                                    <select class="custom-select custom-select time_slote" name="timeSlot" data-id="{{$order['id']}}">
-                                        <option disabled selected>{{translate('select')}} {{translate('Time Slot')}}</option>
-                                        @foreach(\App\Model\TimeSlot::all() as $timeSlot)
-                                            <option value="{{$timeSlot['id']}}" {{$timeSlot->id == $order->time_slot_id ?'selected':''}}>{{date(config('time_format'), strtotime($timeSlot['start_time']))}}
-                                                - {{date(config('time_format'), strtotime($timeSlot['end_time']))}}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                <div class="mt-3"> 
+                                    <span class="d-block form-label font-bold mb-2">{{translate('Comment')}}</span>
+                                    <textarea name="comment" id="comment" class="w-100"></textarea>
+                                </div>
+                                <div class="mt-3">
+                                        <button class="btn btn--primary w-100" id="save_order_history" name="save_order_history" type="button" data-id="{{ $order['id'] }}">{{ translate('Save') }}</button>
                                 </div>
                             </div>
-                        </div>
-                    @endif
                         </div>
                     </div>    
 
@@ -965,9 +1009,9 @@
                         },
 
                         success: function (data) {
-                            console.log(data);
-                            toastr.success('{{ translate("Time Slot Change successfully") }}');
-                            location.reload();
+                            if(data) {
+                              toastr.success('{{ translate("Order status changed successfully") }}');
+                            }
                         }
                     });
                 }
@@ -993,10 +1037,33 @@
 
     </script>
     <script>
-        $("#from_date").datepicker({
-                "changeMonth": true,
-                "changeYear": true
+        $("#save_order_history").on('click', function() {
+            var id = $(this).attr("data-id");
+            var order_status = $('#order_status').val();
+            var notify_customer = $('#notify_customer').is(':checked');
+            var comment = $('#comment').val();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
             });
+            $.post({
+                url: "{{route('admin.order.order_history')}}",
+                
+                data: {
+                    "id": id,
+                    "order_status": order_status,
+                    "notify_customer": notify_customer,
+                    "comment": comment,
+                },
+
+                success: function (data) {
+                    console.log(data);
+                    toastr.success('{{ translate("Time Slot Change successfully") }}');
+                    location.reload();
+                }
+            });     
+        });
     </script>
 
 @endpush

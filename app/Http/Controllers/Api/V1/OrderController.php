@@ -271,6 +271,8 @@ class OrderController extends Controller
             }
             $or['total_tax_amount'] = $total_tax_amount;
             $latestOrder =DB::table('orders')->insertGetId($or);
+            $o_status = ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'pending':'confirmed';
+            OrderLogic::orderHistory($order_id, $o_status);
             if($request->payment_method == 'wallet_payment'){
                 $amount = $or['order_amount'];
                 CustomerLogic::create_wallet_transaction($or['user_id'], $amount, 'order_place', $or['id']);

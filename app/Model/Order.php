@@ -69,4 +69,8 @@ class Order extends Model
         return $this->belongsTo(Coupon::class, 'coupon_code', 'code');
     }
 
+    public function history(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(OrderHistory::class);
+    }
 }

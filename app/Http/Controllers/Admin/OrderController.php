@@ -30,6 +30,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use function App\CentralLogics\translate;
 use Illuminate\Support\Facades\Response;
 use PDF;
+use App\Model\OrderHistory; 
 
 class OrderController extends Controller
 {
@@ -59,6 +60,7 @@ class OrderController extends Controller
         $end_date = $request['end_date'];
 
         $this->order->where(['checked' => 0])->update(['checked' => 1]);
+        // dd($status);
 
         if ($status != 'all') {
             $query = $this->order->with(['customer', 'branch'])
@@ -68,7 +70,6 @@ class OrderController extends Controller
                     return $query->whereDate('created_at', '>=', $start_date)
                         ->whereDate('created_at', '<=', $end_date);
                 })->where(['order_status' => $status]);
-
         } else {
             $query = $this->order->with(['customer', 'branch'])
                 ->when((!is_null($branch_id) && $branch_id != 'all'), function ($query) use ($branch_id) {
@@ -77,6 +78,7 @@ class OrderController extends Controller
                     return $query->whereDate('created_at', '>=', $start_date)
                         ->whereDate('created_at', '<=', $end_date);
                 });
+                // dd(2);
         }
 
         $query_param = ['branch_id' => $branch_id, 'start_date' => $start_date,'end_date' => $end_date ];
@@ -170,7 +172,7 @@ class OrderController extends Controller
      */
     public function details($id): Factory|View|Application|RedirectResponse
     {
-        $order = $this->order->with('details')->where(['id' => $id])->first();
+        $order = $this->order->with('details', 'history')->where(['id' => $id])->first();
         $delivery_man = $this->delivery_man->where(['is_active'=>1])
             ->where(function($query) use ($order) {
                 $query->where('branch_id', $order->branch_id)
@@ -676,5 +678,28 @@ class OrderController extends Controller
         $order = $this->order->where('id', $order_id)->first();
         $order->delivery_address = (array)$order->delivery_address;
         return view('admin-views.order.shipping', compact('order'));
+    }
+
+     /**
+     * @param Request $request
+     */
+    public function order_history(Request $request)
+    {
+        $status = 0;
+        $orderHistoryData = OrderHistory::with('order')->where('order_id', $request->id)->first();
+        $data = [
+            'order_id' => $request->id,
+            'status' => $request->order_status,
+            'comment' => !empty($request->comment) ? $request->comment : null,
+            'is_customer_notify' => ($request->notify_customer === "true") ? 1 :0, 
+        ];
+
+        $history = OrderHistory::create($data)->order();
+        $order = Order::find($request->id);
+        $order->order_status = $request->order_status;
+        $order->save();
+        $status = !empty($history) ? 1 : 0;
+        
+        return response()->json($status);
     }
 }

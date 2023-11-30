@@ -210,7 +210,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::post('time-search', 'OrderController@time_search')->name('time_search');
             Route::post('search', 'OrderController@search')->name('search');
             Route::get('export/{status}', 'OrderController@export_orders')->name('export');
-            Route::get('shipping_list/{id}', 'OrderController@shpping_list')->name('shpping_list');
+            Route::get('shipping_list/{id}', 'OrderController@shpping_list')->name('shpping_list');            
         });
 
         Route::group(['prefix' => 'order', 'as' => 'order.','middleware'=>['module:order_management']], function () {
@@ -221,6 +221,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::post('update-timeSlot', 'OrderController@update_time_slot')->name('update-timeSlot');
             Route::post('update-deliveryDate', 'OrderController@update_deliveryDate')->name('update-deliveryDate');
             Route::delete('delete/{id}', 'OrderController@delete')->name('delete');
+            Route::post('order_history', 'OrderController@order_history')->name('order_history');
         });
 
         Route::group(['prefix' => 'category', 'as' => 'category.','middleware'=>['module:product_management']], function () {
