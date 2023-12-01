@@ -110,9 +110,9 @@ class CustomerController extends Controller
             'floor' => !empty($request->floor) ? $request->floor : null,
             'longitude' => !empty($request->longitude) ? $request->longitude : null,
             'latitude' => !empty($request->latitude) ? $request->latitude : null,
-            'country' => $request->country,
-            'state' => $request->state,
-            'post_code' => $request->post_code,
+            'country' => !empty($request->country) ? $request->country: null,
+            'state' => !empty($request->state) ? $request->state : null,
+            'post_code' => !empty($request->post_code) ? $request->state : null,
             'created_at' => now(),
             'updated_at' => now()
         ];
