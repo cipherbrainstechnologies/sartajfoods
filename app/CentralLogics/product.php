@@ -333,7 +333,7 @@ class ProductLogic
     public static function cal_rating_and_review($products)
     {
         $products = !empty($products['products']) ? $products['products'] : $products;
-        if(!empty($products['products']) && !empty($products)) {
+        if(!empty($products)) {
             foreach($products as $key => $product) {
                 $all_over_rating = '';
                 $total_reviews = '';
