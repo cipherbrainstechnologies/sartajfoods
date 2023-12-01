@@ -334,7 +334,7 @@ class OrderController extends Controller
         $orders->map(function ($data) {
             $data['deliveryman_review_count'] = $this->dm_review->where(['delivery_man_id' => $data['delivery_man_id'], 'order_id' => $data['id']])->count();
             $order = $this->order->where('id', $data['id'])->first();
-            $totalAmt = Helpers::calculateInvoice($id);
+            $totalAmt = Helpers::calculateInvoice($data['id']);
             $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
             $pdf = PDF::loadView('admin-views.order.latest_invoice', compact('order', 'footer_text','totalAmt'));
             $pdfName = 'Invoice_' . $data['id'] . '.pdf';
