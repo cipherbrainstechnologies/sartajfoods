@@ -93,6 +93,8 @@ class ConfigController extends Controller
             'currency_symbol_position' => Helpers::get_business_settings('currency_symbol_position') ?? 'right',
             'maintenance_mode' => (boolean)Helpers::get_business_settings('maintenance_mode') ?? 0,
             'country' => Helpers::get_business_settings('country') ?? 'BD',
+            'business_hours' => BusinessSetting::where(['key' => 'business_hours'])->first()->value,
+            'business_description' => BusinessSetting::where(['key' => 'business_description'])->first()->value,
             'play_store_config' => [
                 "status"=> isset($play_store_config) ? (boolean) $play_store_config['status'] : false,
                 "link"=> isset($play_store_config) ? $play_store_config['link'] : null,
