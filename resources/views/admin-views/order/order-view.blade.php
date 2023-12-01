@@ -214,7 +214,7 @@
                                                         >
                                                     @endif
                                                 </div>
-                                                <div class="media-body">
+                                              {{--  <div class="media-body">
                                                     <h5 class="line--limit-1">{{$product['name']}}</h5>
                                                     @if(count(json_decode($detail['variation'],true)) > 0)
                                                         @foreach(json_decode($detail['variation'],true)[0]??json_decode($detail['variation'],true) as $key1 =>$variation)
@@ -229,7 +229,7 @@
                                                     <h5 class="mt-1"><span class="text-body">{{translate('Unit')}}</span> : {{$detail['unit']}} </h5>
                                                     <h5 class="mt-1"><span class="text-body">{{translate('Unit Price')}}</span> : {{$detail['price']}} </h5>
                                                     <h5 class="mt-1"><span class="text-body">{{translate('QTY')}}</span> : {{$detail['quantity']}} </h5>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                         </td>
                                         <td class="text-right">
@@ -648,7 +648,7 @@
                                 </div>
                                 <div class="mt-3"> 
                                     <span class="d-block form-label font-bold mb-2">{{translate('Comment')}}</span>
-                                    <textarea name="comment" id="comment" class="w-100"></textarea>
+                                    <textarea name="comment" id="comment" class="form-control w-100"></textarea>
                                 </div>
                                 <div class="mt-3">
                                         <button class="btn btn--primary w-100" id="save_order_history" name="save_order_history" type="button" data-id="{{ $order['id'] }}">{{ translate('Save') }}</button>

@@ -155,6 +155,7 @@ class Helpers
                 }
             }
         }
+        
         return $data;
     }
 
@@ -898,6 +899,30 @@ class Helpers
             }
         }
         return true;
+    }
+
+    public static function calculateInvoice($orderId){
+        $order = Order::where('id', $orderId)->first();
+        $orderDetail = $order->details;
+        $totalCost = 0;
+        if(!empty($orderDetail)){
+            foreach ($orderDetail as $product) {
+                $itemPrice = $product['price'];
+                $discount = $product['discount_on_product'];
+            
+                // Calculate total cost after discount
+                $itemTotal = ($itemPrice - $discount) * $product['quantity'];
+            
+                // Add tax amount
+                $itemTotal += $product['tax_amount'];
+            
+                // Accumulate to the total cost
+                $totalCost += $itemTotal;
+            }
+            $totalCost = $totalCost - $order->coupon_discount_amount; 
+            return $totalCost;
+        }
+       return 0;
     }
 
 }

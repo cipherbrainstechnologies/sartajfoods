@@ -111,13 +111,15 @@ class OrderController extends Controller
             $product = $this->product->find($c['id']);
             // $type = $c['variation'][0]['type'];
 
-            $type = $c['quantity'];
-            if ($c['total_stock'] >= $type) {
+            $order_qty = $c['quantity'];
+           
+            if ($order_qty > $c['product']['total_stock'] ) {
                 return response()->json([
-                    'message' => 'Stock is insufficient! available stock ' . $c['total_stock'],
+                    'message' => 'Stock is insufficient! available stock ' . $c['product']['total_stock'],
                 ], 404);
             }
-            $type = $c['variations'][0]['type'];
+            
+            // $type = $c['variations'][0]['type'];
             foreach (json_decode($product['variations'], true) as $var) {
                 if ($type == $var['type'] && $var['stock'] < $c['quantity']) {
                     $validator->getMessageBag()->add('stock', 'Stock is insufficient! available stock ' . $var['stock']);
@@ -241,9 +243,9 @@ class OrderController extends Controller
                     'tax_amount' => $tax_on_product,
                     'discount_on_product' => $discount,
                     'discount_type' => $discount_type,
-                    'variant' => json_encode($c['variant']),
+                    // 'variant' => json_encode($c['variant']),
                     // 'variation' => json_encode($c['variation']),
-                    'variation' => json_encode($c['variations']),
+                    // 'variation' => json_encode($c['variations']),
                     'is_stock_decreased' => 1,
                     'vat_status' => Helpers::get_business_settings('product_vat_tax_status') === 'included' ? 'included' : 'excluded',
                     'created_at' => now(),
@@ -252,7 +254,7 @@ class OrderController extends Controller
                 $total_tax_amount += $or_d['tax_amount'] * $c['quantity'];
 
                 // $type = $c['variation'][0]['type'];
-                $type = $c['variations'][0]['type'];
+                // $type = $c['variations'][0]['type'];
                
                 $var_store = [];
                 foreach (json_decode($product['variations'], true) as $var) {

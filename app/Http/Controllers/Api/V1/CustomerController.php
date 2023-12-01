@@ -71,6 +71,9 @@ class CustomerController extends Controller
             'floor' => $request->floor,
             'longitude' => $request->longitude,
             'latitude' => $request->latitude,
+            'country' => $request->country,
+            'state' => $request->state,
+            'post_code' => $request->post_code,
             'created_at' => now(),
             'updated_at' => now()
         ];
@@ -107,6 +110,9 @@ class CustomerController extends Controller
             'floor' => !empty($request->floor) ? $request->floor : null,
             'longitude' => !empty($request->longitude) ? $request->longitude : null,
             'latitude' => !empty($request->latitude) ? $request->latitude : null,
+            'country' => $request->country,
+            'state' => $request->state,
+            'post_code' => $request->post_code,
             'created_at' => now(),
             'updated_at' => now()
         ];

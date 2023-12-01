@@ -539,9 +539,10 @@ class OrderController extends Controller
     public function generate_invoice($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $order = $this->order->where('id', $id)->first();
+        $totalAmt = Helpers::calculateInvoice($id);
         $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
         // return view('admin-views.order.invoice', compact('order', 'footer_text'));
-        return view('admin-views.order.latest_invoice', compact('order', 'footer_text'));
+        return view('admin-views.order.latest_invoice', compact('order', 'footer_text','totalAmt'));
     }
 
     public function downloadInvoicePDF($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
