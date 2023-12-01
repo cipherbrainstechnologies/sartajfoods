@@ -784,7 +784,7 @@
                             <!-- End Pages -->
 
                             <!-- Pages -->
-                            <li class="navbar-vertical-aside-has-menu {{Request::is('admin/branch*')?'active':''}}">
+                            <!-- <li class="navbar-vertical-aside-has-menu {{Request::is('admin/branch*')?'active':''}}">
                                 <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle"
                                    href="javascript:"
                                    title="{{translate('Branch Setup')}}"
@@ -814,7 +814,7 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </li>
+                            </li> -->
 
                             <li class="navbar-vertical-aside-has-menu {{Request::is('admin/business-settings/web-app/payment-method*')
                                         || Request::is('admin/business-settings/web-app/third-party*')

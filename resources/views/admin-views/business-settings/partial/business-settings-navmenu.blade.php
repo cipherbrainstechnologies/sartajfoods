@@ -13,11 +13,11 @@
             </a>
         </li>
 
-        <li class="nav-item">
+        <!-- <li class="nav-item">
             <a class="nav-link {{Request::is('admin/business-settings/store/menu-setup')?'active':''}}" href="{{route('admin.business-settings.store.menu-setup')}}">
                 {{translate('Menu link')}}
             </a>
-        </li>
+        </li> -->
 
         <li class="nav-item">
             <a class="nav-link {{Request::is('admin/business-settings/store/main-branch-setup')?'active':''}}" href="{{route('admin.business-settings.store.main-branch-setup')}}">
