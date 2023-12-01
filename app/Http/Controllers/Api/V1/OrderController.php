@@ -120,11 +120,11 @@ class OrderController extends Controller
             }
             
             // $type = $c['variations'][0]['type'];
-            foreach (json_decode($product['variations'], true) as $var) {
-                if ($type == $var['type'] && $var['stock'] < $c['quantity']) {
-                    $validator->getMessageBag()->add('stock', 'Stock is insufficient! available stock ' . $var['stock']);
-                }
-            }
+            // foreach (json_decode($product['variations'], true) as $var) {
+            //     if ($type == $var['type'] && $var['stock'] < $c['quantity']) {
+            //         $validator->getMessageBag()->add('stock', 'Stock is insufficient! available stock ' . $var['stock']);
+            //     }
+            // }
         }
         $free_delivery_amount = 0;
         if ($request['order_type'] == 'self_pickup'){
