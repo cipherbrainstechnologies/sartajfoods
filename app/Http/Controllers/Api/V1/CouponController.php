@@ -128,7 +128,7 @@ class CouponController extends Controller
                     'errors' => [
                         ['code' => 'coupon', 'message' => 'not found!']
                     ]
-                ], 403);
+                ], 404);
             }
         } catch (\Exception $e) {
             return response()->json(['errors' => $e], 403);
