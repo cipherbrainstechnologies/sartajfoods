@@ -2151,4 +2151,5 @@
   'date added' => 'Date added',
   'comment' => 'Comment',
   'This coupon in not valid for you!' => 'This coupon in not valid for you!',
+  'Returned' => 'Returned',
 );
