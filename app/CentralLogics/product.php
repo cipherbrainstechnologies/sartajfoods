@@ -332,7 +332,7 @@ class ProductLogic
 
     public static function cal_rating_and_review($products)
     {
-        $products = !empty($products['products']) ? $products['products'] : $products;
+        $products = array_key_exists("products",$products) ? $products['products'] : $products;
         if(!empty($products)) {
             foreach($products as $key => $product) {
                 $all_over_rating = '';
@@ -395,11 +395,13 @@ class ProductLogic
 
     public static function getSoldProducts($products)
     {
-        $products = !empty($products['products']) ? $products['products'] : $products;
-        foreach($products as $product) {
-            $sold = !empty($product["soldProduct"][0]["sold_products"]) ? $product["soldProduct"][0]["sold_products"] : 0;
-            $product['sold_products'] = $sold;
-            $product['total_product_count'] = $sold + $product['total_stock'];
+        $products = array_key_exists("products",$products) ? $products['products'] : $products;
+        if(!empty($products)) {
+            foreach($products as $product) {
+                $sold = !empty($product["soldProduct"][0]["sold_products"]) ? $product["soldProduct"][0]["sold_products"] : 0;
+                $product['sold_products'] = $sold;
+                $product['total_product_count'] = $sold + $product['total_stock'];
+            }
         }
     }
 }
