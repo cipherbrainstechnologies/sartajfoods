@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 
 class ModifyHeadersMiddleware
 {
@@ -17,8 +19,8 @@ class ModifyHeadersMiddleware
     public function handle(Request $request, Closure $next)
     {
         $response = $next( $request );
-        $response->header( 'Access-Control-Allow-Origin', '*' );
-        $response->header( 'Access-Control-Allow-Headers', 'Origin, Content-Type' );
+        // $response->header( 'Access-Control-Allow-Origin', '*' );
+        // $response->header( 'Access-Control-Allow-Headers', 'Origin, Content-Type' );
     
         return $response;
     }
