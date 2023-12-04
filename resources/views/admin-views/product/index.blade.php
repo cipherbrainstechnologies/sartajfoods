@@ -214,10 +214,10 @@
                                 <div class="form-group">
                                     <label class="input-label" for="out_of_stock_status">{{translate('Out Of Stock Status')}}<span class="input-label-secondary"></span></label>
                                     <select name="out_of_stock_status" id="out_of_stock_status" class="form-control js-select2-custom">
-                                        <option value="2-3 Days">{{translate('2-3 Days')}}</option>
-                                        <option value="In Stock">{{translate('In Stock')}}</option>
-                                        <option value="Out Of Stock">{{translate('Out Of Stock')}}</option>
-                                        <option value="Pre-Order">{{translate('Pre-Order')}}</option>
+                                        <option value="2-3 days">{{translate('2-3 Days')}}</option>
+                                        <option value="in stock">{{translate('In Stock')}}</option>
+                                        <option value="out of stock">{{translate('Out Of Stock')}}</option>
+                                        <option value="pre order">{{translate('Pre-Order')}}</option>
                                     </select>
                                 </div>
                             </div>
