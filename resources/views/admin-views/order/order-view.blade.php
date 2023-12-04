@@ -383,7 +383,7 @@
                                     <td>{{ date('d M Y',strtotime($history['created_at'])) }}</td>
                                     <td>{{ $history['comment'] }}</td>
                                     <td>{{ str_ireplace( array('_'), ' ', $history['status']) }}</td>
-                                    <td class="text-center">{{ ($history['Customer Notified'] == 1) ? 'Yes' : 'No' }}</td>
+                                    <td class="text-center">{{ ($history['is_customer_notify']) ? 'Yes' : 'No' }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
