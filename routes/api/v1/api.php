@@ -210,5 +210,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         Route::get('/', 'ManufacturerController@list');
         Route::get('/{id}', 'ManufacturerController@search');
     });
+
+    Route::get('hot-deals', 'HotDealsController@getHotDeals');
     
 });

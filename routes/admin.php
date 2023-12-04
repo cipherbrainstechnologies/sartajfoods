@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AnalyticController;
+use App\Http\Controllers\Admin\HotDealsController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
@@ -472,6 +473,8 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::post('flash/delete-product', 'OfferController@delete_flash_product')->name('flash.delete.product');
         });
 
+        Route::get('hot-deals', [HotDealsController::class, 'index'])->name('hot-deals');
+        Route::post('hot-deals', [HotDealsController::class, 'store'])->name('hot-deals.store');
 
     });
 });

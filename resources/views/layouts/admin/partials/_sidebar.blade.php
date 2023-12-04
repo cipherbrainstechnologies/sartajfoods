@@ -398,6 +398,16 @@
                                 </a>
                             </li>
 
+                            <li class="navbar-vertical-aside-has-menu {{Request::is('admin/hot-deals*')?'active':''}}">
+                                <a class="js-navbar-vertical-aside-menu-link nav-link"
+                                   href="{{route('admin.hot-deals')}}"
+                                   title="{{translate('Hot Deals')}}"
+                                >
+                                    <i class="tio-gift nav-icon"></i>
+                                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{translate('Hot Deals')}}</span>
+                                </a>
+                            </li>
+
                             <!-- <li class="navbar-vertical-aside-has-menu {{Request::is('admin/notification*')?'active':''}}">
                                 <a class="js-navbar-vertical-aside-menu-link nav-link"
                                    href="{{route('admin.notification.add-new')}}"

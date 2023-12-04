@@ -2152,4 +2152,12 @@
   'comment' => 'Comment',
   'This coupon in not valid for you!' => 'This coupon in not valid for you!',
   'Returned' => 'Returned',
+  'Hot Deals' => 'Hot Deals',
+  'End date is required!' => 'End date is required!',
+  'Start date is required!' => 'Start date is required!',
+  'Discount is required!' => 'Discount is required!',
+  'Product is required!' => 'Product is required!',
+  'Deals updated successfully!' => 'Deals updated successfully!',
+  'poster' => 'Poster',
+  'Poster is required!' => 'Poster is required!',
 );
