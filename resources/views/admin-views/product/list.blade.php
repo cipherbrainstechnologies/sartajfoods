@@ -176,7 +176,7 @@
                                     <td class="pt-1 pb-3  {{$key == 0 ? 'pt-4' : '' }}">
                                         <!-- Dropdown -->
                                         <div class="btn--container justify-content-center">
-                                            <a class="action-btn"
+                                            <a class="action-btn" target="_blank"
                                                 href="{{route('admin.product.edit',[$product['id']])}}">
                                             <i class="tio-edit"></i></a>
                                             <a class="action-btn btn--danger btn-outline-danger" href="javascript:"
