@@ -251,7 +251,7 @@
                                             @php($total_tax+=$detail['tax_amount']*$detail['quantity'])
                                             @php($updated_total_tax+= $detail['vat_status'] === 'included' ? 0 : $detail['tax_amount']*$detail['quantity'])
                                             @php($vat_status = $detail['vat_status'])
-                                            @php($total_item_discount += $detail['discount_on_product'] * $detail['quantity'])
+                                            @php($total_item_discount += ($detail['discount_on_product'] * $detail['quantity']))
                                             @php($price_after_discount+=$amount-$total_item_discount)
                                             @php($sub_total+=$price_after_discount)
                                             <h5>{{ Helpers::set_symbol(($detail['price'] * $detail['quantity']) - ($detail['discount_on_product'] * $detail['quantity'])) }}</h5>

@@ -140,6 +140,12 @@
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:5%;min-height:28px;">¥</td>
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:right;width:40%;min-height:28px;">- {{ $total_item_discount }}</td>
                     </tr>
+
+                    <tr style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;border-bottom:1px solid #000;">
+                        <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:55%;min-height:28px;">Delivery Charge</td>
+                        <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:5%;min-height:28px;">¥</td>
+                        <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:right;width:40%;min-height:28px;">- {{ $order->delivery_charge }}</td>
+                    </tr>
                     <!-- <tr style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;border-bottom:1px solid #000;">
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:55%;min-height:28px;">10% Consumption Tax.</td>
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:5%;min-height:28px;">¥</td>
