@@ -42,7 +42,7 @@
                                 <div class="col-6">
                                     <div class="form-group mb-0">
                                         <label class="input-label" for="exampleFormControlInput1">{{translate('discount')}}(%)</label>
-                                        <input type="text" name="discount" value="{{ !empty($hotDeals->discount) ? $hotDeals->discount : old(discount) }}" class="form-control"
+                                        <input type="text" name="discount" value="{{ !empty($hotDeals->discount) ? $hotDeals->discount : '' }}" class="form-control"
                                             placeholder="{{ translate('discount') }}" >
                                     </div>
                                 </div>
@@ -50,7 +50,7 @@
                                     <div class="form-group">
                                         <label class="input-label" for="exampleFormControlInput1">{{translate('start')}} {{translate('date')}}</label>
                                         <label class="input-date">
-                                            <input type="text" name="start_date" id="start_date" value="{{ !empty($hotDeals->start_date) ? $hotDeals->start_date : old(start_date) }}" class="js-flatpickr form-control flatpickr-custom" placeholder="{{ \App\CentralLogics\translate('dd/mm/yy') }}" data-hs-flatpickr-options='{ "dateFormat": "Y/m/d", "minDate": "today" }'>
+                                            <input type="text" name="start_date" id="start_date" value="{{ !empty($hotDeals->start_date) ? $hotDeals->start_date : '' }}" class="js-flatpickr form-control flatpickr-custom" placeholder="{{ \App\CentralLogics\translate('dd/mm/yy') }}" data-hs-flatpickr-options='{ "dateFormat": "Y/m/d", "minDate": "today" }'>
                                         </label>
                                     </div>
                                 </div>
@@ -58,7 +58,7 @@
                                     <div class="form-group">
                                         <label class="input-label" for="exampleFormControlInput1">{{translate('end')}} {{translate('date')}}</label>
                                         <label class="input-date">
-                                            <input type="text" name="end_date" id="end_date" value="{{ !empty($hotDeals->end_date) ? $hotDeals->end_date : old(end_date) }}" class="js-flatpickr form-control flatpickr-custom" placeholder="{{ \App\CentralLogics\translate('dd/mm/yy') }}" data-hs-flatpickr-options='{ "dateFormat": "Y/m/d", "minDate": "today" }'>
+                                            <input type="text" name="end_date" id="end_date" value="{{ !empty($hotDeals->end_date) ? $hotDeals->end_date : '' }}" class="js-flatpickr form-control flatpickr-custom" placeholder="{{ \App\CentralLogics\translate('dd/mm/yy') }}" data-hs-flatpickr-options='{ "dateFormat": "Y/m/d", "minDate": "today" }'>
                                         </label>
                                     </div>
                                 </div>
