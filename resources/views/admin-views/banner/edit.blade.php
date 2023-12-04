@@ -124,7 +124,7 @@
                                 </h5>
                                 <label class="upload--vertical">
                                     <input type="file" name="image" id="customFileEg1" class="" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" hidden>
-                                    <img id="viewer" src="{{asset('public/assets/admin/img/upload-vertical.png')}}"  src="{{asset('storage/banner')}}/{{$banner['image']}}" alt="banner image"/>
+                                    <img id="viewer" @if(empty($banner['image']))  src="{{asset('public/assets/admin/img/upload-vertical.png')}}" @else  src="{{asset('storage/banner')}}/{{$banner['image']}}" @endif alt="banner image"/>
                                 </label>
                             </div>
                             @if($banner['type']!="home_banner")
@@ -135,7 +135,7 @@
                                 </h5>
                                 <label class="upload--vertical">
                                     <input type="file" name="banner_logo" id="banner_logo" class="" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" hidden>
-                                    <img id="banner-logo-viewer" src="{{asset('public/assets/admin/img/upload-vertical.png')}}"  src="{{asset('storage/banner')}}/{{$banner['image']}}" alt="banner image"/>
+                                    <img id="banner-logo-viewer" @if(empty($banner['image']))  src="{{asset('public/assets/admin/img/upload-vertical.png')}}" @else  src="{{asset('storage/banner')}}/{{$banner['image']}}" @endif alt="banner image"/>
                                 </label>
                             </div>
                             @endif
