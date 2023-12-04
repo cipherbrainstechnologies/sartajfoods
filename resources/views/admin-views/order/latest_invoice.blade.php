@@ -16,7 +16,7 @@
             <td style="margin:0;padding:0;border:none;border-collapse:collapse;width:50%;">
             </td>
             <td style="margin:0;padding:0;border:none;border-collapse:collapse;width:50%;text-align:right;">
-                <p style="margin:0;padding:5px 0;font-size:18px;line-height:1.25em;text-align:right;color:#000;"><strong style="margin:0 5px 0 0;">{{translate('Date')}}:</strong>{{date('d M Y h:i a',strtotime($order['created_at']))}}</p>
+                <p style="margin:0;padding:5px 0;font-size:18px;line-height:1.25em;text-align:right;color:#000;"><strong style="margin:0 5px 0 0;">{{translate('Date')}}:</strong>{{date('d M Y h:i a',strtotime($order['created_at']))}}</p> 
             </td>
         </tr>
     </table>
