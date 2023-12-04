@@ -317,7 +317,7 @@ class CustomerController extends Controller
         
         $validator = Validator::make($request->all(), [
             'product_id' => 'required',
-            'user_id' => 'required',
+            // 'user_id' => 'required',
             'comment' => 'required',
             'rating' => 'required|numeric|max:5',
         ]);
