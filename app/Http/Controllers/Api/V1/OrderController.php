@@ -144,10 +144,10 @@ class OrderController extends Controller
                 $coupon_discount = 0;
                 $delivery_charge = 0;
             } else {
-                $coupon_discount = $request['coupon_discount_amount'];
+                $coupon_discount = !empty($request['coupon_discount_amount']) ? $request['coupon_discount_amount'] : 0;
             }
         }else{
-            $coupon_discount = $request['coupon_discount_amount'];
+            $coupon_discount = !empty($request['coupon_discount_amount']) ? $request['coupon_discount_amount'] : 0;
         }
 
 
