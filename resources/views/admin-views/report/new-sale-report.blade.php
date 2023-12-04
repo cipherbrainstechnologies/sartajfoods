@@ -28,7 +28,7 @@
 
                         <form class="w-100">
                             <div class="row g-3 g-sm-4 g-md-3 g-lg-4">
-                                <div class="col-sm-6 col-md-4 col-lg-2">
+                                <!-- <div class="col-sm-6 col-md-4 col-lg-2">
                                     <select class="custom-select custom-select-sm text-capitalize min-h-45px" name="branch_id">
                                         <option disabled selected>--- {{translate('select')}} {{translate('branch')}} ---</option>
                                         <option value="all" {{ $branch_id == 'all' ? 'selected': ''}}>{{translate('all')}} {{translate('branch')}}</option>
@@ -36,7 +36,7 @@
                                             <option value="{{$branch['id']}}" {{ $branch['id'] == $branch_id ? 'selected' : ''}}>{{$branch['name']}}</option>
                                         @endforeach
                                     </select>
-                                </div>
+                                </div> -->
                                 <div class="col-sm-6 col-md-4 col-lg-3">
                                     <div class="input-date-group">
                                         <label class="input-label" for="start_date">{{ translate('Start Date') }}</label>
