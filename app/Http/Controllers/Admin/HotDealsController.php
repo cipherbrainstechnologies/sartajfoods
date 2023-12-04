@@ -52,17 +52,21 @@ class HotDealsController extends Controller
        ];
 
        if(!empty($hotDeals)) {
-        $hotDealsUpadate = $this->hotDeals->find($hotDeals->id);
-        $hotDealsUpadate->image = $request->has('image') ? Helpers::update('deals/', $hotDealsUpadate->image, 'png', $request->file('image')) : $hotDealsUpadate->image;
-        $hotDealsUpadate->update($data);
+        $hotDealsData = $this->hotDeals->find($hotDeals->id);
+        $hotDealsData->image = $request->has('image') ? Helpers::update('deals/', $hotDealsData->image, 'png', $request->file('image')) : $hotDealsData->image;
         Toastr::success(translate('Deals updated successfully!'));
-        return back();
        } else {
-        $data['image'] =  Helpers::upload('deals/', 'png', $request->file('image'));
-        $this->hotDeals->create($data);
+        $hotDealsData = new HotDeals();
+        $hotDealsData->image =  Helpers::upload('deals/', 'png', $request->file('image'));
         Toastr::success(translate('Deals added successfully!'));
-        return back();
        }
+
+       $hotDealsData->product_id = $request->product;
+       $hotDealsData->discount = $request->discount;
+       $hotDealsData->start_date = $request->start_date;
+       $hotDealsData->end_date = $request->end_date;
+       $hotDealsData->save();
+       return back();
     }
      
 }

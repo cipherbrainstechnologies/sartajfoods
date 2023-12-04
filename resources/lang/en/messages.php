@@ -2160,4 +2160,5 @@
   'Deals updated successfully!' => 'Deals updated successfully!',
   'poster' => 'Poster',
   'Poster is required!' => 'Poster is required!',
+  'Deals added successfully!' => 'Deals added successfully!',
 );
