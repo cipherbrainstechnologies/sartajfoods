@@ -654,8 +654,8 @@ class ProductController extends Controller
     {
         $products = ProductLogic::get_trending_products($request['limit'], $request['offset']);
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
-        ProductLogic::cal_rating_and_review($products);
-        ProductLogic::getSoldProducts($products['products']);
+        // ProductLogic::cal_rating_and_review($products);
+        // ProductLogic::getSoldProducts($products['products']);
         return response()->json($products, 200);
     }
 
