@@ -34,7 +34,7 @@
                 <table style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;">
                     <tr style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;border-bottom:1px solid #000;">
                         <th style="width:40%;border:none;border-collapse:collapse;margin:0;padding:0;font-size:18px;line-height:1.5em;color:#000;font-weight:700;text-align:left;">{{translate('Total Payable Amt.')}}</th>
-                        <td style="width:60%;border:none;border-collapse:collapse;margin:0;padding:0;font-size:18px;line-height:1.5em;color:#000;border-bottom:1px solid #000;text-align:center;">¥ {{$totalAmt}}</td>
+                        <td style="width:60%;border:none;border-collapse:collapse;margin:0;padding:0;font-size:18px;line-height:1.5em;color:#000;border-bottom:1px solid #000;text-align:center;"> {{Helpers::set_symbol($totalAmt)}}</td>
                     </tr>
                 </table>
             </td>
