@@ -203,8 +203,8 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="input-label" for="substrak_stock">{{translate('Substrak Stock')}}<span class="input-label-secondary"></span></label>
-                                    <select name="substrak_stock" id="substrak_stock" class="form-control js-select2-custom">
+                                    <label class="input-label" for="substrack_stock">{{translate('Substrak Stock')}}<span class="input-label-secondary"></span></label>
+                                    <select name="substrack_stock" id="substrack_stock" class="form-control js-select2-custom">
                                         <option value="Yes">{{translate('yes')}}</option>
                                         <option value="No">{{translate('no')}}</option>
                                     </select>
@@ -307,7 +307,7 @@
                                 <div class="d-flex align-items-center mb-2 mb-sm-0">
                                     <h5 class="mb-0 mr-2">{{ translate('Visibility') }}</h5>
                                     <label class="toggle-switch my-0">
-                                        <input type="checkbox" class="toggle-switch-input" name="status" value="1" checked>
+                                        <input type="checkbox" class="toggle-switch-input" name="status" checked>
                                         <span class="toggle-switch-label mx-auto text">
                                             <span class="toggle-switch-indicator"></span>
                                         </span>

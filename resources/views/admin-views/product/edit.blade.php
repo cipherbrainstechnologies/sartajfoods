@@ -214,10 +214,10 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="input-label" for="substrak_stock">{{translate('Substrak Stock')}}<span class="input-label-secondary"></span></label>
-                                    <select name="substrak_stock" id="substrak_stock" class="form-control js-select2-custom">
-                                        <option value="Yes" {{ ($product['substrak_stock'] === 'yes') ? 'selected' : '' }}>{{translate('yes')}}</option>
-                                        <option value="No" {{ ($product['substrak_stock'] === 'no') ? 'selected' : '' }}>{{translate('no')}}</option>
+                                    <label class="input-label" for="substrack_stock">{{translate('Substrak Stock')}}<span class="input-label-secondary"></span></label>
+                                    <select name="substrack_stock" id="substrack_stock" class="form-control js-select2-custom">
+                                        <option value="yes" {{ ($product['substrack_stock'] === 'yes') ? 'selected' : '' }}>{{translate('yes')}}</option>
+                                        <option value="no" {{ ($product['substrack_stock'] === 'no') ? 'selected' : '' }}>{{translate('no')}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -236,8 +236,8 @@
                                 <div class="form-group">
                                     <label class="input-label" for="requires_shipping">{{translate('Requires Shipping')}}<span class="input-label-secondary"></span></label>
                                     <select name="requires_shipping" id="requires_shipping" class="form-control js-select2-custom">
-                                        <option value="Yes" {{ ($product['substrak_stock'] === 'yes') ? 'selected' : '' }}>{{translate('yes')}}</option>
-                                        <option value="No" {{ ($product['substrak_stock'] === 'no') ? 'selected' : '' }}>{{translate('no')}}</option>
+                                        <option value="yes" {{ ($product['requires_shipping'] === 'yes') ? 'selected' : '' }}>{{translate('yes')}}</option>
+                                        <option value="no" {{ ($product['requires_shipping'] === 'no') ? 'selected' : '' }}>{{translate('no')}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -541,7 +541,7 @@
                             <select name="manufacturer_id" id="choice_attributes"
                                     class="form-control js-select2-custom">
                                 @foreach( $manufacturers as $Manufacturer)
-                                    <option value="{{$Manufacturer['id']}}" ({{$Manufacturer['id']}} === $product['manufacturer_id]) ? selected : ''>{{$Manufacturer['name']}}</option>
+                                    <option value="{{$Manufacturer['id']}}"  {{ ($Manufacturer['id'] === $product['manufacturer_id']) ? 'selected' : ''  }}>{{$Manufacturer['name']}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -685,7 +685,7 @@
                                 <div class="d-flex align-items-center mb-2 mb-sm-0">
                                     <h5 class="mb-0 mr-2">{{ translate('Visibility') }}</h5>
                                     <label class="toggle-switch my-0">
-                                        <input type="checkbox" class="toggle-switch-input" name="status" value="1" checked>
+                                        <input type="checkbox" class="toggle-switch-input" name="status" {{ !empty($product['status']) ? 'checked' : ''  }}>
                                         <span class="toggle-switch-label mx-auto text">
                                             <span class="toggle-switch-indicator"></span>
                                         </span>

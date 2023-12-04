@@ -353,7 +353,7 @@ class ProductController extends Controller
         $p->seo_en = !empty($request->en_seo) ? $request->en_seo : null;
         $p->seo_ja = !empty($request->ja_seo) ? $request->ja_seo : null;
 
-        $p->substrack_stock = !empty($request->substrak_stock) ? $request->substrak_stock : null;
+        $p->substrack_stock = !empty($request->substrack_stock) ? $request->substrack_stock : null;
         $p->out_of_stock_status = !empty($request->out_of_stock_status) ? $request->out_of_stock_status : null;
         $p->product_mark = !empty($request->product_mark) ? implode(",", $request->product_mark) : null;
         $p->product_type = !empty($request->product_type) ? $request->product_type : null;
@@ -379,6 +379,7 @@ class ProductController extends Controller
         $p->sale_price = !empty($request->sale_price) ? $request->sale_price : null;
         
         $p->downloads = $request->has('download_id') ? json_encode($request->download_id) : json_encode([]);
+        $p->status = ($request->status === 'on') ? 1 : 0; 
         $p->save();
 
         $p->tags()->sync($tag_ids);
@@ -426,6 +427,7 @@ class ProductController extends Controller
         $manufacturers = $this->manufacturer->get();
         $filters = $this->filter->get();
         $downloadLinks = $this->downloads->get();
+        // dd((array)$manufacturers);
         return view('admin-views.product.edit', compact('product', 'product_category', 'categories', 'manufacturers', 'filters', 'downloadLinks'));
     }
 
@@ -644,7 +646,7 @@ class ProductController extends Controller
         $p->seo_en = !empty($request->en_seo) ? $request->en_seo : null;
         $p->seo_ja = !empty($request->ja_seo) ? $request->ja_seo : null;
 
-        $p->substrack_stock = !empty($request->substrak_stock) ? $request->substrak_stock : null;
+        $p->substrack_stock = !empty($request->substrack_stock) ? $request->substrack_stock : null;
         $p->out_of_stock_status = !empty($request->out_of_stock_status) ? $request->out_of_stock_status : null;
         $p->product_mark = !empty($request->product_mark) ? implode(",", $request->product_mark) : null;
         $p->product_type = !empty($request->product_type) ? $request->product_type : null;
@@ -654,7 +656,6 @@ class ProductController extends Controller
         $p->weight = !empty($request->weight) ? $request->weight : null;
         $p->weight_class = !empty($request->weight_class) ? $request->weight_class : null;
         $p->sort_order = !empty($request->sort_order) ? $request->sort_order : null;
-
         $p->model = !empty($request->model) ? $request->model : null;
         $p->sku = !empty($request->sku) ? $request->sku : null;
         $p->upc = !empty($request->upc) ? $request->upc : null;
@@ -666,6 +667,12 @@ class ProductController extends Controller
         $p->manufacturer_id = !empty($request->manufacturer_id) ? $request->manufacturer_id : null;
 
         $p->sale_price = !empty($request->sale_price) ? $request->sale_price : null;
+
+        $p->sale_start_date = !empty($request->sale_start_date) ? $request->sale_start_date : null;
+        $p->sale_end_date = !empty($request->sale_end_date) ? $request->sale_end_date : null;
+
+
+        $p->status = ($request->status === 'on') ? 1 : 0; 
 
         $p->save();
 
