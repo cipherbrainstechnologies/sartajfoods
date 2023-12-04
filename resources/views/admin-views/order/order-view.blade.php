@@ -191,9 +191,10 @@
                                 </tr>
                             </thead>
                             @foreach($order->details as $detail)
-
+                               
                                 @if($detail->product_details !=null)
                                     @php($product = json_decode($detail->product_details, true))
+                                    
                                     <!-- Media -->
                                     <tr>
                                         <td>
@@ -202,11 +203,17 @@
                                         <td>
                                             <div class="media media--sm">
                                                 <div class="avatar avatar-xl mr-3">
-                                                    @if($detail->product && $detail->product['image'] != null )
-                                                    <img class="img-fluid rounded aspect-ratio-1"
+                                                   {{-- @if($detail->product && $detail->product['image'] != null )--}}
+                                                   @if(!empty($product))
+                                                  
+                                                    {{-- <img class="img-fluid rounded aspect-ratio-1"
                                                          src="{{asset('storage/product')}}/{{json_decode($detail->product['image'],true)[0]?? ''}}"
                                                         onerror="this.src='{{asset('public/assets/admin/img/160x160/2.png')}}'"
-                                                        alt="Image Description">
+                                                        alt="Image Description"> --}}
+                                                        <img class="img-fluid rounded aspect-ratio-1"
+                                                         src="{{asset('storage/product')}}/{{json_decode($product['image'],true)[0]?? ''}}"
+                                                        onerror="this.src='{{asset('public/assets/admin/img/160x160/2.png')}}'"
+                                                        alt="Image Description"> 
                                                     @else
                                                         <img
                                                         src="{{asset('public/assets/admin/img/160x160/2.png')}}"
