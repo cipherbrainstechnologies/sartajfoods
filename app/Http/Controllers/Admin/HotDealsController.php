@@ -29,12 +29,13 @@ class HotDealsController extends Controller
 
     public function store(Request $request)
     {
+        $hotDeals = $this->hotDeals->first();
         $request->validate([
             'product' => 'required',
             'discount' => 'required',
             'start_date' => 'required',
             'end_date' => 'required',
-            'image' => 'required',
+            'image' => !empty($hotDeals) ? '' :'required',
         ], [
             'product.required' => translate('Product is required!'),
             'discount.required' => translate('Discount is required!'),
@@ -42,8 +43,7 @@ class HotDealsController extends Controller
             'end_date.required' => translate('End date is required!'),
             'image.required' => translate('Poster is required!'),
         ]);
-       $hotDeals = $this->hotDeals->first();
-
+       
        $data = [
         'product_id' => $request->product,
         'discount' => $request->discount,
