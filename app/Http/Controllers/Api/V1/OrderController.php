@@ -136,19 +136,22 @@ class OrderController extends Controller
             $delivery_charge = Helpers::get_delivery_charge($request['distance']);
         }
 
-        $coupon = $this->coupon->active()->where(['code' => $request['coupon_code']])->first();
+        if(!empty($request['coupon_code'])){
+            $coupon = $this->coupon->active()->where(['code' => $request['coupon_code']])->first();
 
-        if (isset($coupon)) {
-            if ($coupon['coupon_type'] == 'free_delivery') {
-                $free_delivery_amount = Helpers::get_delivery_charge($request['distance']);
-                $coupon_discount = 0;
-                $delivery_charge = 0;
-            } else {
+            if (isset($coupon)) {
+                if ($coupon['coupon_type'] == 'free_delivery') {
+                    $free_delivery_amount = Helpers::get_delivery_charge($request['distance']);
+                    $coupon_discount = 0;
+                    $delivery_charge = 0;
+                } else {
+                    $coupon_discount = !empty($request['coupon_discount_amount']) ? $request['coupon_discount_amount'] : 0;
+                }
+            }else{
                 $coupon_discount = !empty($request['coupon_discount_amount']) ? $request['coupon_discount_amount'] : 0;
             }
-        }else{
-            $coupon_discount = !empty($request['coupon_discount_amount']) ? $request['coupon_discount_amount'] : 0;
         }
+        
 
 
 //        $coupon_discount_amount = 0;
