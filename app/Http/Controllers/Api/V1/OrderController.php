@@ -85,6 +85,7 @@ class OrderController extends Controller
         }
 
         $customer = $this->user->find($request->user()->id);
+        $coupon_discount = 0;
 
         if($request->payment_method == 'wallet_payment' && $customer->wallet_balance < $request['order_amount'])
         {
@@ -106,6 +107,7 @@ class OrderController extends Controller
         }
 
         foreach ($request['cart'] as $c) {
+            
             // echo "<pre>";print_r($c);die;
             // $product = $this->product->find($c['product_id']);
             $product = $this->product->find($c['id']);
