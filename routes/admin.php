@@ -288,6 +288,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
                 Route::get('cookies-setup', 'BusinessSettingsController@cookies_setup')->name('cookies-setup');
                 Route::post('cookies-setup-update', 'BusinessSettingsController@cookies_setup_update')->name('cookies-setup-update');
                 Route::get('max-amount-status/{status}', 'BusinessSettingsController@max_amount_status')->name('max-amount-status');
+                Route::get('min-amount-status/{status}', 'BusinessSettingsController@min_amount_status')->name('min-amount-status');
                 Route::get('free-delivery-status/{status}', 'BusinessSettingsController@free_delivery_status')->name('free-delivery-status');
                 Route::get('dm-self-registration/{status}', 'BusinessSettingsController@dm_self_registration_status')->name('dm-self-registration');
                 Route::get('otp-setup', 'BusinessSettingsController@otp_setup')->name('otp-setup');

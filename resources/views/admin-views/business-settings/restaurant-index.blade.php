@@ -645,6 +645,7 @@
                                                {{ $max_amount_status == 0 ? 'readonly' : '' }} required>
                                     </div>
                                 </div>
+
                                 <div class="col-md-4">
                                     <?php
                                         $sp=\App\Model\BusinessSetting::where('key','self_pickup')->first()->value;
@@ -665,6 +666,42 @@
                                                 <span class="toggle-switch-indicator"></span>
                                             </span>
                                         </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4" style="padding-top: 30px;">
+                                    <?php
+                                    $minimum_amount_status=\App\CentralLogics\Helpers::get_business_settings('minimum_amount_for_cod_order_status');
+                                    $min_status = $minimum_amount_status == 1 ? 0 : 1;
+                                    ?>
+                                    <div class="form-group">
+                                        <label class="toggle-switch h--45px toggle-switch-sm d-flex justify-content-between border rounded px-3 py-0 form-control"
+                                               onclick="min_amount_status('{{route('admin.business-settings.store.min-amount-status',[$min_status])}}')">
+                                            <span class="pr-1 d-flex align-items-center switch--label">
+                                                <span class="line--limit-1">
+                                                    <strong>{{translate('Minimum Amount for COD Order Status')}}</strong>
+                                                </span>
+                                                <span class="form-label-secondary text-danger d-flex ml-1" data-toggle="tooltip" data-placement="right" data-original-title="{{translate('If this field is active the minimum amount for Cash on Delivery order is apply')}}"><img src="{{asset('public/assets/admin/img/info-circle.svg')}}" alt="info">
+                                                </span>
+                                            </span>
+                                            <input type="checkbox" class="toggle-switch-input" name="minimum_amount_status" {{ $minimum_amount_status == 1 ? 'checked' : '' }}>
+                                            <span class="toggle-switch-label text">
+                                                <span class="toggle-switch-indicator"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                @php($minimum_amount_for_cod_order=\App\CentralLogics\Helpers::get_business_settings('minimum_amount_for_cod_order'))
+                                <div class="col-md-4 col-sm-6">
+                                    <div class="form-group mb-0">
+                                        <label class="input-label text-capitalize">{{translate('Minimum Amount for COD Order')}}
+                                            <i class="tio-info-outined"
+                                               data-toggle="tooltip"
+                                               data-placement="top"
+                                               title="{{ translate('The minimum amount for Cash on Delivery order.') }}"></i>
+                                        </label>
+                                        <input type="number" value="{{$minimum_amount_for_cod_order}}" name="minimum_amount_for_cod_order" class="form-control" placeholder=""
+                                               {{ $minimum_amount_status == 0 ? 'readonly' : '' }} required>
                                     </div>
                                 </div>
 
@@ -717,7 +754,7 @@
                                     $dm_self_registration=\App\Model\BusinessSetting::where('key','dm_self_registration')->first()->value;
                                     $dm_status = $dm_self_registration == 1 ? 0 : 1;
                                     ?>
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label class="toggle-switch h--45px toggle-switch-sm d-flex justify-content-between border rounded px-3 py-0 form-control"
                                                onclick="dm_self_registration('{{route('admin.business-settings.store.dm-self-registration',[$dm_status])}}')">
                                             <span class="pr-1 d-flex align-items-center switch--label">
@@ -734,7 +771,7 @@
                                                 <span class="toggle-switch-indicator"></span>
                                             </span>
                                         </label>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
 
@@ -971,6 +1008,32 @@
         }
 
         function max_amount_status(route) {
+
+            $.get({
+                url: route,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    $('#loading').show();
+                },
+                success: function (data) {
+                    setTimeout(function () {
+                        location.reload(true);
+                    }, 1000);
+                    if(data.status == 1){
+                        toastr.success(data.message);
+                    }else{
+                        toastr.warning(data.message);
+                    }
+
+                },
+                complete: function () {
+                    $('#loading').hide();
+                },
+            });
+        }
+
+        function min_amount_status(route) {
 
             $.get({
                 url: route,

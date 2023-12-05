@@ -142,6 +142,18 @@ class BusinessSettingsController extends Controller
             'message' => 'status updated'
         ]);
     }
+
+    public function min_amount_status($status): \Illuminate\Http\JsonResponse
+    {
+        DB::table('business_settings')->updateOrInsert(['key' => 'minimum_amount_for_cod_order_status'], [
+            'value' => $status
+        ]);
+
+        return response()->json([
+            'status' => 1,
+            'message' => 'status updated'
+        ]);
+    }
     public function free_delivery_status($status): \Illuminate\Http\JsonResponse
     {
         DB::table('business_settings')->updateOrInsert(['key' => 'free_delivery_over_amount_status'], [
@@ -224,6 +236,10 @@ class BusinessSettingsController extends Controller
 
         DB::table('business_settings')->updateOrInsert(['key' => 'maximum_amount_for_cod_order'], [
             'value' => $request['maximum_amount_for_cod_order'],
+        ]);
+
+        DB::table('business_settings')->updateOrInsert(['key' => 'minimum_amount_for_cod_order'], [
+            'value' => $request['minimum_amount_for_cod_order'],
         ]);
 
         $curr_fav_icon = $this->business_settings->where(['key' => 'fav_icon'])->first();

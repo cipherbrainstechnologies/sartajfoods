@@ -2161,4 +2161,8 @@
   'poster' => 'Poster',
   'Poster is required!' => 'Poster is required!',
   'Deals added successfully!' => 'Deals added successfully!',
+  'The minimum amount for Cash on Delivery order.' => 'The minimum amount for Cash on Delivery order.',
+  'Minimum Amount for COD Order' => 'Minimum Amount for COD Order',
+  'If this field is active the minimum amount for Cash on Delivery order is apply' => 'If this field is active the minimum amount for Cash on Delivery order is apply',
+  'Minimum Amount for COD Order Status' => 'Minimum Amount for COD Order Status',
 );
