@@ -32,6 +32,7 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Model\Manufacturer;
 use App\Model\Filter;
 use App\Model\Downloads;
+use Carbon\Carbon;
 
 class ProductController extends Controller
 {
@@ -956,6 +957,7 @@ class ProductController extends Controller
         if ($stock_count >= 0) {
             $product->total_stock = $stock_count;
             $product->variations = json_encode($variations);
+            $product->resotred_at = Carbon::now()->format('Y-m-d H:i:s');
             $product->save();
             Toastr::success(translate('product_quantity_updated_successfully!'));
         } else {

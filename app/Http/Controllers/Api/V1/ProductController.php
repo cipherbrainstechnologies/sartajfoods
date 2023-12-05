@@ -715,4 +715,20 @@ class ProductController extends Controller
         $max = Product::select('price')->max('price');
         return response()->json(array('max_price' => $max), 200);
     }
+
+    public function restored_products()
+    {
+        $restoredProducts = $this->product->active()
+        ->withCount(['wishlist'])
+        ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
+        ->where('resotred_at', '<>' , null)
+        ->orderBy('resotred_at', 'DESC')
+        ->paginate(5, ['*'], 'page', 1);
+
+        $products = Helpers::product_data_formatting($restoredProducts, true);
+        ProductLogic::cal_rating_and_review($products);
+        ProductLogic::getSoldProducts($products);
+        
+        return response()->json($products, 200);
+    }
 }
