@@ -510,7 +510,7 @@ class ProductController extends Controller
                 $tag_ids[] = $tag->id;
             }
         }
-
+        
         $p = $this->product->find($id);
 
         $images = json_decode($p->image);
@@ -674,7 +674,7 @@ class ProductController extends Controller
 
 
         $p->status = ($request->status === 'on') ? 1 : 0; 
-
+        
         $p->save();
 
         $p->tags()->sync($tag_ids);

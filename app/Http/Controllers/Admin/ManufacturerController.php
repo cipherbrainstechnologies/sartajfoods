@@ -153,6 +153,7 @@ class manufacturerController extends Controller
             'name.required' => translate('Name is required'),
         ]);
 
+
         foreach ($request->name as $name) {
             if (strlen($name) > 255) {
                 toastr::error(translate('Name is too long!'));
@@ -165,7 +166,7 @@ class manufacturerController extends Controller
         $manufacturer->meta_title = $request->meta_title[array_search('en', $request->lang)];
         $manufacturer->meta_description = $request->meta_description[array_search('en', $request->lang)];
         $manufacturer->meta_keywords = $request->meta_keywords[array_search('en', $request->lang)];
-        $image_data = '';
+        $image_data = $manufacturer->image;
         if (!empty($request->file('image'))) {
             $image_data = Helpers::upload('manufacturer/', 'png', $request->file('image'));
         }

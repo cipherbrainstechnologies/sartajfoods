@@ -121,10 +121,11 @@ class Product extends Model
     
     public function getManufacturerImageAttribute()
     {
-        $baseURL = 'http://192.168.1.30:8000';
+        // $baseURL = 'http://192.168.1.30:8000';
+
 
         if (!empty($this->manufacturer->image)) {
-            return $baseURL . '/storage/manufacturer/' . $this->manufacturer->image;
+            return config('app.url') . '/storage/manufacturer/' . $this->manufacturer->image;
         }
         return null;
     }

@@ -81,7 +81,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="input-label" for="{{$lang['code']}}_product_tags">{{translate('product tags')}} ({{strtoupper($lang['code'])}})</label>
-                                        <input type="text" name="product_tags[]" class="form-control" id="{{$lang['code']}}_product_tags" value="{{$translate[$lang['code']]['product_tags']??$product['product_tags']}}" placeholder="{{translate('product tags')}}">
+                                        <input type="text" name="product_tags[]" class="form-control" id="{{$lang['code']}}_product_tags" value="{{$translate[$lang['code']]['product_tags']??$product['product_tag']}}" placeholder="{{translate('product tags')}}">
                                     </div>
 
                                     @if($lang['code'] == "en")
@@ -875,7 +875,6 @@
                 contentType: false,
                 processData: false,
                 success: function (data) {
-                   
                     if (data.errors) {
                         for (var i = 0; i < data.errors.length; i++) {
                             toastr.error(data.errors[i].message, {
