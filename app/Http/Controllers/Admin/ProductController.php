@@ -875,19 +875,23 @@ class ProductController extends Controller
             }
 
             $storage[] = [
+                'id' => $item['id'],
+                'model_code' => $item['model'],
                 'name' => $item['name'],
-                'description' => $item['description'],
+                'quantity' => $item['total_stock'],
+                'weight' => $item['weight'],
+                // 'description' => $item['description'],
                 'price' => $item['price'],
-                'tax' => $item['tax'],
-                'category_id'=>$category_id,
-                'sub_category_id'=>$sub_category_id,
-                'discount'=>$item['discount'],
-                'discount_type'=>$item['discount_type'],
-                'tax_type'=>$item['tax_type'],
-                'unit'=>$item['unit'],
-                'total_stock'=>$item['total_stock'],
-                'capacity'=>$item['capacity'],
-                'daily_needs'=>$item['daily_needs'],
+                // 'tax' => $item['tax'],
+                // 'category_id'=>$category_id,
+                // 'sub_category_id'=>$sub_category_id,
+                // 'discount'=>$item['discount'],
+                // 'discount_type'=>$item['discount_type'],
+                // 'tax_type'=>$item['tax_type'],
+                // 'unit'=>$item['unit'],
+                // 'total_stock'=>$item['total_stock'],
+                // 'capacity'=>$item['capacity'],
+                // 'daily_needs'=>$item['daily_needs'],
             ];
 
         }
