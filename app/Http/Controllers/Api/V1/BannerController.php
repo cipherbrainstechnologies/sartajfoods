@@ -21,6 +21,9 @@ class BannerController extends Controller
             foreach($banners->toArray() as $key => $banner){
                 $response[] = $banner;
                 $response[$key]['image'] = $baseUrl . '/storage/banner/' . $banner['image'];
+                if(!empty($banner['banner_logo'])){
+                    $response[$key]['banner_logo'] = $baseUrl . '/storage/banner/logo' . $banner['image'];
+                }
             }
         }      
         return $response;

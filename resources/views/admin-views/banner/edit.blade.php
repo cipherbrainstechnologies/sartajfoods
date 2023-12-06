@@ -135,7 +135,7 @@
                                 </h5>
                                 <label class="upload--vertical">
                                     <input type="file" name="banner_logo" id="banner_logo" class="" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" hidden>
-                                    <img id="banner-logo-viewer" @if(empty($banner['image']))  src="{{asset('public/assets/admin/img/upload-vertical.png')}}" @else  src="{{asset('storage/banner')}}/{{$banner['image']}}" @endif alt="banner image"/>
+                                    <img id="banner-logo-viewer" @if(empty($banner['banner_logo']))  src="{{asset('public/assets/admin/img/upload-vertical.png')}}" @else  src="{{asset('storage/banner/logo')}}/{{$banner['banner_logo']}}" @endif alt="banner logo image"/>
                                 </label>
                             </div>
                             @endif

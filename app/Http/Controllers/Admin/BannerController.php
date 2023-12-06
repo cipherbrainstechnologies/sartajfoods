@@ -131,7 +131,6 @@ class BannerController extends Controller
         $products = $this->product->orderBy('name')->get();
         $banner = $this->banner->find($id);
         $categories = $this->category->where(['parent_id'=>0])->orderBy('name')->get();
-        // dd($banner);
         return view('admin-views.banner.edit', compact('banner', 'products', 'categories'));
     }
 
