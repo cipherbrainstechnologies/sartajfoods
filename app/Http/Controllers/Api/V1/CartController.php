@@ -191,7 +191,7 @@ class CartController extends Controller
                     'user_id' => $user->id,
                     'product_id' => $product->id,
                     'quantity' => $quantity,
-                    'price' => (isset($productSalePrice) && !empty($productSalePrice)) ? $product->price : 0,
+                    'price' => (isset($productSalePrice) && !empty($productSalePrice)) ? 0 : $product->price,
                     'special_price' =>  (isset($productSalePrice) && !empty($productSalePrice)) ? $productSalePrice : '0',
                     'discount_type' => $discount_type,
                     'discount'      => $discount,
