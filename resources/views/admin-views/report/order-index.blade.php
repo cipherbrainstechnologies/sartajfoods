@@ -79,11 +79,11 @@ ini_set('memory_limit', '-1');
                                        class="js-flatpickr form-control flatpickr-custom flatpickr-input" placeholder="{{ session('to_date') }}" required>
                             </label>
                         </div>
-                        <div class="col-md-4">
-                            <label class="input-label d-none d-md-block">&nbsp;</label>
-                            <div>
-                                <button type="submit" class="btn btn--primary min-h-45px btn-block">{{translate('show')}}</button>
-                            </div>
+                        <div class="col-md-2 mt-5">
+                                <a href="{{route('admin.report.order')}}" id="" class="btn w-100 btn--reset min-h-45px">{{translate('clear')}}</a>                       
+                        </div>
+                        <div class="col-md-2 mt-5">
+                              <button type="submit" class="btn btn--primary min-h-45px btn-block">{{translate('show')}}</button>
                         </div>
                     </div>
                 </form>
