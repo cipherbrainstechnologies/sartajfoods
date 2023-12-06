@@ -22,7 +22,7 @@ class BannerController extends Controller
                 $response[] = $banner;
                 $response[$key]['image'] = $baseUrl . '/storage/banner/' . $banner['image'];
                 if(!empty($banner['banner_logo'])){
-                    $response[$key]['banner_logo'] = $baseUrl . '/storage/banner/logo/' . $banner['image'];
+                    $response[$key]['banner_logo'] = $baseUrl . '/storage/banner/logo/' . $banner['banner_logo'];
                 }
             }
         }      
