@@ -44,12 +44,6 @@ class HotDealsController extends Controller
             'image.required' => translate('Poster is required!'),
         ]);
        
-       $data = [
-        'product_id' => $request->product,
-        'discount' => $request->discount,
-        'start_date' => $request->start_date,
-        'end_date' => $request->end_date,
-       ];
 
        if(!empty($hotDeals)) {
         $hotDealsData = $this->hotDeals->find($hotDeals->id);
@@ -61,6 +55,7 @@ class HotDealsController extends Controller
         Toastr::success(translate('Deals added successfully!'));
        }
 
+       $hotDealsData->title = $request->title;
        $hotDealsData->product_id = $request->product;
        $hotDealsData->discount = $request->discount;
        $hotDealsData->start_date = $request->start_date;

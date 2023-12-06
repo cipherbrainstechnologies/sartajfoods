@@ -28,6 +28,12 @@
                     <div class="row g-3">
                         <div class="col-md-12">
                             <div class="row g-3">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label class="input-label" for="order">{{translate('title')}}</label>
+                                        <input type="text" name="title" class="form-control" placeholder="{{ translate('title') }}" value="{{ !empty($hotDeals->title) ? $hotDeals->title : '' }}">
+                                    </div>
+                                </div>
                                 <div class="col-6" >
                                     <div class="form-group">
                                         <label class="input-label" for="exampleFormControlInput1">{{translate('Product')}}</label>
