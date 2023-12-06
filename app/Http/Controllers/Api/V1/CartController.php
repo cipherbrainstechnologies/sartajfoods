@@ -52,13 +52,20 @@ class CartController extends Controller
     {
         // Retrieve the authenticated user
         $user = auth()->user();
-
+        $eight_percent = 0;
+        $ten_percent = 0;
         // Fetch cart products for the authenticated user
         $cartProducts = Cart::with('product.rating')->where('user_id', $user->id)->get();
-
-        $cartProducts->each(function ($cartProduct) {
+        
+        $cartProducts->each(function ($cartProduct) use($eight_percent,$ten_percent){
             $product = $cartProduct->product;
+            if($cartProduct->product['tax'] == 8){
+                $product->tax_eight_percent = ((($product->price * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);    
+            }
 
+            if($cartProduct->product['tax'] == 10){
+                $product->tax_ten_percent = ((($product->price * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);    
+            }
             // Calculate overall rating
             $allOverRating = $product->rating->isNotEmpty()
                 ? ($product->rating[0]->total / ($product->rating[0]->count * 5)) * 100
@@ -83,21 +90,20 @@ class CartController extends Controller
                     }, $imageArray);
                 }
             }
-
             return $cartProduct;
         });
-
         $deliveryCharge = Helpers::get_business_settings('delivery_charge', 0);
-
         $subTotalAmt = $cartProducts->sum('sub_total');
         $totalAmt = round($subTotalAmt + $deliveryCharge, 2);
-
+        
         return response()->json([
             'user' => $user,
             'cartProducts' => $cartProducts,
             'delivery_charge' => $deliveryCharge,
             'total_sub_amt' => $subTotalAmt,
-            'total_amt' => $totalAmt
+            'total_amt' => $totalAmt,
+            'eight_percent' => $cartProducts->sum('product.tax_eight_percent'),
+            'ten_percent' => $cartProducts->sum('product.tax_ten_percent')
         ]);
     }
 
