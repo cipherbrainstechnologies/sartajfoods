@@ -94,6 +94,7 @@ class CartController extends Controller
         });
         $deliveryCharge = Helpers::get_business_settings('delivery_charge', 0);
         $subTotalAmt = $cartProducts->sum('sub_total');
+        
         $totalAmt = round($subTotalAmt + $deliveryCharge, 2);
         
         return response()->json([
