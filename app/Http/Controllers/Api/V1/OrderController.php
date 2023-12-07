@@ -187,7 +187,7 @@ class OrderController extends Controller
                 'order_status' => ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'pending':'confirmed',
                 'payment_method' => $request->payment_method,
                 'transaction_reference' => $request->transaction_reference ?? null,
-                'order_note' => $request['order_note'],
+                'order_note' => !empty($request['order_note']) ? $request['order_note'] : null,
                 'order_type' => $request['order_type'],
                 'branch_id' => !empty($request['branch_id']) ? $request['branch_id'] : null,
                 'delivery_address_id' => $request->delivery_address_id,
