@@ -16,13 +16,13 @@ class UserActivityController extends Controller
         $query_param = [];
         $search = $request['search'];
         if ($request->has('search')) {
-            // $key = explode(' ', $request['search']);
-            // $query = $this->product->where(function ($q) use ($key) {
-            //     foreach ($key as $value) {
-            //         $q->orWhere('id', 'like', "%{$value}%")
-            //             ->orWhere('name', 'like', "%{$value}%");
-            //     }
-            // })->latest();
+            $key = explode(' ', $request['search']);
+            $query = $this->recent_activity->where(function ($q) use ($key) {
+                foreach ($key as $value) {
+                    $q->orWhere('user_id', 'like', "%{$value}%")
+                        ->orWhere('message', 'like', "%{$value}%");
+                }
+            })->latest();
             $query_param = ['search' => $request['search']];
         }else{
             $query = $this->recent_activity->latest();
