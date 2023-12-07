@@ -290,7 +290,7 @@ class OrderController extends Controller
                 ]);
                 DB::table('order_details')->insert($or_d);
                 
-                Cart::where('user_id',$request->user()->id)->delete();
+                // Cart::where('user_id',$request->user()->id)->delete();
             }
             Helpers::addRecentActivity($request->user(),"order_place");
             $or['total_tax_amount'] = $total_tax_amount;
