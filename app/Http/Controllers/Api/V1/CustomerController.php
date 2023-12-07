@@ -51,7 +51,7 @@ class CustomerController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'contact_person_name' => 'required',
-            'address_type' => 'required',
+            // 'address_type' => 'required',
             'contact_person_number' => 'required',
             'address' => 'required'
         ]);
@@ -62,17 +62,17 @@ class CustomerController extends Controller
 
         $address = [
             'user_id' => $request->user()->id,
-            'contact_person_name' => $request->contact_person_name,
-            'contact_person_number' => $request->contact_person_number,
-            'address_type' => $request->address_type,
-            'address' => $request->address,
-            'road' => $request->road,
-            'house' => $request->house,
-            'floor' => $request->floor,
-            'longitude' => $request->longitude,
-            'latitude' => $request->latitude,
-            'country' => $request->country,
-            'state' => $request->state,
+            'contact_person_name' => !empty($request->contact_person_name) ? $request->contact_person_name : null,
+            'contact_person_number' => !empty($request->contact_person_number) ? $request->contact_person_number : null,
+            'address_type' => !empty($request->address_type) ? $request->address_type : null,
+            'address' => !empty($request->address) ? $request->address : null,
+            'road' => !empty($request->road) ? $request->road : null, 
+            'house' => !empty($request->house) ? $request->house : null,
+            'floor' => !empty($request->floor) ? $request->floor : null,
+            'longitude' => !empty($request->longitude) ? $request->longitude : null,
+            'latitude' => !empty($request->latitude) ? $request->latitude : null,
+            'country' => !empty($request->country) ? $request->country : null,
+            'state' => !empty($request->state) ? $request->state : null,
             'post_code' => $request->post_code,
             'created_at' => now(),
             'updated_at' => now()
