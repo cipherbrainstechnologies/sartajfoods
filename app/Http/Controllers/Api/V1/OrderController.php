@@ -292,7 +292,7 @@ class OrderController extends Controller
                 
                 Cart::where('user_id',$request->user()->id)->delete();
             }
-            Helpers::addRecentActivity($request->user(),"order_place",$or->id);
+            Helpers::addRecentActivity($request->user(),"order_place");
             $or['total_tax_amount'] = $total_tax_amount;
             $latestOrder =DB::table('orders')->insertGetId($or);
             $o_status = ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'pending':'confirmed';

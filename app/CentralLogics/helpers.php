@@ -936,7 +936,7 @@ class Helpers
        return 0;
     }
 
-    public static function addRecentActivity($user,$status,$order_id=null){
+    public static function addRecentActivity($user,$status){
         
         $currentDateTime = Carbon::now();
         switch ($status) {
@@ -957,7 +957,7 @@ class Helpers
             case ($status == "order_place"):
                 RecentActivity::create([
                     'user_id' => $user->id,
-                    'message' => $user->f_name . ' '.$user->l_name . ' new order Id '.$order_id.' place at '.$currentDateTime->format('d/m/Y H:i:s'),
+                    'message' => $user->f_name . ' '.$user->l_name .' place at '.$currentDateTime->format('d/m/Y H:i:s'),
                     'created_at' => now()
                 ]);
                 break;
