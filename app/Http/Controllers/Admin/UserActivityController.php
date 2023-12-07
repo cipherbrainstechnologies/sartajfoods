@@ -15,7 +15,8 @@ class UserActivityController extends Controller
     public function list(Request $request){
         $query_param = [];
         $search = $request['search'];
-        if ($request->has('search')) {
+        $query =RecentActivity::select('*');
+        if ($request->has('search')){
             $key = explode(' ', $request['search']);
             $query = $this->recent_activity->where(function ($q) use ($key) {
                 foreach ($key as $value) {
@@ -27,8 +28,9 @@ class UserActivityController extends Controller
         }else{
             $query = $this->recent_activity->latest();
         }
-        $activities = RecentActivity::paginate(Helpers::getPagination())->appends($query_param);
-        // echo "<pre>";print_r($activities->toArray());die;
+        $activities = $query->paginate(Helpers::getPagination())->appends($query_param);
         return view('admin-views.user-activity.list', compact('activities','search'));
     }
+
+    
 }

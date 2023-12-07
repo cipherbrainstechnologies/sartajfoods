@@ -1,6 +1,6 @@
 @extends('layouts.admin.app')
 
-@section('title', translate('Product List'))
+@section('title', translate('Recent Activity List'))
 
 @section('content')
     <div class="content container-fluid product-list-page">
@@ -24,7 +24,7 @@
                     <!-- Header -->
                     <div class="card-header border-0">
                         <div class="card--header justify-content-end max--sm-grow">
-                            <form action="{{url()->current()}}" method="GET" class="mr-sm-auto">
+                            <form action="{{route('admin.user-activity.list')}}" method="GET" class="mr-sm-auto">
                                 <div class="input-group">
                                     <input id="datatableSearch_" type="search" name="search"
                                         class="form-control"
@@ -100,7 +100,7 @@
                 }
             });
             $.post({
-                url: '{{route('admin.product.search')}}',
+                url: '{{route('admin.user-activity.list')}}',
                 data: formData,
                 cache: false,
                 contentType: false,
