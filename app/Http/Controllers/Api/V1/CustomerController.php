@@ -64,7 +64,7 @@ class CustomerController extends Controller
             'user_id' => $request->user()->id,
             'contact_person_name' => !empty($request->contact_person_name) ? $request->contact_person_name : null,
             'contact_person_number' => !empty($request->contact_person_number) ? $request->contact_person_number : null,
-            'address_type' => !empty($request->address_type) ? $request->address_type : null,
+            // 'address_type' => !empty($request->address_type) ? $request->address_type : null,
             'address' => !empty($request->address) ? $request->address : null,
             'road' => !empty($request->road) ? $request->road : null, 
             'house' => !empty($request->house) ? $request->house : null,
