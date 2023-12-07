@@ -275,7 +275,8 @@
                                         class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{translate('product setup')}}</span>
                                 </a>
                                 <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
-                                    style="display: {{Request::is('admin/product*') || Request::is('admin/attribute*') ? 'block' : 'none'}}">
+                                    style="display: {{Request::is('admin/product*') || Request::is('admin/attribute*') || Request::is('admin/filter*') 
+                                        || Request::is('admin/manufacturer*') ? 'block' : 'none'}}">
 
                                     <!-- <li class="nav-item {{Request::is('admin/attribute*')?'active':''}}">
                                         <a class="nav-link"
@@ -287,7 +288,7 @@
                                         </a>
                                     </li> -->
 
-                                    <li class="nav-item {{Request::is('admin/filter*')?'active':''}}">
+                                    <li class="nav-item {{Request::is('admin/filter*')?'active':''}} {{Request::is('admin/filter/add-new')?'active':''}}">
                                         <a class="nav-link"
                                            href="{{route('admin.filter.add-new')}}"
                                            title="{{translate('product filter')}}"
@@ -297,7 +298,7 @@
                                         </a>
                                     </li>
 
-                                    <li class="nav-item {{Request::is('admin/manufacturer*')?'active':''}}">
+                                    <li class="nav-item {{Request::is('admin/manufacturer*')?'active':''}} {{Request::is('admin/manufacturer/add-new')?'active':''}}">
                                         <a class="nav-link"
                                            href="{{route('admin.manufacturer.add-new')}}"
                                            title="{{translate('manufacturer')}}"
