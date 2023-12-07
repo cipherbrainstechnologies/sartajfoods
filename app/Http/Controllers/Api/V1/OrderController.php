@@ -191,7 +191,7 @@ class OrderController extends Controller
                 'order_type' => $request['order_type'],
                 'branch_id' => !empty($request['branch_id']) ? $request['branch_id'] : null,
                 'delivery_address_id' => $request->delivery_address_id,
-                'time_slot_id' => $request->time_slot_id,
+                'time_slot_id' => !empty($request->time_slot_id) ? $request->time_slot_id : null, 
                 'delivery_date' => $request->delivery_date,
                 'delivery_address' => json_encode(CustomerAddress::find($request->delivery_address_id) ?? null),
                 'date' => date('Y-m-d'),
