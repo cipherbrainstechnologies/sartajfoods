@@ -311,6 +311,36 @@
                     </div>
                     <!-- Recent Orders -->
 
+                    <!-- Recent Activities -->
+                    <div class="col-lg-4 col--xl-4">
+                        <div class="card h-100 bg-white">
+                            <div class="card-header border-0 order-header-shadow">
+                                <h5 class="card-title d-flex justify-content-between flex-grow-1">
+                                    <span>{{translate('recent_activities')}}</span>
+                                    <a href="{{route('admin.user-activity.list')}}"
+                                       class="fz-12px font-medium text-006AE5">{{translate('view_all')}}</a>
+                                </h5>
+                            </div>
+                            <div class="card-body p-10px">
+                                <ul class="recent--orders">
+                                    @foreach($data['recent_activity'] as $activity)
+                                        <li>
+                                            <!-- <a href="{{route('admin.orders.details', ['id'=>$order['id']])}}"> -->
+                                            <a href="{{route('admin.user-activity.list')}}">
+                                                <div>
+                                                    <h6>{{$activity['message']}}</h6>
+                                                    <!-- <span
+                                                        class="text-uppercase">{{date('m-d-Y  h:i A', strtotime($order['created_at']))}}</span> -->
+                                                </div>
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Recent Activities -->
+
                     <!-- Top Selling Products -->
                     <div class="col-lg-4">
                         <div class="card h-100">

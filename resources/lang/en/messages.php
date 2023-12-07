@@ -2166,4 +2166,7 @@
   'If this field is active the minimum amount for Cash on Delivery order is apply' => 'If this field is active the minimum amount for Cash on Delivery order is apply',
   'Minimum Amount for COD Order Status' => 'Minimum Amount for COD Order Status',
   'One Referrer Equal To How Much JPY' => 'One Referrer Equal To How Much JPY',
+  'recent_activities' => 'Recent activities',
+  'Recent Activity List' => 'Recent Activity List',
+  'user_id' => 'User id',
 );

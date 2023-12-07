@@ -48,6 +48,11 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::delete('delete/{id}', 'EmployeeController@delete')->name('delete');
             Route::get('export', 'EmployeeController@export')->name('export');
         });
+
+        Route::group(['prefix' => 'user-activity', 'as' => 'user-activity.'], function () {
+            Route::get('list', 'UserActivityController@list')->name('list');
+        });
+
         Route::group(['prefix' => 'pos', 'as' => 'pos.','middleware'=>['module:pos_management']], function () {
             Route::get('/', 'POSController@index')->name('index');
             Route::get('quick-view', 'POSController@quick_view')->name('quick-view');

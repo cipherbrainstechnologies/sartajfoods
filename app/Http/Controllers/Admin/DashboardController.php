@@ -11,6 +11,7 @@ use App\Model\Order;
 use App\Model\OrderDetail;
 use App\Model\Product;
 use App\Model\Review;
+use App\Model\RecentActivity;
 use App\User;
 use Carbon\CarbonPeriod;
 use Illuminate\Contracts\Foundation\Application;
@@ -32,6 +33,7 @@ class DashboardController extends Controller
        private OrderDetail $order_detail,
        private Product $product,
        private Review $review,
+       private RecentActivity $recentActivity,
        private User $user
     ){}
 
@@ -63,6 +65,8 @@ class DashboardController extends Controller
      */
     public function dashboard(): View|Factory|Application
     {
+
+        $recent_Activity = $this->recentActivity->take(6)->get();
         $top_sell = $this->order_detail->with(['product'])
             ->whereHas('order', function ($query){
                 $query->where('order_status', 'delivered');
@@ -108,7 +112,7 @@ class DashboardController extends Controller
 
         $data['recent_orders'] = $this->order->notPos()->latest()->take(5)->get(['id', 'created_at', 'order_status']);
 
-
+        $data['recent_activity'] = $recent_Activity;
         $data['top_sell'] = $top_sell;
         $data['most_rated_products'] = $most_rated_products;
         $data['top_customer'] = $top_customer;
