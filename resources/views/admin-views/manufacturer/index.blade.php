@@ -34,6 +34,9 @@
                                 <button type="submit" class="input-group-text"><i class="tio-search"></i>
                                 </button>
                             </div>
+                            <div class="col-sm-6 col-md-12 col-lg-4 __btn-row">
+                                <a href="{{route('admin.manufacturer.add-new')}}" id="" class="btn w-100 btn--reset min-h-45px">{{translate('clear')}}</a>
+                            </div>
                         </div>
                     </form>
                     <button class="btn btn--primary ml-lg-4" data-toggle="modal" data-target="#manufacturer-modal"><i class="tio-add"></i> {{translate('add_manufacturer')}}</button>

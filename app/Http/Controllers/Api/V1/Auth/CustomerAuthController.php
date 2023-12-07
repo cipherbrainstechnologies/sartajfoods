@@ -527,6 +527,8 @@ class CustomerAuthController extends Controller
                 $user->updated_at = now();
                 $user->save();
                 Helpers::addToCart($request,$user);
+                
+                Helpers::addRecentActivity($user,"login");
                 return response()->json(['token' => $token], 200);
 
             }

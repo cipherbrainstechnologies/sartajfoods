@@ -12,6 +12,7 @@ use App\Model\CustomerAddress;
 use App\Model\DMReview;
 use App\Model\Order;
 use App\Model\OrderDetail;
+use App\Model\Cart;
 use App\Model\Product;
 use App\Model\Review;
 use App\User;
@@ -218,7 +219,12 @@ class OrderController extends Controller
                     // $price = Helpers::variation_price($product, json_encode($c['variation']));
                     $price = Helpers::variation_price($product, json_encode($c['variations']));
                 } else {
-                    $price = $product['price'];
+                    if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
+                        $price = $product['sale_price'];
+                    }else{
+                        $price = $product['price'];
+                    }
+                    
                 }
 
                 $tax_on_product = Helpers::tax_calculate($product, $price);
@@ -283,7 +289,10 @@ class OrderController extends Controller
                     'popularity_count'=>$product['popularity_count']+1
                 ]);
                 DB::table('order_details')->insert($or_d);
+                
+                Cart::where('user_id',$request->user()->id)->delete();
             }
+            Helpers::addRecentActivity($request->user(),"order_place",$or->id);
             $or['total_tax_amount'] = $total_tax_amount;
             $latestOrder =DB::table('orders')->insertGetId($or);
             $o_status = ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'pending':'confirmed';
@@ -446,6 +455,7 @@ class OrderController extends Controller
             $this->order->where(['user_id' => $request->user()->id, 'id' => $request['order_id']])->update([
                 'order_status' => 'canceled',
             ]);
+            Helpers::addRecentActivity($request->user(),"canceled",$request['order_id']);
             return response()->json(['message' => 'Order canceled'], 200);
         }
         return response()->json([

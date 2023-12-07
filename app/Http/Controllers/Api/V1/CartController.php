@@ -57,14 +57,25 @@ class CartController extends Controller
         // Fetch cart products for the authenticated user
         $cartProducts = Cart::with('product.rating')->where('user_id', $user->id)->get();
         
+        
         $cartProducts->each(function ($cartProduct) use($eight_percent,$ten_percent){
             $product = $cartProduct->product;
             if($cartProduct->product['tax'] == 8){
-                $product->tax_eight_percent = ((($product->price * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);    
+                if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
+                    $eight_percent += ((($product->sale_price * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
+                }else{
+                    $eight_percent += ((($product->price * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
+                }
+                
             }
 
             if($cartProduct->product['tax'] == 10){
-                $product->tax_ten_percent = ((($product->price * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);    
+                if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
+                    $ten_percent += ((($product->sale_price * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
+                }else{
+                    $ten_percent  += ((($product->price * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
+                } 
+                
             }
             // Calculate overall rating
             $allOverRating = $product->rating->isNotEmpty()
@@ -90,21 +101,25 @@ class CartController extends Controller
                     }, $imageArray);
                 }
             }
+            $product->tax_eight_percent= $eight_percent;
+            $product->tax_ten_percent = $ten_percent;
             return $cartProduct;
         });
         $deliveryCharge = Helpers::get_business_settings('delivery_charge', 0);
+       
         $subTotalAmt = $cartProducts->sum('sub_total');
-        
-        $totalAmt = round($subTotalAmt + $deliveryCharge, 2);
-        
+        $totalEightPercentTax = $cartProducts->sum('product.tax_eight_percent');
+        $totalTenPercentTax = $cartProducts->sum('product.tax_ten_percent');
+        $totalAmt = $subTotalAmt + $deliveryCharge + $totalEightPercentTax + $totalTenPercentTax;
+       
         return response()->json([
             'user' => $user,
             'cartProducts' => $cartProducts,
             'delivery_charge' => $deliveryCharge,
             'total_sub_amt' => $subTotalAmt,
             'total_amt' => $totalAmt,
-            'eight_percent' => $cartProducts->sum('product.tax_eight_percent'),
-            'ten_percent' => $cartProducts->sum('product.tax_ten_percent')
+            'eight_percent' => $totalEightPercentTax,
+            'ten_percent' => $totalTenPercentTax
         ]);
     }
 
@@ -262,9 +277,11 @@ class CartController extends Controller
             $user = auth()->user(); 
             $discount = 0;
             $discount_type = "amount";
-            $subTotal = 0;
+           
             foreach ($request->cart as $key => $data) {
+                $subTotal = 0;
                 $productSalePrice = 0; 
+                $specialPrice = 0;
                 $product = Product::find($data['product_id']);
             
                 if (!$product) {
@@ -275,23 +292,28 @@ class CartController extends Controller
                     return response()->json(['error' => 'maximum order quantity is '.$product->maximum_order_quantity]);
                 }
 
-                if(!empty($product->sale_price)){
+                // add from date and end date condition
+                if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
                     $currentDate = new DateTime(); // Current date and time
                     $saleStartDate = new DateTime($product->sale_start_date);
                     $saleEndDate = new DateTime($product->sale_end_date);
                     if($currentDate >= $saleStartDate && $currentDate <= $saleEndDate){
                         $productPrice = $product->sale_price;
                         $discount = 0;
-                        $subTotal = $product->sale_price * $data['qty'];
+                        $specialPrice = $product->sale_price;
+                        $subTotal = $specialPrice * $data['qty'];
                     }
-                    
                 }else{
                     if($product->discount_type ="percent"){
-                        $discount = ((($product->price * $product->discount) / 100) * $data['qty']);
-                        $subTotal = (($product->price *  $data['qty']) - $discount);
-
-                    }else{
+                        if($product->discount != "0.00"){
+                            $discount = ((($product->price * $product->discount) / 100) * $data['qty']);
+                            $subTotal = (($product->price *  $data['qty']) - $discount);
+                        }else{
+                            $discount = 0;
+                            $subTotal = ($product->price *  $data['qty']);
+                        }
                         
+                    }else{
                         $discount = $product->discount;
                         $subTotal = (($product->price *  $data['qty']) - $discount);
                     }
@@ -302,8 +324,8 @@ class CartController extends Controller
                         'user_id' => $user->id,
                         'product_id' => $data['product_id'],
                         'quantity' => $data['qty'],
-                        'price' => (isset($productSalePrice) && !empty($productSalePrice)) ? 0 : $product->price,
-                        'special_price' =>  (isset($productSalePrice) && !empty($productSalePrice)) ? $productSalePrice : '0',
+                        'price' => (isset($specialPrice) && !empty($specialPrice)) ? $specialPrice : $product->price,
+                        'special_price' =>  (!empty($specialPrice)) ? $specialPrice : 0,
                         'discount_type' => $discount_type,
                         'discount'      => $discount,
                         'sub_total'     => $subTotal

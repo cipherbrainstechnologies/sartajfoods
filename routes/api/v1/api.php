@@ -26,6 +26,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         });
     });
 
+    
     Route::group(['prefix' => 'config'], function () {
         Route::get('/', 'ConfigController@configuration');
     });

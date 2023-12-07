@@ -36,6 +36,9 @@
                                 {{translate('Search')}}
                             </button>
                         </div>
+                        <div class="col-sm-6 col-md-12 col-lg-4 __btn-row">
+                            <a href="{{route('admin.employee.list')}}" id="" class="btn w-100 btn--reset min-h-45px">{{translate('clear')}}</a>
+                        </div>
                     </div>
                 </form>
 

@@ -10,6 +10,7 @@ use App\Model\Order;
 use App\Model\Cart;
 use App\Model\Product;
 use App\Model\Review;
+Use App\Model\RecentActivity;
 use App\User;
 use Exception;
 use Illuminate\Support\Carbon;
@@ -322,12 +323,22 @@ class Helpers
 
     public static function tax_calculate($product, $price)
     {
-        if ($product['tax_type'] == 'percent') {
-            $price_tax = ($price / 100) * $product['tax'];
-        } else {
-            $price_tax = $product['tax'];
+        if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
+            if ($product['tax_type'] == 'percent') {
+                $price_tax = ($product->sale_price / 100) * $product['tax'];
+            } else {
+                $price_tax = $product['tax'];
+            }
+            return $price_tax;
+        }else{
+            if ($product['tax_type'] == 'percent') {
+                $price_tax = ($price / 100) * $product['tax'];
+            } else {
+                $price_tax = $product['tax'];
+            }
+            return $price_tax;
         }
-        return $price_tax;
+        
     }
 
     public static function discount_calculate($product, $price)
@@ -923,6 +934,44 @@ class Helpers
             return $totalCost;
         }
        return 0;
+    }
+
+    public static function addRecentActivity($user,$status,$order_id=null){
+        
+        $currentDateTime = Carbon::now();
+        switch ($status) {
+            case ($status == "login"):
+                RecentActivity::create([
+                    'user_id' => $user->id,
+                    'message' => $user->f_name . ' '.$user->l_name . ' login at '.$currentDateTime->format('d/m/Y H:i:s'),
+                    'created_at' => now()
+                ]);
+                break;
+            case ($status == "logout"):
+                RecentActivity::create([
+                    'user_id' => $user->id,
+                    'message' => $user->f_name . ' '.$user->l_name . ' logout at '.$currentDateTime->format('d/m/Y H:i:s'),
+                    'created_at' => now()
+                ]);
+                break;
+            case ($status == "order_place"):
+                RecentActivity::create([
+                    'user_id' => $user->id,
+                    'message' => $user->f_name . ' '.$user->l_name . ' new order Id '.$order_id.' place at '.$currentDateTime->format('d/m/Y H:i:s'),
+                    'created_at' => now()
+                ]);
+                break;
+            case ($status == "canceled"):
+                RecentActivity::create([
+                    'user_id' => $user->id,
+                    'message' => $user->f_name . ' '.$user->l_name . ' cancel order Id '. $order_id.' place at '.$currentDateTime->format('d/m/Y H:i:s'),
+                    'created_at' => now()
+                ]);
+                break;
+            default:
+                # code...
+                break;
+        }
     }
 
 }
