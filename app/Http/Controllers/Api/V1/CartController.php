@@ -289,7 +289,7 @@ class CartController extends Controller
                 }
 
                 if($data['qty'] > $product->maximum_order_quantity ){
-                    return response()->json(['error' => 'maximum order quantity is '.$product->maximum_order_quantity]);
+                    return response()->json(['error' => 'maximum order quantity is '.$product->maximum_order_quantity], 403);
                 }
 
                 // add from date and end date condition
