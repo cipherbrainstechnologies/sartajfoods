@@ -74,6 +74,7 @@ class CustomerController extends Controller
             'country' => !empty($request->country) ? $request->country : null,
             'state' => !empty($request->state) ? $request->state : null,
             'post_code' => $request->post_code,
+            'city' => !empty($request->city) ? $request->city : null, 
             'created_at' => now(),
             'updated_at' => now()
         ];
@@ -113,6 +114,7 @@ class CustomerController extends Controller
             'country' => !empty($request->country) ? $request->country: null,
             'state' => !empty($request->state) ? $request->state : null,
             'post_code' => !empty($request->post_code) ? $request->state : null,
+            'city' => !empty($request->city) ? $request->city : null, 
             'created_at' => now(),
             'updated_at' => now()
         ];
