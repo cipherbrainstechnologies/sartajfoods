@@ -216,7 +216,7 @@ class CartController extends Controller
             );
         }       
 
-        return response()->json(['message' => 'Product added to cart', 'cart' => $cart]);
+        return response()->json(['status' => 200, 'message' => 'Product added to cart', 'cart' => $cart]);
     }
 
     public function updateToCart( Request $request)
