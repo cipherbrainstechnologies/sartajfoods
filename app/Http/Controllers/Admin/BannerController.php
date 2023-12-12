@@ -183,7 +183,7 @@ class BannerController extends Controller
         $banner->banner_logo = $request->has('banner_logo') ? Helpers::update('banner/logo/', $banner->banner_logo, 'png', $request->file('banner_logo')) : $banner->banner_logo;
         $banner->save();
         Toastr::success(translate('Banner updated successfully!'));
-        return redirect()->route('admin.banner.add-new');
+        return redirect()->route('admin.banner.home.add-new');
     }
 
     /**
