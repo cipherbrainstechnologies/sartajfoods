@@ -160,9 +160,9 @@ class CartController extends Controller
             $quantity = $quantity;
         }
 
-        if($quantity > $product->maximum_order_quantity ){
-            return response()->json(['status' => 403, 'error' => 'maximum order quantity is'.$product->maximum_order_quantity]);
-        }
+        // if($quantity > $product->maximum_order_quantity ){
+        //     return response()->json(['status' => 403, 'error' => 'maximum order quantity is'.$product->maximum_order_quantity]);
+        // }
         
 
         if(!empty($product->sale_price)){
@@ -288,9 +288,9 @@ class CartController extends Controller
                     return response()->json(['error' => 'Product not found'], 404);
                 }
 
-                if($data['qty'] > $product->maximum_order_quantity ){
-                    return response()->json(['status' => 403, 'error' => 'maximum order quantity is '.$product->maximum_order_quantity]);
-                }
+                // if($data['qty'] > $product->maximum_order_quantity ){
+                //     return response()->json(['status' => 403, 'error' => 'maximum order quantity is '.$product->maximum_order_quantity]);
+                // }
 
                 // add from date and end date condition
                 if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
