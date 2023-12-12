@@ -205,9 +205,9 @@ class ProductLogic
         if(OrderDetail::count() > 0) {
             $paginator = Product::active()
                 ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
-                ->whereHas('order_details', function ($query) {
-                    $query->where('created_at', '>', now()->subDays(30)->endOfDay());
-                })
+                // ->whereHas('order_details', function ($query) {
+                //     $query->where('created_at', '<', now()->subDays(30)->endOfDay());
+                // })
                 ->withCount('order_details')
                 ->orderBy('order_details_count', 'desc');
                 
