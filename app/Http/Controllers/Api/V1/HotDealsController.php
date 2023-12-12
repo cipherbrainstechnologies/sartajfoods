@@ -27,7 +27,7 @@ class HotDealsController extends Controller
         $product_price = 0;
         $product_discounted_price = 0;
         if(!empty($HotDealsData)) {
-            $product = $this->product->find($HotDealsData->id);
+            $product = $this->product->find($HotDealsData->product_id);
             $product_price = !empty($product->price)? $product->price : 0;
             $product_discounted_price = $product_price - ($product_price * $HotDealsData->discount) / 100;
             $HotDealsData->product_price = $product_price;
