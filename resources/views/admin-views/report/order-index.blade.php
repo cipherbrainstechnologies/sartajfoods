@@ -781,10 +781,10 @@ ini_set('memory_limit', '-1');
                 if (fr > to) {
                     $('#from_date').val('');
                     $('#to_date').val('');
-                    toastr.error('{{ translate("Invalid date range!") }}', Error, {
-                        CloseButton: true,
-                        ProgressBar: true
-                    });
+                    //toastr.error('{{ translate("Invalid date range!") }}', Error, {
+                       // CloseButton: true,
+                      //  ProgressBar: true
+                    //});
                 }
             }
 
