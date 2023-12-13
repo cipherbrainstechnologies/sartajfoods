@@ -1066,7 +1066,7 @@
 
                 success: function (data) {
                     console.log(data);
-                    toastr.success('{{ translate("Time Slot Change successfully") }}');
+                    toastr.success('{{ translate("Oreder history saved successfully") }}');
                     location.reload();
                 }
             });     

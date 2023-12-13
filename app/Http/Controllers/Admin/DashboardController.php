@@ -66,7 +66,7 @@ class DashboardController extends Controller
     public function dashboard(): View|Factory|Application
     {
 
-        $recent_Activity = $this->recentActivity->take(6)->get();
+        $recent_Activity = $this->recentActivity->orderBy('id', 'desc')->take(6)->get();
         $top_sell = $this->order_detail->with(['product'])
             ->whereHas('order', function ($query){
                 $query->where('order_status', 'delivered');
