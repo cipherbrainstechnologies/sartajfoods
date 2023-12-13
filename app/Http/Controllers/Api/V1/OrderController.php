@@ -483,4 +483,15 @@ class OrderController extends Controller
             ],
         ], 401);
     }
+
+    public function shpping_list($order_id)
+    {
+        $order = $this->order->where('id', $order_id)->first();
+        $order->delivery_address = (array)$order->delivery_address;
+        if(!empty($order)) {
+            return response()->json(['data' => $order], 200);
+        } else {
+            return response()->json(['data' => []], 404);
+        }
+    }
 }

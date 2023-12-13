@@ -108,6 +108,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
             Route::put('cancel', 'OrderController@cancel_order');
             Route::post('track', 'OrderController@track_order');
             Route::put('payment-method', 'OrderController@update_payment_method');
+            Route::get('shpping_list/{order_id}', 'OrderController@shpping_list');
         });
         // Chatting
         Route::group(['prefix' => 'message'], function () {
