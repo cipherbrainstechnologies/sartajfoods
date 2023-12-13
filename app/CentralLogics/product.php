@@ -283,11 +283,9 @@ class ProductLogic
 
     public static function get_most_reviewed_products($limit = 10, $offset = 1,$take=null){
         $paginator = Product::active()
-            ->with(['rating'  => function ($query) {
-                $query->orderBy('average', 'desc');
-            }, 'active_reviews','manufacturer', 'soldProduct'])
-            ->withCount('active_reviews');
-            // ->orderBy('active_reviews_count', 'desc');
+            ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
+            ->withCount('active_reviews')
+            ->orderBy('active_reviews_count', 'desc');
             if(!is_null($take)){
                 $limit = $take;                    
             }
