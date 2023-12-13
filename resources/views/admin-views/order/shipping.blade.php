@@ -42,8 +42,8 @@
           <tbody>
             <tr>
               <td>{{ $order['delivery_address']['address'] }}</td>
-              <td>{{ $order->customer['email'] }}<br>
-               {{ $order->customer['phone'] }}
+              <td>{{ !empty($order->customer['email']) ? $order->customer['email'] : '' }}<br>
+               {{ !empty($order->customer['phone']) ? $order->customer['phone'] : '' }}
               </td>
             </tr>
           </tbody>
@@ -71,7 +71,7 @@
             @endforeach
           </tbody>
         </table>
-        <table class="table table-bordered">
+        {{-- <table class="table table-bordered">
           <thead>
             <tr>
               <td><b>Customer Comment</b></td>
@@ -82,7 +82,7 @@
               <td>Hello! Can you please send Soya sticks tomato flavour and magic masala flavour as free gift. Thank you! </td>
             </tr>
           </tbody>
-        </table>
+        </table> --}}
       </div>
     </div>
   </body>
