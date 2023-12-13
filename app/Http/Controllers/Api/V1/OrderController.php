@@ -488,6 +488,13 @@ class OrderController extends Controller
     {
         $order = $this->order->where('id', $order_id)->first();
         $order->delivery_address = (array)$order->delivery_address;
+        $order_detail = $this->order_detail->where('order_id', $order_id)->get()->toArray();
+        $ids = [];
+        foreach($order_detail as $product) {
+           $ids[] = $product['product_id'];
+        }
+        $productData  = $this->product->whereIn('id', $ids)->get();
+        $order->products = $productData;
         if(!empty($order)) {
             return response()->json(['data' => $order], 200);
         } else {
