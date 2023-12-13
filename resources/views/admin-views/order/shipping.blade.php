@@ -71,7 +71,7 @@
             @endforeach
           </tbody>
         </table>
-        {{-- <table class="table table-bordered">
+       <table class="table table-bordered">
           <thead>
             <tr>
               <td><b>Customer Comment</b></td>
@@ -79,10 +79,10 @@
           </thead>
           <tbody>
             <tr>
-              <td>Hello! Can you please send Soya sticks tomato flavour and magic masala flavour as free gift. Thank you! </td>
+              <td>{{ !empty($order['order_note']) ? $order['order_note'] : '' }}</td>
             </tr>
           </tbody>
-        </table> --}}
+        </table>
       </div>
     </div>
   </body>
