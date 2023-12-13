@@ -683,10 +683,10 @@
                 if (fr > to) {
                     $('#from_date').val('');
                     $('#to_date').val('');
-                    toastr.error('{{ translate("Invalid date range!") }}', Error, {
-                        CloseButton: true,
-                        ProgressBar: true
-                    });
+                   // toastr.error('{{ translate("Invalid date range!") }}', Error, {
+                        //CloseButton: true,
+                        //ProgressBar: true
+                   // });
                 }
             }
 
