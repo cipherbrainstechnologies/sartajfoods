@@ -211,9 +211,9 @@ class OrderController extends Controller
             foreach ($request['cart'] as $c) {
                 // $product = $this->product->find($c['product_id']);
                 $product = $this->product->find($c['product_id']);
-                if ($product['maximum_order_quantity'] < $c['quantity']){
-                    return response()->json(['errors' => $product['name']. ' '. \App\CentralLogics\translate('quantity_must_be_equal_or_less_than '. $product['maximum_order_quantity'])], 401);
-                }
+                // if ($product['maximum_order_quantity'] < $c['quantity']){
+                //     return response()->json(['errors' => $product['name']. ' '. \App\CentralLogics\translate('quantity_must_be_equal_or_less_than '. $product['maximum_order_quantity'])], 401);
+                // }
                
                 if (count(json_decode($product['variations'], true)) > 0) {
                     // $price = Helpers::variation_price($product, json_encode($c['variation']));
