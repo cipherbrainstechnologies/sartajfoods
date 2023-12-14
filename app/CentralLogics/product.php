@@ -12,6 +12,7 @@ use App\Model\Review;
 use App\Model\FlashDeal;
 use App\User;
 use Illuminate\Support\Facades\DB;
+use App\Model\HotDeals;
 
 class ProductLogic
 {
@@ -412,5 +413,15 @@ class ProductLogic
                 $product['total_product_count'] = $sold + $product['total_stock'];
             }
         }
+    }
+
+    public static function deal_of_month($products)
+    {
+        $deal = HotDeals::all()[0];
+        foreach($products as $product) {
+            if($product->id === $deal->product_id) {
+                $product->price = $product->price - ($product->price * ($deal->discount / 100));
+            }
+        }   
     }
 }
