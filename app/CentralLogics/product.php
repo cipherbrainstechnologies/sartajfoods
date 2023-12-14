@@ -20,15 +20,24 @@ class ProductLogic
     }
 
     // Get All the products
-    public static function get_all_products($limit = 10, $offset = 1){
+    public static function get_all_products($limit = 10, $offset = 1, $manufacturer_id = null){
         $currentDate = now();
         $twoWeeksAgo = $currentDate->subDays(14);
 
-        $paginator = Product::active()
-            ->withCount(['wishlist','order_details'])
-            ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
-            ->orderBy('id','desc')
-            ->paginate($limit, ['*'], 'page', $offset);
+        $paginator = !empty($manufacturer_id) ?
+                    Product::active()
+                    ->withCount(['wishlist','order_details'])
+                    ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
+                    ->whereHas('manufacturer', function ($query) use ($manufacturer_id) {
+                        $query->where('id', $manufacturer_id);
+                    })
+                    ->orderBy('id','desc')
+                    ->paginate($limit, ['*'], 'page', $offset)
+                    : Product::active()
+                    ->withCount(['wishlist','order_details'])
+                    ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
+                    ->orderBy('id','desc')
+                    ->paginate($limit, ['*'], 'page', $offset);
 
         $products = $paginator->getCollection()->map(function ($product) use($twoWeeksAgo){
             $badges = [];

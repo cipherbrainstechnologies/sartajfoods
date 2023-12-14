@@ -17,7 +17,7 @@ class CategoryLogic
         return Category::where(['parent_id' => $parent_id])->get();
     }
 
-    public static function products($category_id, $limit = 0, $offset =1)
+    public static function products($category_id, $limit = 0, $offset =1, $manufacturer_id = null)
     {
         $products = Product::active()->get();
         $product_ids = [];
@@ -28,10 +28,19 @@ class CategoryLogic
                 }
             }
         }
+        
+        $product_data = Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer','soldProduct'])->whereIn('id', $product_ids);
+        
+        if(!empty($manufacturer_id)) {
+            $product_data->whereHas('manufacturer', function ($query) use ($manufacturer_id) {
+                $query->where('id', $manufacturer_id);
+            });
+        }
+
         if($limit !== 0) {
-            return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer','soldProduct'])->whereIn('id', $product_ids)->paginate($limit, ['*'], 'page', $offset);
+            return $product_data->paginate($limit, ['*'], 'page', $offset);
         } else {
-            return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])->whereIn('id', $product_ids)->get();
+            return $product_data->get();
         }
     }
 
@@ -73,7 +82,7 @@ class CategoryLogic
         return sizeof($product_ids);
     }
 
-    public static function productsSort($category_id, $limit = 0, $offset =1, $sort = '')
+    public static function productsSort($category_id, $limit = 0, $offset =1, $sort = '', $manufacturer_id = null)
     {
         $products = Product::active()->get();
         $product_ids = [];
@@ -84,21 +93,28 @@ class CategoryLogic
                 }
             }
         }
+        $product_data = Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])->whereIn('id', $product_ids);
+
+        if(!empty($manufacturer_id)) {
+            $product_data->whereHas('manufacturer', function ($query) use ($manufacturer_id) {
+                $query->where('id', $manufacturer_id);
+            });
+        }
         if($limit !== 0 && !empty($sort)) {
             if($sort === 'featured') {
-                return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])->whereIn('id', $product_ids)->where(['is_featured' => 1])->paginate($limit, ['*'], 'page', $offset);
+                return $product_data->where(['is_featured' => 1])->paginate($limit, ['*'], 'page', $offset);
             } else if($sort === 'lowToHigh') {
-                return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])->whereIn('id', $product_ids)->orderBy('price', 'ASC')->paginate($limit, ['*'], 'page', $offset);
+                return $product_data->orderBy('price', 'ASC')->paginate($limit, ['*'], 'page', $offset);
             } else if($sort === 'highToLow') {
-                return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])->whereIn('id', $product_ids)->orderBy('price', 'DESC')->paginate($limit, ['*'], 'page', $offset);
+                return $product_data->orderBy('price', 'DESC')->paginate($limit, ['*'], 'page', $offset);
             } else if($sort === 'trending') {
-                return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])->whereIn('id', $product_ids)->where('popularity_count', '<>' , 0)->orderBy('popularity_count', 'DESC')->paginate($limit, ['*'], 'page', $offset);
+                return $product_data->where('popularity_count', '<>' , 0)->orderBy('popularity_count', 'DESC')->paginate($limit, ['*'], 'page', $offset);
             } 
             else {
-                return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])->whereIn('id', $product_ids)->paginate($limit, ['*'], 'page', $offset);
+                return $product_data->paginate($limit, ['*'], 'page', $offset);
             }
         } else {
-            return Product::active()->withCount(['wishlist', 'active_reviews'])->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])->whereIn('id', $product_ids)->get();
+            return $product_data->get();
         }
     }
 
