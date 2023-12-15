@@ -484,17 +484,25 @@ class OrderController extends Controller
         ], 401);
     }
 
-    public function shpping_list($order_id)
+    public function shipping_list($order_id)
     {
-        $order = $this->order->where('id', $order_id)->first();
+        $tax_eight_percent = 0;
+        $tax_ten_percent = 0;
+        $order = $this->order->with('details.product','details')->where('id', $order_id)->first();
+       
         $order->delivery_address = (array)$order->delivery_address;
         $order_detail = $this->order_detail->where('order_id', $order_id)->get()->toArray();
         $ids = [];
         foreach($order_detail as $product) {
            $ids[] = $product['product_id'];
         }
-        $productData  = $this->product->whereIn('id', $ids)->get();
-        $order->products = $productData;
+        if(!empty($ids)){
+            $productData  = $this->product->whereIn('id',$ids)->get();
+            $order->products = $productData;
+        }else{
+            $order->products = [];   
+        }
+       
         if(!empty($order)) {
             return response()->json(['data' => $order], 200);
         } else {
