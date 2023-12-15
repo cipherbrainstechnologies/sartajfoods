@@ -518,9 +518,7 @@ class OrderController extends Controller
             $order->ten_percent =  $ten_percent;
         }
         if(!empty($ids)){
-            echo "<pre>";print_r($ids);die;
             $productData  = $this->product->whereIn('id',$ids)->get();
-            echo "<pre>";print_r($productData->toArray());die;
             $order->products = $productData;
         }else{
             $order->products = [];   
