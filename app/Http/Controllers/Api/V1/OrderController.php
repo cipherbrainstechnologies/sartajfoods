@@ -251,8 +251,8 @@ class OrderController extends Controller
                 }
                 $or_d = [
                     'order_id' => $order_id,
-                    // 'product_id' => $c['product_id'],
-                    'product_id' => $c['id'],
+                    'product_id' => $c['product_id'],
+                    // 'product_id' => $c['id'],
                     'time_slot_id' => $o_time,
                     'delivery_date' => $o_delivery,
                     'product_details' => $product,
