@@ -486,8 +486,9 @@ class OrderController extends Controller
 
     public function shipping_list($order_id)
     {
-        $tax_eight_percent = 0;
-        $tax_ten_percent = 0;
+
+        $eight_percent = 0;
+        $ten_percent = 0;
         $order = $this->order->with('details.product','details')->where('id', $order_id)->first();
        
         $order->delivery_address = (array)$order->delivery_address;
@@ -495,6 +496,26 @@ class OrderController extends Controller
         $ids = [];
         foreach($order_detail as $product) {
            $ids[] = $product['product_id'];
+           $productDetails = json_decode($product['product_details'],true);
+
+           if($productDetails['tax'] == 8){
+                if(!empty($product['sale_price']) && $product['sale_start_date'] <= now() && $product['sale_end_date'] >= now()){
+                    $eight_percent += ((($product['sale_price'] * $product['tax']) / 100) * $product['quantity']);   
+                }else{
+                    $eight_percent += ((($productDetails['price'] * $productDetails['tax']) / 100) * $product['quantity']);   
+                }
+           
+            }
+            if($productDetails['tax'] == 10){
+                if(!empty($product['sale_price']) && $product['sale_start_date'] <= now() && $product['sale_end_date'] >= now()){
+                    $ten_percent += ((($product['sale_price'] * $product['tax']) / 100) * $product['quantity']);   
+                }else{
+                    $ten_percent += ((($productDetails['price'] * $productDetails['tax']) / 100) * $product['quantity']);   
+                }
+                
+            }
+            $order->eight_percent =  $eight_percent;
+            $order->ten_percent =  $ten_percent;
         }
         if(!empty($ids)){
             $productData  = $this->product->whereIn('id',$ids)->get();
