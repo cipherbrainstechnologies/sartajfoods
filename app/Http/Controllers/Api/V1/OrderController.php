@@ -519,6 +519,7 @@ class OrderController extends Controller
         }
         if(!empty($ids)){
             $productData  = $this->product->whereIn('id',$ids)->get();
+            echo "<pre>";print_r($productData->toArray());die;
             $order->products = $productData;
         }else{
             $order->products = [];   
