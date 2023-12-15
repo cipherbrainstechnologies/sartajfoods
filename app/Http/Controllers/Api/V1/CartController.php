@@ -154,8 +154,9 @@ class CartController extends Controller
         // Check Order Exists or not
         if(Cart::where(['product_id' => $product->id, 'user_id' => $user->id])->Exists()){
             $ExistingProduct = Cart::where(['product_id' => $product->id, 'user_id' => $user->id])->first();
-            $qty = $ExistingProduct->quantity ?? 0;
-            $quantity = $qty + $quantity;
+            // $qty = $ExistingProduct->quantity ?? 0;
+            // $quantity = $qty + $quantity;
+            $quantity = $quantity;
         }else{
             $quantity = $quantity;
         }
