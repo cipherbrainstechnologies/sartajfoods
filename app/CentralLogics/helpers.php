@@ -866,18 +866,18 @@ class Helpers
                     if($currentDate >= $saleStartDate && $currentDate <= $saleEndDate){
                         $productPrice = $product->sale_price;
                         $discount = 0;
-                        $subTotal = $subTotal + $product->sale_price * $quantity;
+                        $subTotal = $product->sale_price * $quantity;
                     }
                     
                 }else{
                     if($product->discount_type ="percent"){
                         $discount = ((($product->price * $product->discount) / 100) * $quantity);
-                        $subTotal = $subTotal + (($product->price *  $quantity) - $discount);
+                        $subTotal = (($product->price *  $quantity) - $discount);
 
                     }else{
                         
                         $discount = $product->discount;
-                        $subTotal = $subTotal + (($product->price *  $quantity) - $discount);
+                        $subTotal = (($product->price *  $quantity) - $discount);
                     }
                 }
                 

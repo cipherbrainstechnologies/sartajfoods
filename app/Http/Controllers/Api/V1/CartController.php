@@ -105,12 +105,8 @@ class CartController extends Controller
         });
         $deliveryCharge = Helpers::get_business_settings('delivery_charge', 0);
         $subTotalAmt = $cartProducts->sum('sub_total');
-        echo "sub_total :".$subTotalAmt."<br/>";
         $totalEightPercentTax = $cartProducts->sum('product.tax_eight_percent');
-        echo "eight_per :".$totalEightPercentTax."<br/>";
         $totalTenPercentTax = $cartProducts->sum('product.tax_ten_percent');
-        echo "ten_per :".$totalTenPercentTax."<br/>";
-        // echo "delivery :".$deliveryCharge."</br/>";die;
         $totalAmt = $subTotalAmt + $deliveryCharge + $totalEightPercentTax + $totalTenPercentTax;
        
         return response()->json([
@@ -153,14 +149,14 @@ class CartController extends Controller
         }
     
         // Check Order Exists or not
-        if(Cart::where(['product_id' => $product->id, 'user_id' => $user->id])->Exists()){
-            $ExistingProduct = Cart::where(['product_id' => $product->id, 'user_id' => $user->id])->first();
-            // $qty = $ExistingProduct->quantity ?? 0;
-            // $quantity = $qty + $quantity;
-            $quantity = $quantity;
-        }else{
-            $quantity = $quantity;
-        }
+        // if(Cart::where(['product_id' => $product->id, 'user_id' => $user->id])->Exists()){
+        //     $ExistingProduct = Cart::where(['product_id' => $product->id, 'user_id' => $user->id])->first();
+        //     // $qty = $ExistingProduct->quantity ?? 0;
+        //     // $quantity = $qty + $quantity;
+        //     $quantity = $quantity;
+        // }else{
+        //     $quantity = $quantity;
+        // }
 
         // if($quantity > $product->maximum_order_quantity ){
         //     return response()->json(['status' => 403, 'error' => 'maximum order quantity is'.$product->maximum_order_quantity]);
@@ -168,6 +164,7 @@ class CartController extends Controller
         
 
         if(!empty($product->sale_price)){
+            
             $currentDate = new DateTime(); // Current date and time
 
             $saleStartDate = new DateTime($product->sale_start_date);
@@ -175,18 +172,20 @@ class CartController extends Controller
             if($currentDate >= $saleStartDate && $currentDate <= $saleEndDate){
                 $productPrice = $product->sale_price;
                 $discount = 0;
-                $subTotal = $product->sale_price * $quantity;
+                $subTotal =  $subTotal + $product->sale_price * $quantity;
+            }else{
+                $subTotal =  $subTotal + (($product->price *  $quantity) - $discount);
             }
             
         }else{
             if($product->discount_type ="percent"){
                 $discount = ((($product->price * $product->discount) / 100) * $quantity);
-                $subTotal = (($product->price *  $quantity) - $discount);
+                $subTotal =  $subTotal + (($product->price *  $quantity) - $discount);
 
             }else{
                 
                 $discount = $product->discount;
-                $subTotal = (($product->price *  $quantity) - $discount);
+                $subTotal =   $subTotal  + (($product->price *  $quantity) - $discount);
             }
         }
         
