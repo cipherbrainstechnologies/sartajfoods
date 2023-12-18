@@ -341,6 +341,35 @@ class Helpers
         
     }
 
+    public static function tax_calculates($product, $price)
+    {
+        $total_tax=[];
+        if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
+            if ($product['tax_type'] == 'percent') {
+                if($product['tax']==8){
+                    $total_tax['eight_percent'] = ($product->sale_price / 100) * $product['tax'];
+                }
+                $total_tax['ten_percent'] = ($product->sale_price / 100) * $product['tax'];
+                // $price_tax = ($product->sale_price / 100) * $product['tax'];
+            } else {
+                $price_tax = $product['tax'];
+            }
+            return $total_tax;
+        }else{
+            if ($product['tax_type'] == 'percent') {
+                if($product['tax']==8){
+                    $total_tax['eight_percent'] = ($price / 100) * $product['tax'];
+                }
+                $total_tax['ten_percent'] = ($price / 100) * $product['tax'];
+                // $price_tax = ($price / 100) * $product['tax'];
+            } else {
+                $price_tax = $product['tax'];
+            }
+            return $price_tax;
+        }
+        
+    }
+
     public static function discount_calculate($product, $price)
     {
         if ($product['discount_type'] == 'percent') {

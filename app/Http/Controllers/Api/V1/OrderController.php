@@ -208,7 +208,7 @@ class OrderController extends Controller
             $total_tax_amount = 0;
 
             foreach ($request['cart'] as $c) {
-                // $product = $this->product->find($c['product_id']);
+                
                 $product = $this->product->find($c['product_id']);
                 // if ($product['maximum_order_quantity'] < $c['quantity']){
                 //     return response()->json(['errors' => $product['name']. ' '. \App\CentralLogics\translate('quantity_must_be_equal_or_less_than '. $product['maximum_order_quantity'])], 401);
@@ -225,9 +225,11 @@ class OrderController extends Controller
                     }
                     
                 }
-
+                
                 $tax_on_product = Helpers::tax_calculate($product, $price);
 
+                $calculateTaxes = Helpers::tax_calculates($product,$price);
+                echo "<pre>";print_r($calculateTaxes);die;
                     //                if (Helpers::get_business_settings('product_vat_tax_status') === 'included'){
                     //                    //$price = $price - $tax_on_product;
                     //                }

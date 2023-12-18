@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('order_details', function (Blueprint $table) {
-            $table->decimal('eight_percent_tax', 8, 2)->nullable()->default(0.00);
-            $table->decimal('ten_percent_tax', 8, 2)->nullable()->default(0.00);
+                $table->decimal('eight_percent_tax', 8, 2)->after('tax_amount')->nullable()->default(0.00);
+                $table->decimal('ten_percent_tax', 8, 2)->after('eight_percent_tax')->nullable()->default(0.00);
         });
     }
 
