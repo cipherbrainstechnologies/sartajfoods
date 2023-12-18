@@ -198,7 +198,6 @@ class OrderController extends Controller
                 'payment_by' => $request['payment_method'] == 'offline_payment' ? $request['payment_by'] : null,
                 'payment_note' => $request['payment_method'] == 'offline_payment' ? $request['payment_note'] : null,
                 'free_delivery_amount' => $free_delivery_amount,
-                'customer_comment' => !empty($request->orderNotes) ? $request->orderNotes : null
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
@@ -290,7 +289,7 @@ class OrderController extends Controller
                 ]);
                 DB::table('order_details')->insert($or_d);
                 
-                // Cart::where('user_id',$request->user()->id)->delete();
+                Cart::where('user_id',$request->user()->id)->delete();
             }
             Helpers::addRecentActivity($request->user(),"order_place");
             $or['total_tax_amount'] = $total_tax_amount;
