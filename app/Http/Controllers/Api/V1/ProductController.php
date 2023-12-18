@@ -723,6 +723,9 @@ class ProductController extends Controller
         $products['products'] = Helpers::product_data_formatting($products['products'], true);
         ProductLogic::cal_rating_and_review($products);
         ProductLogic::getSoldProducts($products['products']);
+        usort($products['products'], function ($a, $b) {
+            return $b['overall_rating'] - $a['overall_rating'];
+        });
         return response()->json($products, 200);
     }
 
