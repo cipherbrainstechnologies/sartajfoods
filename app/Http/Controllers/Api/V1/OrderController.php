@@ -63,7 +63,6 @@ class OrderController extends Controller
      */
     public function place_order(Request $request): \Illuminate\Http\JsonResponse
     {
-        echo "<pre>";print_r($request->all());die;
         $validator = Validator::make($request->all(), [
             'order_amount' => 'required',
             'payment_method'=>'required',
