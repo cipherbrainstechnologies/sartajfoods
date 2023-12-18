@@ -539,7 +539,6 @@ class OrderController extends Controller
     public function generate_invoice($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $order = $this->order->with('delivery_address')->where('id', $id)->first();
-        echo "<pre>";print_r($order->toArray());die;
         $totalAmt = (Helpers::calculateInvoice($id)) + $order->delivery_charge;
 
 
