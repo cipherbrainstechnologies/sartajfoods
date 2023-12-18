@@ -51,7 +51,7 @@
                     </tr>
                     <tr style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;">
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:28%;min-height:28px;">{{ translate('Phone') }} :</td>
-                        <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:right;width:72%;min-height:28px;">{{\App\Model\BusinessSetting::where(['key'=>'phone'])->first()->value}}</td>
+                        <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:right;width:72%;min-height:28px;">{{$order->delivery_address['contact_person_number']}}</td>
                     </tr>
                     <tr style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;">
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:28%;min-height:28px;">Reg. No. :</td>
@@ -81,6 +81,7 @@
         @php($vat_status = '')
         <tbody>
         @foreach($order->details as $detail)
+        
             @if($detail->product_details !=null)
                 @php($product = json_decode($detail->product_details, true))
                 @php($amount=($detail['price']-$detail['discount_on_product'])*$detail['quantity'])
@@ -90,7 +91,7 @@
                     <td style="border:1px solid #000;padding:2px 4px;font-size:16px;line-height:22px;color:#000;font-weight:400;text-align:right;width:14%;min-height:26px;">{{$detail['price'] }}</td>
                     <td style="border:1px solid #000;padding:2px 4px;font-size:16px;line-height:22px;color:#000;font-weight:400;text-align:right;width:18%;min-height:26px;">{{ $amount}}</td>
                 </tr>
-                @if($detail['tax_amount'] == 8)
+                @if($detail['tax_amount'] == '8')
                     @php($total_Eight_tax+=$detail['tax_amount']*$detail['quantity'])
                 @else
                     @php($total_Ten_tax+=$detail['tax_amount']*$detail['quantity'])
@@ -130,16 +131,20 @@
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:5%;min-height:28px;"></td>
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:right;width:40%;min-height:28px;">{{ Helpers::set_symbol($sub_total) }}</td>
                     </tr>
+                    @if(!empty($total_Eight_tax) && isset($total_Eight_tax))
                     <tr style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;border-bottom:1px solid #000;">
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:55%;min-height:28px;">8% Consumption Tax.</td>
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:5%;min-height:28px;"></td>
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:right;width:40%;min-height:28px;">{{ Helpers::set_symbol($total_Eight_tax) }}</td>
                     </tr>
+                    @endif
+                    @if(!empty($total_Ten_tax) && isset($total_Ten_tax))
                     <tr style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;border-bottom:1px solid #000;">
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:55%;min-height:28px;">10% Consumption Tax.</td>
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:5%;min-height:28px;"></td>
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:right;width:40%;min-height:28px;">{{ Helpers::set_symbol($total_Ten_tax) }}</td>
                     </tr>
+                    @endif
                     <tr style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;border-bottom:1px solid #000;">
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:55%;min-height:28px;">Delivery Charge</td>
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:5%;min-height:28px;"></td>

@@ -55,8 +55,11 @@
                                 </label>
                             </div>
                         </div>
+                        @php
+                            $status = request()->route('status');
+                        @endphp 
                         <div class="col-sm-6 col-md-12 col-lg-4 __btn-row">
-                            <a href="{{ route('admin.orders.list',['all']) }}" id="" class="btn w-100 btn--reset min-h-45px">{{translate('clear')}}</a>
+                            <a href="{{ route('admin.orders.list',[$status]) }}" id="" class="btn w-100 btn--reset min-h-45px">{{translate('clear')}}</a>
                             <button type="submit" id="show_filter_data" class="btn w-100 btn--primary min-h-45px">{{translate('show data')}}</button>
                         </div>
                     </div>
@@ -203,6 +206,9 @@
                                     <button type="submit" class="input-group-text">
                                         {{translate('Search')}}
                                     </button>
+                                </div>
+                                <div class="col-sm-6 col-md-12 col-lg-4 __btn-row">
+                                    <a href="{{ route('admin.orders.list',[$status]) }}" id="" class="btn w-100 btn--reset min-h-45px">{{translate('clear')}}</a>
                                 </div>
                             </div>
                         </form>
