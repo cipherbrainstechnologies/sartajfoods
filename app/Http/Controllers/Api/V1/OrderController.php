@@ -485,19 +485,20 @@ class OrderController extends Controller
 
     public function shipping_list($order_id)
     {
-
         $eight_percent = 0;
         $ten_percent = 0;
+        $total_sub_amt = 0;
+        $discount = 0;
         $order = $this->order->with('details.product','details')->where('id', $order_id)->first();
-       
         $order->delivery_address = (array)$order->delivery_address;
         $order_detail = $this->order_detail->where('order_id', $order_id)->get()->toArray();
         $ids = [];
         foreach($order_detail as $product) {
+            
            $ids[] = $product['product_id'];
            $productDetails = json_decode($product['product_details'],true);
 
-           if($productDetails['tax'] == 8){
+            if($productDetails['tax'] == 8){
                 if(!empty($product['sale_price']) && $product['sale_start_date'] <= now() && $product['sale_end_date'] >= now()){
                     $eight_percent += ((($product['sale_price'] * $product['tax']) / 100) * $product['quantity']);   
                 }else{
@@ -513,6 +514,31 @@ class OrderController extends Controller
                 }
                 
             }
+            if(!empty($productDetails['sale_price'])){
+                $currentDate = new DateTime(); // Current date and time
+                $saleStartDate = new DateTime($productDetails['sale_start_date']);
+                $saleEndDate = new DateTime($productDetails['sale_end_date']);
+                if($currentDate >= $saleStartDate && $currentDate <= $saleEndDate){
+                    $productPrice = $productDetails['sale_price'];
+                    $discount = 0;
+                    $total_sub_amt = $total_sub_amt + $productDetails['sale_price'] * $product['quantity'];
+                }else{
+                    $total_sub_amt = $total_sub_amt + (($productDetails['price'] *  $product['quantity;']) - $discount);
+                }   
+                
+            }else{
+                if($productDetails['discount_type'] ="percent"){
+                    $discount = ((($productDetails['price'] * $productDetails['discount']) / 100) * $product['quantity']);
+                    $total_sub_amt = $total_sub_amt + (($productDetails['price'] *  $product['quantity']) - $discount);
+
+                }else{
+                    
+                    $discount = $productDetails['discount'];
+                    $total_sub_amt = $total_sub_amt + (($productDetails['price'] *  $product['quantity']) - $discount);
+                }
+            }
+            $order->total_sub_amt = $total_sub_amt;
+            $order->total_amt = $total_sub_amt + $eight_percent +  $ten_percent + Helpers::get_business_settings('delivery_charge') - $discount;
             $order->eight_percent =  $eight_percent;
             $order->ten_percent =  $ten_percent;
         }
