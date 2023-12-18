@@ -278,33 +278,35 @@
                             </div>
                             <div class="card-body p-10px">
                                 <ul class="recent--orders">
-                                    @foreach($data['recent_orders'] as $order)
-                                        <li>
-                                            <a href="{{route('admin.orders.details', ['id'=>$order['id']])}}">
-                                                <div>
-                                                    <h6>{{translate('order')}} #{{$order['id']}}</h6>
-                                                    <span
-                                                        class="text-uppercase">{{date('m-d-Y  h:i A', strtotime($order['created_at']))}}</span>
-                                                </div>
-                                                @if($order['order_status'] == 'pending')
-                                                    <span
-                                                        class="status text-0661cb">{{translate($order['order_status'])}}</span>
-                                                @elseif($order['order_status'] == 'delivered')
-                                                    <span
-                                                        class="status text-56b98f">{{translate($order['order_status'])}}</span>
-                                                @elseif($order['order_status'] == 'confirmed' || $order['order_status'] == 'processing' || $order['order_status'] == 'out_for_delivery')
-                                                    <span
-                                                        class="status text-F5A200">{{$order['order_status'] == 'processing' ? translate('packaging') : translate($order['order_status'])}}</span>
-                                                @elseif($order['order_status'] == 'canceled' || $order['order_status'] == 'failed')
-                                                    <span
-                                                        class="status text-F5A200">{{translate($order['order_status'])}}</span>
-                                                @else
-                                                    <span
-                                                        class="status text-0661CB">{{translate($order['order_status'])}}</span>
-                                                @endif
-                                            </a>
-                                        </li>
-                                    @endforeach
+                                    @if(!empty($data['recent_orders']))
+                                        @foreach($data['recent_orders'] as $order)
+                                            <li>
+                                                <a href="{{route('admin.orders.details', ['id'=>$order['id']])}}">
+                                                    <div>
+                                                        <h6>{{translate('order')}} #{{$order['id']}}</h6>
+                                                        <span
+                                                            class="text-uppercase">{{date('m-d-Y  h:i A', strtotime($order['created_at']))}}</span>
+                                                    </div>
+                                                    @if($order['order_status'] == 'pending')
+                                                        <span
+                                                            class="status text-0661cb">{{translate($order['order_status'])}}</span>
+                                                    @elseif($order['order_status'] == 'delivered')
+                                                        <span
+                                                            class="status text-56b98f">{{translate($order['order_status'])}}</span>
+                                                    @elseif($order['order_status'] == 'confirmed' || $order['order_status'] == 'processing' || $order['order_status'] == 'out_for_delivery')
+                                                        <span
+                                                            class="status text-F5A200">{{$order['order_status'] == 'processing' ? translate('packaging') : translate($order['order_status'])}}</span>
+                                                    @elseif($order['order_status'] == 'canceled' || $order['order_status'] == 'failed')
+                                                        <span
+                                                            class="status text-F5A200">{{translate($order['order_status'])}}</span>
+                                                    @else
+                                                        <span
+                                                            class="status text-0661CB">{{translate($order['order_status'])}}</span>
+                                                    @endif
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    @endif
                                 </ul>
                             </div>
                         </div>
@@ -325,12 +327,12 @@
                                 <ul class="recent--orders">
                                     @foreach($data['recent_activity'] as $activity)
                                         <li>
-                                            <!-- <a href="{{route('admin.orders.details', ['id'=>$order['id']])}}"> -->
+                                            {{-- <a href="{{route('admin.orders.details', ['id'=>$order['id']])}}"> --}}
                                             <a href="{{route('admin.user-activity.list')}}">
                                                 <div>
                                                     <h6>{{$activity['message']}}</h6>
-                                                    <!-- <span
-                                                        class="text-uppercase">{{date('m-d-Y  h:i A', strtotime($order['created_at']))}}</span> -->
+                                                    {{-- <span
+                                                        class="text-uppercase">{{date('m-d-Y  h:i A', strtotime($order['created_at']))}}</span> --}}
                                                 </div>
                                             </a>
                                         </li>
