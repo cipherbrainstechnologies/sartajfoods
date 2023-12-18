@@ -741,7 +741,6 @@ class ProductController extends Controller
     // public function get_flash_sale_products(Request $request): \Illuminate\Http\JsonResponse
     // {
     //     $products = ProductLogic::get_flash_sale_products($request['limit'], $request['offset']);
-    //     echo "<pre>";print_r($products);die;
     //     $products = Helpers::product_data_formatting($products, true);
     //     return response()->json($products, 200);
     // }

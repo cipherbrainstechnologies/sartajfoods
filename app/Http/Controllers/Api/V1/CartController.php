@@ -178,7 +178,6 @@ class CartController extends Controller
             }
             
         }else{
-            // echo $product->discount_type;die;
             if($product->discount_type ="percent"){
                 $discount = ((($product->price * $product->discount) / 100) * $quantity);
                 $subTotal = (($product->price *  $quantity) - $discount);

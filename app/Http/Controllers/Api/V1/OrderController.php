@@ -118,7 +118,6 @@ class OrderController extends Controller
 
         foreach ($request['cart'] as $c) {
             
-            // echo "<pre>";print_r($c);die;
             // $product = $this->product->find($c['product_id']);
             $product = $this->product->find($c['id']);
             // $type = $c['variation'][0]['type'];
