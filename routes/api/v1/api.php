@@ -45,7 +45,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         Route::get('rating/{product_id}', 'ProductController@get_product_rating');
         Route::get('daily-needs', 'ProductController@get_daily_need_products');
         Route::post('reviews/submit', 'ProductController@submit_product_review')->middleware('auth:api');
-        Route::get('rated-three-products','ProductController@get_rated_three_products');
+        // Route::get('rated-three-products','ProductController@get_rated_three_products');
         Route::get('max-price', 'ProductController@get_max_price');
         Route::get('restored-products', 'ProductController@restored_products');
 
