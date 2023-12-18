@@ -56,8 +56,6 @@ class CartController extends Controller
         $ten_percent = 0;
         // Fetch cart products for the authenticated user
         $cartProducts = Cart::with('product.rating')->where('user_id', $user->id)->get();
-        
-        
         $cartProducts->each(function ($cartProduct) use($eight_percent,$ten_percent){
             $product = $cartProduct->product;
             if($cartProduct->product['tax'] == 8){
@@ -106,10 +104,13 @@ class CartController extends Controller
             return $cartProduct;
         });
         $deliveryCharge = Helpers::get_business_settings('delivery_charge', 0);
-       
         $subTotalAmt = $cartProducts->sum('sub_total');
+        echo "sub_total :".$subTotalAmt."<br/>";
         $totalEightPercentTax = $cartProducts->sum('product.tax_eight_percent');
+        echo "eight_per :".$totalEightPercentTax."<br/>";
         $totalTenPercentTax = $cartProducts->sum('product.tax_ten_percent');
+        echo "ten_per :".$totalTenPercentTax."<br/>";
+        // echo "delivery :".$deliveryCharge."</br/>";die;
         $totalAmt = $subTotalAmt + $deliveryCharge + $totalEightPercentTax + $totalTenPercentTax;
        
         return response()->json([
