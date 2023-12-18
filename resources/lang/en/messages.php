@@ -2169,4 +2169,5 @@
   'recent_activities' => 'Recent activities',
   'Recent Activity List' => 'Recent Activity List',
   'user_id' => 'User id',
+  'Oreder history saved successfully' => 'Oreder history saved successfully',
 );

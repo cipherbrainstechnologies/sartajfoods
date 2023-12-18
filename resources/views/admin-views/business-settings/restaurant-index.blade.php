@@ -642,7 +642,7 @@
                                                title="{{ translate('The maximum amount for Cash on Delivery order.') }}"></i>
                                         </label>
                                         <input type="number" value="{{$maximum_amount_for_cod_order}}" name="maximum_amount_for_cod_order" class="form-control" placeholder=""
-                                               {{ $max_amount_status == 0 ? 'readonly' : '' }} required>
+                                                required>
                                     </div>
                                 </div>
 
@@ -701,7 +701,7 @@
                                                title="{{ translate('The minimum amount for Cash on Delivery order.') }}"></i>
                                         </label>
                                         <input type="number" value="{{$minimum_amount_for_cod_order}}" name="minimum_amount_for_cod_order" class="form-control" placeholder=""
-                                               {{ $minimum_amount_status == 0 ? 'readonly' : '' }} required>
+                                               required>
                                     </div>
                                 </div>
 

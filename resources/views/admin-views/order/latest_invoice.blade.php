@@ -42,7 +42,12 @@
                 <table style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;">
                     <tr style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;">
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:28%;min-height:28px;">{{ translate('Add') }} :</td>
-                        {{-- <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:right;width:72%;min-height:28px;">{{ $order->branch->address }}</td> --}}
+                        <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:right;width:72%;min-height:28px;">
+                            {{ $order->delivery_address['contact_person_name'] }} </br>
+                            {{ $order->delivery_address['address'] }} {{ $order->delivery_address['road'] }} <br/>
+                            {{ $order->delivery_address['house'] }} {{ $order->delivery_address['floor'] }} <br/>
+                            {{ $order->delivery_address['city'] }} {{ $order->delivery_address['state'] }} {{$order->delivery_address['post_code']}}
+                        </td>
                     </tr>
                     <tr style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;">
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:28%;min-height:28px;">{{ translate('Phone') }} :</td>
