@@ -343,7 +343,9 @@ class Helpers
 
     public static function tax_calculates($product, $price)
     {
-        $total_tax=[];
+        $total_tax['eight_percent'] = 0;
+        $total_tax['ten_percent'] = 0;
+        
         if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
             if ($product['tax_type'] == 'percent') {
                 if($product['tax']==8){
