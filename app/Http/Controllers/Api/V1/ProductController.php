@@ -450,7 +450,9 @@ class ProductController extends Controller
         $products = Helpers::product_data_formatting($products['products'], true);
         ProductLogic::cal_rating_and_review($products);
         ProductLogic::getSoldProducts($products);
-        
+        usort($products, function ($a, $b) {
+            return $b['overall_rating'] - $a['overall_rating'];
+        });
         return response()->json($products, 200);
     }
 
@@ -741,6 +743,7 @@ class ProductController extends Controller
     // public function get_flash_sale_products(Request $request): \Illuminate\Http\JsonResponse
     // {
     //     $products = ProductLogic::get_flash_sale_products($request['limit'], $request['offset']);
+    //     echo "<pre>";print_r($products);die;
     //     $products = Helpers::product_data_formatting($products, true);
     //     return response()->json($products, 200);
     // }
