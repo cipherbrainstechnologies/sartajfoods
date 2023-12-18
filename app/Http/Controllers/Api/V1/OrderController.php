@@ -63,6 +63,7 @@ class OrderController extends Controller
      */
     public function place_order(Request $request): \Illuminate\Http\JsonResponse
     {
+        echo "<pre>";print_r($request->all());die;
         $validator = Validator::make($request->all(), [
             'order_amount' => 'required',
             'payment_method'=>'required',
@@ -198,6 +199,7 @@ class OrderController extends Controller
                 'payment_by' => $request['payment_method'] == 'offline_payment' ? $request['payment_by'] : null,
                 'payment_note' => $request['payment_method'] == 'offline_payment' ? $request['payment_note'] : null,
                 'free_delivery_amount' => $free_delivery_amount,
+                'customer_comment' => !empty($request->orderNotes) ? $request->orderNotes : null
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
