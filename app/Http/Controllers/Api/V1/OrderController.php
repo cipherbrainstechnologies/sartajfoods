@@ -364,6 +364,7 @@ class OrderController extends Controller
 
 
             $order = $this->order->with('delivery_address','details')->where('id', $data['id'])->first();
+            echo "<pre>";print_r($order->toArray());die;
             $orderDetails =collect($order->details);
             $EightPercentTax = $orderDetails->sum('eight_percent_tax');
             $TenPercentTax = $orderDetails->sum('ten_percent_tax');        
