@@ -559,12 +559,10 @@ class OrderController extends Controller
 
         // Generate PDF
         $pdf = PDF::loadView('admin-views.order.latest_invoice', compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'));
-        echo "<pre>";print_r($pdf);die;
 
         // Save the PDF temporarily
         $tempPath = storage_path('app/public/invoices');
-        // $filename = 'invoice_' . $order->id . '.pdf';
-        $filename = 'invoice_' . now() . '.pdf';
+        $filename = 'invoice_' . $order->id . '.pdf';
         $pdf->save($tempPath . '/' . $filename);
 
         // Provide a link to download

@@ -358,10 +358,13 @@ class OrderController extends Controller
 
         $orders->map(function ($data) {
             $data['deliveryman_review_count'] = $this->dm_review->where(['delivery_man_id' => $data['delivery_man_id'], 'order_id' => $data['id']])->count();
-            $order = $this->order->where('id', $data['id'])->first();
-            $totalAmt = Helpers::calculateInvoice($data['id']);
+            $order = $this->order->with('delivery_address','details')->where('id', $id)->first();
+            $orderDetails =collect($order->details);
+            $EightPercentTax = $orderDetails->sum('eight_percent_tax');
+            $TenPercentTax = $orderDetails->sum('ten_percent_tax');        
+            $totalAmt = (Helpers::calculateInvoice($id)) + $order->delivery_charge;
             $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
-            $pdf = PDF::loadView('admin-views.order.latest_invoice', compact('order', 'footer_text','totalAmt'));
+            $pdf = PDF::loadView('admin-views.order.latest_invoice', compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'));
             $pdfName = 'Invoice_' . $data['id'] . '.pdf';
             if (!Storage::disk('public')->exists('invoices')) {
                 Storage::disk('public')->makeDirectory('invoices');
