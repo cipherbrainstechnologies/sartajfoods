@@ -361,11 +361,10 @@ class Helpers
         }else{
             if ($product['tax_type'] == 'percent') {
                 if($product['tax']==8){
-                    $price = self::afterDiscountPrice($product,$price);
-                    $total_tax['eight_percent'] = ($price / 100) * $product['tax'];
+                    $price = Helpers::afterDiscountPrice($product,$price);
+                    $total_tax['eight_percent'] = ($price['discount_amount'] / 100) * $product['tax'];
                 }else{
-                    $price = self::afterDiscountPrice($product,$price);
-                    $total_tax['ten_percent'] = ($price / 100) * $product['tax'];
+                    $total_tax['ten_percent'] = ($price['discount_amount'] / 100) * $product['tax'];
                 }
                 
                 // $price_tax = ($price / 100) * $product['tax'];
@@ -388,7 +387,7 @@ class Helpers
                 $discount['discount_amount'] = ($price - $product['discount']) ;
             }
         }
-        return $discount;die;
+        return $discount;
 
     }
     public static function discount_calculate($product, $price)
