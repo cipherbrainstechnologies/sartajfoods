@@ -370,11 +370,11 @@ class OrderController extends Controller
 
             
             $pdf = PDF::loadView('admin-views.order.latest_invoice', compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'));
-            dd($pdf);die;
             $pdfName = 'Invoice_' . $data['id'] . '.pdf';
             if (!Storage::disk('public')->exists('invoices')) {
                 Storage::disk('public')->makeDirectory('invoices');
             }
+            
             $pdfPath = Storage::disk('public')->put('invoices/' . $pdfName, $pdf->output());
             $pdfUrl = asset('storage/invoices/' . $pdfName);
             $data['invoice_link'] = $pdfUrl;
