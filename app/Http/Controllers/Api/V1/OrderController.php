@@ -350,6 +350,7 @@ class OrderController extends Controller
      */
     public function get_order_list(Request $request): \Illuminate\Http\JsonResponse
     {       
+        echo "dssdfs";die;
         $orders = $this->order->with(['customer', 'delivery_man.rating'])
             ->withCount('details')
             ->where(['user_id' => $request->user()->id])->get();
@@ -374,7 +375,6 @@ class OrderController extends Controller
             $data['invoice_link'] = $pdfUrl;
             return $data;
         });
-        echo "<pre>";print_r($data);die;
         return response()->json($orders->map(function ($data) {
             $data->details_count = (integer)$data->details_count;
             return $data;
