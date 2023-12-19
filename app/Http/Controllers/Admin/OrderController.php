@@ -550,7 +550,7 @@ class OrderController extends Controller
 
     public function downloadInvoicePDF($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
-        $order = $this->order->where('id', $id)->first();
+        $order = $this->order->with('delivery_address','details')->where('id', $id)->first();
         $orderDetails =collect($order->details);
         $EightPercentTax = $orderDetails->sum('eight_percent_tax');
         $TenPercentTax = $orderDetails->sum('ten_percent_tax');        
