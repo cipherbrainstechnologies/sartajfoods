@@ -173,6 +173,9 @@ class OrderController extends Controller
     public function details($id): Factory|View|Application|RedirectResponse
     {
         $order = $this->order->with('details', 'history')->where(['id' => $id])->first();
+        $orderDetails =collect($order->details);
+        $EightPercentTax = $orderDetails->sum('eight_percent_tax');
+        $TenPercentTax = $orderDetails->sum('ten_percent_tax');  
         $delivery_man = $this->delivery_man->where(['is_active'=>1])
             ->where(function($query) use ($order) {
                 $query->where('branch_id', $order->branch_id)
@@ -181,7 +184,7 @@ class OrderController extends Controller
             ->get();
 
         if (isset($order)) {
-            return view('admin-views.order.order-view', compact('order', 'delivery_man'));
+            return view('admin-views.order.order-view', compact('order', 'delivery_man','EightPercentTax','TenPercentTax'));
         } else {
             Toastr::info(translate('No more orders!'));
             return back();

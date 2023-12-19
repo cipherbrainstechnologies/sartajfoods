@@ -296,14 +296,34 @@
                                         {{--{{ Helpers::set_symbol($price_after_discount) }}--}}
                                         {{ Helpers::set_symbol($total = $amount-$total_item_discount) }}
                                     </dd>
-                                    <dt class="col-6 text-left">
+                                    <!-- <dt class="col-6 text-left">
                                         <div class="ml-auto max-w-130px">
                                             {{translate('TAX')}} / {{translate('VAT')}} {{ $vat_status == 'included' ? translate('(included)') : '' }}:
                                         </div>
                                     </dt>
                                     <dd class="col-6 col-xl-5 pr-5">
                                         {{ Helpers::set_symbol($total_tax) }}
+                                    </dd> -->
+                                    @if(!empty($EightPercentTax))          
+                                    <dt class="col-6 text-left">
+                                        <div class="ml-auto max-w-130px">
+                                            {{translate('8% Consumption Tax.')}} :
+                                        </div>
+                                    </dt>
+                                    <dd class="col-6 col-xl-5 pr-5">
+                                        {{ Helpers::set_symbol($EightPercentTax) }}
                                     </dd>
+                                    @endif
+                                    @if(!empty($TenPercentTax))           
+                                    <dt class="col-6 text-left">
+                                        <div class="ml-auto max-w-130px">
+                                            {{translate('10% Consumption Tax.')}}:
+                                        </div>
+                                    </dt>
+                                    <dd class="col-6 col-xl-5 pr-5">
+                                        {{ Helpers::set_symbol($TenPercentTax) }}
+                                    </dd>
+                                    @endif
                                     @if($order['order_type'] != 'pos')
                                     <dt class="col-6 text-left">
                                         <div class="ml-auto max-w-130px">

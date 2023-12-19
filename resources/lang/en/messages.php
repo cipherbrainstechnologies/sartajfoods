@@ -2170,4 +2170,6 @@
   'Recent Activity List' => 'Recent Activity List',
   'user_id' => 'User id',
   'Oreder history saved successfully' => 'Oreder history saved successfully',
+  '8% Consumption Tax.' => '8% Consumption Tax.',
+  '10% Consumption Tax.' => '10% Consumption Tax.',
 );

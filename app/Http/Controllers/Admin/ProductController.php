@@ -240,8 +240,10 @@ class ProductController extends Controller
 
         $category = [];
         if ($request->category_id != null) {
+            $categoryDetail = Category::where('id',$request->category_id)->first();
             $category[] = [
                 'id' => $request->category_id,
+                'name' => $categoryDetail->name,
                 'position' => 1,
             ];
         }
@@ -530,8 +532,10 @@ class ProductController extends Controller
 
         $category = [];
         if ($request->category_id != null) {
+            $categoryDetail = Category::where('id',$request->category_id)->first();
             $category[] = [
                 'id' => $request->category_id,
+                'name' =>$categoryDetail->name,
                 'position' => 1,
             ];
         }

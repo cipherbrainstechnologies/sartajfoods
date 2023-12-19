@@ -324,6 +324,37 @@ class ProductLogic
         ];
     }
 
+    // public static function get_most_reviewed_products($limit = 10, $offset = 1,$take=null){
+
+    //     $paginator = Product::active()
+        
+    //     ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
+    //     ->withCount('active_reviews')
+    //     ->get();
+    //     $paginator = $paginator->map(function ($product) {
+    //         $product['rating'] = $product['rating']->avg('average');
+    //         $product['rating_count'] = $product['rating']->count();
+    //         return $product;
+    //     });
+    //     // ->orderBy('active_reviews_count', 'desc');
+    //     if(!is_null($take)){
+    //         $limit = $take;                    
+    //     }
+    //     $paginator = new LengthAwarePaginator(
+    //         array_slice($sortedProducts, ($offset - 1) * $limit, $limit),
+    //         count($sortedProducts),
+    //         $limit,
+    //         $offset
+    //     );
+    //     // $paginator = $paginator->paginate($limit, ['*'], 'page', $offset);
+    //     return [
+    //         'total_size' => $paginator->total(),
+    //         'limit' => $limit,
+    //         'offset' => $offset,
+    //         'products' => $paginator->items()
+    //     ];
+    // }
+
     public static function get_sale_products($limit = 10, $offset = 1,$take=null){
         
         $paginator = Product::active()
