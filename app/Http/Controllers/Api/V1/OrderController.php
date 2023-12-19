@@ -367,7 +367,6 @@ class OrderController extends Controller
             $TenPercentTax = $orderDetails->sum('ten_percent_tax');
                     
             $totalAmt = (Helpers::calculateInvoice($data['id'])) + $order['delivery_charge'];
-            echo $totalAmt;die;
             $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
 
             
