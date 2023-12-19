@@ -364,7 +364,8 @@
                                             {{translate('total')}}:
                                         </div>
                                         </dt>
-                                    <dd class="col-6 col-xl-5 pr-5">{{ Helpers::set_symbol($total+$del_c+$updated_total_tax-$order['coupon_discount_amount']-$order['extra_discount']) }}</dd>
+                                    
+                                    <dd class="col-6 col-xl-5 pr-5">{{ Helpers::set_symbol($total+$del_c+$TenPercentTax+$EightPercentTax-$order['coupon_discount_amount']-$order['extra_discount']) }}</dd>
                                 </dl>
                                 <!-- End Row -->
                             </div>

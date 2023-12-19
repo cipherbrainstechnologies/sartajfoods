@@ -226,7 +226,7 @@ class OrderController extends Controller
                     
                 }
                 
-                $tax_on_product = Helpers::tax_calculate($product, $price);
+                // $tax_on_product = Helpers::tax_calculate($product, $price);
 
                 $calculateTaxes = Helpers::tax_calculates($product,$price);
                 $discount = Helpers::afterDiscountPrice($product,$price);
@@ -261,7 +261,7 @@ class OrderController extends Controller
                     'quantity' => $c['quantity'],
                     'price' => $price,
                     'unit' => $product['unit'],
-                    'tax_amount' => $tax_on_product,
+                    'tax_amount' => !empty($calculateTaxes['eight_percent']) ? $calculateTaxes['eight_percent'] : $calculateTaxes['ten_percent'],
                     'eight_percent_tax'=>$calculateTaxes['eight_percent'],
                     'ten_percent_tax' => $calculateTaxes['ten_percent'],
                     'discount_on_product' => $discount['discount_amount'],
