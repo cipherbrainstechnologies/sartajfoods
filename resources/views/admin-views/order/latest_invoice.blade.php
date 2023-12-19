@@ -99,7 +99,7 @@
                 @php($updated_total_tax+= $detail['vat_status'] === 'included' ? 0 : $detail['tax_amount']*$detail['quantity'])
                 @php($vat_status = $detail['vat_status'])
                 @php($total_item_discount += $detail['discount_on_product'] * $detail['quantity'])
-                @php($price_after_discount+=$amount-$total_item_discount)
+                @php($price_after_discount+=$amount)
             @endif
         @endforeach
         @php($total_item_discount = $total_item_discount + $order['coupon_discount_amount'])
@@ -166,7 +166,7 @@
                     <tr style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;border-bottom:1px solid #000;">
                         <td style="border:none;padding:3px 4px;font-size:22px;line-height:22px;color:#000;font-weight:700;text-align:left;width:55%;min-height:28px;">TOTAL</td>
                         <td style="border:none;padding:3px 4px;font-size:22px;line-height:22px;color:#000;font-weight:700;text-align:left;width:5%;min-height:28px;"></td>
-                        <td style="border:none;padding:3px 4px;font-size:22px;line-height:22px;color:#000;font-weight:700;text-align:right;width:40%;min-height:28px;">{{ Helpers::set_symbol(($sub_total+$updated_total_tax-$order['coupon_discount_amount']-$order['extra_discount']) + $order->delivery_charge) }}</td>
+                        <td style="border:none;padding:3px 4px;font-size:22px;line-height:22px;color:#000;font-weight:700;text-align:right;width:40%;min-height:28px;">{{ Helpers::set_symbol(($sub_total+$TenPercentTax +$EightPercentTax -$order['coupon_discount_amount']-$order['extra_discount']) + $order->delivery_charge) }}</td>
                     </tr>
                 </table>
             </td>
