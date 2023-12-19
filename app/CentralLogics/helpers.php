@@ -350,8 +350,9 @@ class Helpers
             if ($product['tax_type'] == 'percent') {
                 if($product['tax']==8){
                     $total_tax['eight_percent'] = ($product->sale_price / 100) * $product['tax'];
+                }else{
+                    $total_tax['ten_percent'] = ($product->sale_price / 100) * $product['tax'];
                 }
-                $total_tax['ten_percent'] = ($product->sale_price / 100) * $product['tax'];
                 // $price_tax = ($product->sale_price / 100) * $product['tax'];
             } else {
                 $total_tax['tax'] = $product['tax'];
@@ -361,8 +362,10 @@ class Helpers
             if ($product['tax_type'] == 'percent') {
                 if($product['tax']==8){
                     $total_tax['eight_percent'] = ($price / 100) * $product['tax'];
+                }else{
+                    $total_tax['ten_percent'] = ($price / 100) * $product['tax'];
                 }
-                $total_tax['ten_percent'] = ($price / 100) * $product['tax'];
+                
                 // $price_tax = ($price / 100) * $product['tax'];
             } else {
                 $total_tax['tax'] = $product['tax'];
