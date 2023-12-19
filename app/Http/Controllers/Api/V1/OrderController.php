@@ -374,7 +374,7 @@ class OrderController extends Controller
             $data['invoice_link'] = $pdfUrl;
             return $data;
         });
-
+        echo "<pre>";print_r($data);die;
         return response()->json($orders->map(function ($data) {
             $data->details_count = (integer)$data->details_count;
             return $data;
