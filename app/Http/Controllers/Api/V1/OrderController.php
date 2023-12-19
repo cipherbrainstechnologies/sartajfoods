@@ -535,7 +535,7 @@ class OrderController extends Controller
                     $discount = 0;
                     $total_sub_amt = $total_sub_amt + $productDetails['sale_price'] * $product['quantity'];
                 }else{
-                    $total_sub_amt = $total_sub_amt + (($productDetails['price'] *  $product['quantity;']) - $discount);
+                    $total_sub_amt = $total_sub_amt + (($productDetails['price'] *  $product['quantity']) - $discount);
                 }   
                 
             }else{
