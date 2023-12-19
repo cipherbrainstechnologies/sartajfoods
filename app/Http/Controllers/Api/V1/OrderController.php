@@ -229,6 +229,7 @@ class OrderController extends Controller
                 $tax_on_product = Helpers::tax_calculate($product, $price);
 
                 $calculateTaxes = Helpers::tax_calculates($product,$price);
+                $discount = Helpers::afterDiscountPrice($product,$price);
                 
                     //                if (Helpers::get_business_settings('product_vat_tax_status') === 'included'){
                     //                    //$price = $price - $tax_on_product;
@@ -263,8 +264,8 @@ class OrderController extends Controller
                     'tax_amount' => $tax_on_product,
                     'eight_percent_tax'=>$calculateTaxes['eight_percent'],
                     'ten_percent_tax' => $calculateTaxes['ten_percent'],
-                    'discount_on_product' => $discount,
-                    'discount_type' => $discount_type,
+                    'discount_on_product' => $discount['discount_amount'],
+                    'discount_type' => $discount['discount_type'],
                     // 'variant' => json_encode($c['variant']),
                     // 'variation' => json_encode($c['variation']),
                     // 'variation' => json_encode($c['variations']),

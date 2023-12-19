@@ -361,8 +361,10 @@ class Helpers
         }else{
             if ($product['tax_type'] == 'percent') {
                 if($product['tax']==8){
+                    $price = self::afterDiscountPrice($product,$price);
                     $total_tax['eight_percent'] = ($price / 100) * $product['tax'];
                 }else{
+                    $price = self::afterDiscountPrice($product,$price);
                     $total_tax['ten_percent'] = ($price / 100) * $product['tax'];
                 }
                 
@@ -375,6 +377,21 @@ class Helpers
         
     }
 
+    public static function afterDiscountPrice($product,$price){
+        $discount = [];
+        if!(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
+            echo "sdf";die;
+            if ($product['discount_type'] == 'percent') {
+                $discount['discount_type'] = 'percent';
+                $discount['discount_amount'] = ($price * $product['discount']) /100 ;
+            }else{
+                $discount['discount_type'] = 'amount';
+                $discount['discount_amount'] = ($price - $product['discount']) ;
+            }
+        }
+        return $discount;die;
+
+    }
     public static function discount_calculate($product, $price)
     {
         if ($product['discount_type'] == 'percent') {
