@@ -539,19 +539,27 @@ class OrderController extends Controller
     public function generate_invoice($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $order = $this->order->with('delivery_address','details')->where('id', $id)->first();
+        $orderDetails =collect($order->details);
+        $EightPercentTax = $orderDetails->sum('eight_percent_tax');
+        $TenPercentTax = $orderDetails->sum('ten_percent_tax');        
         $totalAmt = (Helpers::calculateInvoice($id)) + $order->delivery_charge;
         $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
         // return view('admin-views.order.invoice', compact('order', 'footer_text'));
-        return view('admin-views.order.latest_invoice', compact('order', 'footer_text','totalAmt'));
+        return view('admin-views.order.latest_invoice', compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'));
     }
 
     public function downloadInvoicePDF($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $order = $this->order->where('id', $id)->first();
+        $orderDetails =collect($order->details);
+        $EightPercentTax = $orderDetails->sum('eight_percent_tax');
+        $TenPercentTax = $orderDetails->sum('ten_percent_tax');        
+        $totalAmt = (Helpers::calculateInvoice($id)) + $order->delivery_charge;
+        $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
         $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
 
         // Generate PDF
-        $pdf = PDF::loadView('admin-views.order.latest_invoice', compact('order', 'footer_text'));
+        $pdf = PDF::loadView('admin-views.order.latest_invoice', compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'));
 
         // Save the PDF temporarily
         $tempPath = storage_path('app/public/invoices');
