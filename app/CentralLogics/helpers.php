@@ -343,6 +343,7 @@ class Helpers
 
     public static function tax_calculates($product, $price)
     {
+
         $total_tax['eight_percent'] = 0;
         $total_tax['ten_percent'] = 0;
 
@@ -361,9 +362,10 @@ class Helpers
         }else{
             if ($product['tax_type'] == 'percent') {
                 if($product['tax']==8){
-                    $total_tax['eight_percent'] = ($price / 100) * $product['tax'];
+                    $total_tax['eight_percent'] = (($product['discount_type'] == "percent") ?  (($price * $product['discount'])/100) / 100) : ($price -$product['discount']) * $product['tax'];
                 }else{
-                    $total_tax['ten_percent'] = ($price / 100) * $product['tax'];
+                    // $total_tax['ten_percent'] = ($price / 100) * $product['tax'];
+                    $total_tax['ten_percent'] = (($product['discount_type'] == "percent") ?  (($price * $product['discount'])/100) / 100) : ($price -$product['discount']) * $product['tax'];
                 }
                 
                 // $price_tax = ($price / 100) * $product['tax'];

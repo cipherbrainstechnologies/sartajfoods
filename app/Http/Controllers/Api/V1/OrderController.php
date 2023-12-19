@@ -241,15 +241,15 @@ class OrderController extends Controller
                     }
                 }
 
-                $category_discount = Helpers::category_discount_calculate($category_id, $price);
-                $product_discount = Helpers::discount_calculate($product, $price);
-                if ($category_discount >= $price){
-                    $discount = $product_discount;
-                    $discount_type = 'discount_on_product';
-                }else{
-                    $discount = max($category_discount, $product_discount);
-                    $discount_type = $product_discount > $category_discount ? 'discount_on_product' : 'discount_on_category';
-                }
+                // $category_discount = Helpers::category_discount_calculate($category_id, $price);
+                // $product_discount = Helpers::discount_calculate($product, $price);
+                // if ($category_discount >= $price){
+                //     $discount = $product_discount;
+                //     $discount_type = 'discount_on_product';
+                // }else{
+                //     $discount = max($category_discount, $product_discount);
+                //     $discount_type = $product_discount > $category_discount ? 'discount_on_product' : 'discount_on_category';
+                // }
                 $or_d = [
                     'order_id' => $order_id,
                     'product_id' => $c['product_id'],

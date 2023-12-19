@@ -333,7 +333,8 @@ class ProductController extends Controller
         $p->unit = $request->unit;
         $p->image = $image_data;
         $p->capacity = $request->capacity;
-        $p->maximum_order_quantity = $request->maximum_order_quantity;
+        $p->maximum_order_quantity = !empty($request->maximum_order_quantity) ? :$request->maximum_order_quantity;
+        // $p->maximum_order_quantity = $request->maximum_order_quantity;
         // $p->set_menu = $request->item_type;
 
         $p->tax = $request->tax_type == 'amount' ? $request->tax : $request->tax;
@@ -622,7 +623,7 @@ class ProductController extends Controller
         $p->price = $request->price;
         $p->capacity = $request->capacity;
         $p->unit = $request->unit;
-        $p->maximum_order_quantity = $request->maximum_order_quantity;
+        $p->maximum_order_quantity = !empty($request->maximum_order_quantity) ? :$request->maximum_order_quantity;
 
         // $p->image = json_encode(array_merge(json_decode($p['image'], true), json_decode($image_data, true)));
         // $p->set_menu = $request->item_type;
