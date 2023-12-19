@@ -364,11 +364,11 @@ class OrderController extends Controller
 
 
             $order = $this->order->with('delivery_address','details')->where('id', $data['id'])->first();
-            echo "<pre>";print_r($order->toArray());die;
+            echo "<pre>";print_r($order['delivery_charge']);
             $orderDetails =collect($order->details);
             $EightPercentTax = $orderDetails->sum('eight_percent_tax');
             $TenPercentTax = $orderDetails->sum('ten_percent_tax');        
-            $totalAmt = (Helpers::calculateInvoice($data['id'])) + $order->delivery_charge;
+            $totalAmt = (Helpers::calculateInvoice($data['id'])) + $order['delivery_charge'];
             $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
 
 
