@@ -13,6 +13,7 @@ use App\Model\FlashDeal;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use App\Model\HotDeals;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductLogic
 {
@@ -292,14 +293,29 @@ class ProductLogic
     }
 
     public static function get_most_reviewed_products($limit = 10, $offset = 1,$take=null){
+
         $paginator = Product::active()
-            ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
+            ->with(['rating', 'active_reviews', 'manufacturer', 'soldProduct'])
             ->withCount('active_reviews')
-            ->orderBy('active_reviews_count', 'desc');
-            if(!is_null($take)){
-                $limit = $take;                    
-            }
-            $paginator = $paginator->paginate($limit, ['*'], 'page', $offset);
+            ->get();
+
+        // Extract the rating values from the relationships
+        $paginator = $paginator->map(function ($product) {
+            $product['rating'] = $product['rating']->avg('average');
+            return $product;
+        });
+        
+        // Sort the products by rating in descending order
+        $sortedProducts = $paginator->sortByDesc('rating')->values()->all();
+        if(!is_null($take)){
+            $limit = $take;                    
+        }
+        $paginator = new LengthAwarePaginator(
+            array_slice($sortedProducts, ($offset - 1) * $limit, $limit),
+            count($sortedProducts),
+            $limit,
+            $offset
+        );
         return [
             'total_size' => $paginator->total(),
             'limit' => $limit,
