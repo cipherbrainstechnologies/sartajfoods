@@ -380,7 +380,6 @@ class Helpers
     public static function afterDiscountPrice($product,$price){
         $discount = [];
         if(!(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now())){
-            echo "sdf";die;
             if ($product['discount_type'] == 'percent') {
                 $discount['discount_type'] = 'percent';
                 $discount['discount_amount'] = ($price * $product['discount']) /100 ;
