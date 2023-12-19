@@ -556,14 +556,14 @@ class OrderController extends Controller
         $TenPercentTax = $orderDetails->sum('ten_percent_tax');        
         $totalAmt = (Helpers::calculateInvoice($id)) + $order->delivery_charge;
         $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
-        $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
 
         // Generate PDF
         $pdf = PDF::loadView('admin-views.order.latest_invoice', compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'));
 
         // Save the PDF temporarily
         $tempPath = storage_path('app/public/invoices');
-        $filename = 'invoice_' . $order->id . '.pdf';
+        // $filename = 'invoice_' . $order->id . '.pdf';
+        $filename = 'invoice_' . now() . '.pdf';
         $pdf->save($tempPath . '/' . $filename);
 
         // Provide a link to download
