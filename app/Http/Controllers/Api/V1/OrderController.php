@@ -368,8 +368,9 @@ class OrderController extends Controller
             $totalAmt = (Helpers::calculateInvoice($data['id'])) + $order['delivery_charge'];
             $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
 
-
+            
             $pdf = PDF::loadView('admin-views.order.latest_invoice', compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'));
+            dd($pdf);die;
             $pdfName = 'Invoice_' . $data['id'] . '.pdf';
             if (!Storage::disk('public')->exists('invoices')) {
                 Storage::disk('public')->makeDirectory('invoices');
