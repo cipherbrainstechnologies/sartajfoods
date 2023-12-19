@@ -10,6 +10,8 @@ use App\Model\FlashDeal;
 
 class Product extends Model
 {
+
+    protected $appends = ['actual_price'];
     protected $casts = [
         'tax'         => 'float',
         'price'       => 'float',
@@ -107,6 +109,21 @@ class Product extends Model
         }
 
         return 0;
+    }
+
+    public function getActualPriceAttribute(){
+        if(!empty($this->discount)){
+            if($this->discount_type=="percent"){
+                return $this->price - ($this->price * $this->discount / 100);
+            }else{
+                return $this->price - $this->discount;
+            }
+        }elseif(!empty($this->sale_price) && $this->sale_start_date <= now() && $this->sale_end_date >= now()){
+            return $this->sale_price;
+        }
+        else{
+            return $this->price;
+        }
     }
 
     public function getTotalReviewsAttribute()

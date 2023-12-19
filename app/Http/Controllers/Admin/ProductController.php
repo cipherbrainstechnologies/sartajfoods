@@ -145,7 +145,7 @@ class ProductController extends Controller
             }
              $product->total_sold = $total_sold;
         }
-        
+        // echo "<pre>";print_r($products->toArray());die;
         return view('admin-views.product.list', compact('products','search'));
     }
 

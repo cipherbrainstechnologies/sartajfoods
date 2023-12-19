@@ -136,7 +136,20 @@
                                     </td>
                                     <td class="pt-1 pb-3  {{$key == 0 ? 'pt-4' : '' }}">
                                         <div class="max-85 text-right">
-                                            {{ Helpers::set_symbol($product['price']) }}
+                                            @if(($product['actual_price'] == $product['price']) )
+                                                {{ Helpers::set_symbol($product['price']) }}
+                                            
+                                            @else
+                                                
+                                                <s>{{ Helpers::set_symbol($product['price']) }}</s>
+                                                <br/>
+                                                {{ Helpers::set_symbol($product['actual_price'])}}
+                                            @endif
+                                            <!-- {{ 
+                                                ($product['actual_price'] == $product['price']) ?
+                                                Helpers::set_symbol($product['price'])  :
+                                                Helpers::set_symbol($product['actual_price'])
+                                            }} -->
                                         </div>
                                     </td>
                                     <td class="text-center">

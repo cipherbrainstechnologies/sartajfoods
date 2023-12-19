@@ -247,7 +247,8 @@
                                 {{translate('#')}}
                             </th>
                             <th class="table-column-pl-0">{{translate('order ID')}}</th>
-                            <th>{{translate('Delivery')}} {{translate('date')}}</th>
+                            <!-- <th>{{translate('Delivery')}} {{translate('date')}}</th> -->
+                            <th>{{translate('Order')}} {{translate('date')}}</th>
                             <th>{{translate('Time Slot')}}</th>
                             <th>{{translate('customer')}}</th>
                             <!-- <th>{{translate('branch')}}</th> -->
@@ -280,7 +281,8 @@
                                 <td class="table-column-pl-0">
                                     <a href="{{route('admin.orders.details',['id'=>$order['id']])}}">{{$order['id']}}</a>
                                 </td>
-                                <td>{{date('d M Y',strtotime($order['delivery_date']))}}</td>
+                                <!-- <td>{{date('d M Y',strtotime($order['delivery_date']))}}</td> -->
+                                <td>{{date('d M Y',strtotime($order['created_at']))}}</td>
                                 <td>
                                     <span>{{$order->time_slot?date(config('time_format'), strtotime($order->time_slot['start_time'])).' - ' .date(config('time_format'), strtotime($order->time_slot['end_time'])) :'No Time Slot'}}</span>
                                 </td>
