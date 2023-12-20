@@ -26,6 +26,7 @@ use PDF;
 use DateTime;
 use App\Model\BusinessSetting;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
 
 class OrderController extends Controller
 {
@@ -371,11 +372,12 @@ class OrderController extends Controller
 
             
             $pdf = PDF::loadView('admin-views.order.latest_invoice', compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'));
-            $pdfName = 'Invoice_' . ($data['created_at']+$data['id']) . '.pdf';
+            $timestamp = $data['created_at']->timestamp;
+            $pdfName = 'Invoice_' . ($timestamp+$data['id']) . '.pdf';
             if (!Storage::disk('public')->exists('invoices')) {
                 Storage::disk('public')->makeDirectory('invoices');
             }
-
+            
             $pdfPath = Storage::disk('public')->put('invoices/' . $pdfName, $pdf->output());
             $pdfUrl = asset('storage/invoices/' . $pdfName);
             $data['invoice_link'] = $pdfUrl;
