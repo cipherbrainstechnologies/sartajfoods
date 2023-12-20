@@ -138,9 +138,7 @@
                                         <div class="max-85 text-right">
                                             @if(($product['actual_price'] == $product['price']) )
                                                 {{ Helpers::set_symbol($product['price']) }}
-                                            
                                             @else
-                                                
                                                 <s>{{ Helpers::set_symbol($product['price']) }}</s>
                                                 <br/>
                                                 {{ Helpers::set_symbol($product['actual_price'])}}
