@@ -194,7 +194,7 @@ class CartController extends Controller
                             ->update(
                                 [
                                     'quantity' => $quantity,
-                                    'price' => ($product->price - $afterDiscountPrice['discount_amount']) * $quantity,
+                                    'price' => ($product->price - $afterDiscountPrice['discount_amount']),
                                     'special_price' => 0,
                                     // 'price' => (isset($productSalePrice) && !empty($productSalePrice)) ? 0 : $product->price,
 
