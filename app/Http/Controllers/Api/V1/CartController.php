@@ -233,7 +233,6 @@ class CartController extends Controller
 
         // Find the cart entry by id
         $cart = Cart::where(['user_id'=>  $user->id,"product_id" => $productId])->first();
-        echo "<pre>";print_r($cart->toArray());die;
         // Check if the cart entry exists
         if (!$cart) {
             return response()->json(['error' => 'Cart list is empty'], 404);
