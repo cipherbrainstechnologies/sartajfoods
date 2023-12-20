@@ -163,42 +163,45 @@ class CartController extends Controller
         // }
         
 
-        if(!empty($product->sale_price)){
+        // if(!empty($product->sale_price)){
             
-            $currentDate = new DateTime(); // Current date and time
+        //     $currentDate = new DateTime(); // Current date and time
 
-            $saleStartDate = new DateTime($product->sale_start_date);
-            $saleEndDate = new DateTime($product->sale_end_date);
-            if($currentDate >= $saleStartDate && $currentDate <= $saleEndDate){
-                $productPrice = $product->sale_price;
-                $discount = 0;
-                $subTotal =  $subTotal + $product->sale_price * $quantity;
-            }else{
-                $subTotal =  $subTotal + (($product->price *  $quantity) - $discount);
-            }
+        //     $saleStartDate = new DateTime($product->sale_start_date);
+        //     $saleEndDate = new DateTime($product->sale_end_date);
+        //     if($currentDate >= $saleStartDate && $currentDate <= $saleEndDate){
+        //         $productPrice = $product->sale_price;
+        //         $discount = 0;
+        //         $subTotal =  $subTotal + $product->sale_price * $quantity;
+        //     }else{
+        //         $subTotal =  $subTotal + (($product->price *  $quantity) - $discount);
+        //     }
             
-        }else{
-            if($product->discount_type ="percent"){
-                $discount = ((($product->price * $product->discount) / 100) * $quantity);
-                $subTotal =  $subTotal + (($product->price *  $quantity) - $discount);
+        // }else{
+        //     if($product->discount_type ="percent"){
+        //         $discount = ((($product->price * $product->discount) / 100) * $quantity);
+        //         $subTotal =  $subTotal + (($product->price *  $quantity) - $discount);
 
-            }else{
+        //     }else{
                 
-                $discount = $product->discount;
-                $subTotal =   $subTotal  + (($product->price *  $quantity) - $discount);
-            }
-        }
-        
+        //         $discount = $product->discount;
+        //         $subTotal =   $subTotal  + (($product->price *  $quantity) - $discount);
+        //     }
+        // }
+        $afterDiscountPrice = Helpers::afterDiscountPrice($product,$product->price);
         if(Cart::where(['product_id' => $product->id, 'user_id' => $user->id])->exists()){
             $cart =  Cart::where(['product_id' => $product->id, 'user_id' => $user->id])
                             ->update(
                                 [
                                     'quantity' => $quantity,
-                                    'price' => (isset($productSalePrice) && !empty($productSalePrice)) ? 0 : $product->price,
-                                    'special_price' =>  (isset($productSalePrice) && !empty($productSalePrice)) ? $productSalePrice : '0',
+                                    'price' => ($product->price - $afterDiscountPrice['discount_amount']) * $quantity,
+                                    'special_price' => 0,
+                                    // 'price' => (isset($productSalePrice) && !empty($productSalePrice)) ? 0 : $product->price,
+
+                                    // 'special_price' =>  (isset($productSalePrice) && !empty($productSalePrice)) ? $productSalePrice : '0',
                                     'discount_type' => $discount_type,
-                                    'discount'      => $discount,
-                                    'sub_total'     => $subTotal
+                                    'discount'      => $afterDiscountPrice['discount_amount'] * $quantity,
+                                    'sub_total'     => ($product->price - $afterDiscountPrice['discount_amount']) * $quantity
                                 ]
                             );
         }else{
@@ -233,6 +236,7 @@ class CartController extends Controller
 
         // Find the cart entry by id
         $cart = Cart::where(['user_id'=>  $user->id,"product_id" => $productId])->first();
+        
         // Check if the cart entry exists
         if (!$cart) {
             return response()->json(['error' => 'Cart list is empty'], 404);
