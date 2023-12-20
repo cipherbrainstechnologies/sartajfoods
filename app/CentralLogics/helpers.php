@@ -386,6 +386,9 @@ class Helpers
                 $discount['discount_type'] = 'amount';
                 $discount['discount_amount'] = ($price - $product['discount']) ;
             }
+        }else{
+            $discount['discount_type'] = null;
+            $discount['discount_amount'] = 0 ;
         }
         return $discount;
 
