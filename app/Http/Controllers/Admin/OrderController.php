@@ -175,7 +175,8 @@ class OrderController extends Controller
         $order = $this->order->with('details', 'history')->where(['id' => $id])->first();
         $orderDetails =collect($order->details);
         $EightPercentTax = $orderDetails->sum('eight_percent_tax');
-        $TenPercentTax = $orderDetails->sum('ten_percent_tax');  
+        $TenPercentTax = $orderDetails->sum('ten_percent_tax');
+        
         $delivery_man = $this->delivery_man->where(['is_active'=>1])
             ->where(function($query) use ($order) {
                 $query->where('branch_id', $order->branch_id)
@@ -565,7 +566,7 @@ class OrderController extends Controller
 
         // Save the PDF temporarily
         $tempPath = storage_path('app/public/invoices');
-        $filename = 'invoice_' .now()->format('Ymd_His').'_' .$order->id . '.pdf';
+        $filename = 'invoice_' . $order->id . '.pdf';
         $pdf->save($tempPath . '/' . $filename);
 
         // Provide a link to download
