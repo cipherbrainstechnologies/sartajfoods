@@ -79,7 +79,7 @@ class OrderLogic
             $data = [
                 'order_id' => $order_id,
                 'status' => $status,
-                'comment' => null,
+                'comment' => $comment,
                 'is_customer_notify' => 0, 
             ];
 
