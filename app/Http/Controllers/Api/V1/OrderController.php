@@ -514,26 +514,31 @@ class OrderController extends Controller
            $ids[] = $product['product_id'];
            $productDetails = json_decode($product['product_details'],true);
 
-            if($productDetails['tax'] == 8){
-                if(!empty($product['sale_price']) && $product['sale_start_date'] <= now() && $product['sale_end_date'] >= now()){
-                    $eight_percent += ((($product['sale_price'] * $product['tax']) / 100) * $product['quantity']);   
-                }else{
-                    // $discount_price = Helpers::afterDiscountPrice($product,$product['price']);
-                    // $eight_percent += (((($product['price'] - $discount_price['discount_amount']) * $productDetails['tax']) / 100) * $product['quantity']);   
-                    $eight_percent += (((($product['price']) * $productDetails['tax']) / 100) * $product['quantity']);   
-                }
+            // if($productDetails['tax'] == 8){
+            //     if(!empty($product['sale_price']) && $product['sale_start_date'] <= now() && $product['sale_end_date'] >= now()){
+            //         $eight_percent += ((($product['sale_price'] * $product['tax']) / 100) * $product['quantity']);   
+            //     }else{
+            //         // $discount_price = Helpers::afterDiscountPrice($product,$product['price']);
+            //         // $eight_percent += (((($product['price'] - $discount_price['discount_amount']) * $productDetails['tax']) / 100) * $product['quantity']);   
+            //         $eight_percent += (((($product['price']) * $productDetails['tax']) / 100) * $product['quantity']);   
+            //     }
            
-            }
-            if($productDetails['tax'] == 10){
-                if(!empty($product['sale_price']) && $product['sale_start_date'] <= now() && $product['sale_end_date'] >= now()){
-                    $ten_percent += ((($product['sale_price'] * $product['tax']) / 100) * $product['quantity']);   
-                }else{
-                    // $discount_price = Helpers::afterDiscountPrice($product,$product['price']);
-                    // $ten_percent += (((($product['price'] - $discount_price['discount_amount']) * $productDetails['tax']) / 100) * $product['quantity']);   
-                    $eight_percent += (((($product['price']) * $productDetails['tax']) / 100) * $product['quantity']);   
-                }
+            // }
+            // if($productDetails['tax'] == 10){
+            //     if(!empty($product['sale_price']) && $product['sale_start_date'] <= now() && $product['sale_end_date'] >= now()){
+            //         $ten_percent += ((($product['sale_price'] * $product['tax']) / 100) * $product['quantity']);   
+            //     }else{
+            //         // $discount_price = Helpers::afterDiscountPrice($product,$product['price']);
+            //         // $ten_percent += (((($product['price'] - $discount_price['discount_amount']) * $productDetails['tax']) / 100) * $product['quantity']);   
+            //         $ten_percent += (((($product['price']) * $productDetails['tax']) / 100) * $product['quantity']);   
+            //     }
                 
-            }
+            // }
+
+            $calculateTaxes = Helpers::tax_calculates($productDetails,$product['price']);
+            $eight_percent = $calculateTaxes['eight_percent'];
+            $ten_percent= $calculateTaxes['ten_percent'];
+
             if(!empty($productDetails['sale_price'])){
                 $currentDate = new DateTime(); // Current date and time
                 $saleStartDate = new DateTime($productDetails['sale_start_date']);
