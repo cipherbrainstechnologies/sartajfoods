@@ -396,6 +396,7 @@ class OrderController extends Controller
      */
     public function get_order_details(Request $request): \Illuminate\Http\JsonResponse
     {
+
         $validator = Validator::make($request->all(), [
             'order_id' => 'required'
         ]);
@@ -403,36 +404,37 @@ class OrderController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => Helpers::error_processor($validator)], 403);
         }
+        // echo $request['order_id'];die;
+        $details = OrderDetail::with('product')->where('order_id',$request['order_id'])->first();
+        return response()->json($details, 200);
+        // $details = $this->order_detail->where(['order_id' => $request['order_id']])
+        //     ->whereHas('order', function ($q) use ($request){
+        //         $q->where([ 'user_id' => $request->user()->id ]);
+        //     })
+        //     ->orderBy('id', 'desc')
+        //     ->get();
+        // if ($details->count() > 0) {
+        //     foreach ($details as $det) {
+        //         $det['variation'] = json_decode($det['variation'], true);
+        //         if ($this->order->find($request->order_id)->order_type == 'pos') {
+        //             $det['variation'] = (string)implode('-', array_values($det['variation'])) ?? null;
+        //         }
+        //         else {
+        //             $det['variation'] = (string)$det['variation'][0]['type']??null;
+        //         }
 
-        $details = $this->order_detail->where(['order_id' => $request['order_id']])
-            ->whereHas('order', function ($q) use ($request){
-                $q->where([ 'user_id' => $request->user()->id ]);
-            })
-            ->orderBy('id', 'desc')
-            ->get();
-
-        if ($details->count() > 0) {
-            foreach ($details as $det) {
-                $det['variation'] = json_decode($det['variation'], true);
-                if ($this->order->find($request->order_id)->order_type == 'pos') {
-                    $det['variation'] = (string)implode('-', array_values($det['variation'])) ?? null;
-                }
-                else {
-                    $det['variation'] = (string)$det['variation'][0]['type']??null;
-                }
-
-                $det['review_count'] = $this->review->where(['order_id' => $det['order_id'], 'product_id' => $det['product_id']])->count();
-                $product = $this->product->where('id', $det['product_id'])->first();
-                $det['product_details'] = isset($product) ? Helpers::product_data_formatting($product) : null;
-            }
-            return response()->json($details, 200);
-        } else {
-            return response()->json([
-                'errors' => [
-                    ['code' => 'order', 'message' => 'Order not found!']
-                ]
-            ], 401);
-        }
+        //         $det['review_count'] = $this->review->where(['order_id' => $det['order_id'], 'product_id' => $det['product_id']])->count();
+        //         $product = $this->product->where('id', $det['product_id'])->first();
+        //         $det['product_details'] = isset($product) ? Helpers::product_data_formatting($product) : null;
+        //     }
+        //     return response()->json($details, 200);
+        // } else {
+        //     return response()->json([
+        //         'errors' => [
+        //             ['code' => 'order', 'message' => 'Order not found!']
+        //         ]
+        //     ], 401);
+        // }
     }
 
     /**
@@ -514,26 +516,24 @@ class OrderController extends Controller
            $ids[] = $product['product_id'];
            $productDetails = json_decode($product['product_details'],true);
 
-            // if($productDetails['tax'] == 8){
-            //     if(!empty($product['sale_price']) && $product['sale_start_date'] <= now() && $product['sale_end_date'] >= now()){
-            //         $eight_percent += ((($product['sale_price'] * $product['tax']) / 100) * $product['quantity']);   
-            //     }else{
-            //         // $discount_price = Helpers::afterDiscountPrice($product,$product['price']);
-            //         // $eight_percent += (((($product['price'] - $discount_price['discount_amount']) * $productDetails['tax']) / 100) * $product['quantity']);   
-            //         $eight_percent += (((($product['price']) * $productDetails['tax']) / 100) * $product['quantity']);   
-            //     }
+            if($productDetails['tax'] == 8){
+                if(!empty($product['sale_price']) && $product['sale_start_date'] <= now() && $product['sale_end_date'] >= now()){
+                    $eight_percent += ((($product['sale_price'] * $product['tax']) / 100) * $product['quantity']);   
+                }else{
+                    $discount_price = Helpers::afterDiscountPrice($productDetails,$product['price']);
+                    $eight_percent += (((($product['price'] - $discount_price['discount_amount']) * $productDetails['tax']) / 100) * $product['quantity']);      
+                }
            
-            // }
-            // if($productDetails['tax'] == 10){
-            //     if(!empty($product['sale_price']) && $product['sale_start_date'] <= now() && $product['sale_end_date'] >= now()){
-            //         $ten_percent += ((($product['sale_price'] * $product['tax']) / 100) * $product['quantity']);   
-            //     }else{
-            //         // $discount_price = Helpers::afterDiscountPrice($product,$product['price']);
-            //         // $ten_percent += (((($product['price'] - $discount_price['discount_amount']) * $productDetails['tax']) / 100) * $product['quantity']);   
-            //         $ten_percent += (((($product['price']) * $productDetails['tax']) / 100) * $product['quantity']);   
-            //     }
+            }
+            if($productDetails['tax'] == 10){
+                if(!empty($product['sale_price']) && $product['sale_start_date'] <= now() && $product['sale_end_date'] >= now()){
+                    $ten_percent += ((($product['sale_price'] * $product['tax']) / 100) * $product['quantity']);   
+                }else{
+                    $discount_price = Helpers::afterDiscountPrice($productDetails,$product['price']);
+                    $ten_percent += (((($product['price'] - $discount_price['discount_amount']) * $productDetails['tax']) / 100) * $product['quantity']);   
+                }
                 
-            // }
+            }
 
             $calculateTaxes = Helpers::tax_calculates($productDetails,$product['price']);
             $eight_percent = $calculateTaxes['eight_percent'];
@@ -547,24 +547,27 @@ class OrderController extends Controller
                     $productPrice = $productDetails['sale_price'];
                     $discount = 0;
                     $total_sub_amt = $total_sub_amt + $productDetails['sale_price'] * $product['quantity'];
+                    echo $total_sub_amt;
                 }else{
                     $total_sub_amt = $total_sub_amt + (($productDetails['price'] *  $product['quantity']) - $discount);
+                    echo $total_sub_amt;
                 }   
                 
             }else{
                 if($productDetails['discount_type'] ="percent"){
                     $discount = ((($productDetails['price'] * $productDetails['discount']) / 100) * $product['quantity']);
                     $total_sub_amt = $total_sub_amt + (($productDetails['price'] *  $product['quantity']) - $discount);
-
+                    echo $total_sub_amt;
                 }else{
                     
                     $discount = $productDetails['discount'];
                     $total_sub_amt = $total_sub_amt + (($productDetails['price'] *  $product['quantity']) - $discount);
+                    echo $total_sub_amt;
                 }
             }
+            
             $order->total_sub_amt = $total_sub_amt;
-            // $order->total_amt = $total_sub_amt + $eight_percent +  $ten_percent + Helpers::get_business_settings('delivery_charge') - $discount;
-            $order->total_amt = $total_sub_amt + $eight_percent +  $ten_percent + Helpers::get_business_settings('delivery_charge') ;
+            $order->total_amt = $total_sub_amt + $eight_percent +  $ten_percent + Helpers::get_business_settings('delivery_charge') - $discount;
             $order->eight_percent =  $eight_percent;
             $order->ten_percent =  $ten_percent;
         }
