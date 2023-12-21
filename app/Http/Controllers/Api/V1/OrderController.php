@@ -109,9 +109,10 @@ class OrderController extends Controller
                 'errors' => $errors
             ], 401);
         }
-
+        
         $min_amount = Helpers::get_business_settings('minimum_amount_for_cod_order');
-        if ($request->payment_method == 'cash_on_delivery' && Helpers::get_business_settings('minimum_amount_for_cod_order') == 1 && ($request['order_amount'] > $min_amount)){
+        
+        if ($request->payment_method == 'cash_on_delivery' && Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ($request['order_amount'] < $min_amount)){
             $errors = [];
             $errors[] = ['code' => 'auth-001', 'message' => 'For Cash on Delivery, order amount must be equal or greater than '. $min_amount];
             return response()->json([
