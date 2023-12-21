@@ -62,6 +62,7 @@ class CustomerController extends Controller
 
         $address = [
             'user_id' => $request->user()->id,
+            'full_name' => !empty($request->full_name) ? $request->full_name : null;
             'contact_person_name' => !empty($request->contact_person_name) ? $request->contact_person_name : null,
             'contact_person_number' => !empty($request->contact_person_number) ? $request->contact_person_number : null,
             // 'address_type' => !empty($request->address_type) ? $request->address_type : null,
@@ -102,6 +103,7 @@ class CustomerController extends Controller
 
         $address = [
             'user_id' => $request->user()->id,
+            'full_name' => !empty($request->full_name) ? $request->full_name : null;
             'contact_person_name' => !empty($request->contact_person_name) ? $request->contact_person_name : null,
             'contact_person_number' => !empty($request->contact_person_number) ? $request->contact_person_number : null,
             'address_type' => !empty($request->address_type) ? $request->address_type : null,
