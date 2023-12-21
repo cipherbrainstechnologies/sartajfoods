@@ -198,7 +198,7 @@ class CartController extends Controller
 
             }else{
                 $discount_type = 'amount';
-                $productPrice = $discount_price['discount_amount'];
+                $productPrice = $product->price - $discount_price['discount_amount'];
                 $discountPrice = $product->discount;
                 $discount = $product->discount;
                 $subTotal =   $subTotal  + (($productPrice  *  $quantity) );
