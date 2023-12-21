@@ -562,10 +562,10 @@ class OrderController extends Controller
                 }
             }
             
-            $order->total_sub_amt = $total_sub_amt;
-            $order->total_amt = $total_sub_amt + $eight_percent +  $ten_percent + Helpers::get_business_settings('delivery_charge') - $discount;
-            $order->eight_percent =  $eight_percent;
-            $order->ten_percent =  $ten_percent;
+            $order->total_sub_amt = round($total_sub_amt,2);
+            $order->total_amt = round(($total_sub_amt + $eight_percent +  $ten_percent + Helpers::get_business_settings('delivery_charge')) - $discount,2);
+            $order->eight_percent =  round($eight_percent,2);
+            $order->ten_percent =  round($ten_percent,2);
         }
         if(!empty($ids)){
             $productData  = $this->product->whereIn('id',$ids)->get();
