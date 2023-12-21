@@ -563,7 +563,8 @@ class OrderController extends Controller
                 }
             }
             $order->total_sub_amt = $total_sub_amt;
-            $order->total_amt = $total_sub_amt + $eight_percent +  $ten_percent + Helpers::get_business_settings('delivery_charge') - $discount;
+            // $order->total_amt = $total_sub_amt + $eight_percent +  $ten_percent + Helpers::get_business_settings('delivery_charge') - $discount;
+            $order->total_amt = $total_sub_amt + $eight_percent +  $ten_percent + Helpers::get_business_settings('delivery_charge') ;
             $order->eight_percent =  $eight_percent;
             $order->ten_percent =  $ten_percent;
         }
