@@ -68,8 +68,13 @@ class CartController extends Controller
                         $eight_percent += (((($product->price - $discount_price['discount_amount']) * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
                     }else{
                         $discount_price = Helpers::afterDiscountPrice($product,$product->price);
+                        if($product['discount_type']=="percent"){
+                            $eight_percent += ((($discount_price['discount_amount'] * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
+                        }
+                        if($product['discount_type']=="amount"){
+                            $eight_percent += (((($product->price -$discount_price['discount_amount']) * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
+                        }
                         
-                        $eight_percent += ((($discount_price['discount_amount'] * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
                     }
                    
                 }
@@ -81,7 +86,12 @@ class CartController extends Controller
                     $ten_percent += ((($product->sale_price * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
                 }else{
                     $discount_price = Helpers::afterDiscountPrice($product,$product->price);
-                    $ten_percent  += (((($product->price - $discount_price['discount_amount']) * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
+                    if($product['discount_type']=="percent"){
+                        $ten_percent += ((($discount_price['discount_amount'] * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
+                    }
+                    if($product['discount_type']=="amount"){
+                        $ten_percent += (((($product->price -$discount_price['discount_amount']) * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
+                    }
                 } 
                 
             }
