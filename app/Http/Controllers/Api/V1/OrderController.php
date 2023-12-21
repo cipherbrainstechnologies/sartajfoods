@@ -27,6 +27,7 @@ use DateTime;
 use App\Model\BusinessSetting;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Carbon;
+use App\Model\OrderHistory;
 
 class OrderController extends Controller
 {
@@ -336,7 +337,7 @@ class OrderController extends Controller
 
             } catch (\Exception $e) {
             }
-
+            OrderHistory::create(['order_id' =>$order_id,'comment' => $request->order_note]);
             return response()->json([
                 'message' => 'Order placed successfully!',
                 'order_id' => $order_id,
