@@ -975,7 +975,7 @@ class Helpers
                 $discount = $product['discount_on_product'];
             
                 // Calculate total cost after discount
-                // $itemTotal = ($itemPrice - $discount) * $product['quantity'];
+                $itemTotal = ($itemPrice - $discount) * $product['quantity'];
             
                 // Add tax amount
                 $itemTotal += $product['tax_amount'];
