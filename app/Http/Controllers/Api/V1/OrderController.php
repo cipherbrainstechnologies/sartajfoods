@@ -233,6 +233,7 @@ class OrderController extends Controller
                 $calculateTaxes = Helpers::tax_calculates($product,$price);
                 $discount = Helpers::afterDiscountPrice($product,$price);
                 
+                
                     //                if (Helpers::get_business_settings('product_vat_tax_status') === 'included'){
                     //                    //$price = $price - $tax_on_product;
                     //                }
@@ -554,25 +555,12 @@ class OrderController extends Controller
                 }   
                 
             }else{
-                // if($productDetails['discount_type'] ="percent"){
-                    $discount_price = Helpers::afterDiscountPrice($productDetails,$product['price']);
-                    $discount = ($discount_price['discount_amount'] * $product['quantity']);
-                    $total_sub_amt = $total_sub_amt + (($productDetails['price'] *  $product['quantity']) - $discount);
-                // }else{
-                    // $discount_price = Helpers::afterDiscountPrice($productDetails,$product['price']);
-                    // $discount = ($discount_price['discount_amount']);
-                    // $total_sub_amt = $total_sub_amt + (($productDetails['price'] *  $product['quantity']) - $discount);
-                    // $discount = $productDetails['discount'];
-                    // $total_sub_amt = $total_sub_amt + (($productDetails['price'] *  $product['quantity']) - $discount);
-                // }
+                $discount_price = Helpers::afterDiscountPrice($productDetails,$product['price']);
+                $discount = ($discount_price['discount_amount'] * $product['quantity']);
+                $total_sub_amt = $total_sub_amt + (($productDetails['price'] *  $product['quantity']) - $discount);
             }
             
             $order->total_sub_amt = round($total_sub_amt,2);
-            // echo $total_sub_amt ."<br/>";
-            // echo $eight_percent."<br/>";
-            // echo $ten_percent."</br>";
-            // echo $discount;
-            // die;
             $order->total_amt = round(($total_sub_amt + $eight_percent +  $ten_percent + Helpers::get_business_settings('delivery_charge')),2);
             $order->eight_percent =  round($eight_percent,2);
             $order->ten_percent =  round($ten_percent,2);

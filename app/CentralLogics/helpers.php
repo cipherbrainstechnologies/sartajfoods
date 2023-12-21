@@ -353,7 +353,6 @@ class Helpers
                 }else{
                     $total_tax['ten_percent'] = ($product->sale_price / 100) * $product['tax'];
                 }
-                // $price_tax = ($product->sale_price / 100) * $product['tax'];
             } else {
                 $total_tax['tax'] = $product['tax'];
             }
@@ -385,10 +384,10 @@ class Helpers
                 $discount['discount_amount'] = ($price * $product['discount']) /100 ;
             }else{
                 $discount['discount_type'] = 'amount';
-                $discount['discount_amount'] = ($price - $product['discount']) ;
+                $discount['discount_amount'] = ($product['discount']) ;
             }
         }else{
-            $discount['discount_type'] = null;
+            $discount['discount_type'] = 'special';
             $discount['discount_amount'] = 0 ;
         }
         return $discount;
