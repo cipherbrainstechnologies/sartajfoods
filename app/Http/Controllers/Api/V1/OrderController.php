@@ -518,7 +518,8 @@ class OrderController extends Controller
                 if(!empty($product['sale_price']) && $product['sale_start_date'] <= now() && $product['sale_end_date'] >= now()){
                     $eight_percent += ((($product['sale_price'] * $product['tax']) / 100) * $product['quantity']);   
                 }else{
-                    $eight_percent += ((($productDetails['price'] * $productDetails['tax']) / 100) * $product['quantity']);   
+                    $discount_price = Helpers::afterDiscountPrice($product,$product->price);
+                    $eight_percent += (((($product->price - $discount_price['discount_amount']) * $productDetails['tax']) / 100) * $product['quantity']);   
                 }
            
             }
@@ -526,7 +527,8 @@ class OrderController extends Controller
                 if(!empty($product['sale_price']) && $product['sale_start_date'] <= now() && $product['sale_end_date'] >= now()){
                     $ten_percent += ((($product['sale_price'] * $product['tax']) / 100) * $product['quantity']);   
                 }else{
-                    $ten_percent += ((($productDetails['price'] * $productDetails['tax']) / 100) * $product['quantity']);   
+                    $discount_price = Helpers::afterDiscountPrice($product,$product->price);
+                    $ten_percent += (((($product->price - $discount_price['discount_amount']) * $productDetails['tax']) / 100) * $product['quantity']);   
                 }
                 
             }
