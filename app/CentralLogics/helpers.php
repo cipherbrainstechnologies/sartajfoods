@@ -343,6 +343,9 @@ class Helpers
 
     public static function tax_calculates($product, $price)
     {
+        if(is_array($product)){
+            $product  = new Product($product);
+        }
         $total_tax['eight_percent'] = 0;
         $total_tax['ten_percent'] = 0;
 
