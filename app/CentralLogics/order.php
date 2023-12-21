@@ -72,7 +72,7 @@ class OrderLogic
         return $o_id;
     }
 
-    public static function orderHistory($order_id, $status)
+    public static function orderHistory($order_id, $status,$comment=null)
     {
         // $orderHistoryData = OrderHistory::with('order')->where('order_id', $request->id)->first();
        try {
