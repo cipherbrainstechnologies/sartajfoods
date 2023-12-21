@@ -167,12 +167,12 @@ class CartController extends Controller
         }else{
             if($product->discount_type ="percent"){
                 $discount = $discount_price['discount_amount'] * $quantity;
-                $subTotal =  $subTotal + (($productPrice  *  $quantity) - $discount);
+                $subTotal =  $subTotal + (($productPrice  *  $quantity) );
 
             }else{
                 
                 $discount = $product->discount;
-                $subTotal =   $subTotal  + (($productPrice  *  $quantity) - $discount);
+                $subTotal =   $subTotal  + (($productPrice  *  $quantity) );
             }
         }
         if(Cart::where(['product_id' => $product->id, 'user_id' => $user->id])->exists()){
