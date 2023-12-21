@@ -88,7 +88,7 @@ class CustomerController extends Controller
      * @param $id
      * @return JsonResponse
      */
-    public function update_address(Request $request, $id): JsonResponse
+    public function update_address(Request $request, $id=null): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             // 'contact_person_name' => 'required',
@@ -101,26 +101,50 @@ class CustomerController extends Controller
             return response()->json(['errors' => Helpers::error_processor($validator)], 403);
         }
 
+        // $address = [
+        //     'user_id' => $request->user()->id,
+        //     'full_name' => !empty($request->full_name) ? $request->full_name : null,
+        //     'contact_person_name' => !empty($request->contact_person_name) ? $request->contact_person_name : null,
+        //     'contact_person_number' => !empty($request->contact_person_number) ? $request->contact_person_number : null,
+        //     'address_type' => !empty($request->address_type) ? $request->address_type : null,
+        //     'address' => !empty($request->address) ? $request->address : null,
+        //     'road' => !empty($request->road) ? $request->road : null,
+        //     'house' => !empty($request->house) ? $request->house : null,
+        //     'floor' => !empty($request->floor) ? $request->floor : null,
+        //     'longitude' => !empty($request->longitude) ? $request->longitude : null,
+        //     'latitude' => !empty($request->latitude) ? $request->latitude : null,
+        //     'country' => !empty($request->country) ? $request->country: null,
+        //     'state' => !empty($request->state) ? $request->state : null,
+        //     'post_code' => !empty($request->post_code) ? $request->post_code : null,
+        //     'city' => !empty($request->city) ? $request->city : null, 
+        //     'created_at' => now(),
+        //     'updated_at' => now()
+        // ];
         $address = [
             'user_id' => $request->user()->id,
             'full_name' => !empty($request->full_name) ? $request->full_name : null,
             'contact_person_name' => !empty($request->contact_person_name) ? $request->contact_person_name : null,
             'contact_person_number' => !empty($request->contact_person_number) ? $request->contact_person_number : null,
-            'address_type' => !empty($request->address_type) ? $request->address_type : null,
+            // 'address_type' => !empty($request->address_type) ? $request->address_type : null,
             'address' => !empty($request->address) ? $request->address : null,
-            'road' => !empty($request->road) ? $request->road : null,
+            'road' => !empty($request->road) ? $request->road : null, 
             'house' => !empty($request->house) ? $request->house : null,
             'floor' => !empty($request->floor) ? $request->floor : null,
             'longitude' => !empty($request->longitude) ? $request->longitude : null,
             'latitude' => !empty($request->latitude) ? $request->latitude : null,
-            'country' => !empty($request->country) ? $request->country: null,
+            'country' => !empty($request->country) ? $request->country : null,
             'state' => !empty($request->state) ? $request->state : null,
-            'post_code' => !empty($request->post_code) ? $request->post_code : null,
+            'post_code' => $request->post_code,
             'city' => !empty($request->city) ? $request->city : null, 
             'created_at' => now(),
             'updated_at' => now()
         ];
-        DB::table('customer_addresses')->where('id',$id)->update($address);
+        if(empty($id)){
+            DB::table('customer_addresses')->insert($address);
+        }else{
+            DB::table('customer_addresses')->where('id',$id)->update($address);
+        }
+        
         return response()->json(['message' => 'successfully updated!'], 200);
     }
 
