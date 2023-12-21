@@ -380,6 +380,9 @@ class Helpers
     }
 
     public static function afterDiscountPrice($product,$price){
+        if(is_array($product)){
+            $product  = new Product($product);
+        }
         $discount = [];
         if(!(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()) && $product['discount'] !=0){
             if ($product['discount_type'] == 'percent') {
