@@ -149,8 +149,9 @@ class CartController extends Controller
             return response()->json(['error' => 'Product not found'], 404);
         }
         $discount_price = Helpers::afterDiscountPrice($product,$product->price);
+        // echo $discount_price['discount_amount'];die;
+        // $productPrice = $product->price - $discount_price['discount_amount'];
         
-        $productPrice = $product->price - $discount_price['discount_amount'];
         $discountPrice = $discount_price['discount_amount'];
         if(!empty($product->sale_price)){
             
@@ -164,16 +165,28 @@ class CartController extends Controller
                 $discount = 0;
                 $subTotal =  $subTotal + $product->sale_price * $quantity;
             }else{
-                $subTotal =  $subTotal + (($productPrice *  $quantity) - $discount);
+                if($product->discount_type =="percent"){
+                    $productPrice = $product->price - $discount_price['discount_amount'];
+                    $discount = $discount_price['discount_amount'] * $quantity;
+                    $subTotal =  $subTotal + (($productPrice  *  $quantity) );
+    
+                }else{
+                    $productPrice = $discount_price['discount_amount'];
+                    $discountPrice = $product->discount;
+                    $discount = $product->discount;
+                    $subTotal =   $subTotal  + (($productPrice  *  $quantity) );
+                }
             }
             
         }else{
-            if($product->discount_type ="percent"){
+            if($product->discount_type =="percent"){
+                $productPrice = $product->price - $discount_price['discount_amount'];
                 $discount = $discount_price['discount_amount'] * $quantity;
                 $subTotal =  $subTotal + (($productPrice  *  $quantity) );
 
             }else{
-                
+                $productPrice = $discount_price['discount_amount'];
+                $discountPrice = $product->discount;
                 $discount = $product->discount;
                 $subTotal =   $subTotal  + (($productPrice  *  $quantity) );
             }
