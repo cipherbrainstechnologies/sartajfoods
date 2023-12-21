@@ -185,8 +185,9 @@
                                 <tr>
                                     <th class="border-0">{{translate('SL')}}</th>
                                     <th class="border-0">{{translate('Item details')}}</th>
-                                    <th class="border-0 text-right">{{translate('Price')}}</th>
-                                    <th class="border-0 text-right">{{translate('Discount')}}</th>
+                                    <th class="border-0 text-right">{{translate('Price Per pcs')}}</th>
+                                    <th class="border-0 text-right">{{translate('Quantity')}}</th>
+                                    <th class="border-0 text-right">{{translate('Discount Per pcs')}}</th>
                                     <th class="text-right border-0">{{translate('Total Price')}}</th>
                                 </tr>
                             </thead>
@@ -233,17 +234,24 @@
                                                             </div>
                                                         @endforeach
                                                     @endif
-                                                    <h5 class="mt-1"><span class="text-body">{{translate('Unit')}}</span> : {{$detail['unit']}} </h5>
                                                     <h5 class="mt-1"><span class="text-body">{{translate('Unit Price')}}</span> : {{$detail['price']}} </h5>
+                                                    <h5 class="mt-1"><span class="text-body">{{translate('Unit')}}</span> : {{$detail['unit']}} </h5>
+                                                    
                                                     <h5 class="mt-1"><span class="text-body">{{translate('QTY')}}</span> : {{$detail['quantity']}} </h5>
                                                 </div> --}}
                                             </div>
                                         </td>
                                         <td class="text-right">
-                                            <h6>{{ Helpers::set_symbol($detail['price'] * $detail['quantity']) }}</h6>
+                                            <h6>{{ Helpers::set_symbol($detail['price'] ) }}</h6>
                                         </td>
                                         <td class="text-right">
-                                            <h6>{{ Helpers::set_symbol($detail['discount_on_product'] * $detail['quantity']) }}</h6>
+                                            <h6>{{  $detail['quantity'] }}</h6>
+                                        </td>
+                                       
+                                       
+                                       
+                                        <td class="text-right">
+                                            <h6>{{ Helpers::set_symbol($detail['discount_on_product']) }}</h6>
                                         </td>
                                         <td class="text-right">
                                             {{--@php($amount=($detail['price']-$detail['discount_on_product'])*$detail['quantity'])--}}
@@ -254,7 +262,8 @@
                                             @php($total_item_discount += ($detail['discount_on_product'] * $detail['quantity']))
                                             @php($price_after_discount+=$amount-$total_item_discount)
                                             @php($sub_total+=$price_after_discount)
-                                            <h5>{{ Helpers::set_symbol(($detail['price'] * $detail['quantity']) - ($detail['discount_on_product'] * $detail['quantity'])) }}</h5>
+                                            <!-- <h5>{{ Helpers::set_symbol(($detail['price'] * $detail['quantity']) - ($detail['discount_on_product'] * $detail['quantity'])) }}</h5> -->
+                                            <h5>{{ Helpers::set_symbol(($detail['price'] * $detail['quantity'])) }}</h5>
                                         </td>
                                     </tr>
                                     @endif

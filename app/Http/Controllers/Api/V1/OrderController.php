@@ -536,9 +536,9 @@ class OrderController extends Controller
                 
             }
 
-            $calculateTaxes = Helpers::tax_calculates($productDetails,$product['price']);
-            $eight_percent = $calculateTaxes['eight_percent'];
-            $ten_percent= $calculateTaxes['ten_percent'];
+            // $calculateTaxes = Helpers::tax_calculates($productDetails,$product['price']);
+            // $eight_percent = $calculateTaxes['eight_percent'];
+            // $ten_percent= $calculateTaxes['ten_percent'];
 
             if(!empty($productDetails['sale_price'])){
                 $currentDate = new DateTime(); // Current date and time
@@ -549,22 +549,31 @@ class OrderController extends Controller
                     $discount = 0;
                     $total_sub_amt = $total_sub_amt + $productDetails['sale_price'] * $product['quantity'];
                 }else{
-                    $total_sub_amt = $total_sub_amt + (($productDetails['price'] *  $product['quantity']) - $discount);
+                    $discount_price = Helpers::afterDiscountPrice($productDetails,$product['price']);
+                    $total_sub_amt = $total_sub_amt + ((($productDetails['price'] - $discount_price['discount_amount'] )*  $product['quantity']) - $discount);
                 }   
                 
             }else{
-                if($productDetails['discount_type'] ="percent"){
-                    $discount = ((($productDetails['price'] * $productDetails['discount']) / 100) * $product['quantity']);
+                // if($productDetails['discount_type'] ="percent"){
+                    $discount_price = Helpers::afterDiscountPrice($productDetails,$product['price']);
+                    $discount = ($discount_price['discount_amount'] * $product['quantity']);
                     $total_sub_amt = $total_sub_amt + (($productDetails['price'] *  $product['quantity']) - $discount);
-                }else{
-                    
-                    $discount = $productDetails['discount'];
-                    $total_sub_amt = $total_sub_amt + (($productDetails['price'] *  $product['quantity']) - $discount);
-                }
+                // }else{
+                    // $discount_price = Helpers::afterDiscountPrice($productDetails,$product['price']);
+                    // $discount = ($discount_price['discount_amount']);
+                    // $total_sub_amt = $total_sub_amt + (($productDetails['price'] *  $product['quantity']) - $discount);
+                    // $discount = $productDetails['discount'];
+                    // $total_sub_amt = $total_sub_amt + (($productDetails['price'] *  $product['quantity']) - $discount);
+                // }
             }
             
             $order->total_sub_amt = round($total_sub_amt,2);
-            $order->total_amt = round(($total_sub_amt + $eight_percent +  $ten_percent + Helpers::get_business_settings('delivery_charge')) - $discount,2);
+            // echo $total_sub_amt ."<br/>";
+            // echo $eight_percent."<br/>";
+            // echo $ten_percent."</br>";
+            // echo $discount;
+            // die;
+            $order->total_amt = round(($total_sub_amt + $eight_percent +  $ten_percent + Helpers::get_business_settings('delivery_charge')),2);
             $order->eight_percent =  round($eight_percent,2);
             $order->ten_percent =  round($ten_percent,2);
         }

@@ -67,6 +67,7 @@
                 <th style="border:1px solid #000;padding:4px;font-size:18px;line-height:22px;color:#000;font-weight:700;text-align:center;width:54%;">{{translate('PRODUCT NAME')}}</th>
                 <th style="border:1px solid #000;padding:4px;font-size:18px;line-height:22px;color:#000;font-weight:700;text-align:center;width:14%;">{{translate('QTY.')}}</th>
                 <th style="border:1px solid #000;padding:4px;font-size:18px;line-height:22px;color:#000;font-weight:700;text-align:center;width:14%;">{{translate('PRICE')}}<BR/>PER PC.</th>
+                <!-- <th style="border:1px solid #000;padding:4px;font-size:18px;line-height:22px;color:#000;font-weight:700;text-align:center;width:14%;">{{translate('Discount')}}<BR/>PER PC.</th> -->
                 <th style="border:1px solid #000;padding:4px;font-size:18px;line-height:22px;color:#000;font-weight:700;text-align:center;width:18%;">{{translate('TOTAL')}}<BR/>{{translate('AMT.')}}</th>
             </tr>
         </thead>
@@ -84,12 +85,13 @@
         
             @if($detail->product_details !=null)
                 @php($product = json_decode($detail->product_details, true))
-                @php($amount=($detail['price']-$detail['discount_on_product'])*$detail['quantity'])
+                @php($amount=($detail['price'])*$detail['quantity'])
                 <tr>
                     <td style="border:1px solid #000;padding:2px 20px;font-size:16px;line-height:22px;color:#000;font-weight:400;text-align:left;width:54%;min-height:26px;">{{$product['name']}}</td>
                     <td style="border:1px solid #000;padding:2px 4px;font-size:16px;line-height:22px;color:#000;font-weight:400;text-align:right;width:14%;min-height:26px;"> {{$detail['quantity']}}</td>
-                    <td style="border:1px solid #000;padding:2px 4px;font-size:16px;line-height:22px;color:#000;font-weight:400;text-align:right;width:14%;min-height:26px;">{{$detail['price'] }}</td>
-                    <td style="border:1px solid #000;padding:2px 4px;font-size:16px;line-height:22px;color:#000;font-weight:400;text-align:right;width:18%;min-height:26px;">{{ $amount}}</td>
+                    <td style="border:1px solid #000;padding:2px 4px;font-size:16px;line-height:22px;color:#000;font-weight:400;text-align:right;width:14%;min-height:26px;">{{ Helpers::set_symbol($detail['price']) }}</td>
+                    <!-- <td style="border:1px solid #000;padding:2px 4px;font-size:16px;line-height:22px;color:#000;font-weight:400;text-align:right;width:14%;min-height:26px;">{{ Helpers::set_symbol($detail['discount_on_product']) }}</td> -->
+                    <td style="border:1px solid #000;padding:2px 4px;font-size:16px;line-height:22px;color:#000;font-weight:400;text-align:right;width:18%;min-height:26px;">{{ Helpers::set_symbol($amount)}}</td>
                 </tr>
                 @if($detail['tax_amount'] == '8')
                     @php($total_Eight_tax+=$detail['tax_amount']*$detail['quantity'])
@@ -131,6 +133,16 @@
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:5%;min-height:28px;"></td>
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:right;width:40%;min-height:28px;">{{ Helpers::set_symbol($sub_total) }}</td>
                     </tr>
+                    <tr style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;border-bottom:1px solid #000;">
+                        <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:55%;min-height:28px;">Discount Amount</td>
+                        <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:5%;min-height:28px;"></td>
+                        <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:right;width:40%;min-height:28px;">- {{ Helpers::set_symbol($total_item_discount) }}</td>
+                    </tr>
+                    <tr style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;border-bottom:1px solid #000;">
+                        <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:55%;min-height:28px;">Sub Total</td>
+                        <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:5%;min-height:28px;"></td>
+                        <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:right;width:40%;min-height:28px;"> {{ Helpers::set_symbol($sub_total - $total_item_discount) }}</td>
+                    </tr>
                     @if(!empty($EightPercentTax) && isset($EightPercentTax))
                     <tr style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;border-bottom:1px solid #000;">
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:55%;min-height:28px;">8% Consumption Tax.</td>
@@ -150,11 +162,7 @@
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:5%;min-height:28px;"></td>
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:right;width:40%;min-height:28px;">{{ Helpers::set_symbol($order->delivery_charge) }}</td>
                     </tr>
-                    <tr style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;border-bottom:1px solid #000;">
-                        <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:55%;min-height:28px;">Discount Amount</td>
-                        <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:5%;min-height:28px;"></td>
-                        <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:right;width:40%;min-height:28px;">- {{ Helpers::set_symbol($total_item_discount) }}</td>
-                    </tr>
+                    
 
                     
                     <!-- <tr style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;border-bottom:1px solid #000;">
@@ -166,7 +174,7 @@
                     <tr style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;border-bottom:1px solid #000;">
                         <td style="border:none;padding:3px 4px;font-size:22px;line-height:22px;color:#000;font-weight:700;text-align:left;width:55%;min-height:28px;">TOTAL</td>
                         <td style="border:none;padding:3px 4px;font-size:22px;line-height:22px;color:#000;font-weight:700;text-align:left;width:5%;min-height:28px;"></td>
-                        <td style="border:none;padding:3px 4px;font-size:22px;line-height:22px;color:#000;font-weight:700;text-align:right;width:40%;min-height:28px;">{{ Helpers::set_symbol(($sub_total+$TenPercentTax +$EightPercentTax -$order['coupon_discount_amount']-$order['extra_discount']) + $order->delivery_charge) }}</td>
+                        <td style="border:none;padding:3px 4px;font-size:22px;line-height:22px;color:#000;font-weight:700;text-align:right;width:40%;min-height:28px;">{{Helpers::set_symbol($totalAmt)}}</td>
                     </tr>
                 </table>
             </td>

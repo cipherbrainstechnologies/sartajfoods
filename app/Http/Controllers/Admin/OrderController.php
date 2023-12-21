@@ -545,8 +545,9 @@ class OrderController extends Controller
         $order = $this->order->with('delivery_address','details')->where('id', $id)->first();
         $orderDetails =collect($order->details);
         $EightPercentTax = $orderDetails->sum('eight_percent_tax');
-        $TenPercentTax = $orderDetails->sum('ten_percent_tax');        
-        $totalAmt = (Helpers::calculateInvoice($id)) + $order->delivery_charge;
+        $TenPercentTax = $orderDetails->sum('ten_percent_tax'); 
+        $totalDiscount =   $orderDetails->sum('total_discount');      
+        $totalAmt = (Helpers::calculateInvoice($id)) + $order->delivery_charge ;
         $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
         // return view('admin-views.order.invoice', compact('order', 'footer_text'));
         return view('admin-views.order.latest_invoice', compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'));

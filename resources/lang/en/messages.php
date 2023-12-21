@@ -2172,4 +2172,7 @@
   'Oreder history saved successfully' => 'Oreder history saved successfully',
   '8% Consumption Tax.' => '8% Consumption Tax.',
   '10% Consumption Tax.' => '10% Consumption Tax.',
+  'Price Per pcs' => 'Price Per pcs',
+  'Discount Per pcs' => 'Discount Per pcs',
+  'Total Discount' => 'Total Discount',
 );
