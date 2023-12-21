@@ -267,6 +267,7 @@ class OrderController extends Controller
                     'eight_percent_tax'=>($calculateTaxes['eight_percent'] * $c['quantity']),
                     'ten_percent_tax' => ($calculateTaxes['ten_percent'] * $c['quantity']),
                     'discount_on_product' => $discount['discount_amount'],
+                    'total_discount' => ($discount['discount_amount'] * $c['quantity']),
                     'discount_type' => $discount['discount_type'],
                     // 'variant' => json_encode($c['variant']),
                     // 'variation' => json_encode($c['variation']),
