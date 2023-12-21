@@ -364,6 +364,7 @@ class Helpers
                     $discount_price = Helpers::afterDiscountPrice($product,$price);
                     $total_tax['eight_percent'] = (($price - $discount_price['discount_amount']) / 100) * $product['tax'];
                 }else{
+                    $discount_price = Helpers::afterDiscountPrice($product,$price);
                     $total_tax['ten_percent'] = (($price - $discount_price['discount_amount']) / 100) * $product['tax'];
                 }
                 
