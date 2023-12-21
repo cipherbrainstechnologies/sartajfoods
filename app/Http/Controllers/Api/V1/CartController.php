@@ -116,10 +116,10 @@ class CartController extends Controller
             'user' => $user,
             'cartProducts' => $cartProducts,
             'delivery_charge' => $deliveryCharge,
-            'total_sub_amt' => $subTotalAmt,
-            'total_amt' => $totalAmt,
-            'eight_percent' => $totalEightPercentTax,
-            'ten_percent' => $totalTenPercentTax
+            'total_sub_amt' => round($subTotalAmt,2),
+            'total_amt' => round($totalAmt,2),
+            'eight_percent' => round($totalEightPercentTax,2),
+            'ten_percent' => round($totalTenPercentTax,2)
         ]);
     }
 
@@ -229,8 +229,8 @@ class CartController extends Controller
         if (!$cart) {
             return response()->json(['error' => 'Cart list is empty'], 404);
         }
-        $totalDiscount = $cart->discount *  $quantity;
-        $subtotal = $cart->price * $quantity - $totalDiscount;
+        $totalDiscount = round(($cart->discount *  $quantity),2);
+        $subtotal = round(($cart->price * $quantity - $totalDiscount),2);
         // Update the quantity
         $cart->update(['total_discount'=>$totalDiscount,'sub_total'=>$subtotal,'quantity' => $quantity]);
 
