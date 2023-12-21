@@ -565,7 +565,7 @@ class OrderController extends Controller
 
         // Save the PDF temporarily
         $tempPath = storage_path('app/public/invoices');
-        $filename = 'invoice_' . $order->id . '.pdf';
+        $filename = 'invoice_' .now()->format('Ymd_His').'_' .$order->id . '.pdf';
         $pdf->save($tempPath . '/' . $filename);
 
         // Provide a link to download
