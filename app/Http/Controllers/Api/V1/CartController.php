@@ -58,11 +58,13 @@ class CartController extends Controller
         $cartProducts = Cart::with('product.rating')->where('user_id', $user->id)->get();
         $cartProducts->each(function ($cartProduct) use($eight_percent,$ten_percent){
             $product = $cartProduct->product;
+            
             if($cartProduct->product['tax'] == 8){
                 if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
                     $eight_percent += ((($product->sale_price * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
                 }else{
-                    $eight_percent += ((($product->price * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
+                    $discount_price = Helpers::afterDiscountPrice($product,$product->price);
+                    $eight_percent += (((($product->price - $discount_price['discount_amount']) * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
                 }
                 
             }
@@ -71,7 +73,8 @@ class CartController extends Controller
                 if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
                     $ten_percent += ((($product->sale_price * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
                 }else{
-                    $ten_percent  += ((($product->price * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
+                    $discount_price = Helpers::afterDiscountPrice($product,$product->price);
+                    $ten_percent  += (((($product->price - $discount_price['discount_amount']) * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
                 } 
                 
             }

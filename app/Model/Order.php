@@ -4,6 +4,7 @@ namespace App\Model;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use App\Model\OrderDetail;
 
 class Order extends Model
 {
@@ -25,10 +26,7 @@ class Order extends Model
         'free_delivery_amount'   => 'float',
     ];
 
-    public function details(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
-        return $this->hasMany(OrderDetail::class);
-    }
+    
 
     public function delivery_man(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
@@ -72,5 +70,9 @@ class Order extends Model
     public function history(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(OrderHistory::class);
+    }
+    public function details(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(OrderDetail::class);
     }
 }
