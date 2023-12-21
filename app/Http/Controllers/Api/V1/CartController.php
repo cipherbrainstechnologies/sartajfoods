@@ -63,8 +63,15 @@ class CartController extends Controller
                 if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
                     $eight_percent += ((($product->sale_price * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
                 }else{
-                    $discount_price = Helpers::afterDiscountPrice($product,$product->price);
-                    $eight_percent += (((($product->price - $discount_price['discount_amount']) * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
+                    if($cartProduct->product['discount_type'] == "percent"){
+                        $discount_price = Helpers::afterDiscountPrice($product,$product->price);
+                        $eight_percent += (((($product->price - $discount_price['discount_amount']) * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
+                    }else{
+                        $discount_price = Helpers::afterDiscountPrice($product,$product->price);
+                        
+                        $eight_percent += ((($discount_price['discount_amount'] * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
+                    }
+                   
                 }
                 
             }
@@ -106,6 +113,7 @@ class CartController extends Controller
             $product->tax_ten_percent = $ten_percent;
             return $cartProduct;
         });
+        // echo "<pre>";print_r($cartProducts->toArray());die;
         $deliveryCharge = Helpers::get_business_settings('delivery_charge', 0);
         $subTotalAmt = $cartProducts->sum('sub_total');
         $totalEightPercentTax = $cartProducts->sum('product.tax_eight_percent');
@@ -161,16 +169,19 @@ class CartController extends Controller
             $saleEndDate = new DateTime($product->sale_end_date);
             
             if($currentDate >= $saleStartDate && $currentDate <= $saleEndDate){
+                $discount_type = "special";
                 $productPrice = $product->sale_price;
                 $discount = 0;
                 $subTotal =  $subTotal + $product->sale_price * $quantity;
             }else{
                 if($product->discount_type =="percent"){
+                    $discount_type = 'percent';
                     $productPrice = $product->price - $discount_price['discount_amount'];
                     $discount = $discount_price['discount_amount'] * $quantity;
                     $subTotal =  $subTotal + (($productPrice  *  $quantity) );
     
                 }else{
+                    $discount_type = 'amount';
                     $productPrice = $discount_price['discount_amount'];
                     $discountPrice = $product->discount;
                     $discount = $product->discount;
@@ -180,11 +191,13 @@ class CartController extends Controller
             
         }else{
             if($product->discount_type =="percent"){
+                $discount_type = 'percent';
                 $productPrice = $product->price - $discount_price['discount_amount'];
                 $discount = $discount_price['discount_amount'] * $quantity;
                 $subTotal =  $subTotal + (($productPrice  *  $quantity) );
 
             }else{
+                $discount_type = 'amount';
                 $productPrice = $discount_price['discount_amount'];
                 $discountPrice = $product->discount;
                 $discount = $product->discount;
