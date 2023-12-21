@@ -353,6 +353,7 @@ class Helpers
                 }else{
                     $total_tax['ten_percent'] = ($product->sale_price / 100) * $product['tax'];
                 }
+                // $price_tax = ($product->sale_price / 100) * $product['tax'];
             } else {
                 $total_tax['tax'] = $product['tax'];
             }
