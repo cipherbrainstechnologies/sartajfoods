@@ -14,6 +14,7 @@ use App\User;
 use Illuminate\Support\Facades\DB;
 use App\Model\HotDeals;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 
 class ProductLogic
 {
@@ -298,15 +299,16 @@ class ProductLogic
             ->with(['rating', 'active_reviews', 'manufacturer', 'soldProduct'])
             ->withCount('active_reviews')
             ->get();
-
+        
         // Extract the rating values from the relationships
-        $paginator = $paginator->map(function ($product) {
-            $product['rating'] = $product['rating']->avg('average');
-            return $product;
-        });
+        // $paginator = $paginator->map(function ($product) {
+        //     $product['rating'] = $product['rating']->avg('average');
+        //     return $product;
+        // });
         
         // Sort the products by rating in descending order
         $sortedProducts = $paginator->sortByDesc('rating')->values()->all();
+        // $sortedProducts = $paginator->sortByDesc('overall_rating')->values()->all();
         if(!is_null($take)){
             $limit = $take;                    
         }
