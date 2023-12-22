@@ -90,6 +90,7 @@ class OrderController extends Controller
 
         $customer = $this->user->find($request->user()->id);
         $coupon_discount = 0;
+        $discountPrice = 0;
 
         if($request->payment_method == 'wallet_payment' && $customer->wallet_balance < $request['order_amount'])
         {
@@ -153,38 +154,63 @@ class OrderController extends Controller
 
         if(!empty($request['coupon_code'])){
             $coupon = $this->coupon->active()->where(['code' => $request['coupon_code']])->first();
-
             if (isset($coupon)) {
-                if ($coupon['coupon_type'] == 'free_delivery') {
-                    $free_delivery_amount = Helpers::get_delivery_charge($request['distance']);
-                    $coupon_discount = 0;
-                    $delivery_charge = 0;
-                } else {
-                    $coupon_discount = !empty($request['coupon_discount_amount']) ? $request['coupon_discount_amount'] : 0;
+                if($coupon['start_date'] <= now() && $coupon['expire_date'] >= now()){
+                    if ($coupon['coupon_type'] == 'free_delivery') {
+                        $free_delivery_amount = Helpers::get_delivery_charge($request['distance']);
+                        $discountPrice = 0;
+                        $delivery_charge = 0;
+                    } else {
+                        if($coupon['discount_type'] == "percent"){
+                            $discountPrice = ($request['order_amount'] *  $coupon['discount'])/100;
+                            if($discountPrice > $coupon['max_discount']){
+                                if($request['order_amount'] > $coupon['min_purchase']){
+                                    $discountPrice = $coupon['max_discount'];
+                                }else{
+                                    $errors[] = ['code' => 'auth-001', 'message' => 'order amount is less than minimum purchase amount'];
+                                    return response()->json([
+                                        'errors' => $errors
+                                    ], 401);
+                                } 
+                            }
+                        }else{
+                            $discountPrice = $coupon['discount'];
+                            if($request['order_amount'] > $coupon['min_purchase']){
+                                $discountPrice = $coupon['max_discount'];
+                            }else{
+                                $errors[] = ['code' => 'auth-001', 'message' => 'order amount is less than minimum purchase amount'];
+                                return response()->json([
+                                    'errors' => $errors
+                                ], 401);
+                            } 
+                        }
+                        $coupon_discount = !empty($request['coupon_discount_amount']) ? $request['coupon_discount_amount'] : 0;
+                    }
+                }else{
+                    $errors[] = ['code' => 'auth-001', 'message' => 'coupon code is expired'];
+                    return response()->json([
+                        'errors' => $errors
+                    ], 401);
                 }
             }else{
-                $coupon_discount = !empty($request['coupon_discount_amount']) ? $request['coupon_discount_amount'] : 0;
+                $errors = [];
+                $errors[] = ['code' => 'auth-001', 'message' => 'coupon code not valid'];
+                return response()->json([
+                    'errors' => $errors
+                ], 401);
             }
         }
         
-
-
-//        $coupon_discount_amount = 0;
-//        if ($request->has('coupon_code')){
-//            $coupon_discount_amount = CouponLogic::coupon_apply($request['coupon_code'], $request['order_amount'], $request->user()->id, $delivery_charge);
-//        }
-
-
         // try {
             //DB::beginTransaction();
             $order_id = 100000 + Order::all()->count() + 1;
             $or = [
                 'id' => $order_id,
                 'user_id' => $request->user()->id,
-                'order_amount' => $request['order_amount'],
+                'order_amount' => $request['order_amount'] - $discountPrice,
                 'coupon_code' =>  $request['coupon_code'],
                 //'coupon_discount_amount' => $coupon_discount_amount,
-                'coupon_discount_amount' => $coupon_discount,
+                'coupon_discount_amount' => $discountPrice,
                 'coupon_discount_title' => $request->coupon_discount_title == 0 ? null : 'coupon_discount_title',
                 'payment_status' => ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'unpaid':'paid',
                 'order_status' => ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'pending':'confirmed',
