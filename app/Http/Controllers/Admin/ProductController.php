@@ -740,15 +740,8 @@ class ProductController extends Controller
      */
     public function remove_image($id, $name): \Illuminate\Http\RedirectResponse
     {
-        echo "dsf";die;
         if (Storage::disk('public')->exists('product/' . $name)) {
-            // Storage::disk('public')->delete('product/' . $name);
-            try {
-                Storage::disk('public')->delete('product/' . $name);
-            } catch (\Exception $e) {
-                // Log or dd the exception
-                dd($e->getMessage());
-            }
+            Storage::disk('public')->delete('product/' . $name);
         }
 
         $product = $this->product->find($id);
