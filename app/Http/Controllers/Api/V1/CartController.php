@@ -126,9 +126,9 @@ class CartController extends Controller
         
         $deliveryCharge = Helpers::get_business_settings('delivery_charge', 0);
         $totalDiscountAmount = $cartProducts->sum('total_discount');
-        $subTotalAmt = ($cartProducts->sum('sub_total') - $totalDiscountAmount);
         $totalEightPercentTax = $cartProducts->sum('product.tax_eight_percent');
         $totalTenPercentTax = $cartProducts->sum('product.tax_ten_percent');
+        $subTotalAmt = $cartProducts->sum('sub_total') - $totalDiscountAmount - $totalEightPercentTax - $totalTenPercentTax;
         $totalAmt = $subTotalAmt + $deliveryCharge + $totalEightPercentTax + $totalTenPercentTax;
        
         return response()->json([
