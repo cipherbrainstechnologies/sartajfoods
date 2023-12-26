@@ -75,6 +75,18 @@
                                                     <label class="form-label" for="exampleFormControlInput1">{{translate('meta tag title')}} ({{strtoupper($lang['code'])}})</label>
                                                     <input type="text" name="meta_title[]" class="form-control" maxlength="255" value="{{$lang['code'] == 'en' ? $manufacturer['meta_title'] : ($translate[$lang['code']]['meta_title']??'')}}" required>
                                                 </div>
+                                                @if($lang['code'] == "en")
+                                                    <div class="form-group">
+                                                        <label class="input-label" for="{{$lang['code']}}_seo_en">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                                        <input type="text" name="en_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('EN')}})" value="{{$manufacturer['seo_en']??''}}" required>
+                                                    </div>
+                                                @else
+                                                    <div class="form-group">
+                                                        <label class="input-label" for="{{$lang['code']}}_seo_ja">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                                        <input type="text" name="ja_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('JA')}})" value="{{$manufacturer['seo_ja'] ?? ''}}" required>
+                                                    </div>
+                                                @endif
+                                               
                                             </div> 
                                             <div class="col-6">
                                                 <div class="form-group">
@@ -90,6 +102,7 @@
                                                     <textarea name="meta_keywords[]" class="form-control">{{$lang['code'] == 'en' ? $manufacturer['meta_keywords'] : ($translate[$lang['code']]['meta_keywords']??'')}}</textarea>
                                                 </div>
                                             </div>
+                                           
                                             </div>    
                                     </div>
                                     <input type="hidden" name="lang[]" value="{{$lang['code']}}">

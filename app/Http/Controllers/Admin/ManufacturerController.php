@@ -74,6 +74,8 @@ class manufacturerController extends Controller
         $manufacturer->meta_title = $request->meta_title[array_search('en', $request->lang)];
         $manufacturer->meta_description = $request->meta_description[array_search('en', $request->lang)];
         $manufacturer->meta_keywords = $request->meta_keywords[array_search('en', $request->lang)];
+        $manufacturer->seo_en = $request->en_seo;
+        $manufacturer->seo_ja = $request->ja_seo;
 
         $image_data = '';
         if (!empty($request->file('image'))) {
@@ -167,6 +169,8 @@ class manufacturerController extends Controller
         $manufacturer->meta_description = $request->meta_description[array_search('en', $request->lang)];
         $manufacturer->meta_keywords = $request->meta_keywords[array_search('en', $request->lang)];
         $image_data = $manufacturer->image;
+        $manufacturer->seo_en = $request->en_seo;
+        $manufacturer->seo_ja = $request->ja_seo;
         if (!empty($request->file('image'))) {
             $image_data = Helpers::upload('manufacturer/', 'png', $request->file('image'));
         }

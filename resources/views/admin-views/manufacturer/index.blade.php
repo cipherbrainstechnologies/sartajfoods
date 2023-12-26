@@ -134,7 +134,6 @@
                                                     <div class="form-group">
                                                         <label class="input-label" for="exampleFormControlInput1">{{translate('manufacturer name')}} ({{strtoupper($lang['code'])}})</label>
                                                         <input type="text" name="name[]" class="form-control"
-                                                        placeholder="{{translate('manufacturer name')}}"
                                                             {{$lang['status'] == true ? 'required':''}} maxlength="255"
                                                         @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
                                                     </div>
@@ -143,6 +142,7 @@
                                                         <input type="text" name="meta_title[]" class="form-control" maxlength="255" required>
                                                     </div>
                                                 </div> 
+                                               
                                                 <div class="col-6">
                                                     <div class="form-group">
                                                         <label class="form-group"
@@ -156,6 +156,19 @@
                                                         ({{strtoupper($lang['code'])}})</label>
                                                         <textarea name="meta_keywords[]" class="form-control"></textarea>
                                                     </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    @if($lang['code'] == "en")
+                                                        <div class="form-group">
+                                                            <label class="input-label" for="{{$lang['code']}}_seo_en">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                                            <input type="text" name="en_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('EN')}})">
+                                                        </div>
+                                                    @else
+                                                        <div class="form-group">
+                                                            <label class="input-label" for="{{$lang['code']}}_seo_ja">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                                            <input type="text" name="ja_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('JA')}})">
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             </div>
                                             
@@ -176,6 +189,17 @@
                                         <label class="form-label" for="exampleFormControlInput1">{{translate('meta tag title')}} ({{ strtoupper($default_lang) }})</label>
                                         <input type="text" name="meta_title[]" class="form-control" maxlength="255" required>
                                     </div>
+                                    @if($lang['code'] == "en")
+                                        <div class="form-group">
+                                            <label class="input-label" for="{{$lang['code']}}_seo_en">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                            <input type="text" name="en_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('EN')}})">
+                                        </div>
+                                    @else
+                                        <div class="form-group">
+                                            <label class="input-label" for="{{$lang['code']}}_seo_ja">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                            <input type="text" name="ja_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('JA')}})">
+                                        </div>
+                                    @endif
                                     <div class="form-group">
                                             <label class="form-label mt-3"
                                             for="exampleFormControlInput1">{{translate('meta tag description')}}
@@ -188,6 +212,7 @@
                                         ({{ strtoupper($default_lang) }})</label>
                                             <textarea name="meta_keywords[]" class="form-control"></textarea>
                                     </div>
+                                   
                                     <input type="hidden" name="lang[]" value="{{$default_lang}}">
                                 </div>
                             </div>
