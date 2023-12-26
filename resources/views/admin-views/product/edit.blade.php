@@ -73,7 +73,7 @@
                                     <div class="form-group">
                                         <label class="input-label"
                                             for="{{$lang['code']}}__meta_description">{{translate('meta tag description')}}  ({{strtoupper($lang['code'])}})</label>
-                                        <textarea name="meta_description[]" class="form-control h--172px" id="{{$lang['code']}}__meta_description">{{$translate[$lang['code']]['meta_tag_description']??$product['meta_tag_description']}}"</textarea>
+                                        <textarea name="meta_description[]" class="form-control h--172px" id="{{$lang['code']}}__meta_description">{{$translate[$lang['code']]['meta_tag_description']??$product['meta_tag_description']}}</textarea>
                                     </div>
                                     <div class="form-group">
                                         <label class="input-label" for="{{$lang['code']}}__meta_keywords">{{translate('meta tag keywords')}}  ({{strtoupper($lang['code'])}})</label>
