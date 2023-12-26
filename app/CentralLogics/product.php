@@ -21,6 +21,13 @@ class ProductLogic
         return Product::active()->withCount(['wishlist'])->with(['rating', 'active_reviews', 'active_reviews.customer', 'soldProduct'])->where('id', $id)->first();
     }
 
+    public static function get_seo_product($seo){
+        return Product::active()->withCount(['wishlist'])->with(['rating', 'active_reviews', 'active_reviews.customer', 'soldProduct'])
+        ->Where('seo_en', 'like', "%{$seo}%")
+        ->orWhere('seo_ja', 'like', "%{$seo}%")
+        ->first();
+    }
+
     // Get All the products
     public static function get_all_products($limit = 10, $offset = 1, $manufacturer_id = null){
         $currentDate = now();
@@ -145,6 +152,8 @@ class ProductLogic
         $reviews = Review::active()->where('product_id', $id)->get();
         return $reviews;
     }
+
+
 
     //Get on rate based product
     public static function get_rating($reviews){

@@ -33,8 +33,8 @@
                                         <select name="coupon_type" class="form-control" onchange="coupon_type_change(this.value)">
                                             <option value="default">{{translate('default')}}</option>
                                             <option value="first_order">{{translate('first order')}}</option>
-                                            <option value="free_delivery">{{translate('free delivery')}}</option>
-                                            <option value="customer_wise">{{translate('customer wise')}}</option>
+                                            <!-- <option value="free_delivery">{{translate('free delivery')}}</option>
+                                            <option value="customer_wise">{{translate('customer wise')}}</option> -->
                                         </select>
                                     </div>
                                 </div>

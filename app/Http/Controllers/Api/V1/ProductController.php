@@ -392,6 +392,46 @@ class ProductController extends Controller
         }
     }
 
+    public static function get_seo_product(Request $request, $seo): \Illuminate\Http\JsonResponse
+    {
+        try {
+            $product = ProductLogic::get_seo_product($seo);
+            if (!isset($product)) {
+                return response()->json(['errors' => ['code' => 'product-001', 'message' => 'Product not found!']], 404);
+            }
+
+            $product = Helpers::product_data_formatting($product, false);
+
+            $product->increment('view_count');
+
+            if($request->has('attribute') && $request->attribute == 'product' && !is_null(auth('api')->user())) {
+
+                $visited_product = $this->visited_product;
+                $visited_product->user_id = auth('api')->user()->id ?? null;
+                $visited_product->product_id = $product->id;
+                $visited_product->save();
+            }
+
+            $all_over_rating = '';
+            $total_reviews = '';
+            if(!empty($product['rating'][0])) {
+                $all_over_rating = ($product['rating'][0]->total/($product['rating'][0]->count * 5)) * 100;
+                $total_reviews = $product['rating'][0]->count;
+            }
+
+            $product['overall_rating'] = $all_over_rating;
+            $product['total_reviews'] = $total_reviews;
+
+            $product['sold_products'] = !empty($product["soldProduct"][0]["sold_products"]) ? $product["soldProduct"][0]["sold_products"] : 0;
+            $product['total_product_count'] = $product['sold_products'] + $product['total_stock'];
+        
+            return response()->json($product, 200);
+
+        } catch (\Exception $e) {
+            return response()->json(['errors' => ['code' => 'product-001', 'message' => 'Product not found!']], 404);
+        }
+    }
+
     /**
      * @param $id
      * @return JsonResponse
