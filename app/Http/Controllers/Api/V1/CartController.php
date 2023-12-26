@@ -214,6 +214,7 @@ class CartController extends Controller
                 $subTotal =   $subTotal  + (($productPrice  *  $quantity) );
             }
         }
+
         if(Cart::where(['product_id' => $product->id, 'user_id' => $user->id])->exists()){
             $cart =  Cart::where(['product_id' => $product->id, 'user_id' => $user->id])
                             ->update(
@@ -306,10 +307,13 @@ class CartController extends Controller
             $discount = 0;
             $discount_type = "amount";
            
+           
             foreach ($request->cart as $key => $data) {
                 $subTotal = 0;
                 $productSalePrice = 0; 
                 $specialPrice = 0;
+                $eight_percent = 0;
+                $ten_percent = 0;
                 $product = Product::find($data['product_id']);
             
                 if (!$product) {
@@ -327,6 +331,7 @@ class CartController extends Controller
                     $saleEndDate = new DateTime($product->sale_end_date);
                     if($currentDate >= $saleStartDate && $currentDate <= $saleEndDate){
                         $productPrice = $product->sale_price;
+                        
                         $discount = 0;
                         $specialPrice = $product->sale_price;
                         $subTotal = $specialPrice * $data['qty'];
@@ -346,12 +351,34 @@ class CartController extends Controller
                         $subTotal = (($product->price *  $data['qty']) - $discount);
                     }
                 }
+
+                if($product->tax == 8){
+                    if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
+                        $eight_percent += ((($product->sale_price * $product->tax) / 100) * $product->quantity);   
+                    }else{
+                        $discount_price = Helpers::afterDiscountPrice($product,$product['price']);
+                        $eight_percent += (((($product->price - $discount_price->discount_amount) * $product->tax) / 100) * $product->quantity);      
+                    }
+               
+                }
+                if($product->tax == 10){
+                    if(!empty($product['sale_price']) && $product['sale_start_date'] <= now() && $product['sale_end_date'] >= now()){
+                        $ten_percent += ((($product['sale_price'] * $product->tax) / 100) * $product['quantity']);   
+                    }else{
+                        $discount_price = Helpers::afterDiscountPrice($product,$product['price']);
+                        $ten_percent += (((($product['price'] - $discount_price['discount_amount']) * $product->tax) / 100) * $product['quantity']);   
+                    }
+                    
+                }
+    
                 
                 $cart = Cart::updateOrCreate(
                     [
                         'user_id' => $user->id,
                         'product_id' => $data['product_id'],
                         'quantity' => $data['qty'],
+                        'eight_percent' => $eight_percent,
+                        'ten_percent' => $ten_percent,
                         'price' => (isset($specialPrice) && !empty($specialPrice)) ? $specialPrice : $product->price,
                         'special_price' =>  (!empty($specialPrice)) ? $specialPrice : 0,
                         'discount_type' => $discount_type,
