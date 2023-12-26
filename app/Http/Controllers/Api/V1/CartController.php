@@ -129,7 +129,7 @@ class CartController extends Controller
         $totalEightPercentTax = $cartProducts->sum('product.tax_eight_percent');
         $totalTenPercentTax = $cartProducts->sum('product.tax_ten_percent');
         $subTotalAmt = $cartProducts->sum('sub_total') - $totalDiscountAmount - $totalEightPercentTax - $totalTenPercentTax;
-        $totalAmt = $subTotalAmt + $deliveryCharge + $totalEightPercentTax + $totalTenPercentTax;
+        $totalAmt = $subTotalAmt + $deliveryCharge + $totalEightPercentTax + $totalTenPercentTax - $totalDiscountAmount;
        
         return response()->json([
             'user' => $user,
