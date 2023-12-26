@@ -123,9 +123,10 @@ class CartController extends Controller
             $product->tax_ten_percent = $ten_percent;
             return $cartProduct;
         });
-        // echo "<pre>";print_r($cartProducts->toArray());die;
+        
         $deliveryCharge = Helpers::get_business_settings('delivery_charge', 0);
-        $subTotalAmt = ($cartProducts->sum('sub_total') - $cartProducts->sum('total_discount'));
+        $totalDiscountAmount = $cartProducts->sum('total_discount');
+        $subTotalAmt = ($cartProducts->sum('sub_total') - $totalDiscountAmount);
         $totalEightPercentTax = $cartProducts->sum('product.tax_eight_percent');
         $totalTenPercentTax = $cartProducts->sum('product.tax_ten_percent');
         $totalAmt = $subTotalAmt + $deliveryCharge + $totalEightPercentTax + $totalTenPercentTax;
@@ -137,7 +138,8 @@ class CartController extends Controller
             'total_sub_amt' => round($subTotalAmt,2),
             'total_amt' => round($totalAmt,2),
             'eight_percent' => round($totalEightPercentTax,2),
-            'ten_percent' => round($totalTenPercentTax,2)
+            'ten_percent' => round($totalTenPercentTax,2),
+            'totalDiscountAmount' => round($totalDiscountAmount,2)
         ]);
     }
     
