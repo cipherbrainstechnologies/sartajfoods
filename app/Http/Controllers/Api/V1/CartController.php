@@ -140,9 +140,7 @@ class CartController extends Controller
             'ten_percent' => round($totalTenPercentTax,2)
         ]);
     }
-
-
-
+    
     public function addToCart(Request $request)
     {
         $user = auth()->user();
@@ -158,6 +156,8 @@ class CartController extends Controller
         
         $productId = $request->product_id;
         $quantity = $request->quantity;
+        $eight_percent = 0;
+        $ten_percent = 0;
 
         // Check if the product exists
         $product = Product::find($productId);
@@ -215,17 +215,39 @@ class CartController extends Controller
             }
         }
 
+        if($product->tax == 8){
+            if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
+                $eight_percent += ((($product->sale_price * $product->tax) / 100) * $product->quantity);   
+            }else{
+                $discount_price = Helpers::afterDiscountPrice($product,$product->price);
+                $eight_percent += (((($product->price - $discount_price['discount_amount']) * $product->tax) / 100) * $quantity);      
+            }
+       
+        }
+        if($product->tax == 10){
+            if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
+                $ten_percent += ((($product->sale_price * $product->tax) / 100) * $product->quantity);   
+            }else{
+                $discount_price = Helpers::afterDiscountPrice($product,$product->price);
+                $ten_percent += (((($product->price - $discount_price['discount_amount']) * $product->tax) / 100) * $quantity);   
+            }
+            
+        }
+
         if(Cart::where(['product_id' => $product->id, 'user_id' => $user->id])->exists()){
             $cart =  Cart::where(['product_id' => $product->id, 'user_id' => $user->id])
                             ->update(
                                 [
+
                                     'quantity' => $quantity,
                                     'price' => $productPrice ,
                                     // 'special_price' =>  (isset($productSalePrice) && !empty($productSalePrice)) ? $productSalePrice : '0',
                                     'discount_type' => $discount_type,
                                     'discount'      => $discountPrice,
                                     'total_discount' => $discount,
-                                    'sub_total'     => $subTotal
+                                    'sub_total'     => $subTotal + $ten_percent + $eight_percent - $discount,
+                                    'eight_percent' => $eight_percent,
+                                    'ten_percent' => $ten_percent
                                 ]
                             );
         }else{
@@ -235,11 +257,13 @@ class CartController extends Controller
                     'product_id' => $product->id,
                     'quantity' => $quantity,
                     'price' => $productPrice,
+                    'eight_percent' => $eight_percent,
+                    'ten_percent' => $ten_percent,
                     // 'special_price' =>  (isset($productSalePrice) && !empty($productSalePrice)) ? $productSalePrice : '0',
                     'discount_type' => $discount_type,
                     'discount'      => $discountPrice,
                     'total_discount' => $discount,
-                    'sub_total'     => $subTotal
+                    'sub_total'     =>  $subTotal + $ten_percent + $eight_percent - $discount
                 ],
             );
         }       
@@ -258,6 +282,8 @@ class CartController extends Controller
         ]);
         $productId = $request->input('product_id');
         $quantity = $request->input('quantity');
+        $eight_percent = 0;
+        $ten_percent = 0;
 
         // Find the cart entry by id
         $cart = Cart::with('product')->where(['user_id'=>  $user->id,"product_id" => $productId])->first();
@@ -266,10 +292,38 @@ class CartController extends Controller
         if (!$cart) {
             return response()->json(['error' => 'Cart list is empty'], 404);
         }
+
+        if($product->tax == 8){
+            if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
+                $eight_percent += ((($product->sale_price * $product->tax) / 100) * $product->quantity);   
+            }else{
+                $discount_price = Helpers::afterDiscountPrice($product,$product->price);
+                $eight_percent += (((($product->price - $discount_price->discount_amount) * $product->tax) / 100) * $quantity);      
+            }
+       
+        }
+        if($product->tax == 10){
+            if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
+                $ten_percent += ((($product->sale_price * $product->tax) / 100) * $product->quantity);   
+            }else{
+                $discount_price = Helpers::afterDiscountPrice($product,$product->price);
+                $ten_percent += (((($product->price - $discount_price->discount_amount) * $product->tax) / 100) * $quantity);   
+            }
+            
+        }
+
         $totalDiscount = round(($cart->discount *  $quantity),2);
-        $subtotal = round(($cart->price * $quantity - $totalDiscount),2);
+        $subtotal = round(($cart->price * $quantity + $eight_percent + $ten_percent - $totalDiscount),2);
+
         // Update the quantity
-        $cart->update(['total_discount'=>$totalDiscount,'sub_total'=>$subtotal,'quantity' => $quantity]);
+        $cart->update([
+                'total_discount'=>$totalDiscount,
+                'sub_total'=>$subtotal,
+                'quantity' => $quantity,
+                'eight_percent' => $eight_percent,
+                'ten_percent' => $ten_percent
+
+            ]);
 
         return response()->json(['message' => 'Cart entry updated', 'cart' => $cart]);
     }
@@ -370,7 +424,6 @@ class CartController extends Controller
                     }
                     
                 }
-    
                 
                 $cart = Cart::updateOrCreate(
                     [
