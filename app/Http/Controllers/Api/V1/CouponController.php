@@ -43,10 +43,11 @@ class CouponController extends Controller
         $validator = Validator::make($request->all(), [
             'code' => 'required',
         ]);
+
         $orderAmount = 0;
         $coupon = $this->coupon->active()->where(['code' => $request['code']])->first();
         $cartDetails = Cart::with('product')->where(['user_id'=>$request->user()->id])->get();
-        echo "<pre>";print_r($cartDetails->toArray());die;
+        $orderAmount =  $cartDetails->sum('sub_total');
         if(empty($cartDetails)){
             return response()->json([
                 'errors' => [
@@ -66,6 +67,9 @@ class CouponController extends Controller
                     if($discountPrice > $coupon['max_discount']){
                         if($orderAmount > $coupon['min_purchase']){
                             $discountPrice = $coupon['max_discount'];
+                            $coupon->discount_price = round($discountPrice,2);
+                            $coupon->orderAmount = round($orderAmount - $discountPrice,2);
+                            return response()->json($coupon, 200);
                         }else{
                             $errors[] = ['code' => 'auth-001', 'message' => 'order amount is less than minimum purchase amount'];
                             return response()->json([
@@ -77,6 +81,9 @@ class CouponController extends Controller
                     $discountPrice = $coupon['discount'];
                     if($orderAmount > $coupon['min_purchase']){
                         $discountPrice = $coupon['max_discount'];
+                        $coupon->discount_price = round($discountPrice,2);
+                        $coupon->orderAmount = round($orderAmount - $discountPrice,2);
+                        return response()->json($coupon, 200);
                     }else{
                         $errors[] = ['code' => 'auth-001', 'message' => 'order amount is less than minimum purchase amount'];
                         return response()->json([
@@ -84,7 +91,7 @@ class CouponController extends Controller
                         ], 401);
                     } 
                 }
-                $coupon_discount = !empty($request['coupon_discount_amount']) ? $request['coupon_discount_amount'] : 0;
+                // $coupon_discount = !empty($request['coupon_discount_amount']) ? $request['coupon_discount_amount'] : 0;
             }
         }else {
             return response()->json([

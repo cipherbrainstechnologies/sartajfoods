@@ -138,7 +138,6 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
             Route::put('update-cart', 'CartController@updateToCart');
             Route::delete('remove-to-cart/{product_id}', 'CartController@removeToCart');
             Route::delete('clear-cart','CartController@clearCart');
-
             Route::post('add-items','CartController@addCartItems');
 
         });
