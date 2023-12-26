@@ -292,26 +292,29 @@ class CartController extends Controller
         if (!$cart) {
             return response()->json(['error' => 'Cart list is empty'], 404);
         }
-
-        if($product->tax == 8){
-            if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
-                $eight_percent += ((($product->sale_price * $product->tax) / 100) * $product->quantity);   
+        
+        if($cart->product['tax'] == 8){
+            if(!empty($cart->product['sale_price']) && $cart->product['sale_start_date'] <= now() && $cart->product['sale_end_date'] >= now()){
+                $eight_percent += ((($cart->product['sale_price'] * $cart->product['tax']) / 100) *  $quantity);   
             }else{
-                $discount_price = Helpers::afterDiscountPrice($product,$product->price);
-                $eight_percent += (((($product->price - $discount_price->discount_amount) * $product->tax) / 100) * $quantity);      
+                $product = collect($cart->product);
+                // echo "<pre>";print_r($product['id']);die;
+                $discount_price = Helpers::afterDiscountPrice($product,$product['price']);                
+                $eight_percent += (((($cart->product['price'] - $discount_price['discount_amount']) * $cart->product['tax']) / 100) * $quantity);      
             }
        
         }
-        if($product->tax == 10){
-            if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
-                $ten_percent += ((($product->sale_price * $product->tax) / 100) * $product->quantity);   
+        if($cart->product['tax'] == 10){
+            if(!empty($cart->product['sale_price']) && $cart->product['sale_start_date'] <= now() && $cart->product['sale_end_date'] >= now()){
+                $eight_percent += ((($cart->product['sale_price'] * $cart->product['tax']) / 100) *  $quantity);   
             }else{
-                $discount_price = Helpers::afterDiscountPrice($product,$product->price);
-                $ten_percent += (((($product->price - $discount_price->discount_amount) * $product->tax) / 100) * $quantity);   
+                $product = collect($cart->product);
+                // echo "<pre>";print_r($product);die;
+                $discount_price = Helpers::afterDiscountPrice($product,$product['price']);
+                $eight_percent += (((($cart->product['price'] - $discount_price['discount_amount']) * $cart->product['tax']) / 100) * $quantity);      
             }
-            
+       
         }
-
         $totalDiscount = round(($cart->discount *  $quantity),2);
         $subtotal = round(($cart->price * $quantity + $eight_percent + $ten_percent - $totalDiscount),2);
 
