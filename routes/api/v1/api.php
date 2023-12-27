@@ -213,8 +213,8 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         Route::get('/{id}', 'ManufacturerController@search');
     });
     // Product Seo Manage
-    Route::get('/{seo}', 'ProductController@get_seo_product')->where('seo', '.*');
-
+    Route::get('product_seo/{seo}', 'ProductController@get_seo_product')->where('seo', '.*');
+    Route::get('manufacture_seo/{seo}', 'ManufacturerController@get_seo_product')->where('seo', '.*');
     Route::get('hot-deals', 'HotDealsController@getHotDeals');
     
 });

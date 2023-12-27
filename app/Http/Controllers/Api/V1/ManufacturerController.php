@@ -49,4 +49,16 @@ class ManufacturerController extends Controller
          return response()->json([], 200);
         }
     }
+
+    public function get_seo_product($seo){
+        try {
+            $manufacturer_data = $this->manufacturer->with('products')->Where('seo_en', 'like', "%{$seo}%")
+            ->orWhere('seo_ja', 'like', "%{$seo}%")->get();
+            $Manufacturers = self::addImageUrl($manufacturer_data);
+            return response()->json($Manufacturers, 200);
+        } catch (\Exception $e) {
+         return response()->json([], 200);
+        }
+    }
+
 }
