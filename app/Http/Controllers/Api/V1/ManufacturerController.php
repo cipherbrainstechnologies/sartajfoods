@@ -64,7 +64,7 @@ class ManufacturerController extends Controller
     public function seo_type_test(Request $request){
 
         $type = Helpers::seo_type_test($request->seo);
-        return response()->json($type, 200);
+        return response()->json(["type" =>$type], 200);
     }
 
 }
