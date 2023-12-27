@@ -26,8 +26,6 @@ class Order extends Model
         'free_delivery_amount'   => 'float',
     ];
 
-    
-
     public function delivery_man(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(DeliveryMan::class, 'delivery_man_id');

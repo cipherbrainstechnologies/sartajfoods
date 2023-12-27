@@ -312,14 +312,13 @@ class CartController extends Controller
                 $eight_percent += ((($cart->product['sale_price'] * $cart->product['tax']) / 100) *  $quantity);   
             }else{
                 $product = collect($cart->product);
-                // echo "<pre>";print_r($product);die;
                 $discount_price = Helpers::afterDiscountPrice($product,$product['price']);
                 $eight_percent += (((($cart->product['price'] - $discount_price['discount_amount']) * $cart->product['tax']) / 100) * $quantity);      
             }
        
         }
         $totalDiscount = round(($cart->discount *  $quantity),2);
-        $subtotal = round(($cart->price * $quantity + $eight_percent + $ten_percent - $totalDiscount),2);
+        $subtotal = round(($cart->price * $quantity),2);
 
         // Update the quantity
         $cart->update([

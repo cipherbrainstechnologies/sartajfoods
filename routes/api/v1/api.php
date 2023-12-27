@@ -212,6 +212,11 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         Route::get('/', 'ManufacturerController@list');
         Route::get('/{id}', 'ManufacturerController@search');
     });
+
+    Route::group(['prefix' => 'browser-history'], function () {
+        Route::post('store-browser-detail','BrowserHistoryController@store');
+    });
+
     // Product Seo Manage
     Route::get('product_seo/{seo}', 'ProductController@get_seo_product')->where('seo', '.*');
     Route::get('manufacture_seo/{seo}', 'ManufacturerController@get_seo_product')->where('seo', '.*');

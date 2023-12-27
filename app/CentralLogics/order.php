@@ -86,8 +86,32 @@ class OrderLogic
             $history = OrderHistory::create($data)->order();
        } catch (\Exception $e){
         return response()->json([
-            'message' => 'Somthing want to wrong',
+            'message' => 'Something want to wrong',
         ], 403);
        }
     }
+
+    public static function browserHistory($user_id,$ip_address,$forwarded_ip,$user_agent,$accept_language){
+        try {
+            $browserHistory = BrowserHistory::updateOrCreate(
+                [
+                    "user_id" => !empty($user_id) ? $user_id : null
+                ],
+                [
+                    "ip_address" => !empty($ip_address) ? $ip_address : null,
+                    "forwarded_ip" => !empty($forwarded_ip) ? $forwarded_ip : null,
+                    "user_agent" => !empty($user_agent) ? $user_agent : null,
+                    "accept_language" => !empty($accept_language) ? $accept_language : null
+                ]
+            );
+
+            return response()->json($browserHistory, 200);
+        }catch (\Exception $e){
+            return response()->json([
+                'message' => 'Something want to wrong',
+            ], 403);
+        }
+    }
+
+
 }
