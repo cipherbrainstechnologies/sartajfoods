@@ -189,7 +189,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::get('bulk-export', 'ProductController@bulk_export_data')->name('bulk-export');
 
             Route::get('view/{id}', 'ProductController@view')->name('view');
-            Route::get('remove-image/{id}/{name}', 'ProductController@remove_image')->name('remove-image');
+            // Route::get('remove-image/{id}/{name}', 'ProductController@remove_image')->name('remove-image');
             //ajax request
             Route::get('get-categories', 'ProductController@get_categories')->name('get-categories');
             Route::post('daily-needs', 'ProductController@daily_needs')->name('daily-needs');
@@ -201,7 +201,9 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::get('feature/{id}/{is_featured}', 'ProductController@feature')->name('feature');
 
         });
-
+        Route::group(['prefix' => 'product', 'as' => 'product.'], function () {
+            Route::get('remove-image/{id}/{name}', 'ProductController@remove_image')->name('remove-image');
+        });
         Route::group(['prefix' => 'orders', 'as' => 'orders.','middleware'=>['module:order_management']], function () {
             Route::get('list/{status}', 'OrderController@list')->name('list');
             Route::get('details/{id}', 'OrderController@details')->name('details');
