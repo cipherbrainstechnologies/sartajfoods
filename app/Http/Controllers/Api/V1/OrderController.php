@@ -593,7 +593,7 @@ class OrderController extends Controller
             $order->total_amt = round(($total_sub_amt + $eight_percent +  $ten_percent + Helpers::get_business_settings('delivery_charge')),2);
             $order->eight_percent =  round($eight_percent,2);
             $order->ten_percent =  round($ten_percent,2);
-            $order->couponPrice = round();
+            $order->couponPrice = round($order->coupon_discount_amount ,2);
         if(!empty($ids)){
             $productData  = $this->product->whereIn('id',$ids)->get();
             $order->products = $productData;
