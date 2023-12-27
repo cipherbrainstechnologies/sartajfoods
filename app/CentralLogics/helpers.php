@@ -7,6 +7,7 @@ use App\Model\CategoryDiscount;
 use App\Model\Currency;
 use App\Model\DMReview;
 use App\Model\Order;
+use App\Model\Manufacturer;
 use App\Model\Cart;
 use App\Model\Product;
 use App\Model\Review;
@@ -420,6 +421,18 @@ class Helpers
             $price_discount = 0;
         }
         return self::set_price($price_discount);
+    }
+
+    public static function seo_type_test($seo){
+        $type = "";
+        if(Product::active()->Where('seo_en', "{$seo}")->orWhere('seo_ja',"{$seo}")->exists()){
+            return $type = "product";
+        }
+
+        if(Manufacturer::Where('seo_en',"{$seo}")->orWhere('seo_ja', "{$seo}")->exists()){
+            return $type = "manufacturer";
+        }
+        return $type;
     }
 
     public static function max_earning()

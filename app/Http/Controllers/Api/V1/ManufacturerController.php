@@ -50,7 +50,7 @@ class ManufacturerController extends Controller
         }
     }
 
-    public function get_seo_product($seo){
+    public function get_seo_manufacturer($seo){
         try {
             $manufacturer_data = $this->manufacturer->with('products')->Where('seo_en', 'like', "%{$seo}%")
             ->orWhere('seo_ja', 'like', "%{$seo}%")->get();
@@ -59,6 +59,12 @@ class ManufacturerController extends Controller
         } catch (\Exception $e) {
          return response()->json([], 200);
         }
+    }
+
+    public function seo_type_test(Request $request){
+
+        $type = Helpers::seo_type_test($request->seo);
+        return response()->json($type, 200);
     }
 
 }
