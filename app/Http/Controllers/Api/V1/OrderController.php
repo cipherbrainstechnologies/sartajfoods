@@ -207,10 +207,10 @@ class OrderController extends Controller
             $or = [
                 'id' => $order_id,
                 'user_id' => $request->user()->id,
-                'order_amount' => $request['order_amount'] - $discountPrice,
+                'order_amount' => $request['order_amount'],
                 'coupon_code' =>  $request['coupon_code'],
                 //'coupon_discount_amount' => $coupon_discount_amount,
-                'coupon_discount_amount' => $discountPrice,
+                'coupon_discount_amount' => $request->coupon_discount_amount,
                 'coupon_discount_title' => $request->coupon_discount_title == 0 ? null : 'coupon_discount_title',
                 'payment_status' => ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'unpaid':'paid',
                 'order_status' => ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'pending':'confirmed',
