@@ -126,7 +126,7 @@ class CartController extends Controller
         
         $deliveryCharge = Helpers::get_business_settings('delivery_charge', 0);
         $totalDiscountAmount = $cartProducts->sum('total_discount');
-        $totalEightPercentTax = $cartProducts->sum('eight_percent ');
+        $totalEightPercentTax = $cartProducts->sum('eight_percent');
         $totalTenPercentTax = $cartProducts->sum('ten_percent');
         $subTotalAmt = $cartProducts->sum('sub_total');
         // echo 'subTotal:'.$subTotalAmt . ' '.'deliveryCharge:'.$deliveryCharge.' '.$totalEightPercentTax.' '.'totalTenPercentTax'.$totalTenPercentTax;
