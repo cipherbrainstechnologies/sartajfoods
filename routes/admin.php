@@ -173,7 +173,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::delete('delete/{id}', 'NotificationController@delete')->name('delete');
         });
 
-        Route::group(['prefix' => 'product', 'as' => 'product.','middleware'=>['module:product_management']], function () {
+        Route::group(['prefix' => 'product', 'as' => 'product.'], function () {//,'middleware'=>['module:product_management']
             Route::get('add-new', 'ProductController@index')->name('add-new');
             Route::post('variant-combination', 'ProductController@variant_combination')->name('variant-combination');
             Route::post('store', 'ProductController@store')->name('store');
