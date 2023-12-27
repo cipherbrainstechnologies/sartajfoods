@@ -55,7 +55,7 @@ class CouponController extends Controller
                 ]
             ], 404);
         }
-
+        $deliveryCharge = Helpers::get_business_settings('delivery_charge', 0);
         if (isset($coupon)) {
             if ($coupon['coupon_type'] == 'free_delivery') {
                 $free_delivery_amount = Helpers::get_delivery_charge($request['distance']);
@@ -68,7 +68,7 @@ class CouponController extends Controller
                         if($orderAmount > $coupon['min_purchase']){
                             $discountPrice = $coupon['max_discount'];
                             $coupon->discount_price = round($discountPrice,2);
-                            $coupon->orderAmount = round($orderAmount - $discountPrice,2);
+                            $coupon->orderAmount = round(($orderAmount - $discountPrice) +$deliveryCharge ,2);
                             return response()->json($coupon, 200);
                         }else{
                             $errors[] = ['code' => 'auth-001', 'message' => 'order amount is less than minimum purchase amount'];
@@ -82,7 +82,7 @@ class CouponController extends Controller
                     if($orderAmount > $coupon['min_purchase']){
                         $discountPrice = $coupon['max_discount'];
                         $coupon->discount_price = round($discountPrice,2);
-                        $coupon->orderAmount = round($orderAmount - $discountPrice,2);
+                        $coupon->orderAmount = round(($orderAmount - $discountPrice) + $deliveryCharge,2);
                         return response()->json($coupon, 200);
                     }else{
                         $errors[] = ['code' => 'auth-001', 'message' => 'order amount is less than minimum purchase amount'];
