@@ -585,14 +585,15 @@ class OrderController extends Controller
             }else{
                 $discount_price = Helpers::afterDiscountPrice($productDetails,$product['price']);
                 $discount = ($discount_price['discount_amount'] * $product['quantity']);
-                $total_sub_amt = $total_sub_amt + (($productDetails['price'] *  $product['quantity']) );
+                $total_sub_amt = $total_sub_amt + ((($productDetails['price'] - $discount_price['discount_amount'] )*  $product['quantity']));
             }
             
+        }
             $order->total_sub_amt = round($total_sub_amt,2);
             $order->total_amt = round(($total_sub_amt + $eight_percent +  $ten_percent + Helpers::get_business_settings('delivery_charge')),2);
             $order->eight_percent =  round($eight_percent,2);
             $order->ten_percent =  round($ten_percent,2);
-        }
+            $order->couponPrice = round();
         if(!empty($ids)){
             $productData  = $this->product->whereIn('id',$ids)->get();
             $order->products = $productData;
