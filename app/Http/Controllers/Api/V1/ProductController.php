@@ -488,11 +488,11 @@ class ProductController extends Controller
     public function get_rated_three_products(){ 
         $products = ProductLogic::get_most_reviewed_products(3);
         $products = Helpers::product_data_formatting($products['products'], true);
-        ProductLogic::cal_rating_and_review($products);
-        ProductLogic::getSoldProducts($products);
-        usort($products, function ($a, $b) {
-            return $b['overall_rating'] - $a['overall_rating'];
-        });
+        // ProductLogic::cal_rating_and_review($products);
+        // ProductLogic::getSoldProducts($products);
+        // usort($products, function ($a, $b) {
+        //     return $b['overall_rating'] - $a['overall_rating'];
+        // });
         return response()->json($products, 200);
     }
 
