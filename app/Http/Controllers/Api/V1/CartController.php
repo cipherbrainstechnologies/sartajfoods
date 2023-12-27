@@ -309,11 +309,11 @@ class CartController extends Controller
         }
         if($cart->product['tax'] == 10){
             if(!empty($cart->product['sale_price']) && $cart->product['sale_start_date'] <= now() && $cart->product['sale_end_date'] >= now()){
-                $eight_percent += ((($cart->product['sale_price'] * $cart->product['tax']) / 100) *  $quantity);   
+                $ten_percent += ((($cart->product['sale_price'] * $cart->product['tax']) / 100) *  $quantity);   
             }else{
                 $product = collect($cart->product);
                 $discount_price = Helpers::afterDiscountPrice($product,$product['price']);
-                $eight_percent += (((($cart->product['price'] - $discount_price['discount_amount']) * $cart->product['tax']) / 100) * $quantity);      
+                $ten_percent += (((($cart->product['price'] - $discount_price['discount_amount']) * $cart->product['tax']) / 100) * $quantity);      
             }
        
         }
