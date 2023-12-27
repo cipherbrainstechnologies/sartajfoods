@@ -579,13 +579,13 @@ class OrderController extends Controller
                     $total_sub_amt = $total_sub_amt + $productDetails['sale_price'] * $product['quantity'];
                 }else{
                     $discount_price = Helpers::afterDiscountPrice($productDetails,$product['price']);
-                    $total_sub_amt = $total_sub_amt + ((($productDetails['price'] - $discount_price['discount_amount'] )*  $product['quantity']) - $discount);
+                    $total_sub_amt = $total_sub_amt + ((($productDetails['price'] - $discount_price['discount_amount'] )*  $product['quantity']));
                 }   
                 
             }else{
                 $discount_price = Helpers::afterDiscountPrice($productDetails,$product['price']);
                 $discount = ($discount_price['discount_amount'] * $product['quantity']);
-                $total_sub_amt = $total_sub_amt + (($productDetails['price'] *  $product['quantity']) - $discount);
+                $total_sub_amt = $total_sub_amt + (($productDetails['price'] *  $product['quantity']) );
             }
             
             $order->total_sub_amt = round($total_sub_amt,2);
