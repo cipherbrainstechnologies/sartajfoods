@@ -248,7 +248,7 @@ class CartController extends Controller
                                     'discount_type' => $discount_type,
                                     'discount'      => $discountPrice,
                                     'total_discount' => $discount,
-                                    'sub_total'     => $subTotal + $ten_percent + $eight_percent ,
+                                    'sub_total'     => $subTotal ,
                                     'eight_percent' => $eight_percent,
                                     'ten_percent' => $ten_percent
                                 ]
@@ -266,7 +266,7 @@ class CartController extends Controller
                     'discount_type' => $discount_type,
                     'discount'      => $discountPrice,
                     'total_discount' => $discount,
-                    'sub_total'     =>  $subTotal + $ten_percent + $eight_percent
+                    'sub_total'     =>  $subTotal 
                 ],
             );
         }       
