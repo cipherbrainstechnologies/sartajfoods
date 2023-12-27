@@ -200,13 +200,14 @@ class OrderController extends Controller
                 ], 401);
             }
         }
-        
+        // $browserHistory = OrderLogic::browserHistory($request->user()->id,$request->ip_address,$request->forwarded_ip,$request->user_agent,$request->accept_language);
         // try {
             //DB::beginTransaction();
             $order_id = 100000 + Order::all()->count() + 1;
             $or = [
                 'id' => $order_id,
                 'user_id' => $request->user()->id,
+                // 'browser_history_id' => $browserHistory->id,
                 'order_amount' => $request['order_amount'],
                 'coupon_code' =>  $request['coupon_code'],
                 //'coupon_discount_amount' => $coupon_discount_amount,
@@ -333,7 +334,6 @@ class OrderController extends Controller
             $latestOrder =DB::table('orders')->insertGetId($or);
             $o_status = ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'pending':'confirmed';
             OrderLogic::orderHistory($order_id, $o_status,$request->order_note);
-            // OrderLogic::browserHistory($request->user()->id,$request->ip_address,$request->forwarded_ip,$request->user_agent,$request->accept_language);
             if($request->payment_method == 'wallet_payment'){
                 $amount = $or['order_amount'];
                 CustomerLogic::create_wallet_transaction($or['user_id'], $amount, 'order_place', $or['id']);
