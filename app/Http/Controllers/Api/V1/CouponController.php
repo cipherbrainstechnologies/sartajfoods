@@ -47,7 +47,7 @@ class CouponController extends Controller
         $orderAmount = 0;
         $coupon = $this->coupon->active()->where(['code' => $request['code']])->first();
         $cartDetails = Cart::with('product')->where(['user_id'=>$request->user()->id])->get();
-        $orderAmount =  $cartDetails->sum('sub_total');
+        $orderAmount =  $cartDetails->sum('sub_total') + $cartDetails->sum('eight_percent') + $cartDetails->sum('ten_percent');
         if(empty($cartDetails)){
             return response()->json([
                 'errors' => [
