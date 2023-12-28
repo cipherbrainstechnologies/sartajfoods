@@ -171,7 +171,10 @@ class CartController extends Controller
             $quantity = $product->maximum_order_quantity;
         }
         
-        
+        if($request->quantity > $product->maximum_order_quantity){
+            return response()->json(['errors' => 'maximum order qty is'.$product->maximum_order_quantity], 403);
+        }
+
         if (!$product) {
             return response()->json(['error' => 'Product not found'], 404);
         }
@@ -301,6 +304,11 @@ class CartController extends Controller
         }else{
             $quantity = $product->maximum_order_quantity;
         }
+
+        if($request->input('quantity') > $product->maximum_order_quantity){
+            return response()->json(['errors' => 'maximum order qty is'.$product->maximum_order_quantity], 403);
+        }
+
         $eight_percent = 0;
         $ten_percent = 0;
 
