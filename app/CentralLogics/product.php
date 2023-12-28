@@ -30,6 +30,7 @@ class ProductLogic
 
     // Get All the products
     public static function get_all_products($limit = 10, $offset = 1, $manufacturer_id = null){
+        
         $currentDate = now();
         $twoWeeksAgo = $currentDate->subDays(14);
 
@@ -48,19 +49,19 @@ class ProductLogic
                     ->orderBy('id','desc')
                     ->paginate($limit, ['*'], 'page', $offset);
 
-        $products = $paginator->getCollection()->map(function ($product) use($twoWeeksAgo){
-            $badges = [];
-            if ($product->created_at >= $twoWeeksAgo) {
-                array_push($badges,'new');
-            }
-            // Check if the product is "hot"
-            if ($product->order_details_count > 1) { // Change this condition as per your definition of "hot"                    
-                array_push($badges,'hot');
-            }
-            // Add other conditions for badges here if needed
-            $product['badges'] = $badges;
-            return $product;
-        });
+        // $products = $paginator->getCollection()->map(function ($product) use($twoWeeksAgo){
+        //     $badges = [];
+        //     if ($product->created_at >= $twoWeeksAgo) {
+        //         array_push($badges,'new');
+        //     }
+        //     // Check if the product is "hot"
+        //     if ($product->order_details_count > 1) { // Change this condition as per your definition of "hot"                    
+        //         array_push($badges,'hot');
+        //     }
+        //     // Add other conditions for badges here if needed
+        //     $product['badges'] = $badges;
+        //     return $product;
+        // });
 
         return [
             'total_size' => $paginator->total(),

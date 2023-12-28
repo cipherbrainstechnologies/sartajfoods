@@ -158,12 +158,18 @@ class CartController extends Controller
         // ]);
         
         $productId = $request->product_id;
-        $quantity = $request->quantity;
+        // $quantity = $request->quantity;
         $eight_percent = 0;
         $ten_percent = 0;
 
         // Check if the product exists
         $product = Product::find($productId);
+        
+        if($product->maximum_order_quantity >= $request->quantity){
+            $quantity = $request->quantity;
+        }else{
+            $quantity = $product->maximum_order_quantity;
+        }
         
         
         if (!$product) {
@@ -174,8 +180,12 @@ class CartController extends Controller
         // $productPrice = $product->price - $discount_price['discount_amount'];
         
         $discountPrice = $discount_price['discount_amount'];
-        if(!empty($product->sale_price)){
-            
+        if(!empty($product->hotDeal) &&  $product->hotDeal['start_date'] <= now() && $product->hotDeal['end_date'] >= now()){
+            $discount_type = "hot-deal";
+            $productPrice = $product->actual_price;
+            $discount = 0;
+            $subTotal =  $subTotal + $product->actual_price * $quantity;
+        }elseif(!empty($product->sale_price)){
             $currentDate = new DateTime(); // Current date and time
 
             $saleStartDate = new DateTime($product->sale_start_date);
@@ -217,7 +227,7 @@ class CartController extends Controller
                 $subTotal =   $subTotal  + (($productPrice  *  $quantity) );
             }
         }
-
+        
         if($product->tax == 8){
             if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
                 $eight_percent += ((($product->sale_price * $product->tax) / 100) * $product->quantity);   
@@ -284,7 +294,13 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1',
         ]);
         $productId = $request->input('product_id');
-        $quantity = $request->input('quantity');
+        // $quantity = $request->input('quantity');
+
+        if($product->maximum_order_quantity >= $request->input('quantity')){
+            $quantity = $request->input('quantity');
+        }else{
+            $quantity = $product->maximum_order_quantity;
+        }
         $eight_percent = 0;
         $ten_percent = 0;
 
@@ -327,7 +343,6 @@ class CartController extends Controller
                 'quantity' => $quantity,
                 'eight_percent' => $eight_percent,
                 'ten_percent' => $ten_percent
-
             ]);
 
         return response()->json(['message' => 'Cart entry updated', 'cart' => $cart]);

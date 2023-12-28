@@ -53,6 +53,7 @@
                                                 ({{ strtoupper($lang['code']) }})</label>
                                             <textarea name="description[]" class="form-control h--172px"></textarea>
                                         </div>
+                                        @if(request()->route()->getName() != "admin.category.add-sub-category")
                                         <div class="col-lg-12 mt-3">
                                             <label class="form-label" for="exampleFormControlInput1">{{translate('meta tag title')}} ({{ strtoupper($lang['code']) }})</label>
                                             <input type="text" name="meta_title[]" class="form-control" maxlength="255" required>
@@ -68,7 +69,8 @@
                                                 for="exampleFormControlInput1">{{translate('meta tag keywords')}}
                                             ({{ strtoupper($lang['code']) }})</label>
                                                 <textarea name="meta_keywords[]" class="form-control"></textarea>
-                                        </div>    
+                                        </div> 
+                                        @endif   
                                     </div>
                                     <input type="hidden" name="lang[]" value="{{$lang['code']}}">
                                 @endforeach
@@ -82,6 +84,7 @@
                                         <label class="form-label mt-3" for="exampleFormControlInput1">{{translate('sub_category')}} {{ translate('description') }} ({{strtoupper($default_lang)}})</label>
                                         <textarea name="description[]" class="form-control h--172px"></textarea>
                                     </div>
+                                    @if(request()->route()->getName() != "admin.category.add-sub-category")
                                     <div class="col-lg-12 mt-3">
                                         <label class="form-label" for="exampleFormControlInput1">{{translate('meta tag title')}} ({{ strtoupper($default_lang) }})</label>
                                         <input type="text" name="meta_title[]" class="form-control" maxlength="255" required>
@@ -98,6 +101,7 @@
                                         ({{ strtoupper($default_lang) }})</label>
                                             <textarea name="meta_keywords[]" class="form-control"></textarea>
                                     </div>
+                                    @endif
                                 </div>
                                 <input type="hidden" name="lang[]" value="{{$default_lang}}">
                                 @endif

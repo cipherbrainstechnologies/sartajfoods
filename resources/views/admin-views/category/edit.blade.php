@@ -82,33 +82,35 @@
                                     <label class="form-label mt-3" for="exampleFormControlInput1">{{ translate('category') }} {{ translate('description') }} ({{ strtoupper($lang['code']) }})</label>
                                     <textarea name="description[]" class="form-control h--172px">{{$lang['code'] == 'en' ? $category['description'] : ($translate[$lang['code']]['description']??'')}}</textarea>
                                 </div>
-                                @if($lang['code'] == "en")
+                                @if(empty($category->parent_id))
+                                    @if($lang['code'] == "en")
+                                        <div class="col-lg-12">
+                                            <label class="form-label mt-3" for="{{$lang['code']}}_seo_en">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                            <input type="text" name="en_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('EN')}})" value="{{$category['seo_en']??''}}" required>
+                                        </div>
+                                    @else
+                                        <div class="col-lg-12">
+                                            <label class="form-label mt-3" for="{{$lang['code']}}_seo_ja">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                            <input type="text" name="ja_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('JA')}})" value="{{$category['seo_ja'] ?? ''}}" required>
+                                        </div>
+                                    @endif
                                     <div class="col-lg-12">
-                                        <label class="form-label mt-3" for="{{$lang['code']}}_seo_en">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
-                                        <input type="text" name="en_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('EN')}})" value="{{$category['seo_en']??''}}" required>
+                                        <label class="form-label mt-3" for="exampleFormControlInput1">{{translate('meta tag title')}} ({{ strtoupper($lang['code']) }})</label>
+                                        <input type="text" name="meta_title[]" class="form-control" maxlength="255" value="{{$lang['code'] == 'en' ? $category['meta_title'] : ($translate[$lang['code']]['meta_title']??'')}}" required>
                                     </div>
-                                @else
                                     <div class="col-lg-12">
-                                        <label class="form-label mt-3" for="{{$lang['code']}}_seo_ja">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
-                                        <input type="text" name="ja_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('JA')}})" value="{{$category['seo_ja'] ?? ''}}" required>
+                                            <label class="form-label mt-3"
+                                            for="exampleFormControlInput1">{{translate('meta tag description')}}
+                                        ({{ strtoupper($lang['code']) }})</label>
+                                            <textarea name="meta_description[]" class="form-control">{{$lang['code'] == 'en' ? $category['meta_description'] : ($translate[$lang['code']]['meta_description']??'')}}</textarea>
+                                    </div>
+                                    <div class="col-lg-12">
+                                            <label class="form-label mt-3"
+                                            for="exampleFormControlInput1">{{translate('meta tag keywords')}}
+                                        ({{ strtoupper($lang['code']) }})</label>
+                                            <textarea name="meta_keywords[]" class="form-control">{{$lang['code'] == 'en' ? $category['meta_keywords'] : ($translate[$lang['code']]['meta_keywords']??'')}}</textarea>
                                     </div>
                                 @endif
-                                <div class="col-lg-12">
-                                    <label class="form-label mt-3" for="exampleFormControlInput1">{{translate('meta tag title')}} ({{ strtoupper($lang['code']) }})</label>
-                                    <input type="text" name="meta_title[]" class="form-control" maxlength="255" value="{{$lang['code'] == 'en' ? $category['meta_title'] : ($translate[$lang['code']]['meta_title']??'')}}" required>
-                                </div>
-                                <div class="col-lg-12">
-                                        <label class="form-label mt-3"
-                                        for="exampleFormControlInput1">{{translate('meta tag description')}}
-                                    ({{ strtoupper($lang['code']) }})</label>
-                                        <textarea name="meta_description[]" class="form-control">{{$lang['code'] == 'en' ? $category['meta_description'] : ($translate[$lang['code']]['meta_description']??'')}}</textarea>
-                                </div>
-                                <div class="col-lg-12">
-                                        <label class="form-label mt-3"
-                                        for="exampleFormControlInput1">{{translate('meta tag keywords')}}
-                                    ({{ strtoupper($lang['code']) }})</label>
-                                        <textarea name="meta_keywords[]" class="form-control">{{$lang['code'] == 'en' ? $category['meta_keywords'] : ($translate[$lang['code']]['meta_keywords']??'')}}</textarea>
-                                </div>
                             </div>
                             <input type="hidden" name="lang[]" value="{{$lang['code']}}">
                         @endforeach

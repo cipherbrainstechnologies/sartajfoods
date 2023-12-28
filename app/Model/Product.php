@@ -12,7 +12,7 @@ use App\Model\HotDeals;
 class Product extends Model
 {
 
-    protected $appends = ['actual_price','overall_rating','total_reviews'];
+    protected $appends = ['actual_price','overall_rating','total_reviews','badges'];
     protected $casts = [
         'tax'         => 'float',
         'price'       => 'float',
@@ -115,6 +115,22 @@ class Product extends Model
         }
         
         return 0;
+    }
+
+    public function getBadgesAttribute(){
+        
+        $badges = [];
+        $currentDate = now();
+        $twoWeeksAgo = $currentDate->subDays(14);
+        
+        if ($this->created_at >= $twoWeeksAgo) {
+            array_push($badges,'new');
+        }
+        // Check if the product is "hot"
+        if ($this->order_details()->count() > 1) { // Change this condition as per your definition of "hot"                    
+            array_push($badges,'hot');
+        }
+        return $badges;
     }
 
     public function getActualPriceAttribute(){
