@@ -105,7 +105,7 @@ class OrderLogic
                     "accept_language" => !empty($accept_language) ? $accept_language : null
                 ]
             );
-
+            echo "<pre>";print_r($browserHistory);die;
             return response()->json($browserHistory, 200);
         }catch (\Exception $e){
             return response()->json([
