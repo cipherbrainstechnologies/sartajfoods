@@ -73,4 +73,8 @@ class Order extends Model
     {
         return $this->hasMany(OrderDetail::class);
     }
+    public function browser_history(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(BrowserHistory::class, 'browser_history_id');
+    }
 }

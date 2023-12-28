@@ -172,7 +172,7 @@ class OrderController extends Controller
      */
     public function details($id): Factory|View|Application|RedirectResponse
     {   
-        $order = $this->order->with('details', 'history')->where(['id' => $id])->first();
+        $order = $this->order->with('details', 'history','browser_history')->where(['id' => $id])->first();
         $orderDetails =collect($order->details);
         $EightPercentTax = $orderDetails->sum('eight_percent_tax');
         $TenPercentTax = $orderDetails->sum('ten_percent_tax');

@@ -323,6 +323,7 @@ class OrderController extends Controller
                 $this->product->where(['id' => $product['id']])->update([
                     'variations' => json_encode($var_store),
                     'total_stock' => $product['total_stock'] - $c['quantity'],
+                    'out_of_stock_status' => ($product['total_stock']==0) ? "out of stock": "in stock",
                     'popularity_count'=>$product['popularity_count']+1
                 ]);
                 DB::table('order_details')->insert($or_d);

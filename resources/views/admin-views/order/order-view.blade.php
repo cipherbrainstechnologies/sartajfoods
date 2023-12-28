@@ -423,6 +423,45 @@
                     <!-- End Table -->
                 </div>
                 <!-- End Card -->
+
+                <!-- Card -->
+                <div class="card mt-4 mb-3 mb-lg-5">
+                    <!-- Header -->
+                    <div class="card-header border-0">
+                        <div class="card--header justify-content-between max--sm-grow">
+                            <h5 class="card-title">{{translate('Browser History')}}</h5>
+                        </div>
+                    </div>
+                    <!-- End Header -->
+
+                    <!-- Table -->
+                    <div class="table-responsive datatable-custom">
+                        <table class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="border-0">{{translate('Ip Address')}}</th>
+                                    <th class="border-0">{{translate('Forwarded Ip')}}</th>
+                                    <th class="border-0">{{translate('User Agent')}}</th>
+                                    <th class="text-center border-0">{{translate('Accept Language')}}</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                               
+                                <tr>
+                                    <td>{{ $order->browser_history["ip_address"] ?? "" }}</td>
+                                    <td>{{ $order->browser_history["forwarded_ip"] ?? "" }}</td>
+                                    <td>{{ $order->browser_history["user_agent"] ?? ""}}</td>
+                                    <td>{{ $order->browser_history["accept_language"] ?? ""}}</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- End Table -->
+                </div>
+                <!-- End Card -->
             </div>
 
             <div class="col-lg-4 order-print-area-right">

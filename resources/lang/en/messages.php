@@ -2175,4 +2175,9 @@
   'Price Per pcs' => 'Price Per pcs',
   'Discount Per pcs' => 'Discount Per pcs',
   'Total Discount' => 'Total Discount',
+  'accept_language' => 'Accept language',
+  'user_agent' => 'User agent',
+  'Forwarded ip' => 'Forwarded ip',
+  'Ip address' => 'Ip address',
+  'Browser History' => 'Browser History',
 );
