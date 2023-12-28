@@ -23,7 +23,7 @@ class HotDealsController extends Controller
     
     public function getHotDeals()
     {
-        $HotDealsData = $this->HotDeals->first();
+        $HotDealsData = $this->HotDeals->with('product')->first();
         $product_price = 0;
         $product_discounted_price = 0;
         if(!empty($HotDealsData)) {

@@ -15,4 +15,9 @@ class HotDeals extends Model
         'start_date',
         'end_date'
     ];
+
+    public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(product::class,'product_id');
+    }
 }
