@@ -104,15 +104,11 @@ class Product extends Model
     
     public function getOverallRatingAttribute()
     {
-        if(is_array($this->rating)){
-            if (!empty($this->rating[0])) {
-                return ($this->rating[0]->total / ($this->rating[0]->count * 5)) * 100;
-            }else{
-                return 0;
-            }
-        }else{
-           return $this->rating;
+        
+        if (!empty($this->rating[0])) {
+            return ($this->rating[0]->total / ($this->rating[0]->count * 5)) * 100;
         }
+        
         return 0;
     }
 

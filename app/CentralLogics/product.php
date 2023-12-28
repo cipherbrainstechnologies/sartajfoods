@@ -308,11 +308,11 @@ class ProductLogic
             ->withCount('active_reviews')
             ->get();
 
-        // Extract the rating values from the relationships
-        $paginator = $paginator->map(function ($product) {
-            $product['rating'] = $product['rating']->avg('average');
-            return $product;
-        });
+        // // Extract the rating values from the relationships
+        // $paginator = $paginator->map(function ($product) {
+        //     $product['rating'] = $product['rating']->avg('average');
+        //     return $product;
+        // });
         
         // Sort the products by rating in descending order
         $sortedProducts = $paginator->sortByDesc('rating')->values()->all();
