@@ -394,7 +394,7 @@ class Helpers
         //     $discount['discount_amount'] = 0 ;
         // }
         // return $discount;
-        if(!empty($this->hotDeal) &&  $this->hotDeal['start_date'] <= now() && $this->hotDeal['end_date'] >= now()){
+        if(!empty($product->hotDeal) &&  $product->hotDeal['start_date'] <= now() && $product->hotDeal['end_date'] >= now()){
             $discount['discount_type'] = 'hot-deal';
             $discount['discount_amount'] = 0 ;
         }elseif((!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()) && $product['discount'] !=0){
