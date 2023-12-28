@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Model\FlashDeal;
+use App\Model\HotDeals;
 
 class Product extends Model
 {
@@ -26,6 +27,10 @@ class Product extends Model
     ];
 
     
+    public function hotDeal()
+    {
+        return $this->hasOne(HotDeals::class);
+    }
 
     public function translations(): \Illuminate\Database\Eloquent\Relations\MorphMany
     {
@@ -113,18 +118,32 @@ class Product extends Model
     }
 
     public function getActualPriceAttribute(){
-        if(!empty($this->discount)){
+        if(!empty($this->hotDeal) &&  $this->hotDeal['start_date'] <= now() && $this->hotDeal['end_date'] >= now()){
+            return $this->price - ($this->price * $this->hotDeal['discount'] / 100);
+        }elseif(!empty($this->sale_price) && $this->sale_start_date <= now() && $this->sale_end_date >= now()){
+            return $this->sale_price;
+        }elseif(!empty($this->discount)){
             if($this->discount_type=="percent"){
                 return $this->price - ($this->price * $this->discount / 100);
             }else{
                 return $this->price - $this->discount;
             }
-        }elseif(!empty($this->sale_price) && $this->sale_start_date <= now() && $this->sale_end_date >= now()){
-            return $this->sale_price;
-        }
-        else{
-            return $this->price;
-        }
+        }else{
+                return $this->price;
+            }
+       
+        // if(!empty($this->discount)){
+        //     if($this->discount_type=="percent"){
+        //         return $this->price - ($this->price * $this->discount / 100);
+        //     }else{
+        //         return $this->price - $this->discount;
+        //     }
+        // }elseif(!empty($this->sale_price) && $this->sale_start_date <= now() && $this->sale_end_date >= now()){
+        //     return $this->sale_price;
+        // }
+        // else{
+        //     return $this->price;
+        // }
     }
 
     public function getTotalReviewsAttribute()

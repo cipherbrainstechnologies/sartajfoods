@@ -381,7 +381,26 @@ class Helpers
 
     public static function afterDiscountPrice($product,$price){
         $discount = [];
-        if(!(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()) && $product['discount'] !=0){
+        // if(!(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()) && $product['discount'] !=0){
+        //     if ($product['discount_type'] == 'percent') {
+        //         $discount['discount_type'] = 'percent';
+        //         $discount['discount_amount'] = ($price * $product['discount']) /100 ;
+        //     }else{
+        //         $discount['discount_type'] = 'amount';
+        //         $discount['discount_amount'] = ($product['discount']) ;
+        //     }
+        // }else{
+        //     $discount['discount_type'] = 'special';
+        //     $discount['discount_amount'] = 0 ;
+        // }
+        // return $discount;
+        if(!empty($this->hotDeal) &&  $this->hotDeal['start_date'] <= now() && $this->hotDeal['end_date'] >= now()){
+            $discount['discount_type'] = 'hot-deal';
+            $discount['discount_amount'] = 0 ;
+        }elseif((!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()) && $product['discount'] !=0){
+            $discount['discount_type'] = 'special';
+            $discount['discount_amount'] = 0 ;
+        }else{
             if ($product['discount_type'] == 'percent') {
                 $discount['discount_type'] = 'percent';
                 $discount['discount_amount'] = ($price * $product['discount']) /100 ;
@@ -389,9 +408,6 @@ class Helpers
                 $discount['discount_type'] = 'amount';
                 $discount['discount_amount'] = ($product['discount']) ;
             }
-        }else{
-            $discount['discount_type'] = 'special';
-            $discount['discount_amount'] = 0 ;
         }
         return $discount;
 
