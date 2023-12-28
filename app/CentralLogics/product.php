@@ -319,12 +319,14 @@ class ProductLogic
         if(!is_null($take)){
             $limit = $take;                    
         }
+        $sortedProducts = Helpers::product_data_formatting($sortedProducts, true);
         $paginator = new LengthAwarePaginator(
             array_slice($sortedProducts, ($offset - 1) * $limit, $limit),
             count($sortedProducts),
             $limit,
             $offset
         );
+    
         return [
             'total_size' => $paginator->total(),
             'limit' => $limit,
