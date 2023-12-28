@@ -685,7 +685,7 @@
                                 <div class="d-flex align-items-center mb-2 mb-sm-0">
                                     <h5 class="mb-0 mr-2">{{ translate('Visibility') }}</h5>
                                     <label class="toggle-switch my-0">
-                                        <input type="checkbox" class="toggle-switch-input" name="status" {{ !empty($product['status']) ? 'checked' : ''  }}>
+                                        <input type="checkbox" class="toggle-switch-input" name="status" {{ ($product['status']==1) ? 'checked' : ''  }}>
                                         <span class="toggle-switch-label mx-auto text">
                                             <span class="toggle-switch-indicator"></span>
                                         </span>
@@ -861,12 +861,12 @@
 
 
             var formData = new FormData(this);
-
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+            
             $.post({
                 url: '{{route('admin.product.update',[$product['id']])}}',
                 // data: $('#product_form').serialize(),
@@ -875,6 +875,7 @@
                 contentType: false,
                 processData: false,
                 success: function (data) {
+                    
                     if (data.errors) {
                         for (var i = 0; i < data.errors.length; i++) {
                             toastr.error(data.errors[i].message, {

@@ -383,7 +383,7 @@ class ProductController extends Controller
         $p->sale_price = !empty($request->sale_price) ? $request->sale_price : null;
         
         $p->downloads = $request->has('download_id') ? json_encode($request->download_id) : json_encode([]);
-        $p->status = ($request->status === 'on') ? 1 : 0; 
+        $p->status = ($request->status) ? 1 : 0; 
         $p->save();
 
         $p->tags()->sync($tag_ids);
