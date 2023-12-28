@@ -200,14 +200,14 @@ class OrderController extends Controller
                 ], 401);
             }
         }
-        // $browserHistory = OrderLogic::browserHistory($request->user()->id,$request->ip_address,$request->forwarded_ip,$request->user_agent,$request->accept_language);
+        $browserHistory = OrderLogic::browserHistory($request->user()->id,$request->ip_address,$request->forwarded_ip,$request->user_agent,$request->accept_language);
         // try {
             //DB::beginTransaction();
             $order_id = 100000 + Order::all()->count() + 1;
             $or = [
                 'id' => $order_id,
                 'user_id' => $request->user()->id,
-                // 'browser_history_id' => $browserHistory->id,
+                'browser_history_id' => $browserHistory->id,
                 'order_amount' => $request['order_amount'],
                 'coupon_code' =>  $request['coupon_code'],
                 //'coupon_discount_amount' => $coupon_discount_amount,

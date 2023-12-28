@@ -11,7 +11,7 @@ use App\Model\FlashDeal;
 class Product extends Model
 {
 
-    protected $appends = ['actual_price','overall_rating'];
+    protected $appends = ['actual_price','overall_rating','total_reviews'];
     protected $casts = [
         'tax'         => 'float',
         'price'       => 'float',
