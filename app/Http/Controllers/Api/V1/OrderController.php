@@ -207,7 +207,7 @@ class OrderController extends Controller
             $or = [
                 'id' => $order_id,
                 'user_id' => $request->user()->id,
-                'browser_history_id' => $browserHistory->id,
+                'browser_history_id' => !empty($browserHistory) ? $browserHistory->id : 0,
                 'order_amount' => $request['order_amount'],
                 'coupon_code' =>  $request['coupon_code'],
                 //'coupon_discount_amount' => $coupon_discount_amount,
