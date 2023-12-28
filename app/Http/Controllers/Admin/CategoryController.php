@@ -149,6 +149,8 @@ class CategoryController extends Controller
         $category = $this->category;
         $category->name = $request->name[array_search('en', $request->lang)];
         $category->description = $request->description[array_search('en', $request->lang)];
+        $category->seo_en =$request->en_seo;
+        $category->seo_ja = $request->ja_seo;
         $category->meta_title = $request->meta_title[array_search('en', $request->lang)];
         $category->meta_description = $request->meta_description[array_search('en', $request->lang)];
         $category->meta_keywords = $request->meta_keywords[array_search('en', $request->lang)];
@@ -263,6 +265,8 @@ class CategoryController extends Controller
         $category->meta_description = $request->meta_description[array_search('en', $request->lang)];
         $category->meta_keywords = $request->meta_keywords[array_search('en', $request->lang)];
         $category->image = $request->has('image') ? Helpers::update('category/', $category->image, 'png', $request->file('image')) : $category->image;
+        $category->seo_en =$request->en_seo;
+        $category->seo_ja = $request->ja_seo;
         $category->save();
         foreach ($request->lang as $index => $key) {
             if ($request->name[$index] && $key != 'en') {

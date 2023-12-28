@@ -5,6 +5,7 @@ namespace App\CentralLogics;
 use App\Model\Order;
 use App\Model\Product;
 use App\Model\OrderHistory;
+use App\Model\BrowserHistory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 

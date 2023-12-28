@@ -82,6 +82,17 @@
                                     <label class="form-label mt-3" for="exampleFormControlInput1">{{ translate('category') }} {{ translate('description') }} ({{ strtoupper($lang['code']) }})</label>
                                     <textarea name="description[]" class="form-control h--172px">{{$lang['code'] == 'en' ? $category['description'] : ($translate[$lang['code']]['description']??'')}}</textarea>
                                 </div>
+                                @if($lang['code'] == "en")
+                                    <div class="col-lg-12">
+                                        <label class="form-label mt-3" for="{{$lang['code']}}_seo_en">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                        <input type="text" name="en_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('EN')}})" value="{{$category['seo_en']??''}}" required>
+                                    </div>
+                                @else
+                                    <div class="col-lg-12">
+                                        <label class="form-label mt-3" for="{{$lang['code']}}_seo_ja">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                        <input type="text" name="ja_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('JA')}})" value="{{$category['seo_ja'] ?? ''}}" required>
+                                    </div>
+                                @endif
                                 <div class="col-lg-12">
                                     <label class="form-label mt-3" for="exampleFormControlInput1">{{translate('meta tag title')}} ({{ strtoupper($lang['code']) }})</label>
                                     <input type="text" name="meta_title[]" class="form-control" maxlength="255" value="{{$lang['code'] == 'en' ? $category['meta_title'] : ($translate[$lang['code']]['meta_title']??'')}}" required>
@@ -116,6 +127,17 @@
                                     ({{ strtoupper($default_lang) }})</label>
                                         <textarea name="description[]" class="form-control h--172px">value="{{$category['description']}}"</textarea>
                                 </div>
+                                @if($lang['code'] == "en")
+                                    <div class="col-lg-12">
+                                        <label class="form-label mt-3" for="{{$lang['code']}}_seo_en">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                        <input type="text" name="en_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('EN')}})" value="{{$category['seo_en']??''}}" required>
+                                    </div>
+                                @else
+                                    <div class="col-lg-12">
+                                        <label class="form-label mt-3" for="{{$lang['code']}}_seo_ja">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                        <input type="text" name="ja_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('JA')}})" value="{{$category['seo_ja'] ?? ''}}" required>
+                                    </div>
+                                @endif
                                 <div class="col-lg-12">
                                     <label class="form-label mt-3" for="exampleFormControlInput1">{{translate('meta tag title')}} ({{ strtoupper($default_lang) }})</label>
                                     <input type="text" name="meta_title[]" class="form-control" maxlength="255" value="{{$category['meta_title']}}" required>

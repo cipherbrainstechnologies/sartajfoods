@@ -10,6 +10,7 @@ use App\Model\Order;
 use App\Model\Manufacturer;
 use App\Model\Cart;
 use App\Model\Product;
+use App\Model\Category;
 use App\Model\Review;
 Use App\Model\RecentActivity;
 use App\User;
@@ -428,9 +429,11 @@ class Helpers
         if(Product::active()->Where('seo_en', "{$seo}")->orWhere('seo_ja',"{$seo}")->exists()){
             return $type = "product";
         }
-
         if(Manufacturer::Where('seo_en',"{$seo}")->orWhere('seo_ja', "{$seo}")->exists()){
             return $type = "manufacturer";
+        }
+        if(Category::Where('seo_en',"{$seo}")->orWhere('seo_ja', "{$seo}")->exists()){
+            return $type = "category";
         }
         return $type;
     }
