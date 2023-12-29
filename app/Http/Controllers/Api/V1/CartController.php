@@ -319,8 +319,8 @@ class CartController extends Controller
             $quantity = $cart->product['maximum_order_quantity'];
         }
 
-        if($request->input('quantity') > $product->maximum_order_quantity){
-            return response()->json(['errors' => 'maximum order qty is'.$product->maximum_order_quantity], 403);
+        if($request->input('quantity') > $cart->product['maximum_order_quantity']){
+            return response()->json(['errors' => 'maximum order qty is'.$cart->product['maximum_order_quantity']], 403);
         }
         
         // Check if the cart entry exists
