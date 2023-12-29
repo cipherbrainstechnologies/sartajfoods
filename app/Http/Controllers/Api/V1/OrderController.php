@@ -552,20 +552,20 @@ class OrderController extends Controller
             $productDetails = json_decode($product['product_details'],true);
 
                 if($productDetails['tax'] == 8){
-                    if(!empty($product['actual_price']) && $product['sale_start_date'] <= now() && $product['sale_end_date'] >= now()){
+                    if(!empty($product['sale_price']) && $product['sale_start_date'] <= now() && $product['sale_end_date'] >= now()){
                         $eight_percent += ((($product['sale_price'] * $product['tax']) / 100) * $product['quantity']);   
                     }else{
                         $discount_price = Helpers::afterDiscountPrice($productDetails,$product['price']);
-                        $eight_percent += (((($product['actual_price'] - $discount_price['discount_amount']) * $productDetails['tax']) / 100) * $product['quantity']);      
+                        $eight_percent += (((($product['price'] - $discount_price['discount_amount']) * $productDetails['tax']) / 100) * $product['quantity']);      
                     }
             
                 }
                 if($productDetails['tax'] == 10){
                     if(!empty($product['sale_price']) && $product['sale_start_date'] <= now() && $product['sale_end_date'] >= now()){
-                        $ten_percent += ((($product['actual_price'] * $product['tax']) / 100) * $product['quantity']);   
+                        $ten_percent += ((($product['sale_price'] * $product['tax']) / 100) * $product['quantity']);   
                     }else{
                         $discount_price = Helpers::afterDiscountPrice($productDetails,$product['price']);
-                        $ten_percent += (((($product['actual_price'] - $discount_price['discount_amount']) * $productDetails['tax']) / 100) * $product['quantity']);   
+                        $ten_percent += (((($product['price'] - $discount_price['discount_amount']) * $productDetails['tax']) / 100) * $product['quantity']);   
                     }
                     
                 }
@@ -579,16 +579,16 @@ class OrderController extends Controller
                     $saleStartDate = new DateTime($productDetails['sale_start_date']);
                     $saleEndDate = new DateTime($productDetails['sale_end_date']);
                     if($currentDate >= $saleStartDate && $currentDate <= $saleEndDate){
-                        $productPrice = $productDetails['actual_price'];
+                        $productPrice = $productDetails['sale_price'];
                         $discount = 0;
                         $total_sub_amt = $total_sub_amt + $productDetails['actual_price'] * $product['quantity'];
                     }else{
-                        $discount_price = Helpers::afterDiscountPrice($productDetails,$product['actual_price']);
+                        $discount_price = Helpers::afterDiscountPrice($productDetails,$product['price']);
                         $total_sub_amt = $total_sub_amt + ((($productDetails['actual_price'] - $discount_price['discount_amount'] )*  $product['quantity']));
                     }   
                     
                 }else{
-                    $discount_price = Helpers::afterDiscountPrice($productDetails,$product['actual_price']);
+                    $discount_price = Helpers::afterDiscountPrice($productDetails,$product['price']);
                     $discount = ($discount_price['discount_amount'] * $product['quantity']);
                     $total_sub_amt = $total_sub_amt + ((($productDetails['actual_price'] - $discount_price['discount_amount'] )*  $product['quantity']));
                 }
