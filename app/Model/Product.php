@@ -12,7 +12,7 @@ use App\Model\HotDeals;
 class Product extends Model
 {
 
-    protected $appends = ['actual_price','overall_rating','total_reviews','badges','maximum_order_quantity'];
+    protected $appends = ['actual_price','overall_rating','total_reviews','badges'];
     protected $casts = [
         'tax'         => 'float',
         'price'       => 'float',
@@ -162,13 +162,13 @@ class Product extends Model
         // }
     }
 
-    public function getMaximumOrderQtyAttribute(){
-        if($this->total_stock > $this->maximum_order_quantity){
-            return $this->maximum_order_quantity;
-        }else{
-            return $this->total_stock;
-        }
-    }
+    // public function getMaximumOrderQuantityAttribute(){
+    //     if($this['total_stock'] > $this['maximum_order_quantity']){
+    //         return $this['maximum_order_quantity'];
+    //     }else{
+    //         return $this['total_stock'];
+    //     }
+    // }
 
     public function getTotalReviewsAttribute()
     {
