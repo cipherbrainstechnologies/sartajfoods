@@ -139,7 +139,7 @@ class CartController extends Controller
             $quantity = $product->maximum_order_quantity;
         }
         
-        if($quantity > $product->maximum_order_quantity){
+        if($request->quantity > $product->maximum_order_quantity){
             return response()->json(['errors' => 'maximum order qty is '.$product->maximum_order_quantity], 403);
         }
 
@@ -223,11 +223,10 @@ class CartController extends Controller
         if(Cart::where(['product_id' => $product->id, 'user_id' => $user->id])->exists()){
             $cartData = Cart::where(['product_id' => $product->id, 'user_id' => $user->id])->first();
 
-            
-            if($quantity > $product->maximum_order_quantity){
-                return response()->json(['errors' => 'maximum order qty is '.$product->maximum_order_quantity], 403);
+            if($request->quantity > $quantity){
+                return response()->json(['errors' => 'maximum order qty is '.$quantity, 403);
             }
-            
+
             $cart =  Cart::where(['product_id' => $product->id, 'user_id' => $user->id])
                             ->update(
                                 [
@@ -285,12 +284,10 @@ class CartController extends Controller
         $cart = Cart::with('product')->where(['user_id'=>  $user->id,"product_id" => $productId])->first();
         if($cart->product['maximum_order_quantity'] >= $request->input('quantity')){
             $quantity = $request->input('quantity');
-        }elseif($cart->product['stock'] < $cart->product['maximum_order_quantity']){
-            $quantity = $product['stock'];
         }else{
             $quantity = $cart->product['maximum_order_quantity'];
         }
-        if($quantity > $cart->product['maximum_order_quantity']){
+        if($request->input('quantity') > $cart->product['maximum_order_quantity']){
             return response()->json(['errors' => 'maximum order qty is '.$cart->product['maximum_order_quantity']], 403);
         }
         
