@@ -966,6 +966,8 @@ class ProductController extends Controller
         if ($stock_count >= 0) {
             $product->total_stock = $stock_count;
             $product->variations = json_encode($variations);
+            $product->maximum_order_quantity = $stock_count;
+            $product->out_of_stock_status = 'in stock';
             $product->resotred_at = Carbon::now()->format('Y-m-d H:i:s');
             $product->save();
             Toastr::success(translate('product_quantity_updated_successfully!'));

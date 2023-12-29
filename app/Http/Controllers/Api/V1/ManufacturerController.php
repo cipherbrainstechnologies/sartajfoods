@@ -52,7 +52,7 @@ class ManufacturerController extends Controller
 
     public function get_seo_manufacturer($seo){
         try {
-            $manufacturer_data = $this->manufacturer->with('products')->Where('seo_en', 'like', "%{$seo}%")
+            $manufacturer_data = $this->manufacturer->with('products.manufacturer')->Where('seo_en', 'like', "%{$seo}%")
             ->orWhere('seo_ja', 'like', "%{$seo}%")->get();
             $Manufacturers = self::addImageUrl($manufacturer_data);
             return response()->json($Manufacturers, 200);
