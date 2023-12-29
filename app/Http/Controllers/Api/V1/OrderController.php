@@ -573,27 +573,28 @@ class OrderController extends Controller
                 // $calculateTaxes = Helpers::tax_calculates($productDetails,$product['price']);
                 // $eight_percent = $calculateTaxes['eight_percent'];
                 // $ten_percent= $calculateTaxes['ten_percent'];
-
+                
                 if(!empty($productDetails['sale_price'])){
                     $currentDate = new DateTime(); // Current date and time
                     $saleStartDate = new DateTime($productDetails['sale_start_date']);
                     $saleEndDate = new DateTime($productDetails['sale_end_date']);
                     if($currentDate >= $saleStartDate && $currentDate <= $saleEndDate){
-                        $productPrice = $productDetails['sale_price'];
+                        $productPrice = $productDetails['actual_price'];
                         $discount = 0;
-                        $total_sub_amt = $total_sub_amt + $productDetails['sale_price'] * $product['quantity'];
+                        $total_sub_amt = $total_sub_amt + $productDetails['actual_price'] * $product['quantity'];
                     }else{
                         $discount_price = Helpers::afterDiscountPrice($productDetails,$product['price']);
-                        $total_sub_amt = $total_sub_amt + ((($productDetails['price'] - $discount_price['discount_amount'] )*  $product['quantity']));
+                        $total_sub_amt = $total_sub_amt + ((($productDetails['actual_price'] - $discount_price['discount_amount'] )*  $product['quantity']));
                     }   
                     
                 }else{
-                    $discount_price = Helpers::afterDiscountPrice($productDetails,$product['price']);
+                    $discount_price = Helpers::afterDiscountPrice($productDetails,$productDetails['actual_price']);
                     $discount = ($discount_price['discount_amount'] * $product['quantity']);
-                    $total_sub_amt = $total_sub_amt + ((($productDetails['price'] - $discount_price['discount_amount'] )*  $product['quantity']));
+                    $total_sub_amt = $total_sub_amt + ((($productDetails['actual_price'] - $discount_price['discount_amount'] )*  $product['quantity']));
                 }
                 
             }
+            
                 $order->couponPrice = round($order->coupon_discount_amount ,2);
                 $order->total_sub_amt = round($total_sub_amt,2);
                 $order->total_amt = round(($total_sub_amt + $eight_percent +  $ten_percent + Helpers::get_business_settings('delivery_charge') - round($order->coupon_discount_amount ,2) ),2);
