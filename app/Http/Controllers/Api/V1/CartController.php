@@ -61,18 +61,18 @@ class CartController extends Controller
             
             if($cartProduct->product['tax'] == 8){
                 if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
-                    $eight_percent += ((($product->sale_price * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
+                    $eight_percent += ((($product->actual_price * $cartProduct->product['tax']) / 100) * $cartProduct->quantity); 
                 }else{
                     if($cartProduct->product['discount_type'] == "percent"){
-                        $discount_price = Helpers::afterDiscountPrice($product,$product->price);
-                        $eight_percent += (((($product->price - $discount_price['discount_amount']) * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
+                        $discount_price = Helpers::afterDiscountPrice($product,$product->actual_price);
+                        $eight_percent += (((($product->actual_price - $discount_price['discount_amount']) * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
                     }else{
-                        $discount_price = Helpers::afterDiscountPrice($product,$product->price);
+                        $discount_price = Helpers::afterDiscountPrice($product,$product->actual_price);
                         if($product['discount_type']=="percent"){
                             $eight_percent += ((($discount_price['discount_amount'] * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
                         }
                         if($product['discount_type']=="amount"){
-                            $eight_percent += (((($product->price -$discount_price['discount_amount']) * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
+                            $eight_percent += (((($product->actual_price -$discount_price['discount_amount']) * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
                         }
                         
                     }
@@ -83,18 +83,19 @@ class CartController extends Controller
 
             if($cartProduct->product['tax'] == 10){
                 if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
-                    $ten_percent += ((($product->sale_price * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
+                    $ten_percent += ((($product->actual_price * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
                 }else{
-                    $discount_price = Helpers::afterDiscountPrice($product,$product->price);
+                    $discount_price = Helpers::afterDiscountPrice($product,$product->actual_price);
                     if($product['discount_type']=="percent"){
                         $ten_percent += ((($discount_price['discount_amount'] * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
                     }
                     if($product['discount_type']=="amount"){
-                        $ten_percent += (((($product->price -$discount_price['discount_amount']) * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
+                        $ten_percent += (((($product->actual_price -$discount_price['discount_amount']) * $cartProduct->product['tax']) / 100) * $cartProduct->quantity);   
                     }
                 } 
                 
             }
+            
             // Calculate overall rating
             $allOverRating = $product->rating->isNotEmpty()
                 ? ($product->rating[0]->total / ($product->rating[0]->count * 5)) * 100
@@ -158,18 +159,18 @@ class CartController extends Controller
         // ]);
         
         $productId = $request->product_id;
-        // $quantity = $request->quantity;
+        $quantity = $request->quantity;
         $eight_percent = 0;
         $ten_percent = 0;
 
         // Check if the product exists
         $product = Product::find($productId);
         
-        if($product->maximum_order_quantity >= $request->quantity){
-            $quantity = $request->quantity;
-        }else{
-            $quantity = $product->maximum_order_quantity;
-        }
+        // if($product->maximum_order_quantity >= $request->quantity){
+        //     $quantity = $request->quantity;
+        // }else{
+        //     $quantity = $product->maximum_order_quantity;
+        // }
         
         if($request->quantity > $product->maximum_order_quantity){
             return response()->json(['errors' => 'maximum order qty is '.$product->maximum_order_quantity], 403);
@@ -196,19 +197,19 @@ class CartController extends Controller
             
             if($currentDate >= $saleStartDate && $currentDate <= $saleEndDate){
                 $discount_type = "special";
-                $productPrice = $product->sale_price;
+                $productPrice = $product->actual_price;
                 $discount = 0;
-                $subTotal =  $subTotal + $product->sale_price * $quantity;
+                $subTotal =  $subTotal + $product->actual_price * $quantity;
             }else{
                 if($product->discount_type =="percent"){
                     $discount_type = 'percent';
-                    $productPrice = $product->price - $discount_price['discount_amount'];
+                    $productPrice = $product->actual_price - $discount_price['discount_amount'];
                     $discount = $discount_price['discount_amount'] * $quantity;
                     $subTotal =  $subTotal + (($productPrice  *  $quantity) );
     
                 }else{
                     $discount_type = 'amount';
-                    $productPrice = $product->price - $discount_price['discount_amount'];
+                    $productPrice = $product->actual_price - $discount_price['discount_amount'];
                     $discountPrice = $product->discount;
                     $discount = $product->discount;
                     $subTotal =   $subTotal  + (($productPrice  *  $quantity) );
@@ -232,20 +233,22 @@ class CartController extends Controller
         }
         
         if($product->tax == 8){
+
             if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
-                $eight_percent += ((($product->sale_price * $product->tax) / 100) * $product->quantity);   
+                echo $product->sale_price. ' '. $product->tax;
+                $eight_percent += ((($product->actual_price * $product->tax) / 100) * $quantity); 
             }else{
                 $discount_price = Helpers::afterDiscountPrice($product,$product->price);
-                $eight_percent += (((($product->price - $discount_price['discount_amount']) * $product->tax) / 100) * $quantity);      
+                $eight_percent += (((($product->actual_price - $discount_price['discount_amount']) * $product->tax) / 100) * $quantity);      
             }
        
         }
         if($product->tax == 10){
             if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
-                $ten_percent += ((($product->sale_price * $product->tax) / 100) * $product->quantity);   
+                $ten_percent += ((($product->actual_price * $product->tax) / 100) * $quantity);   
             }else{
                 $discount_price = Helpers::afterDiscountPrice($product,$product->price);
-                $ten_percent += (((($product->price - $discount_price['discount_amount']) * $product->tax) / 100) * $quantity);   
+                $ten_percent += (((($product->actual_price - $discount_price['discount_amount']) * $product->tax) / 100) * $quantity);   
             }
             
         }
@@ -303,7 +306,7 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1',
         ]);
         $productId = $request->input('product_id');
-        // $quantity = $request->input('quantity');
+        $quantity = $request->input('quantity');
 
         
 
@@ -311,12 +314,12 @@ class CartController extends Controller
         $ten_percent = 0;
 
         // Find the cart entry by id
-        $cart = Cart::with('product')->where(['user_id'=>  $user->id,"product_id" => $productId])->first();
-        if($cart->product['maximum_order_quantity'] >= $request->input('quantity')){
-            $quantity = $request->input('quantity');
-        }else{
-            $quantity = $cart->product['maximum_order_quantity'];
-        }
+        // $cart = Cart::with('product')->where(['user_id'=>  $user->id,"product_id" => $productId])->first();
+        // if($cart->product['maximum_order_quantity'] >= $request->input('quantity')){
+        //     $quantity = $request->input('quantity');
+        // }else{
+        //     $quantity = $cart->product['maximum_order_quantity'];
+        // }
         if($request->input('quantity') > $cart->product['maximum_order_quantity']){
             return response()->json(['errors' => 'maximum order qty is '.$cart->product['maximum_order_quantity']], 403);
         }
@@ -328,22 +331,21 @@ class CartController extends Controller
         
         if($cart->product['tax'] == 8){
             if(!empty($cart->product['sale_price']) && $cart->product['sale_start_date'] <= now() && $cart->product['sale_end_date'] >= now()){
-                $eight_percent += ((($cart->product['sale_price'] * $cart->product['tax']) / 100) *  $quantity);   
+                $eight_percent += ((($cart->product['actual_price'] * $cart->product['tax']) / 100) *  $quantity);   
             }else{
                 $product = collect($cart->product);
-                // echo "<pre>";print_r($product['id']);die;
-                $discount_price = Helpers::afterDiscountPrice($product,$product['price']);                
-                $eight_percent += (((($cart->product['price'] - $discount_price['discount_amount']) * $cart->product['tax']) / 100) * $quantity);      
+                $discount_price = Helpers::afterDiscountPrice($product,$product['actual_price']);                
+                $eight_percent += (((($cart->product['actual_price'] - $discount_price['discount_amount']) * $cart->product['tax']) / 100) * $quantity);      
             }
        
         }
         if($cart->product['tax'] == 10){
             if(!empty($cart->product['sale_price']) && $cart->product['sale_start_date'] <= now() && $cart->product['sale_end_date'] >= now()){
-                $ten_percent += ((($cart->product['sale_price'] * $cart->product['tax']) / 100) *  $quantity);   
+                $ten_percent += ((($cart->product['actual_price'] * $cart->product['tax']) / 100) *  $quantity);   
             }else{
                 $product = collect($cart->product);
-                $discount_price = Helpers::afterDiscountPrice($product,$product['price']);
-                $ten_percent += (((($cart->product['price'] - $discount_price['discount_amount']) * $cart->product['tax']) / 100) * $quantity);      
+                $discount_price = Helpers::afterDiscountPrice($product,$product['actual_price']);
+                $ten_percent += (((($cart->product['actual_price'] - $discount_price['discount_amount']) * $cart->product['tax']) / 100) * $quantity);      
             }
        
         }
