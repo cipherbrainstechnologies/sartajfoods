@@ -411,7 +411,7 @@
                                 @foreach($order->history as $history)
                                 <tr>
                                     {{-- <td>{{ ($history['created_at']) ? date('d M Y',strtotime($history['created_at'])) }}</td> --}}
-                                    <td>{{ ($history['status'] == "pending") ? date('d M Y',strtotime($history['created_at'])) : date('d M Y',$order['delivery_date']) }}</td>
+                                    <td>{{ ($history['status'] == "pending") ? date('d M Y',strtotime($history['created_at'])) : $order['delivery_date'] }}</td>
                                     <td>{{ $history['comment'] }}</td>
                                     <td>{{ str_ireplace( array('_'), ' ', $history['status']) }}</td>
                                     <td class="text-center">{{ ($history['is_customer_notify']) ? 'Yes' : 'No' }}</td>
