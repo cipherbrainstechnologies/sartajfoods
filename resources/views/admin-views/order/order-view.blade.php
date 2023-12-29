@@ -410,7 +410,7 @@
                             <tbody>
                                 @foreach($order->history as $history)
                                 <tr>
-                                    <td>{{ date('d M Y',strtotime($history['created_at'])) }}</td>
+                                    <td>{{ empty($order['delivery_date']) ? date('d M Y',strtotime($history['created_at'])) :$order['delivery_date'] }}</td>
                                     <td>{{ $history['comment'] }}</td>
                                     <td>{{ str_ireplace( array('_'), ' ', $history['status']) }}</td>
                                     <td class="text-center">{{ ($history['is_customer_notify']) ? 'Yes' : 'No' }}</td>
