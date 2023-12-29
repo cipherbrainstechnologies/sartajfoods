@@ -249,11 +249,12 @@ class OrderController extends Controller
                     // $price = Helpers::variation_price($product, json_encode($c['variation']));
                     $price = Helpers::variation_price($product, json_encode($c['variations']));
                 } else {
-                    if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
-                        $price = $product['sale_price'];
-                    }else{
-                        $price = $product['price'];
-                    }
+                    $price =$product['actual_price'];
+                    // if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
+                    //     $price = $product['sale_price'];
+                    // }else{
+                    //     $price = $product['price'];
+                    // }
                     
                 }
                 
@@ -324,7 +325,8 @@ class OrderController extends Controller
                     'variations' => json_encode($var_store),
                     'total_stock' => $product['total_stock'] - $c['quantity'],
                     'out_of_stock_status' => ($product['total_stock'] - $c['quantity']==0) ? "out of stock": "in stock",
-                    'popularity_count'=>$product['popularity_count']+1
+                    'popularity_count'=>$product['popularity_count']+1,
+                    'maximum_order_quantity' => (($product['total_stock'] - $c['quantity']) > $product['maximum_order_quantity']) ? $product['maximum_order_quantity'] : $product['total_stock'] - $c['quantity']
                 ]);
                 DB::table('order_details')->insert($or_d);
                 
