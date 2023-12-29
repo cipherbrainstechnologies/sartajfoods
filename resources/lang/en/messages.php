@@ -2180,4 +2180,5 @@
   'Forwarded ip' => 'Forwarded ip',
   'Ip address' => 'Ip address',
   'Browser History' => 'Browser History',
+  'Accept Language' => 'Accept Language',
 );
