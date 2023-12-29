@@ -670,7 +670,7 @@
                                     <div class="d-flex flex-wrap g-2">
                                         <div class="hs-unfold w-0 flex-grow min-w-160px">
                                             <label class="input-date">
-                                                <input class="js-flatpickr form-control flatpickr-custom min-h-45px" type="text" value="{{ date('d M Y',strtotime($order['delivery_date'])) }}"
+                                                <input class="js-flatpickr form-control flatpickr-custom min-h-45px" type="text" value="{{ !empty($order['delivery_date']) ? date('d M Y',strtotime($order['delivery_date'])) : date('d M Y',strtotime(now())) }}"
                                                 name="deliveryDate" id="from_date" data-id="{{ $order['id'] }}" class="form-control" required>
                                             </label>
                                         </div>
