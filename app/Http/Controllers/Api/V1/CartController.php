@@ -305,21 +305,23 @@ class CartController extends Controller
         $productId = $request->input('product_id');
         // $quantity = $request->input('quantity');
 
-        if($product->maximum_order_quantity >= $request->input('quantity')){
-            $quantity = $request->input('quantity');
-        }else{
-            $quantity = $product->maximum_order_quantity;
-        }
-
-        if($request->input('quantity') > $product->maximum_order_quantity){
-            return response()->json(['errors' => 'maximum order qty is'.$product->maximum_order_quantity], 403);
-        }
+        
 
         $eight_percent = 0;
         $ten_percent = 0;
 
         // Find the cart entry by id
         $cart = Cart::with('product')->where(['user_id'=>  $user->id,"product_id" => $productId])->first();
+
+        if($cart->product['maximum_order_quantity'] >= $request->input('quantity')){
+            $quantity = $request->input('quantity');
+        }else{
+            $quantity = $cart->product['maximum_order_quantity'];
+        }
+
+        if($request->input('quantity') > $product->maximum_order_quantity){
+            return response()->json(['errors' => 'maximum order qty is'.$product->maximum_order_quantity], 403);
+        }
         
         // Check if the cart entry exists
         if (!$cart) {
