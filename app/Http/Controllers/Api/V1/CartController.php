@@ -224,7 +224,7 @@ class CartController extends Controller
             $cartData = Cart::where(['product_id' => $product->id, 'user_id' => $user->id])->first();
 
             if($request->quantity > $quantity){
-                return response()->json(['errors' => 'maximum order qty is '.$quantity, 403);
+                return response()->json(['errors' => 'maximum order qty is '.$quantity], 403);
             }
 
             $cart =  Cart::where(['product_id' => $product->id, 'user_id' => $user->id])
