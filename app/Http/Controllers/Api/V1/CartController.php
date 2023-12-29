@@ -133,6 +133,8 @@ class CartController extends Controller
         
         if($product->maximum_order_quantity >= $request->quantity){
             $quantity = $request->quantity;
+        }elseif($product->stock < $product->maximum_order_quantity){
+            $quantity = $product->stock;
         }else{
             $quantity = $product->maximum_order_quantity;
         }
@@ -282,6 +284,8 @@ class CartController extends Controller
         $cart = Cart::with('product')->where(['user_id'=>  $user->id,"product_id" => $productId])->first();
         if($cart->product['maximum_order_quantity'] >= $request->input('quantity')){
             $quantity = $request->input('quantity');
+        }elseif($cart->product['stock'] < $cart->product['maximum_order_quantity']){
+            $quantity = $product->stock;
         }else{
             $quantity = $cart->product['maximum_order_quantity'];
         }
