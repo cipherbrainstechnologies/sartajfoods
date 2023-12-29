@@ -198,7 +198,7 @@
                                            for="exampleFormControlInput1">{{translate('Maximum_Order_Quantity')}}</label>
                                     <input type="number" min="1" step="1" value="1" name="maximum_order_quantity"
                                            class="form-control"
-                                           placeholder="{{ translate('Ex : 3') }}" required>
+                                           placeholder="{{ translate('Ex : 3') }}" >
                                 </div>
                             </div>
                             <div class="col-sm-6">
