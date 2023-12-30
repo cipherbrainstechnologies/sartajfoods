@@ -69,7 +69,9 @@ class ProductController extends Controller
            
            if(!empty($request->manufacturer_id) && empty($request['category_id'])) {
             $sort_by_fileter->whereHas('manufacturer', function ($query) use ($manufacturer_id) {
-                $query->where('id', $manufacturer_id);
+                // $query->where('id', $manufacturer_id);
+                $query->Where('seo_en', 'like', "%{$manufacturer_id}%")
+                        ->orWhere('seo_ja', 'like', "%{$manufacturer_id}%");
             });
            }
            $sort_by_fileter->paginate($request['limit'], ['*'], 'page', $request['offset']);
@@ -122,7 +124,9 @@ class ProductController extends Controller
 
            if(!empty($request->manufacturer_id) && empty($request['category_id'])) {
             $sort_by_fileter->whereHas('manufacturer', function ($query) use ($manufacturer_id) {
-                $query->where('id', $manufacturer_id);
+                // $query->where('id', $manufacturer_id);
+                $query->Where('seo_en', 'like', "%{$manufacturer_id}%")
+                        ->orWhere('seo_ja', 'like', "%{$manufacturer_id}%");
             });
            }
            $sort_by_fileter->paginate($request['limit'], ['*'], 'page', $request['offset']);
@@ -148,7 +152,9 @@ class ProductController extends Controller
            
            if(!empty($request->manufacturer_id) && empty($request['category_id'])) {
             $sort_by_fileter->whereHas('manufacturer', function ($query) use ($manufacturer_id) {
-                $query->where('id', $manufacturer_id);
+                // $query->where('id', $manufacturer_id);
+                $query->Where('seo_en', 'like', "%{$manufacturer_id}%")
+                        ->orWhere('seo_ja', 'like', "%{$manufacturer_id}%");
             });
            }
            $sort_by_fileter->paginate($request['limit'], ['*'], 'page', $request['offset']);
@@ -175,7 +181,9 @@ class ProductController extends Controller
 
            if(!empty($request->manufacturer_id) && empty($request['category_id'])) {
             $sort_by_fileter->whereHas('manufacturer', function ($query) use ($manufacturer_id) {
-                $query->where('id', $manufacturer_id);
+                // $query->where('id', $manufacturer_id);
+                $query->Where('seo_en', 'like', "%{$manufacturer_id}%")
+                        ->orWhere('seo_ja', 'like', "%{$manufacturer_id}%");
             });
            }
            $sort_by_fileter->paginate($request['limit'], ['*'], 'page', $request['offset']);

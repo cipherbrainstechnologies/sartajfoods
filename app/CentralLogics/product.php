@@ -39,7 +39,8 @@ class ProductLogic
                     ->withCount(['wishlist','order_details'])
                     ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
                     ->whereHas('manufacturer', function ($query) use ($manufacturer_id) {
-                        $query->where('id', $manufacturer_id);
+                        $query->Where('seo_en', 'like', "%{$manufacturer_id}%")
+                        ->orWhere('seo_ja', 'like', "%{$manufacturer_id}%");
                     })
                     ->orderBy('id','desc')
                     ->paginate($limit, ['*'], 'page', $offset)
