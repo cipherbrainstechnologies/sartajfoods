@@ -8,8 +8,16 @@
     <!-- Title -->
     <title>@yield('title')</title>
     <!-- Favicon -->
-    @php($icon = \App\Model\BusinessSetting::where(['key' => 'fav_icon'])->first()->value)
-    <link rel="icon" type="image/x-icon" href="{{ asset('storage/restaurant/' . $icon ?? '') }}">
+    <!-- @php($icon = \App\Model\BusinessSetting::where(['key' => 'fav_icon'])->first()->value)
+    <link rel="icon" type="image/x-icon" href="{{ asset('storage/restaurant/' . $icon ?? '') }}"> -->
+
+    @php
+    $icon = \App\Model\BusinessSetting::where(['key' => 'fav_icon'])->first();
+    $iconUrl = $icon ? secure_asset('storage/restaurant/' . $icon->value) : null;
+@endphp
+
+<link rel="icon" type="image/x-icon" href="{{ $iconUrl }}">
+
     <link rel="shortcut icon" href="">
     <!-- Font -->
     <!-- CSS Implementing Plugins -->
