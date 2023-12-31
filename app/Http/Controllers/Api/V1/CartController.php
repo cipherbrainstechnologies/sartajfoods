@@ -143,6 +143,10 @@ class CartController extends Controller
             return response()->json(['errors' => 'maximum order qty is '.$product->maximum_order_quantity], 403);
         }
 
+        if($request->quantity > $product->total_stock){
+            return response()->json(['errors' => 'maximum order qty is '.$product->total_stock], 403);   
+        }
+
         if (!$product) {
             return response()->json(['error' => 'Product not found'], 404);
         }
@@ -223,8 +227,12 @@ class CartController extends Controller
         if(Cart::where(['product_id' => $product->id, 'user_id' => $user->id])->exists()){
             $cartData = Cart::where(['product_id' => $product->id, 'user_id' => $user->id])->first();
 
-            if($cartData->$cartData > $quantity){
-                return response()->json(['errors' => 'maximum order qty is '.$quantity], 403);
+            if($request->quantity > $product->maximum_order_quantity){
+                return response()->json(['errors' => 'maximum order qty is '.$product->maximum_order_quantity], 403);
+            }
+
+            if(($cartData->$quantity + $request->quantity) > $product->total_stock){
+                return response()->json(['errors' => 'maximum order qty is '.$product->total_stock], 403);
             }
 
             $cart =  Cart::where(['product_id' => $product->id, 'user_id' => $user->id])
