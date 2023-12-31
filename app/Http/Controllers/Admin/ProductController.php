@@ -740,28 +740,29 @@ class ProductController extends Controller
      */
     public function remove_image($id, $name): \Illuminate\Http\RedirectResponse
     {
-        if (Storage::disk('public')->exists('product/' . $name)) {
-            Storage::disk('public')->delete('product/' . $name);
-        }
-
-        $product = $this->product->find($id);
-        $img_arr = [];
-        // if (count(json_decode($product['images'])) < 2) {
-        //     Toastr::warning('You cannot delete all images!');
-        //     return back();
+        echo "sdfs";die;
+        // if (Storage::disk('public')->exists('product/' . $name)) {
+        //     Storage::disk('public')->delete('product/' . $name);
         // }
 
-        foreach (json_decode($product['image'], true) as $img) {
-            if (strcmp($img, $name) != 0) {
-                $img_arr[] = $img;
-            }
-        }
+        // $product = $this->product->find($id);
+        // $img_arr = [];
+        // // if (count(json_decode($product['images'])) < 2) {
+        // //     Toastr::warning('You cannot delete all images!');
+        // //     return back();
+        // // }
 
-        $this->product->where(['id' => $id])->update([
-            'image' => json_encode($img_arr),
-        ]);
-        Toastr::success(translate('Image removed successfully!'));
-        return back();
+        // foreach (json_decode($product['image'], true) as $img) {
+        //     if (strcmp($img, $name) != 0) {
+        //         $img_arr[] = $img;
+        //     }
+        // }
+
+        // $this->product->where(['id' => $id])->update([
+        //     'image' => json_encode($img_arr),
+        // ]);
+        // Toastr::success(translate('Image removed successfully!'));
+        // return back();
     }
 
 
