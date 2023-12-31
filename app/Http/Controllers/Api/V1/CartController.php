@@ -295,7 +295,7 @@ class CartController extends Controller
             return response()->json(['errors' => 'maximum order qty is '.$cart->product['maximum_order_quantity']], 403);
         }
         
-        if(($request->input('quantity') + $cart->quantity) > $cart->product['total_stock']){
+        if(($request->input('quantity')) > $cart->product['total_stock']){
             return response()->json(['errors' => 'maximum order qty is '.$cart->product['total_stock']], 403);
         }
 
