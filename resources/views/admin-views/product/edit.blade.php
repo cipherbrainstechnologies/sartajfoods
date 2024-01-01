@@ -391,7 +391,10 @@
                                     @foreach(json_decode($product['image'],true) as $img)
                                         <div class="spartan_item_wrapper position-relative">
                                             <img class="img-150 border rounded p-3" src="{{asset('storage/product')}}/{{$img}}">
-                                            <a href="{{route('admin.rm-image',[$product['id'],$img])}}" class="spartan__close"><i class="tio-add-to-trash"></i></a>
+                                            {{--<a href="{{route('admin.rm-image',[$product['id'],$img])}}" class="spartan__close"><i class="tio-add-to-trash"></i></a>--}}
+                                            <a href="{{route('admin.rm-image',[$product['id'],$img])}}" class="spartan__close" >
+                                                <i class="tio-add-to-trash"></i>
+                                            </a>
                                         </div>
                                     @endforeach
                                 @endif
@@ -852,6 +855,42 @@
     </script>
 
     {{-- <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script> --}}
+
+    <script>
+    $(document).ready(function () {
+        $('.spartan__close').on('click', function (e) {
+            e.preventDefault();
+
+            var url = $(this).attr('href');
+            var productId = $(this).data('product-id');
+            var imageName = $(this).data('image-name');
+
+            $.ajax({
+                type: 'get',
+                url: url,
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    product_id: productId,
+                    image_name: imageName,
+                },
+                success: function (response) {
+                    toastr.success('{{translate('Image removed successfully!')}}', {
+                        CloseButton: true,
+                        ProgressBar: true
+                    });
+                    setTimeout(function () {
+                        location.href = location.href;
+                    }, 2000);
+                    $(e.target).closest('div.image-container').remove();
+                },
+                error: function (error) {
+                    // Handle error, if any
+                    console.error(error);
+                }
+            });
+        });
+    });
+</script>
 
     <script>
 
