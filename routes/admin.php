@@ -486,7 +486,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
 
     // });
     Route::group(['middleware' => ['web', 'auth']], function () {
-        Route::post('rm-image/{id}/{name}', [ProductController::class, 'remove_image'])->name('rm-image');
+        Route::get('rm-image/{id}/{name}', [ProductController::class, 'remove_image'])->name('rm-image');
     });
 });
 
