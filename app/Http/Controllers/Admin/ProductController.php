@@ -425,6 +425,7 @@ class ProductController extends Controller
      */
     public function edit($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
+
         $product = $this->product->withoutGlobalScopes()->with('translations')->find($id);
         $product_category = json_decode($product->category_ids);
         $categories = $this->category->where(['parent_id' => 0])->get();
@@ -761,8 +762,8 @@ class ProductController extends Controller
             'image' => json_encode($img_arr),
         ]);
         Toastr::success(translate('Image removed successfully!'));
-        // return back();
-        return redirect()->route('admin.product.edit', ['id' => $id]);
+        return back();
+        // return redirect()->route('admin.product.edit', ['id' => $id]);
     }
 
 
