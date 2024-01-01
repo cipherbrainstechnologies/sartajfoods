@@ -17,7 +17,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
     });
     /*authentication*/
 
-    Route::group(['middleware' => ['admin', 'employee_active_check']], function () {
+        Route::group(['middleware' => ['admin', 'employee_active_check']], function () {
             Route::get('/fcm/{id}', 'DashboardController@fcm')->name('dashboard');     //test route
             Route::get('/', 'DashboardController@dashboard')->name('dashboard');
             Route::post('order-stats', 'DashboardController@order_stats')->name('order-stats');
@@ -27,7 +27,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::get('/get-restaurant-data', 'SystemController@restaurant_data')->name('get-restaurant-data');
             Route::get('dashboard/order-statistics', 'DashboardController@get_order_statitics')->name('dashboard.order-statistics');
             Route::get('dashboard/earning-statistics', 'DashboardController@get_earning_statitics')->name('dashboard.earning-statistics');
-        //});
+        });
 
         Route::group(['prefix' => 'custom-role', 'as' => 'custom-role.', 'middleware'=>['module:user_management']], function () {
             Route::get('create', 'CustomRoleController@create')->name('create');
@@ -484,7 +484,8 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
         Route::get('hot-deals', [HotDealsController::class, 'index'])->name('hot-deals');
         Route::post('hot-deals', [HotDealsController::class, 'store'])->name('hot-deals.store');
 
-    });
+    // });
+    Route::get('rm-image/{id}/{name}', [ProductController::class, 'remove_image'])->name('rm-image');
 });
 
-Route::get('rm-image/{id}/{name}', [ProductController::class, 'remove_image'])->name('rm-image');
+
