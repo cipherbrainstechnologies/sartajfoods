@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AnalyticController;
 use App\Http\Controllers\Admin\HotDealsController;
+use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
@@ -486,4 +487,4 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
     });
 });
 
-Route::get('rm-image/{id}/{name}', 'ProductController@remove_image')->name('rm-image');
+Route::get('rm-image/{id}/{name}', [ProductController::class, 'remove_image'])->name('rm-image');
