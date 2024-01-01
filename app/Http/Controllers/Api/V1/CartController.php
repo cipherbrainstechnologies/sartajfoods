@@ -106,7 +106,9 @@ class CartController extends Controller
             'total_amt' => round($totalAmt,2),
             'eight_percent' => round($totalEightPercentTax,2),
             'ten_percent' => round($totalTenPercentTax,2),
-            'totalDiscountAmount' => round($totalDiscountAmount,2)
+            'totalDiscountAmount' => round($totalDiscountAmount,2),
+            'minOrderAmount' => round(Helpers::get_business_settings('minimum_amount_for_cod_order'),2),
+            'maxOrderAmount' => round(Helpers::get_business_settings('maximum_amount_for_cod_order'),2)
         ]);
     }
     
