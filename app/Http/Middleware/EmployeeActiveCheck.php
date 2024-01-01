@@ -16,6 +16,7 @@ class EmployeeActiveCheck
     public function handle($request, Closure $next)
     {
         $user = auth('admin')->user();
+        echo "<pre>";print_r($user);die;
         if (isset($user) && $user->status == 0) {
             auth()->guard('admin')->logout();
             return redirect()->route('admin.auth.login');
