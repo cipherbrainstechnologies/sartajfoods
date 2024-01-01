@@ -875,7 +875,6 @@ class Helpers
 
     public static function module_permission_check($mod_name)
     {
-        echo "<pre>";print_r(auth('admin')->user());
         $permission = auth('admin')->user()->role->module_access;
         
         if (isset($permission) && in_array($mod_name, (array)json_decode($permission)) == true) {
