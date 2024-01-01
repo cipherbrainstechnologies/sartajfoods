@@ -740,6 +740,7 @@ class ProductController extends Controller
      */
     public function remove_image($id, $name): \Illuminate\Http\RedirectResponse
     {
+        echo  "sfd";die;
         if (Storage::disk('public')->exists('product/' . $name)) {
             Storage::disk('public')->delete('product/' . $name);
         }
