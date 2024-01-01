@@ -485,7 +485,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
         Route::post('hot-deals', [HotDealsController::class, 'store'])->name('hot-deals.store');
 
     // });
-        Route::get('rm-image/{id}/{name}', [ProductController::class, 'remove_image'])->name('rm-image');
+         Route::get('rm-image/{id}/{name}', [ProductController::class, 'remove_image'])->name('rm-image');
 });
 
 
