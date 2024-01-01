@@ -69,6 +69,7 @@ class CouponController extends Controller
                             $discountPrice = $coupon['max_discount'];
                             $coupon->discount_price = round($discountPrice,2);
                             $coupon->orderAmount = round(($orderAmount - $discountPrice) +$deliveryCharge ,2);
+                            
                             return response()->json($coupon, 200);
                         }else{
                             $errors[] = ['code' => 'auth-001', 'message' => 'order amount is less than minimum purchase amount'];
@@ -76,6 +77,8 @@ class CouponController extends Controller
                                 'errors' => $errors
                             ], 401);
                         } 
+                    }else{
+                        return response()->json($coupon, 200);
                     }
                 }else{
                     $discountPrice = $coupon['discount'];
