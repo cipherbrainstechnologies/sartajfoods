@@ -762,7 +762,8 @@ class ProductController extends Controller
             'image' => json_encode($img_arr),
         ]);
         Toastr::success(translate('Image removed successfully!'));
-        return back();
+        return back()->withInput();
+        // return back();
         // return redirect()->route('admin.product.edit', ['id' => $id]);
     }
 
