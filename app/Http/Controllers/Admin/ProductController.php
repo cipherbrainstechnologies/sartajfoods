@@ -733,12 +733,8 @@ class ProductController extends Controller
         return back();
     }
 
-    /**
-     * @param $id
-     * @param $name
-     * @return RedirectResponse
-     */
-    public function remove_image($id, $name): \Illuminate\Http\RedirectResponse
+  
+    public function remove_image($id, $name)
     {
         if (Storage::disk('public')->exists('product/' . $name)) {
             Storage::disk('public')->delete('product/' . $name);
