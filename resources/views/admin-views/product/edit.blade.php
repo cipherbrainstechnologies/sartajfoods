@@ -391,7 +391,8 @@
                                     @foreach(json_decode($product['image'],true) as $img)
                                         <div class="spartan_item_wrapper position-relative">
                                             <img class="img-150 border rounded p-3" src="{{asset('storage/product')}}/{{$img}}">
-                                            <a href="{{route('admin.product.remove-image',[$product['id'],$img])}}" class="spartan__close"><i class="tio-add-to-trash"></i></a>
+                                            <!-- <a href="{{route('admin.product.remove-image',[$product['id'],$img])}}" class="spartan__close"><i class="tio-add-to-trash"></i></a> -->
+                                            <span class="remove-product-image" data-img="{{route('admin.product.remove-image',[$product['id'],$img])}}"></span>
                                         </div>
                                     @endforeach
                                 @endif
@@ -898,7 +899,10 @@
     </script>
 
     <script>
-
+        $(".remove-product-image").click(function(){
+            alert("Hello");
+            return false;
+        });
         $('#discount_type').change(function(){
             if($('#discount_type').val() == 'percent') {
                 $("#discount_symbol").html('(%)')
