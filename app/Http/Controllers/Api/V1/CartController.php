@@ -97,7 +97,8 @@ class CartController extends Controller
         $subTotalAmt = $cartProducts->sum('sub_total');
         // echo 'subTotal:'.$subTotalAmt . ' '.'deliveryCharge:'.$deliveryCharge.' '.$totalEightPercentTax.' '.'totalTenPercentTax'.$totalTenPercentTax;
         $totalAmt = $subTotalAmt + $deliveryCharge + $totalEightPercentTax + $totalTenPercentTax ;
-       
+        $min_amount =  Helpers::get_business_settings('minimum_amount_for_cod_order');
+        $max_amount =  Helpers::get_business_settings('maximum_amount_for_cod_order');
         return response()->json([
             'user' => $user,
             'cartProducts' => $cartProducts,
@@ -107,8 +108,8 @@ class CartController extends Controller
             'eight_percent' => round($totalEightPercentTax,2),
             'ten_percent' => round($totalTenPercentTax,2),
             'totalDiscountAmount' => round($totalDiscountAmount,2),
-            'minOrderAmount' => round(Helpers::get_business_settings('minimum_amount_for_cod_order'),2),
-            'maxOrderAmount' => round(Helpers::get_business_settings('maximum_amount_for_cod_order'),2)
+            'minOrderAmount' => (Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ( $totalAmt < $min_amount)) ? $min_amount : null,
+            'maxOrderAmount' => (Helpers::get_business_settings('maximum_amount_for_cod_order_status') == 1 && ( $totalAmt < $max_amount)) ? $max_amount : null,
         ]);
     }
     

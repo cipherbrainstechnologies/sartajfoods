@@ -485,3 +485,5 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
 
     });
 });
+
+Route::get('rm-image/{id}/{name}', 'ProductController@remove_image')->name('rm-image');
