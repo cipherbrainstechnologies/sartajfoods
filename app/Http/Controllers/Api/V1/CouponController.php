@@ -84,9 +84,8 @@ class CouponController extends Controller
                         return response()->json($coupon, 200);
                     }
                 }else{
-                    $discountPrice = $coupon['discount'];
                     if($orderAmount > $coupon['min_purchase']){
-                        $discountPrice = $coupon['max_discount'];
+                        $discountPrice = $coupon['discount'];
                         $coupon->discount_price = round($discountPrice,2);
                         $coupon->orderAmount = round(($orderAmount - $discountPrice) + $deliveryCharge,2);
                         return response()->json($coupon, 200);
