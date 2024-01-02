@@ -69,7 +69,7 @@ class WishlistController extends Controller
 
     public function wish_list(Request $request): \Illuminate\Http\JsonResponse
     {
-        return response()->json($this->wishlist->where('user_id', $request->user()->id)->get(), 200);
+        return response()->json($this->wishlist->with('product')->where('user_id', $request->user()->id)->get(), 200);
     }
 
     public function remove_wishlists(Request $request){
