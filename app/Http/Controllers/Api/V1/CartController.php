@@ -392,7 +392,12 @@ class CartController extends Controller
                 // }
 
                 // add from date and end date condition
-                if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
+                if(!empty($product->hotDeal) &&  $product->hotDeal['start_date'] <= now() && $product->hotDeal['end_date'] >= now()){
+                    $discount_type = "hot-deal";
+                    $productPrice = $product->actual_price;
+                    $discount = 0;
+                    $subTotal =  $subTotal + $product->actual_price * $data['qty'];
+                }elseif(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
                     $currentDate = new DateTime(); // Current date and time
                     $saleStartDate = new DateTime($product->sale_start_date);
                     $saleEndDate = new DateTime($product->sale_end_date);
@@ -400,7 +405,7 @@ class CartController extends Controller
                         $productPrice = $product->sale_price;
                         
                         $discount = 0;
-                        $specialPrice = $product->sale_price;
+                        // $specialPrice = $product->sale_price;
                         $subTotal = $specialPrice * $data['qty'];
                     }
                 }else{
@@ -421,19 +426,19 @@ class CartController extends Controller
 
                 if($product->tax == 8){
                     if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
-                        $eight_percent += ((($product->sale_price * $product->tax) / 100) * $product->quantity);   
+                        $eight_percent += ((($product->actual_price * $product->tax) / 100) * $product->quantity);   
                     }else{
-                        $discount_price = Helpers::afterDiscountPrice($product,$product->price);
-                        $eight_percent += (((($product->price - $discount_price->discount_amount) * $product->tax) / 100) * $data['quantity']);      
+                        $discount_price = Helpers::afterDiscountPrice($product,$product->actual_price);                        
+                        $eight_percent += (((($product->actual_price - $discount_price['discount_amount']) * $product->tax) / 100) * $data['qty']);      
                     }
                
                 }
                 if($product->tax == 10){
                     if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
-                        $ten_percent += ((($product->sale_price * $product->tax) / 100) * $product->quantity);   
+                        $ten_percent += ((($product->actual_price * $product->tax) / 100) * $product->quantity);   
                     }else{
-                        $discount_price = Helpers::afterDiscountPrice($product,$product->price);
-                        $ten_percent += (((($product->price - $discount_price->discount_amount) * $product->tax) / 100) * $data['quantity']);   
+                        $discount_price = Helpers::afterDiscountPrice($product,$product->actual_price);
+                        $ten_percent += (((($product->actual_price - $discount_price['discount_amount']) * $product->tax) / 100) * $data['qty']);   
                     }
                     
                 }
@@ -445,8 +450,8 @@ class CartController extends Controller
                         'quantity' => $data['qty'],
                         'eight_percent' => $eight_percent,
                         'ten_percent' => $ten_percent,
-                        'price' => (isset($specialPrice) && !empty($specialPrice)) ? $specialPrice : $product->price,
-                        'special_price' =>  (!empty($specialPrice)) ? $specialPrice : 0,
+                        'price' => $product->actual_price,
+                        // 'special_price' =>  (!empty($specialPrice)) ? $specialPrice : 0,
                         'discount_type' => $discount_type,
                         'discount'      => $discount,
                         'sub_total'     => $subTotal
