@@ -78,6 +78,7 @@ class CouponController extends Controller
                             ], 401);
                         } 
                     }else{
+                        $$discountPrice = $coupon->discount;
                         $coupon->discount_price = round($discountPrice,2);
                         $coupon->orderAmount = round(($orderAmount - $discountPrice) +$deliveryCharge ,2);
                         return response()->json($coupon, 200);
