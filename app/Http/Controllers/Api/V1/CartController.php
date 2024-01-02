@@ -209,7 +209,6 @@ class CartController extends Controller
         if($product->tax == 8){
 
             if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
-                echo $product->sale_price. ' '. $product->tax;
                 $eight_percent += ((($product->actual_price * $product->tax) / 100) * $quantity); 
             }else{
                 $discount_price = Helpers::afterDiscountPrice($product,$product->price);
