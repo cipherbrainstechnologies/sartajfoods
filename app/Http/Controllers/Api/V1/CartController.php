@@ -443,19 +443,22 @@ class CartController extends Controller
                     
                 }
                 
+               
                 $cart = Cart::updateOrCreate(
                     [
-                        'user_id' => $user->id,
-                        'product_id' => $data['product_id'],
-                        'quantity' => $data['qty'],
+                        'user_id'       => $user->id,
+                        'product_id'    => $data['product_id'],
+                    ],
+                    [
+                        'quantity'      => $data['qty'],
                         'eight_percent' => $eight_percent,
-                        'ten_percent' => $ten_percent,
-                        'price' => $product->actual_price,
-                        // 'special_price' =>  (!empty($specialPrice)) ? $specialPrice : 0,
+                        'ten_percent'   => $ten_percent,
+                        'price'         => $product->actual_price,
+                        // 'special_price' => (!empty($specialPrice)) ? $specialPrice : 0,
                         'discount_type' => $discount_type,
                         'discount'      => $discount,
-                        'sub_total'     => $subTotal
-                    ],
+                        'sub_total'     => $subTotal,
+                    ]
                 );
             }
             return response()->json(['message' => 'Product added to cart']);
