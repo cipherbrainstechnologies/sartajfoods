@@ -153,7 +153,7 @@ class CartController extends Controller
         if (!$product) {
             return response()->json(['error' => 'Product not found'], 404);
         }
-        $discount_price = Helpers::afterDiscountPrice($product,$product->price);
+        $discount_price = Helpers::afterDiscountPrice($product,$product->actual_price);
         // echo $discount_price['discount_amount'];die;
         // $productPrice = $product->price - $discount_price['discount_amount'];
         
@@ -180,7 +180,6 @@ class CartController extends Controller
                     $productPrice = $product->actual_price - $discount_price['discount_amount'];
                     $discount = $discount_price['discount_amount'] * $quantity;
                     $subTotal =  $subTotal + (($productPrice  *  $quantity) );
-    
                 }else{
                     $discount_type = 'amount';
                     $productPrice = $product->actual_price - $discount_price['discount_amount'];
@@ -193,13 +192,13 @@ class CartController extends Controller
         }else{
             if($product->discount_type =="percent"){
                 $discount_type = 'percent';
-                $productPrice = $product->price - $discount_price['discount_amount'];
+                $productPrice = $product->actual_price - $discount_price['discount_amount'];
                 $discount = $discount_price['discount_amount'] * $quantity;
                 $subTotal =  $subTotal + (($productPrice  *  $quantity) );
 
             }else{
                 $discount_type = 'amount';
-                $productPrice = $product->price - $discount_price['discount_amount'];
+                $productPrice = $product->actual_price - $discount_price['discount_amount'];
                 $discountPrice = $product->discount;
                 $discount = $product->discount;
                 $subTotal =   $subTotal  + (($productPrice  *  $quantity) );
@@ -211,7 +210,7 @@ class CartController extends Controller
             if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
                 $eight_percent += ((($product->actual_price * $product->tax) / 100) * $quantity); 
             }else{
-                $discount_price = Helpers::afterDiscountPrice($product,$product->price);
+                $discount_price = Helpers::afterDiscountPrice($product,$product->actual_price);
                 $eight_percent += (((($product->actual_price - $discount_price['discount_amount']) * $product->tax) / 100) * $quantity);      
             }
        
@@ -220,7 +219,7 @@ class CartController extends Controller
             if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
                 $ten_percent += ((($product->actual_price * $product->tax) / 100) * $quantity);   
             }else{
-                $discount_price = Helpers::afterDiscountPrice($product,$product->price);
+                $discount_price = Helpers::afterDiscountPrice($product,$product->actual_price);
                 $ten_percent += (((($product->actual_price - $discount_price['discount_amount']) * $product->tax) / 100) * $quantity);   
             }
             
@@ -406,21 +405,21 @@ class CartController extends Controller
                         
                         $discount = 0;
                         // $specialPrice = $product->sale_price;
-                        $subTotal = $specialPrice * $data['qty'];
+                        $subTotal = $product->actual_price * $data['qty'];
                     }
                 }else{
                     if($product->discount_type ="percent"){
                         if($product->discount != "0.00"){
-                            $discount = ((($product->price * $product->discount) / 100) * $data['qty']);
-                            $subTotal = (($product->price *  $data['qty']) - $discount);
+                            $discount = ((($product->actual_price * $product->discount) / 100) * $data['qty']);
+                            $subTotal = (($product->actual_price *  $data['qty']) - $discount);
                         }else{
                             $discount = 0;
-                            $subTotal = ($product->price *  $data['qty']);
+                            $subTotal = ($product->actual_price *  $data['qty']);
                         }
                         
                     }else{
                         $discount = $product->discount;
-                        $subTotal = (($product->price *  $data['qty']) - $discount);
+                        $subTotal = (($product->actual_price *  $data['qty']) - $discount);
                     }
                 }
 
@@ -451,13 +450,13 @@ class CartController extends Controller
                     ],
                     [
                         'quantity'      => $data['qty'],
-                        'eight_percent' => $eight_percent,
-                        'ten_percent'   => $ten_percent,
-                        'price'         => $product->actual_price,
+                        'eight_percent' => round($eight_percent,2),
+                        'ten_percent'   => round($ten_percent,2),
+                        'price'         => round($product->actual_price,2),
                         // 'special_price' => (!empty($specialPrice)) ? $specialPrice : 0,
                         'discount_type' => $discount_type,
-                        'discount'      => $discount,
-                        'sub_total'     => $subTotal,
+                        'discount'      => round($discount,2),
+                        'sub_total'     => round($subTotal,2)
                     ]
                 );
             }
