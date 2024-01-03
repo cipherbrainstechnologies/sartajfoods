@@ -422,12 +422,12 @@ class CartController extends Controller
                         $subTotal = (($product->actual_price *  $data['qty']) - $discount);
                     }
                 }
-               
+              
                 if($product->tax == 8){
                     if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
-                        $eight_percent += ((($product->actual_price * $product->tax) / 100) * $product->quantity);   
+                        $eight_percent += ((($product->actual_price * $product->tax) / 100) * $data['qty']);   
                     }else{
-                        $discount_price = Helpers::afterDiscountPrice($product,$product->actual_price);                        
+                        $discount_price = Helpers::afterDiscountPrice($product,$product->actual_price);                  
                         $eight_percent += (((($product->actual_price - $discount_price['discount_amount']) * $product->tax) / 100) * $data['qty']);      
                     }
                
@@ -459,6 +459,7 @@ class CartController extends Controller
                         'sub_total'     => round($subTotal,2)
                     ]
                 );
+              
             }
             return response()->json(['message' => 'Product added to cart']);
         }else{
