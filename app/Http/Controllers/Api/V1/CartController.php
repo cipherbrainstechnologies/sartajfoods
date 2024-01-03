@@ -434,7 +434,7 @@ class CartController extends Controller
                 }
                 if($product->tax == 10){
                     if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
-                        $ten_percent += ((($product->actual_price * $product->tax) / 100) * $product->quantity);   
+                        $ten_percent += ((($product->actual_price * $product->tax) / 100) * $data['qty']);   
                     }else{
                         $discount_price = Helpers::afterDiscountPrice($product,$product->actual_price);
                         $ten_percent += (((($product->actual_price - $discount_price['discount_amount']) * $product->tax) / 100) * $data['qty']);   
