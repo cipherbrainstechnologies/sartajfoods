@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Model\FlashDeal;
 use App\Model\HotDeals;
+use Illuminate\Support\Facades\Date;
 
 class Product extends Model
 {
@@ -134,9 +135,9 @@ class Product extends Model
     }
 
     public function getActualPriceAttribute(){
-        if(!empty($this->hotDeal) &&  $this->hotDeal['start_date'] <= now() && $this->hotDeal['end_date'] >= now()){
+        if(!empty($this->hotDeal) &&  $this->hotDeal['start_date'] <= now() && Date::parse($this->hotDeal['end_date'])->startOfDay() >= Date::parse(now())->startOfDay()){
             return $this->price - ($this->price * $this->hotDeal['discount'] / 100);
-        }elseif(!empty($this->sale_price) && $this->sale_start_date <= now() && $this->sale_end_date >= now()){
+        }elseif(!empty($this->sale_price) && $this->sale_start_date <= now() && Date::parse($this->sale_end_date)->startOfDay() >= Date::parse(now())->startOfDay()){
             return $this->sale_price;
         }elseif(!empty($this->discount)){
             if($this->discount_type=="percent"){
@@ -145,21 +146,8 @@ class Product extends Model
                 return $this->price - $this->discount;
             }
         }else{
-                return $this->price;
-            }
-       
-        // if(!empty($this->discount)){
-        //     if($this->discount_type=="percent"){
-        //         return $this->price - ($this->price * $this->discount / 100);
-        //     }else{
-        //         return $this->price - $this->discount;
-        //     }
-        // }elseif(!empty($this->sale_price) && $this->sale_start_date <= now() && $this->sale_end_date >= now()){
-        //     return $this->sale_price;
-        // }
-        // else{
-        //     return $this->price;
-        // }
+            return $this->price;
+        }
     }
 
     // public function getMaximumOrderQuantityAttribute(){
