@@ -109,7 +109,7 @@
                                 <th>{{translate('selling_price')}}</th>
                                 <th class="text-center">{{translate('total_sale')}}</th>
                                 <th class="text-center">{{translate('available _sale')}}</th>
-                                <th class="text-center">{{translate('show_in_daily_needs')}}</th>
+                                <!-- <th class="text-center">{{translate('show_in_daily_needs')}}</th> -->
                                 <th class="text-center">{{translate('featured')}}</th>
                                 <th class="text-center">{{translate('status')}}</th>
                                 <th class="text-center">{{translate('action')}}</th>
@@ -156,7 +156,7 @@
                                      <td class="text-center">
                                         {{ ($product->total_stock >= 0) ? $product->total_stock  : 0}}
                                     </td>
-                                    <td class="pt-1 pb-3  {{$key == 0 ? 'pt-4' : '' }}">
+                                    <!-- <td class="pt-1 pb-3  {{$key == 0 ? 'pt-4' : '' }}">
                                         <div class="text-center">
                                             <label class="switch my-0">
                                                 <input type="checkbox" class="status" onchange="daily_needs('{{$product['id']}}','{{$product->daily_needs==1?0:1}}')"
@@ -164,7 +164,7 @@
                                                 <span class="slider round"></span>
                                             </label>
                                         </div>
-                                    </td>
+                                    </td> -->
                                     <td class="pt-1 pb-3  {{$key == 0 ? 'pt-4' : '' }}">
                                         <label class="toggle-switch my-0">
                                             <input type="checkbox"

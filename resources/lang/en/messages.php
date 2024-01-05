@@ -2183,5 +2183,7 @@
   'Accept Language' => 'Accept Language',
   'User Agent' => 'User Agent',
   'Forwarded Ip' => 'Forwarded Ip',
-  'Ip Address' => 'Ip Address'
+  'Ip Address' => 'Ip Address',
+  'Japanese' => 'Japanese',
+  'English' => 'English',
 );

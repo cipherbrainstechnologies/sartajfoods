@@ -35,8 +35,14 @@
                             <div class="row g-3">
                                 <div class="col-12">
                                     <div class="form-group mb-0">
-                                        <label class="input-label" for="exampleFormControlInput1">{{translate('title')}}</label>
-                                        <input type="text" name="title" value="{{old('title')}}" class="form-control" placeholder="{{ translate('New banner') }}" maxlength="255" required>
+                                        <label class="input-label" for="exampleFormControlInput1">{{translate('English')}} {{translate('title')}}</label>
+                                        <input type="text" name="title" value="{{old('title')}}" class="form-control" placeholder="{{translate('English')}} {{translate('title')}}" maxlength="255" required>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mb-0">
+                                        <label class="input-label" for="exampleFormControlInput1">{{translate('Japanese')}} {{translate('title')}}</label>
+                                        <input type="text" name="title_ja" value="{{old('title_ja')}}" class="form-control" placeholder="{{translate('Japanese')}} {{translate('title')}}" maxlength="255" required>
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -48,9 +54,17 @@
 
                                 <div class="col-12">
                                     <div class="form-group mb-0">
-                                        <label class="input-label" for="description">{{translate('Description')}}</label>
+                                        <label class="input-label" for="description">{{translate('English')}} {{translate('Description')}}</label>
                                         <!-- <input type="text" name="link" value="{{old('link')}}" class="form-control" placeholder="{{ translate('banner_link') }}"> -->
                                         <textarea class="form-control" name="description" placeholder="{{__('Description')}}">{{old('description')}}</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-group mb-0">
+                                        <label class="input-label" for="description">{{translate('Japanese')}} {{translate('Description')}}</label>
+                                        <!-- <input type="text" name="link" value="{{old('link')}}" class="form-control" placeholder="{{ translate('banner_link') }}"> -->
+                                        <textarea class="form-control" name="description_ja" placeholder="{{translate('Japanese')}} {{__('Description')}}">{{old('description_ja')}}</textarea>
                                     </div>
                                 </div>
                                 @if(Request::is('admin/banner/other*'))
@@ -178,8 +192,10 @@
                         @if(Request::is('admin/banner/other*'))
                         <th class="border-0">{{translate('banner logo')}}</th>
                         @endif
-                        <th class="border-0">{{translate('title')}}</th>
-                        <th class="border-0">{{translate('banner description')}}</th>
+                        <th class="border-0">{{translate('English')}} {{translate('title')}}</th>
+                        <th class="border-0">{{translate('Japanese')}} {{translate('title')}}</th>
+                        <th class="border-0">{{translate('English')}} {{translate('Description')}}</th>
+                        <th class="border-0">{{translate('Japanese')}} {{translate('Description')}}</th>
                         <th class="text-center border-0">{{translate('status')}}</th>
                         <th class="text-center border-0">{{translate('action')}}</th>
                     </tr>
@@ -207,12 +223,25 @@
                                 </span>
                             </td>
                             <td>
+                                <span class="d-block font-size-sm text-body text-trim-25">
+                                    {{$banner['title_ja']}}
+                                </span>
+                            </td>
+                            <td>
                                {{-- @if($banner['product_id'])
                                     {{ translate('Product') }} : {{$banner->product?$banner->product->name:''}}
                                 @elseif($banner['category_id'])
                                     {{ translate('Category') }} : {{$banner->category?$banner->category->name:''}}
                                 @endif --}}
                                 {{$banner->description}}
+                            </td>
+                            <td>
+                               {{-- @if($banner['product_id'])
+                                    {{ translate('Product') }} : {{$banner->product?$banner->product->name:''}}
+                                @elseif($banner['category_id'])
+                                    {{ translate('Category') }} : {{$banner->category?$banner->category->name:''}}
+                                @endif --}}
+                                {{$banner->description_ja}}
                             </td>
                             <td>
                                 <label class="toggle-switch my-0">

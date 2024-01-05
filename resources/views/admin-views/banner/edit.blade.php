@@ -36,9 +36,16 @@
                             <div class="row g-3">
                                 <div class="col-12">
                                     <div class="form-group mb-0">
-                                        <label class="input-label" for="exampleFormControlInput1">{{translate('title')}}</label>
+                                        <label class="input-label" for="exampleFormControlInput1">{{translate('English')}} {{translate('title')}}</label>
                                         <input type="text" name="title" value="{{$banner['title']}}" class="form-control"
-                                            placeholder="{{ translate('New banner') }}" required>
+                                            placeholder="{{translate('English')}} {{translate('title')}}" required>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mb-0">
+                                        <label class="input-label" for="exampleFormControlInput1">{{translate('Japanese')}} {{translate('title')}}</label>
+                                        <input type="text" name="title_ja" value="{{$banner['title_ja']}}" class="form-control"
+                                            placeholder="{{translate('Japanese')}} {{translate('title')}}" required>
                                     </div>
                                 </div>
                                 @if(empty($request->type))
@@ -63,8 +70,14 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group mb-0">
-                                        <label class="input-label" for="description">{{translate('Description')}}</label>
+                                        <label class="input-label" for="description">{{translate('English')}} {{translate('Description')}}</label>
                                         <textarea class="form-control" name="description" placeholder="{{__('Description') }}">{{$banner['description']}}</textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mb-0">
+                                        <label class="input-label" for="description_ja">{{translate('Japanese')}} {{translate('Description')}}</label>
+                                        <textarea class="form-control" name="description_ja" placeholder="{{translate('Japanese')}} {{translate('Description')}}">{{$banner['description_ja']}}</textarea>
                                     </div>
                                 </div>
                                 @if(!empty($banner['type']))

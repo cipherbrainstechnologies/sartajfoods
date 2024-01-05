@@ -643,10 +643,10 @@
                         <!-- End Body -->
                     </div>
 
-                     <div class="card mt-2">
-                        <div class="card-body">
-                            @if($order['order_type'] != 'pos')
-                                <div class="hs-unfold w-100 mt-3">
+                     <!-- <div class="card mt-2"> -->
+                        <!-- <div class="card-body"> -->
+                            <!-- @if($order['order_type'] != 'pos') -->
+                                <!-- <div class="hs-unfold w-100 mt-3">
                                     <span class="d-block form-label font-bold mb-2">{{translate('Payment Status')}}:</span>
                                     <div class="dropdown">
                                         <button class="form-control h--45px dropdown-toggle d-flex justify-content-between align-items-center w-100" type="button"
@@ -663,10 +663,10 @@
                                             href="javascript:">{{translate('unpaid')}}</a>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <!-- End Unfold -->
 
-                                <div class="mt-3">
+                                <!-- <div class="mt-3">
                                     <span class="d-block form-label mb-2 font-bold">{{translate('Delivery Date & Time')}}:</span>
                                     <div class="d-flex flex-wrap g-2">
                                         <div class="hs-unfold w-0 flex-grow min-w-160px">
@@ -687,9 +687,9 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endif
-                        </div>
-                    </div>    
+                            @endif -->
+                        <!-- </div> -->
+                    <!-- </div>    -->
 
                     <div class="card mt-3">
 
