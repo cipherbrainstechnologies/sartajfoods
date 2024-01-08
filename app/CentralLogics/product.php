@@ -119,7 +119,8 @@ class ProductLogic
     //Get Related products 
     public static function get_related_products($product_id){
         $product = Product::find($product_id);
-        return Product::active()->withCount(['wishlist'])->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])->where('category_ids', $product->category_ids)
+        return Product::active()->withCount(['wishlist'])->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
+            ->where('category_ids', $product->category_ids)
             ->where('id', '!=', $product->id)
             ->limit(10)
             ->get();

@@ -5,6 +5,7 @@
 @push('css_or_js')
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{asset('public/assets/admin/css/tags-input.min.css')}}" rel="stylesheet">
+    <link href="{{asset('public/assets/admin')}}/css/select2.min.css" rel="stylesheet"/>
 @endpush
 
 @section('content')
@@ -516,6 +517,37 @@
                 </div>
             </div>
 
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <span class="card-header-icon">
+                                <i class="tio-puzzle"></i>
+                            </span>
+                            <span>
+                                {{translate('Related Products')}}
+                            </span>
+                        </h5>
+                    </div>
+                    <div class="card-body pb-0">
+                        <div class="form-group __select-attr">
+                            <label class="input-label"
+                                    for="exampleFormControlSelect1">{{translate('Select')}} {{translate('Related Products')}}<span
+                                    class="input-label-secondary"></span></label>
+                            <select name="related_product_ids[]" id="related_products"
+                                    class="form-control js-select2-custom" multiple="multiple">
+                                @if(!empty($products))
+                                    @foreach( $products as $productData)
+                                        <option value="{{$productData['id']}}">{{$productData['name']}}</option>
+                                    @endforeach
+                                @else
+                                    <option value="">{{translate('No Any Products')}}</option>
+                                @endif
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- <div class="col-lg-6">
                 <div class="card h-100">
                     <div class="card-header">
@@ -677,6 +709,7 @@
 @endpush
 
 @push('script_2')
+    <script src="{{asset('public/assets/admin')}}/js/select2.min.js"></script>
     <script src="{{asset('public/assets/admin/js/spartan-multi-image-picker.js')}}"></script>
     <script>
         $(".lang_link").click(function(e){

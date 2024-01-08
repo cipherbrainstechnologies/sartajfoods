@@ -8,6 +8,7 @@ use App\Model\BusinessSetting;
 use App\Model\Category;
 use App\Model\FlashDealProduct;
 use App\Model\Product;
+use App\Model\RelatedProducts;
 use App\Model\Review;
 use App\Model\Tag;
 use App\Model\Translation;
@@ -107,11 +108,12 @@ class ProductController extends Controller
      */
     public function index(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
+        $products = $this->product->active()->get();
         $categories = $this->category->where(['position' => 0])->get();
         $manufacturers = $this->manufacturer->get();
         $filters = $this->filter->get();
         $downloadLinks = $this->downloads->get();
-        return view('admin-views.product.index', compact('categories', 'manufacturers', 'filters', 'downloadLinks'));
+        return view('admin-views.product.index', compact('categories', 'manufacturers', 'filters', 'downloadLinks','products'));
     }
 
     /**
@@ -145,7 +147,6 @@ class ProductController extends Controller
             }
              $product->total_sold = $total_sold;
         }
-        // echo "<pre>";print_r($products->toArray());die;
         return view('admin-views.product.list', compact('products','search'));
     }
 
@@ -385,7 +386,15 @@ class ProductController extends Controller
         $p->downloads = $request->has('download_id') ? json_encode($request->download_id) : json_encode([]);
         $p->status = ($request->status) ? 1 : 0; 
         $p->save();
-
+        if(!empty($request->related_product_ids)){
+            foreach($request->related_product_ids as $relatedProduct){
+                RelatedProducts::create([
+                    "product_id" =>  $p->id,
+                    "related_product_id" => $relatedProduct
+                ]);
+            }
+        }
+    
         $p->tags()->sync($tag_ids);
 
         $data = [];
@@ -425,15 +434,15 @@ class ProductController extends Controller
      */
     public function edit($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
-
-        $product = $this->product->withoutGlobalScopes()->with('translations')->find($id);
+        $products = $this->product->active()->get();
+        $product = $this->product->withoutGlobalScopes()->with('translations','relatedProducts')->find($id);
         $product_category = json_decode($product->category_ids);
         $categories = $this->category->where(['parent_id' => 0])->get();
         $manufacturers = $this->manufacturer->get();
         $filters = $this->filter->get();
         $downloadLinks = $this->downloads->get();
         // dd((array)$manufacturers);
-        return view('admin-views.product.edit', compact('product', 'product_category', 'categories', 'manufacturers', 'filters', 'downloadLinks'));
+        return view('admin-views.product.edit', compact('products','product', 'product_category', 'categories', 'manufacturers', 'filters', 'downloadLinks'));
     }
 
     /**
@@ -682,6 +691,15 @@ class ProductController extends Controller
         $p->status = ($request->status === 'on') ? 1 : 0; 
         
         $p->save();
+        RelatedProducts::where('product_id', $p->id)->delete();
+        if(!empty($request->related_product_ids)){
+            foreach($request->related_product_ids as $relatedProduct){
+                RelatedProducts::create([
+                    "product_id" =>  $p->id,
+                    "related_product_id" => $relatedProduct
+                ]);
+            }
+        }
 
         $p->tags()->sync($tag_ids);
 

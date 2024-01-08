@@ -551,6 +551,50 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <span class="card-header-icon">
+                                <i class="tio-puzzle"></i>
+                            </span>
+                            <span>
+                                {{translate('Related Products')}}
+                            </span>
+                        </h5>
+                    </div>
+                    
+                    <div class="card-body pb-0">
+                        <div class="form-group __select-attr">
+                            <label class="input-label"
+                                    for="exampleFormControlSelect1">{{translate('Select')}} {{translate('Related Products')}}<span
+                                    class="input-label-secondary"></span></label>
+                                
+                                <select name="related_product_ids[]" id="related_products" class="form-control js-select2-custom" multiple="multiple">
+                                    @if(!empty($products))
+                                        @foreach($products as $productData)
+                                            <?php 
+                                                $isSelected = false; 
+                                                if (!empty($product['relatedProducts'])) {
+                                                    foreach ($product['relatedProducts'] as $relatedProduct){ 
+                                                        if($relatedProduct['related_product_id'] === $productData['id']){ 
+                                                            $isSelected = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                            ?>
+                                            <option value="{{$productData['id']}}" {{ $isSelected ? 'selected' : '' }}>{{$productData['name']}}</option>
+                                        @endforeach
+                                    @else
+                                        <option value="">{{ translate('No Any Products') }}</option>
+                                    @endif
+                                </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
               <!-- <div class="col-lg-6">
                 <div class="card h-100">
                     <div class="card-header">

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Model\FlashDeal;
 use App\Model\HotDeals;
+use App\Model\RelatedProducts;
 use Illuminate\Support\Facades\Date;
 
 class Product extends Model
@@ -27,7 +28,11 @@ class Product extends Model
         'is_featured'  => 'integer',
     ];
 
-    
+    public function relatedProducts()
+    {
+        return $this->hasMany(RelatedProducts::class, 'product_id');
+    }
+
     public function hotDeal()
     {
         return $this->hasOne(HotDeals::class);
