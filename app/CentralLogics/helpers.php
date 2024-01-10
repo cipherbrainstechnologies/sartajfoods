@@ -1021,7 +1021,7 @@ class Helpers
        return 0;
     }
 
-    public static function addRecentActivity($user,$status){
+    public static function addRecentActivity($user,$status,$order_id=null){
         
         $currentDateTime = Carbon::now();
         switch ($status) {

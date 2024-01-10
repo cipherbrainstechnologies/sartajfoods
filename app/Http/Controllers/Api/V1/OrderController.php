@@ -478,23 +478,21 @@ class OrderController extends Controller
     public function cancel_order(Request $request): \Illuminate\Http\JsonResponse
     {
         if ($this->order->where(['user_id' => $request->user()->id, 'id' => $request['order_id']])->first()) {
-
             $order = $this->order->with(['details'])->where(['user_id' => $request->user()->id, 'id' => $request['order_id']])->first();
-
             foreach ($order->details as $detail) {
                 if ($detail['is_stock_decreased'] == 1) {
                     $product = $this->product->find($detail['product_id']);
-                    $type = json_decode($detail['variation'])[0]->type;
-                    $var_store = [];
-                    foreach (json_decode($product['variations'], true) as $var) {
-                        if ($type == $var['type']) {
-                            $var['stock'] += $detail['quantity'];
-                        }
-                        $var_store[] = $var;
-                    }
+                    // $type = json_decode($detail['variation'])[0]->type;
+                    // $var_store = [];
+                    // foreach (json_decode($product['variations'], true) as $var) {
+                    //     if ($type == $var['type']) {
+                    //         $var['stock'] += $detail['quantity'];
+                    //     }
+                    //     $var_store[] = $var;
+                    // }
 
                     $this->product->where(['id' => $product['id']])->update([
-                        'variations' => json_encode($var_store),
+                        // 'variations' => json_encode($var_store),
                         'total_stock' => $product['total_stock'] + $detail['quantity'],
                     ]);
 
