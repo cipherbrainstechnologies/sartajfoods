@@ -18,11 +18,11 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class ProductLogic
 {
     public static function get_product($id){
-        return Product::active()->withCount(['wishlist'])->with(['rating', 'active_reviews', 'active_reviews.customer', 'soldProduct'])->where('id', $id)->first();
+        return Product::active()->withCount(['wishlist','relatedProducts'])->with(['rating', 'active_reviews', 'active_reviews.customer', 'soldProduct','relatedProducts.product'])->where('id', $id)->first();
     }
 
     public static function get_seo_product($seo){
-        return Product::active()->withCount(['wishlist'])->with(['rating', 'active_reviews', 'active_reviews.customer', 'soldProduct'])
+        return Product::active()->withCount(['wishlist','relatedProducts'])->with(['rating', 'active_reviews', 'active_reviews.customer', 'soldProduct','relatedProducts.product'])
         ->Where('seo_en', 'like', "%{$seo}%")
         ->orWhere('seo_ja', 'like', "%{$seo}%")
         ->first();
@@ -36,8 +36,8 @@ class ProductLogic
 
         $paginator = !empty($manufacturer_id) ?
                     Product::active()
-                    ->withCount(['wishlist','order_details'])
-                    ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
+                    ->withCount(['wishlist','order_details','relatedProducts'])
+                    ->with(['rating', 'active_reviews','manufacturer', 'soldProduct','relatedProducts.product'])
                     ->whereHas('manufacturer', function ($query) use ($manufacturer_id) {
                         $query->Where('seo_en', 'like', "%{$manufacturer_id}%")
                         ->orWhere('seo_ja', 'like', "%{$manufacturer_id}%");
@@ -45,8 +45,8 @@ class ProductLogic
                     ->orderBy('id','desc')
                     ->paginate($limit, ['*'], 'page', $offset)
                     : Product::active()
-                    ->withCount(['wishlist','order_details'])
-                    ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
+                    ->withCount(['wishlist','order_details','relatedProducts'])
+                    ->with(['rating', 'active_reviews','manufacturer', 'soldProduct','relatedProducts.product'])
                     ->orderBy('id','desc')
                     ->paginate($limit, ['*'], 'page', $offset);
 
@@ -78,8 +78,8 @@ class ProductLogic
         $twoWeeksAgo = $currentDate->subDays(14);
 
         $paginator = Product::active()
-            ->withCount(['wishlist'])
-            ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
+            ->withCount(['wishlist','relatedProducts'])
+            ->with(['rating', 'active_reviews','manufacturer', 'soldProduct','relatedProducts.product'])
             ->where('created_at', '>=', $twoWeeksAgo)  // Filter for products created in the last two weeks
             ->latest();//;->paginate($limit, ['*'], 'page', $offset);
             if(!is_null($take)){
@@ -118,18 +118,23 @@ class ProductLogic
 
     //Get Related products 
     public static function get_related_products($product_id){
-        $product = Product::find($product_id);
-        return Product::active()->withCount(['wishlist'])->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
-            ->where('category_ids', $product->category_ids)
-            ->where('id', '!=', $product->id)
-            ->limit(10)
-            ->get();
+        // $product = Product::find($product_id);
+        // return Product::active()->withCount(['wishlist'])->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
+        //     ->where('category_ids', $product->category_ids)
+        //     ->where('id', '!=', $product->id)
+            // ->limit(10)
+            // ->get();
+        return Product::where('id',$product_id)->withCount(['wishlist','relatedProducts'])
+                    ->with(['rating', 'active_reviews','manufacturer', 'soldProduct','relatedProducts.product'])
+                    ->limit(10)
+                    ->get();
+        
     }
 
     // Search product get
     public static function search_products($name, $limit = 10, $offset = 1){
         $key = explode(' ', $name);
-        $paginator = Product::active()->withCount(['wishlist'])->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])->where(function ($q) use ($key) {
+        $paginator = Product::active()->withCount(['wishlist','relatedProducts'])->with(['rating', 'active_reviews','manufacturer', 'soldProduct','relatedProducts.product'])->where(function ($q) use ($key) {
             foreach ($key as $value) {
                 $q->orWhere('name', 'like', "%{$value}%");
             }
@@ -201,7 +206,7 @@ class ProductLogic
     }
 
     public static function get_popular_products($limit = 10, $offset = 1){
-        $paginator = Product::active()->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])->orderBy('popularity_count', 'desc')->paginate($limit, ['*'], 'page', $offset);
+        $paginator = Product::active()->withCount(['wishlist','relatedProducts'])->with(['rating', 'active_reviews','manufacturer', 'soldProduct','relatedProducts.product'])->orderBy('popularity_count', 'desc')->paginate($limit, ['*'], 'page', $offset);
         return [
             'total_size' => $paginator->total(),
             'limit' => $limit,
@@ -212,7 +217,8 @@ class ProductLogic
 
     public static function get_most_viewed_products($limit = 10, $offset = 1){
         $paginator = Product::active()
-            ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
+            ->withCount(['wishlist','relatedProducts'])
+            ->with(['rating', 'active_reviews','manufacturer', 'soldProduct','relatedProducts.product'])
             ->orderBy('view_count', 'desc')
             ->paginate($limit, ['*'], 'page', $offset);
 
@@ -227,11 +233,11 @@ class ProductLogic
     public static function get_trending_products($limit = 10, $offset = 1,$take=null){
         if(OrderDetail::count() > 0) {
             $paginator = Product::active()
-                ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
+                ->with(['rating', 'active_reviews','manufacturer', 'soldProduct','relatedProducts.product'])
                 // ->whereHas('order_details', function ($query) {
                 //     $query->where('created_at', '<', now()->subDays(30)->endOfDay());
                 // })
-                ->withCount('order_details')
+                ->withCount('order_details','relatedProducts')
                 ->orderBy('order_details_count', 'desc');
                 
                 if(!is_null($take)){
@@ -240,7 +246,8 @@ class ProductLogic
                 $paginator = $paginator->paginate($limit, ['*'], 'page', $offset);
         } else {
             $paginator = Product::active()
-                ->with(['rating', 'active_reviews','manufacturer'])
+                ->withCount('order_details','relatedProducts')
+                ->with(['rating', 'active_reviews','manufacturer','relatedProducts.product'])
                 ->inRandomOrder();
                 // ->paginate($limit, ['*'], 'page', $offset);
                 if(!is_null($take)){
@@ -281,7 +288,8 @@ class ProductLogic
             $ids = array_unique($ids);
 
             $paginator = Product::active()
-                ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
+                ->withCount('order_details','relatedProducts')
+                ->with(['rating', 'active_reviews','manufacturer', 'soldProduct','relatedProducts.product'])
                 ->where(function ($query) use ($ids) {
                     foreach ($ids as $id) {
                         $query->orWhereJsonContains('category_ids', [['id' => $id, 'position' => 1]]);
@@ -291,7 +299,8 @@ class ProductLogic
 
         } else {
             $paginator = Product::active()
-                ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
+                ->withCount('order_details','relatedProducts')
+                ->with(['rating', 'active_reviews','manufacturer', 'soldProduct','relatedProducts.product'])
                 ->inRandomOrder()
                 ->paginate($limit, ['*'], 'page', $offset);
         }
@@ -307,8 +316,8 @@ class ProductLogic
     public static function get_most_reviewed_products($limit = 10, $offset = 1,$take=null){
 
         $paginator = Product::active()
-            ->with(['rating', 'active_reviews', 'manufacturer', 'soldProduct'])
-            ->withCount('active_reviews')
+            ->with(['rating', 'active_reviews', 'manufacturer', 'soldProduct','relatedProducts.product'])
+            ->withCount('active_reviews','relatedProducts')
             ->get();
 
         // // Extract the rating values from the relationships
@@ -372,7 +381,8 @@ class ProductLogic
     public static function get_sale_products($limit = 10, $offset = 1,$take=null){
         
         $paginator = Product::active()
-        ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
+        ->withCount('active_reviews','relatedProducts')
+        ->with(['rating', 'active_reviews','manufacturer', 'soldProduct','relatedProducts.product'])
         ->whereNotNull('sale_start_date')
         ->whereNotNull('sale_end_date')
         ->where('sale_start_date', '<=', now())  
@@ -447,7 +457,7 @@ class ProductLogic
             })->whereIn('id', $product_ids)->paginate($limit, ['*'], 'page', $offset);
         } else {
             $key = explode(' ', $name);
-            $paginator = Product::active()->withCount(['wishlist'])->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])->where(function ($q) use ($key) {
+            $paginator = Product::active()->withCount('wishlist','active_reviews','relatedProducts')->with(['rating', 'active_reviews','manufacturer', 'soldProduct','relatedProducts.product'])->where(function ($q) use ($key) {
                 foreach ($key as $value) {
                     $q->orWhere('name', 'like', "%{$value}%");
                 }

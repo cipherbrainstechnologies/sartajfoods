@@ -546,11 +546,18 @@ class OrderController extends Controller
         $orderDetails =collect($order->details);
         $EightPercentTax = $orderDetails->sum('eight_percent_tax');
         $TenPercentTax = $orderDetails->sum('ten_percent_tax'); 
-        $totalDiscount =   $orderDetails->sum('total_discount');      
-        $totalAmt = (Helpers::calculateInvoice($id)) + $order->delivery_charge ;
+        $totalDiscount =   $orderDetails->sum('total_discount');
+        $totalTaxPercent = Helpers::calculateTotalTaxAmount($order);
+        $subTotal = (Helpers::calculateInvoice($id));
+        $totalAmt = (Helpers::calculateInvoice($id) - $order->coupon_discount_amount) + $order->delivery_charge ;
         $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
+        $config['shop_name'] = Helpers::get_business_settings('restaurant_name');
+        $config['phone'] = Helpers::get_business_settings('phone');
+        $config['address'] = Helpers::get_business_settings('address');
+        $order->shop_detail = $config;
+        return view('admin-views.order.new_invoice', compact('order','totalTaxPercent','totalDiscount' ,'footer_text','totalAmt','subTotal','TenPercentTax','EightPercentTax'));
         // return view('admin-views.order.invoice', compact('order', 'footer_text'));
-        return view('admin-views.order.latest_invoice', compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'));
+        // return view('admin-views.order.latest_invoice', compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'));
     }
 
     public function downloadInvoicePDF($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application

@@ -28,6 +28,7 @@ use App\Mail\EmailConfirmation;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerAuthController extends Controller
 {
@@ -695,16 +696,14 @@ class CustomerAuthController extends Controller
         }
 
         $user = auth('api')->user();
-
         $data = $request->all();
-
         if (!Hash::check($data['old_password'], $user->password)) {
             return response()->json(['errors' => 'Old Password not match'], 403);
         } else {
-            $userupdate = User::find($user->id);
+            $userUpdate = User::find($user->id);
             $user->password = bcrypt($request->new_password);
             $user->save();
-            return response()->json(array('sucess' => true, 'meassge' => 'Password Reset sucessfully', 'status' => 200), 200);
+            return response()->json(array('success' => true, 'message' => 'Password Reset successfully', 'status' => 200), 200);
         }
     }            
 

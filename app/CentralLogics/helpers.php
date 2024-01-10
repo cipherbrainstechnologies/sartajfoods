@@ -1015,10 +1015,27 @@ class Helpers
                 // Accumulate to the total cost
                 $totalCost += $itemTotal;
             }
-            $totalCost = $totalCost - $order->coupon_discount_amount; 
             return $totalCost;
         }
        return 0;
+    }
+
+    public static function calculateTotalTaxAmount($order){
+        // echo "<pre>";print_r($order->details->toArray());die;
+        $totalTaxAmount['TotalEightPercentTax'] = 0;
+        $totalTaxAmount['TotalTenPercentTax'] = 0;
+       if(!empty($order->details)){  
+        foreach($order->details as $key => $detail){
+            $productDetail = json_decode($detail['product_details'],true);
+            if($productDetail['tax'] == 8){
+                $totalTaxAmount['TotalEightPercentTax'] += $detail['price'] * $detail['quantity'];
+            }
+            else{
+                $totalTaxAmount['TotalTenPercentTax'] += $detail['price'] * $detail['quantity'];
+            }
+        }
+       }
+       return $totalTaxAmount;
     }
 
     public static function addRecentActivity($user,$status,$order_id=null){
