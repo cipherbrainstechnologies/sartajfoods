@@ -419,7 +419,7 @@
                                     <th class="column_logo" style="mso-line-height-rule: exactly; padding-top: 11px; padding-bottom: 11px;" align="center">
                                       <!-- Logo : BEGIN -->
                                       <a href="{{env('APP_URL')}}" target="_blank" style="color: #83c7f2; text-decoration: none !important; text-underline: none;">
-                                      <img src="{{asset(storage/restaurant/$config['shop_logo'])}}" class="logo " width="224" border="0" style="width: 224px; height: auto !important; display: block; text-align: center; margin: auto;" />
+                                      <img src="{{asset('storage/restaurant/'$config['shop_logo'])}}" class="logo " width="224" border="0" style="width: 224px; height: auto !important; display: block; text-align: center; margin: auto;" />
                                       </a>
                                       <!-- Logo : END -->
                                     </th>
