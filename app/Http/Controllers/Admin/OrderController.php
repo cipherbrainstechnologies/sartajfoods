@@ -46,7 +46,7 @@ class OrderController extends Controller
     ){}
 
     public function processOrder($order_id){
-        Mail::to('mukesh@silverwebbuzz.com')->send(new \App\Mail\OrderPlaced(100026));
+        Mail::to('mukesh@silverwebbuzz.com')->send(new \App\Mail\OrderPlaced($order_id));
     }
 
     /**
@@ -556,6 +556,7 @@ class OrderController extends Controller
         $subTotal = (Helpers::calculateInvoice($id));
         $totalAmt = (Helpers::calculateInvoice($id) - $order->coupon_discount_amount) + $order->delivery_charge ;
         $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
+        $config['shop_logo'] = Helpers::get_business_settings('logo');
         $config['shop_name'] = Helpers::get_business_settings('restaurant_name');
         $config['phone'] = Helpers::get_business_settings('phone');
         $config['address'] = Helpers::get_business_settings('address');

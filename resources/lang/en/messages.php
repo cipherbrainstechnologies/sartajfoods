@@ -2210,4 +2210,5 @@
   'We\'ve acknowledged your order and currently have our efficient team diligently preparing it. While you eagerly await, embrace the rustic and adventurous spirit – Sartaj Food is en route. Should you have any inquiries regarding your order, please don\'t hesitate to respond to this message!' => 'We\'ve acknowledged your order and currently have our efficient team diligently preparing it. While you eagerly await  embrace the rustic and adventurous spirit – Sartaj Food is en route. Should you have any inquiries regarding your order  please don\'t hesitate to respond to this message!',
   'Hey' => 'Hey',
   'Order Confirmation' => 'Order Confirmation',
+  'If you have any inquiries, kindly respond to this email, and our dedicated Sartaj Food Support Team will be ready to assist you!' => 'If you have any inquiries  kindly respond to this email  and our dedicated Sartaj Food Support Team will be ready to assist you!',
 );
