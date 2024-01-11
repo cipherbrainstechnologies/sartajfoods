@@ -393,7 +393,7 @@
         $subTotal = (App\CentralLogics\Helpers::calculateInvoice($order_id));
         $totalAmt = (App\CentralLogics\Helpers::calculateInvoice($order_id) - $order->coupon_discount_amount) + $order->delivery_charge ;
         $footer_text = App\Model\BusinessSetting::where(['key' => 'footer_text'])->first();
-        $config['shop_logo'] = asset(App\CentralLogics\Helpers::get_business_settings('logo'));
+        $config['shop_logo'] = App\CentralLogics\Helpers::get_business_settings('logo');
         $config['shop_name'] = App\CentralLogics\Helpers::get_business_settings('restaurant_name');
         $config['phone'] = App\CentralLogics\Helpers::get_business_settings('phone');
         $config['address'] = App\CentralLogics\Helpers::get_business_settings('address');
@@ -419,7 +419,11 @@
                                     <th class="column_logo" style="mso-line-height-rule: exactly; padding-top: 11px; padding-bottom: 11px;" align="center">
                                       <!-- Logo : BEGIN -->
                                       <a href="{{env('APP_URL')}}" target="_blank" style="color: #83c7f2; text-decoration: none !important; text-underline: none;">
+<<<<<<< Updated upstream
                                       <img src="{{asset(Storage::url('restaurant/'.$config['shop_logo']))}}" class="logo " width="224" border="0" style="width: 224px; height: auto !important; display: block; text-align: center; margin: auto;" />
+=======
+                                      <img src="{{asset('/storage/restaurant/' . $config['shop_logo'])}}" class="logo " width="224" border="0" style="width: 224px; height: auto !important; display: block; text-align: center; margin: auto;" />
+>>>>>>> Stashed changes
                                       </a>
                                       <!-- Logo : END -->
                                     </th>
@@ -546,7 +550,7 @@
                                                                     </th>
                                                                     <th class="right line-item-line-price" width="1" style="mso-line-height-rule: exactly; white-space: nowrap; padding: 11px 0 11px 22px;" align="right" bgcolor="#ffffff" valign="top">
                                                                     <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 0;" align="right">
-                                                                        ¥{{$productDetail['actual_price'] * $order->details[$key]['quantity']}}
+                                                                        ¥{{(!empty($productDetail['actual_price']) ? $productDetail['actual_price'] : 0) * $order->details[$key]['quantity']}}
                                                                     </p>
                                                                     </th>
                                                                 </tr>
@@ -628,7 +632,7 @@
                                                   </tr>
                                                   <tr>
                                                     <th class="shipping_address " style="mso-line-height-rule: exactly; padding-right: 11px;" align="left" bgcolor="#ffffff" valign="top">
-                                                      <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 0;" align="left">{{$order->delivery_address['full_name']}}<br />{{$order->delivery_address['address']}}<br /><span data-key="4664707_tel" style="text-align: center; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000;">{{translate('Tel.')}}</span> <span style="color: inherit !important; text-decoration: none !important; text-align: center; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none;">{{$order->delivery_address['contact_person_number']}}</span><br /></p>
+                                                      <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 0;" align="left">{{ !empty($order->delivery_address['full_name']) ? $order->delivery_address['full_name'] : '' }}<br />{{$order->delivery_address['address']}}<br /><span data-key="4664707_tel" style="text-align: center; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000;">{{translate('Tel.')}}</span> <span style="color: inherit !important; text-decoration: none !important; text-align: center; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none;">{{$order->delivery_address['contact_person_number']}}</span><br /></p>
                                                     </th>
                                                   </tr>
                                                 </tbody>
