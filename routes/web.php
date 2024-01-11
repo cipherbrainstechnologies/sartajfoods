@@ -23,7 +23,7 @@ Auth::routes();
 */
 
 
-Route::get('/process-order/{order_id}', [OrderController::class, 'processOrder']);
+// Route::get('/process-order/{order_id}', [OrderController::class, 'processOrder']);
 Route::get('/', function () {
     return redirect(\route('admin.dashboard'));
 });
