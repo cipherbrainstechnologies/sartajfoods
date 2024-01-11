@@ -30,7 +30,10 @@
 		<tr>
 			<td>
 				{{--  <p style="margin: 10px 0;color: #000;text-align: right;">{{translate('Date')}} : 04 Jan 2024 01:08 am</p>  --}}
-                <p style="margin: 10px 0;color: #000;text-align: right;">{{translate('Date')}} : {{$order->created_at}}</p>
+				@php 
+					$dateTime = new DateTime($order->created_at);
+				@endphp
+                <p style="margin: 10px 0;color: #000;text-align: right;">{{translate('Date')}} : {{$dateTime->format("d M Y h:i a")}}</p>
 			</td>
 		</tr>
 		<tr>
@@ -72,7 +75,6 @@
                     @if(!empty($order->details))
                         @foreach($order->details as $key => $detail)
                             @php $productDetail = json_decode($detail->product_details,true); @endphp
-                            {{--  @php  echo "<pre>";print_r($productDetail);die;@endphp  --}}
                             <tr>
                                 <td width="50%">
                                     <span class="icon_8">
@@ -149,7 +151,7 @@
                                     <tr>
                                         <td width="55%">{{translate('Coupon Discount Amount')}}</td>
                                         <td width="5%">¥</td>
-                                        <td width="40%" style="text-align:right;">-{{$order->coupon_discount_amount ?? 0}}</td>
+                                        <td width="40%" style="text-align:right;">-{{$order->coupon_discount_amount }}</td>
                                     </tr>
                                 @endif
 								<tr>

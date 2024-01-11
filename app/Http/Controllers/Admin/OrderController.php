@@ -31,6 +31,7 @@ use function App\CentralLogics\translate;
 use Illuminate\Support\Facades\Response;
 use PDF;
 use App\Model\OrderHistory; 
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -43,6 +44,10 @@ class OrderController extends Controller
         private Product $product,
         private User $user
     ){}
+
+    public function processOrder($order_id){
+        Mail::to('mukesh@silverwebbuzz.com')->send(new \App\Mail\OrderPlaced(100026));
+    }
 
     /**
      * @param Request $request
@@ -542,7 +547,7 @@ class OrderController extends Controller
      */
     public function generate_invoice($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
-        $order = $this->order->with('delivery_address','details')->where('id', $id)->first();
+        $order = $this->order->with('delivery_address','details','customer')->where('id', $id)->first();
         $orderDetails =collect($order->details);
         $EightPercentTax = $orderDetails->sum('eight_percent_tax');
         $TenPercentTax = $orderDetails->sum('ten_percent_tax'); 
@@ -565,12 +570,20 @@ class OrderController extends Controller
         $order = $this->order->with('delivery_address','details')->where('id', $id)->first();
         $orderDetails =collect($order->details);
         $EightPercentTax = $orderDetails->sum('eight_percent_tax');
-        $TenPercentTax = $orderDetails->sum('ten_percent_tax');        
-        $totalAmt = (Helpers::calculateInvoice($id)) + $order->delivery_charge;
+        $TenPercentTax = $orderDetails->sum('ten_percent_tax'); 
+        $totalDiscount =   $orderDetails->sum('total_discount');
+        $totalTaxPercent = Helpers::calculateTotalTaxAmount($order);
+        $subTotal = (Helpers::calculateInvoice($id));
+        $totalAmt = (Helpers::calculateInvoice($id) - $order->coupon_discount_amount) + $order->delivery_charge ;
         $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
+        $config['shop_name'] = Helpers::get_business_settings('restaurant_name');
+        $config['phone'] = Helpers::get_business_settings('phone');
+        $config['address'] = Helpers::get_business_settings('address');
+        $order->shop_detail = $config;
+        // return view('admin-views.order.new_invoice', compact('order','totalTaxPercent','totalDiscount' ,'footer_text','totalAmt','subTotal','TenPercentTax','EightPercentTax'));
 
         // Generate PDF
-        $pdf = PDF::loadView('admin-views.order.latest_invoice', compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'));
+        $pdf = PDF::loadView('admin-views.order.new_invoice', compact('order','totalTaxPercent','totalDiscount' ,'footer_text','totalAmt','subTotal','TenPercentTax','EightPercentTax'));
 
         // Save the PDF temporarily
         $tempPath = storage_path('app/public/invoices');

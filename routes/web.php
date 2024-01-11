@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Admin\OrderController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,6 +23,7 @@ Auth::routes();
 */
 
 
+Route::get('/process-order/{order_id}', [OrderController::class, 'processOrder']);
 Route::get('/', function () {
     return redirect(\route('admin.dashboard'));
 });
