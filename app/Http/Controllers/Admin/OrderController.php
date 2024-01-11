@@ -46,7 +46,7 @@ class OrderController extends Controller
     ){}
 
     public function processOrder($order_id){
-        Mail::to('mukesh@silverwebbuzz.com')->send(new \App\Mail\OrderPlaced($order_id));
+        Mail::to('krunal@silverwebbuzz.com')->send(new \App\Mail\OrderPlaced($order_id));
     }
 
     /**
