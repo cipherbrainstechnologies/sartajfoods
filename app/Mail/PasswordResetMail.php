@@ -36,6 +36,6 @@ class PasswordResetMail extends Mailable
         $token = $this->token;
         // $customer = $this->customer;
         // return $this->view('email-templates.customer-password-reset', ['token' => $token]);
-        return $this->view('email-templates.forgot-password', ['token' => $token]);
+        return $this->view('email-templates.forgot-password', ['token' => $token,'username' => $this->username]);
     }
 }

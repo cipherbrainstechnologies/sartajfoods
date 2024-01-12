@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
 use Carbon\CarbonInterval;
+use Illuminate\Support\Facades\Hash;
 
 class PasswordResetController extends Controller
 {
@@ -229,23 +230,22 @@ class PasswordResetController extends Controller
 
     public function resetPassword(Request $request)
     {
-        $token = $request->query('token');
+        // $token = $request->query('token');
         // Validate the request data
         $request->validate([
             'token' => 'required',
-            'password' => 'required|confirmed|min:8',
+            'password' => 'required|min:8',
         ]);
 
         // Check if the token exists in the password_resets table
-        $resetRecord = DB::table('password_resets')->where('token', $token)->first();
-
+        $resetRecord = DB::table('password_resets')->where('token', $request->token)->first();        
         if (!$resetRecord) {
             // Token not found, handle accordingly (e.g., show an error message)
             return redirect()->back()->with('error', 'Invalid token');
         }
 
         // Retrieve the email associated with the token
-        $email = $resetRecord->email;
+        $email = $resetRecord->email_or_phone;
 
         // Update the user's password
         $user = User::where('email', $email)->first();
@@ -264,6 +264,6 @@ class PasswordResetController extends Controller
         DB::table('password_resets')->where('token', $request->token)->delete();
 
         // Redirect the user after successful password reset
-        return redirect()->route('login')->with('success', 'Password reset successfully. Please log in with your new password.');
+        return response()->json([ 'message'=>'Password reset successfully. Please log in with your new password.']);
     }
 }
