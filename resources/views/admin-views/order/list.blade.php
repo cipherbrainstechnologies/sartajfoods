@@ -370,7 +370,10 @@
                                 <td>
                                     <div class="btn--container justify-content-center">
                                         <a class="action-btn btn--primary btn-outline-primary" href="{{route('admin.orders.details',['id'=>$order['id']])}}"><i class="tio-invisible"></i></a>
-                                        <a class="action-btn btn-outline-primary-2" target="_blank" href="{{route('admin.orders.generate-invoice',[$order['id']])}}">
+                                        <a class="action-btn btn-outline-primary-2" target="_blank" href="javascript:void(0);" onclick="openPrintPreview('{{ route('admin.orders.generate-invoice', ['id' => $order['id'], 'language' => 'en']) }}')">
+                                            <i class="tio-print"></i>
+                                        </a>
+                                        <a class="action-btn btn-outline-primary-2" target="_blank" href="javascript:void(0);" onclick="openPrintPreview('{{ route('admin.orders.generate-invoice', ['id' => $order['id'], 'language' => 'ja']) }}')">
                                             <i class="tio-print"></i>
                                         </a>
                                     </div>
@@ -406,6 +409,14 @@
 @push('script_2')
 
     <script>
+        function openPrintPreview(url) {
+            var printWindow = window.open(url, '_blank');
+            
+            // Wait for the new window to be loaded before triggering print
+            printWindow.onload = function() {
+                printWindow.print();
+            };
+        }
         function filter_branch_orders(id) {
             location.href = '{{url('/')}}/admin/orders/branch-filter/' + id;
         }

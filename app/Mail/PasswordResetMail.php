@@ -17,11 +17,13 @@ class PasswordResetMail extends Mailable
      * @return void
      */
 
-    protected $token;
-
-    public function __construct($token)
+    public $token;
+    public $username;
+    public function __construct($token,$username)
     {
         $this->token = $token;
+        $this->username = $username;
+        // $this->customer = $customer;
     }
 
     /**
@@ -32,6 +34,8 @@ class PasswordResetMail extends Mailable
     public function build()
     {
         $token = $this->token;
-        return $this->view('email-templates.customer-password-reset', ['token' => $token]);
+        // $customer = $this->customer;
+        // return $this->view('email-templates.customer-password-reset', ['token' => $token]);
+        return $this->view('email-templates.forgot-password', ['token' => $token]);
     }
 }

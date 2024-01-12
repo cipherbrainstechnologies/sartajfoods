@@ -60,7 +60,7 @@ class PasswordResetController extends Controller
             if(env('APP_MODE')=='live'){
                 $token = rand(1000, 9999);
             }else{
-                $token = 1234;
+                $token = rand(1000, 9999);
             }
 
             DB::table('password_resets')->updateOrInsert(['email_or_phone' => $request['email_or_phone']], [
@@ -81,7 +81,7 @@ class PasswordResetController extends Controller
                 $emailServices = Helpers::get_business_settings('mail_config');
 
                 if (isset($emailServices['status']) && $emailServices['status'] == 1) {
-                    Mail::to($customer['email'])->send(new \App\Mail\PasswordResetMail($token));
+                    Mail::to($customer['email'])->send(new \App\Mail\PasswordResetMail($token,$customer['f_name']));
                 }
             } catch (\Exception $exception) {
                 return response()->json(['errors' => [
@@ -225,5 +225,46 @@ class PasswordResetController extends Controller
         return response()->json(['errors' => [
             ['code' => 'invalid', 'message' => 'Invalid token.']
         ]], 400);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $token = $request->query('token');
+        // Validate the request data
+        $request->validate([
+            'token' => 'required',
+            'password' => 'required|confirmed|min:8',
+        ]);
+
+        // Check if the token exists in the password_resets table
+        $resetRecord = DB::table('password_resets')->where('token', $token)->first();
+
+        if (!$resetRecord) {
+            // Token not found, handle accordingly (e.g., show an error message)
+            return redirect()->back()->with('error', 'Invalid token');
+        }
+
+        // Retrieve the email associated with the token
+        $email = $resetRecord->email;
+
+        // Update the user's password
+        $user = User::where('email', $email)->first();
+        
+        if (!$user) {
+            // User not found, handle accordingly (e.g., show an error message)
+            return redirect()->back()->with('error', 'User not found');
+        }
+
+        // Update the user's password
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        // Optionally, you may want to remove the reset token from the password_resets table
+        DB::table('password_resets')->where('token', $request->token)->delete();
+
+        // Redirect the user after successful password reset
+        // return redirect()->route('login')->with('success', 'Password reset successfully. Please log in with your new password.');
+        echo ('success', 'Password reset successfully. Please log in with your new password.');die;
     }
 }

@@ -175,7 +175,7 @@
                             <tr>
                                 <th class="px-4 border-0"><h4 class="m-0 text-capitalize">{{translate('short_description')}}</h4></th>
                                 <th class="px-4 border-0"><h4 class="m-0 text-capitalize">{{translate('price')}}</h4></th>
-                                <th class="px-4 border-0"><h4 class="m-0 text-capitalize">{{translate('variations')}}</h4></th>
+                                <!-- <th class="px-4 border-0"><h4 class="m-0 text-capitalize">{{translate('variations')}}</h4></th> -->
                                 <th class="px-4 border-0"><h4 class="m-0 text-capitalize">{{translate('Tags')}}</h4></th>
                             </tr>
                         </thead>
@@ -189,7 +189,7 @@
                                 <td>
                                    <div>
                                         <strong class="text--title">{{translate('price')}} :</strong>
-                                        <span>{{ Helpers::set_symbol($product['price']) }} / {{translate(''.$product['unit'])}}</span>
+                                        <span>{{ Helpers::set_symbol($product['actual_price']) }} / {{translate(''.$product['unit'])}}</span>
                                    </div>
                                    <div>
                                         <strong class="text--title">{{translate('tax')}} :</strong>
@@ -200,13 +200,13 @@
                                         <span>{{ Helpers::set_symbol(\App\CentralLogics\Helpers::discount_calculate($product,$product['price'])) }}</span>
                                    </div>
                                 </td>
-                                <td>
+                                <!-- <td>
                                     @foreach(json_decode($product['variations'],true) as $variation)
                                         <div class="text-capitalize">
                                             {{$variation['type']}} : {{ Helpers::set_symbol($variation['price']) }}
                                         </div>
                                     @endforeach
-                                </td>
+                                </td> -->
                                 <td>
                                     @foreach($product->tags as $tag)
                                         <span class="badge-soft-success mb-1 mr-1 d-inline-block px-2 py-1 rounded" >{{$tag->tag}} </span> <br>

@@ -545,7 +545,7 @@ class OrderController extends Controller
      * @param $id
      * @return Factory|View|Application
      */
-    public function generate_invoice($id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
+    public function generate_invoice(Request $request,$id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $order = $this->order->with('delivery_address','details','customer')->where('id', $id)->first();
         $orderDetails =collect($order->details);
@@ -561,7 +561,11 @@ class OrderController extends Controller
         $config['phone'] = Helpers::get_business_settings('phone');
         $config['address'] = Helpers::get_business_settings('address');
         $order->shop_detail = $config;
-        return view('admin-views.order.new_invoice', compact('order','totalTaxPercent','totalDiscount' ,'footer_text','totalAmt','subTotal','TenPercentTax','EightPercentTax'));
+        if($request->language=="ja"){
+            return view('admin-views.order.japanese_invoice', compact('order','totalTaxPercent','totalDiscount' ,'footer_text','totalAmt','subTotal','TenPercentTax','EightPercentTax'));
+        }else{
+            return view('admin-views.order.english_invoice', compact('order','totalTaxPercent','totalDiscount' ,'footer_text','totalAmt','subTotal','TenPercentTax','EightPercentTax'));
+        }
         // return view('admin-views.order.invoice', compact('order', 'footer_text'));
         // return view('admin-views.order.latest_invoice', compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'));
     }

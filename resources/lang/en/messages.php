@@ -2211,4 +2211,8 @@
   'Hey' => 'Hey',
   'Order Confirmation' => 'Order Confirmation',
   'If you have any inquiries, kindly respond to this email, and our dedicated Sartaj Food Support Team will be ready to assist you!' => 'If you have any inquiries  kindly respond to this email  and our dedicated Sartaj Food Support Team will be ready to assist you!',
+  'If you received this email in error, you can safely ignore this email.' => 'If you received this email in error  you can safely ignore this email.',
+  'Reset Password' => 'Reset Password',
+  'You have requested to have your password reset for your account. To continue, click the button below:' => 'You have requested to have your password reset for your account. To continue  click the button below:',
+  'PASSWORD RESET' => 'PASSWORD RESET',
 );

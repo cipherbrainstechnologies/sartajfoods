@@ -76,7 +76,10 @@
                                         </a>
                                     @endif
                                 @endif
-                                <a class="btn btn--info print--btn" target="_blank" href={{route('admin.orders.generate-invoice',[$order['id']])}}>
+                                <a class="btn btn--info print--btn" target="_blank" href="javascript:void(0);" onclick="openPrintPreview('{{ route('admin.orders.generate-invoice', ['id' => $order['id'], 'language' => 'en']) }}')">
+                                    <i class="tio-print mr-1"></i> {{translate('print')}} {{translate('invoice')}}
+                                </a>
+                                <a class="btn btn--info print--btn" target="_blank" href="javascript:void(0);" onclick="openPrintPreview('{{ route('admin.orders.generate-invoice', ['id' => $order['id'], 'language' => 'ja']) }}')>
                                     <i class="tio-print mr-1"></i> {{translate('print')}} {{translate('invoice')}}
                                 </a>
                                  <a class="btn btn--info print--btn" target="_blank" href="{{route('admin.orders.shpping_list',[$order['id']])}}">
@@ -116,7 +119,7 @@
                                     <span class="text-body mr-2">{{translate('payment')}} {{translate('method')}}
                                     :</span> <span class="text--title font-bold">{{ translate(str_replace('_',' ',$order['payment_method']))}}</span>
                                 </h6>
-                                <h6 class="text-capitalize">
+                                {{--  <h6 class="text-capitalize">
                                     @if($order['transaction_reference']==null && $order['order_type']!='pos')
                                         <span class="text-body mr-2"> {{translate('reference')}} {{translate('code')}}
                                         :</span>
@@ -128,7 +131,7 @@
                                         <span class="text-body mr-2">{{translate('reference')}} {{translate('code')}}
                                         :</span> <span class="text--title font-bold"> {{$order['transaction_reference']}}</span>
                                     @endif
-                                </h6>
+                                </h6>  --}}
                                 <h6>
                                     <span class="text-body mr-2">{{ translate('payment') }} {{ translate('status') }} : </span>
 
@@ -1097,6 +1100,14 @@
     </script>
 
     <script>
+        function openPrintPreview(url) {
+            var printWindow = window.open(url, '_blank');
+            
+            // Wait for the new window to be loaded before triggering print
+            printWindow.onload = function() {
+                printWindow.print();
+            };
+        }
         $(document).on('ready', function () {
             $('.js-select2-custom').each(function () {
                 var select2 = $.HSCore.components.HSSelect2.init($(this));
