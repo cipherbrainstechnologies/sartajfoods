@@ -264,7 +264,6 @@ class PasswordResetController extends Controller
         DB::table('password_resets')->where('token', $request->token)->delete();
 
         // Redirect the user after successful password reset
-        // return redirect()->route('login')->with('success', 'Password reset successfully. Please log in with your new password.');
-        echo ('success', 'Password reset successfully. Please log in with your new password.');die;
+        return redirect()->route('login')->with('success', 'Password reset successfully. Please log in with your new password.');
     }
 }

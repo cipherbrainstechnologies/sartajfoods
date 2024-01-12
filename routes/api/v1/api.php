@@ -15,6 +15,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         Route::post('verify-email', 'CustomerAuthController@verify_email');
 
         Route::post('forgot-password', 'PasswordResetController@reset_password_request');
+        Route::post('resetPassword','PasswordResetController@resetPassword');
         Route::post('verify-token', 'PasswordResetController@verify_token');
         // Route::put('reset-password', 'PasswordResetController@reset_password_submit');
 
