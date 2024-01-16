@@ -32,7 +32,9 @@ class RelatedProducts extends Model
             foreach ($images as $image) {
                 $modifiedImages[] = config('app.url') . '/storage/products/' . $image;
             }
-            return $modifiedImages;
+            $this->relatedProduct->image = $modifiedImages;
+             return $modifiedImages;
+            // return config('app.url') . '/storage/products/' . $this->relatedProduct->image;
         }
         return null;
        
