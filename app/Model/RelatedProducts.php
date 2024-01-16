@@ -5,6 +5,7 @@ namespace App\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class RelatedProducts extends Model
 {
     use HasFactory;
@@ -23,6 +24,7 @@ class RelatedProducts extends Model
     {
         return $this->belongsTo(Product::class, 'related_product_id');
     }
+    
 
     public function getImageAttribute()
     {

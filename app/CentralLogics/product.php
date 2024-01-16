@@ -22,7 +22,7 @@ class ProductLogic
     }
 
     public static function get_seo_product($seo){
-        return Product::active()->withCount(['wishlist','relatedProducts'])->with(['rating', 'active_reviews', 'active_reviews.customer', 'soldProduct','relatedProducts.relatedProduct'])
+        return Product::active()->withCount(['wishlist','relatedProducts'])->with(['rating', 'active_reviews', 'active_reviews.customer', 'soldProduct','relatedProducts.relatedProduct','relatedProducts.relatedProduct.manufacturer'])
         ->Where('seo_en', 'like', "%{$seo}%")
         ->orWhere('seo_ja', 'like', "%{$seo}%")
         ->first();

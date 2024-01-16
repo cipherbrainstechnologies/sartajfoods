@@ -34,4 +34,9 @@ class Manufacturer extends Model
     {
         return $this->hasMany(Product::class)->latest();
     }
+
+    public function relatedProducts()
+    {
+        return $this->hasMany(Product::class, 'manufacturer_id');
+    }
 }
