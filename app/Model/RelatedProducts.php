@@ -30,7 +30,7 @@ class RelatedProducts extends Model
             $modifiedImages = [];
             $images = json_decode($this->relatedProduct->image,true);
             foreach ($images as $image) {
-                $modifiedImages[] = config('app.url') . '/storage/products/' . $image;
+                $modifiedImages[] = config('app.url') . '/storage/product/' . $image;
             }
             $this->relatedProduct->image = $modifiedImages;
              return $modifiedImages;
