@@ -618,16 +618,25 @@ class OrderController extends Controller
     }
     
     public function purchased_product($product_id){
-        $order = $this->order->where('user_id', auth()->user()->id)->where('order_status','delivered')->get()->pluck('id')->toArray();
-        if(!empty($order)){     
-            $order_detail = $this->order_detail->where('product_id',$product_id)->whereIn('order_id',$order)->get();
+        $orderIds = $this->order->where('user_id', auth()->user()->id)->where('order_status','delivered')->get()->pluck('id')->toArray();
+        if(!empty($orderIds)){     
+            $order_detail = $this->order_detail->with(['product.active_reviews'=> function ($query){
+                $query->where('user_id', auth()->user()->id);
+            }])->where('product_id',$product_id)->whereIn('order_id',$orderIds)->get(); 
+                       
             if(!empty($order_detail)){
-                return response()->json(['message' => 'order is delivered','status' => true], 200);
+                foreach($order_detail as $key => $orders){
+                    if(empty($orders->product->active_reviews)){
+                        return response()->json(['purchased' => true,'reviewed' => false], 200);
+                    }else{
+                        return response()->json(['purchased' => true,'reviewed' => true], 200);
+                    }
+                }
             }else{
-                return response()->json(['message' => 'order is not delivered','status' => false], 200);
+                return response()->json(['purchased' => false,'reviewed' => false], 200);
             }
         }else{
-            return response()->json(['message' => 'no any order found','status' => false], 200);
+            return response()->json(['message' => 'no any order found'], 200);
         }
     }
 }
