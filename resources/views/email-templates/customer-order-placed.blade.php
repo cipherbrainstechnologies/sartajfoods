@@ -447,7 +447,25 @@
                                         <tbody>
                                           <tr style="color: #203620; border-color: #ffffff;" bgcolor="#ffffff">
                                             <th style="mso-line-height-rule: exactly; color: #203620; border-color: #ffffff;" bgcolor="#ffffff" valign="top">
-                                              <h1 data-key="4664701_heading" style="font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 32px; line-height: 46px; font-weight: 700; color: #203620; text-transform: uppercase; background-color: #ffffff !important; margin: 0; border-color: #ffffff;">{{translate('Order Confirmation')}}</h1>
+                                              <h1 data-key="4664701_heading" style="font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 32px; line-height: 46px; font-weight: 700; color: #203620; text-transform: uppercase; background-color: #ffffff !important; margin: 0; border-color: #ffffff;">
+                                              @if($order->order_status == "confirmed")
+                                                {{translate('Order Confirmation')}}
+                                              @elseif($order->order_status == "pending")
+                                                {{translate('Order Pending')}}
+                                              @elseif($order->order_status == "processing")
+                                                {{translate('Order Processing')}}
+                                              @elseif($order->order_status == "out_for_delivery")
+                                                {{translate('Order Out For Delivery')}}
+                                              @elseif($order->order_status == "delivered")
+                                                {{translate('Order Delivered')}}
+                                              @elseif($order->order_status == "canceled")
+                                                {{translate('Order Canceled')}}
+                                              @elseif($order->order_status == "returned")
+                                                {{translate('Order Returned')}}
+                                              @else($order->order_status == "failed")
+                                                {{translate('Order failed')}}
+
+                                            </h1>
                                             </th>
                                           </tr>
                                         </tbody>
@@ -495,7 +513,8 @@
                                       <h2 style="font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; color: #203620; font-size: 18px; line-height: 20px; font-weight: 700; text-transform: uppercase; margin: 0;" align="center">
                                         <span data-key="4664704_order_number">{{translate('Order No.')}}</span> {{'#'.$order->id}}
                                       </h2>
-                                      <p class="muted" style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 13px; line-height: 22px; font-weight: normal; text-transform: none; color: #7fbb35; margin: 0;" align="center">November 26, 2023</p>
+                                      <?php $orderDate = new DateTime($order->created_at); ?>
+                                      <p class="muted" style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 13px; line-height: 22px; font-weight: normal; text-transform: none; color: #7fbb35; margin: 0;" align="center">{{$orderDate->format('F j, Y')}}</p>
                                     </th>
                                   </tr>
                                   <!-- END SECTION: Order Number And Date -->
