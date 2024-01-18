@@ -464,6 +464,7 @@
                                                 {{translate('Order Returned')}}
                                               @else($order->order_status == "failed")
                                                 {{translate('Order failed')}}
+                                              @endif
 
                                             </h1>
                                             </th>
@@ -513,7 +514,7 @@
                                       <h2 style="font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; color: #203620; font-size: 18px; line-height: 20px; font-weight: 700; text-transform: uppercase; margin: 0;" align="center">
                                         <span data-key="4664704_order_number">{{translate('Order No.')}}</span> {{'#'.$order->id}}
                                       </h2>
-                                      <?php $orderDate = new DateTime($order->created_at); ?>
+                                      <?php $orderDate = new DateTime($order->updated_at); ?>
                                       <p class="muted" style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 13px; line-height: 22px; font-weight: normal; text-transform: none; color: #7fbb35; margin: 0;" align="center">{{$orderDate->format('F j, Y')}}</p>
                                     </th>
                                   </tr>

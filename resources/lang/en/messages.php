@@ -2215,4 +2215,5 @@
   'Reset Password' => 'Reset Password',
   'You have requested to have your password reset for your account. To continue, click the button below:' => 'You have requested to have your password reset for your account. To continue  click the button below:',
   'PASSWORD RESET' => 'PASSWORD RESET',
+  'Order Pending' => 'Order Pending',
 );
