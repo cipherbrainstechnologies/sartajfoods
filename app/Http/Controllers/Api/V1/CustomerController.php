@@ -383,7 +383,7 @@ class CustomerController extends Controller
         // }
         $review->user_id = $request->user()->id;
         // $review->delivery_man_id = $request->delivery_man_id;
-        $review->order_id = !empty($request->order_id) ? $request->order_id : null;
+        $review->order_id = !empty($request->order_id) ? $request->order_id : [];
         $review->product_id = $request->product_id;
         $review->comment = $request->comment;
         $review->rating = $request->rating;
@@ -409,7 +409,7 @@ class CustomerController extends Controller
     {
         // try {
             $response = [];
-            $totalReviews = $this->product_review->where(['product_id' => $id])->get();
+            $totalReviews = $this->product_review->where(['product_id' => $id,'is_active' => 1])->get();
             $AllReviews = $totalReviews;
             $all_ratings = '';
             $ratings = [];
