@@ -617,20 +617,17 @@ class OrderController extends Controller
         
     }
     
-    public function purchased_product($order_id){
-        $order = $this->order->with('details.product','details')->where('id', $order_id)->first();
-        if(!empty($order)){
-            if($order['order_status']=="delivered"){
+    public function purchased_product($product_id){
+        $order = $this->order->where('user_id', auth()->user()->id)->where('order_status','delivered')->get()->pluck('id')->toArray();
+        if(!empty($order)){     
+            $order_detail = $this->order_detail->where('product_id',$product_id)->whereIn('order_id',$order)->get();
+            if(!empty($order_detail)){
                 return response()->json(['message' => 'order is delivered','status' => true], 200);
             }else{
                 return response()->json(['message' => 'order is not delivered','status' => false], 200);
             }
         }else{
-            return response()->json([
-                'errors' => [
-                    ['code' => 'order', 'message' => 'not found!'],
-                ],
-            ], 401);
+            return response()->json(['message' => 'no any order found','status' => false], 200);
         }
     }
 }
