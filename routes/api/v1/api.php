@@ -110,6 +110,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
             Route::post('track', 'OrderController@track_order');
             Route::put('payment-method', 'OrderController@update_payment_method');
             Route::get('shipping_list/{order_id}', 'OrderController@shipping_list');
+            Route::get('purchased-product/{order_id}','OrderController@purchased_product');
         });
         // Chatting
         Route::group(['prefix' => 'message'], function () {

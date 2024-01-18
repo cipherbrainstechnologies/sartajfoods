@@ -4,6 +4,7 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 
 class RelatedProducts extends Model
@@ -14,6 +15,11 @@ class RelatedProducts extends Model
         'product_id',
         'related_product_id',
     ];
+
+    public function translations()
+    {
+        return $this->morphMany(Translation::class, 'translationable');
+    }
 
     public function product()
     {
@@ -41,4 +47,7 @@ class RelatedProducts extends Model
         return null;
        
     }
+
+    
+
 }
