@@ -146,7 +146,8 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         
         Route::group(['prefix' => 'reviews'], function () {
             Route::get('/', 'CustomerController@get_reviews');
-            Route::get('rating/{product_id}', 'CustomerController@get_rating');
+            // Route::get('rating/{product_id}', 'CustomerController@get_rating');
+            Route::get('rating/{product_id}', 'CustomerController@get_rating')->withoutMiddleware('auth:api');
             Route::post('/submit', 'CustomerController@submit_review');
         });
 
