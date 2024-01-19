@@ -116,39 +116,7 @@ class ProductController extends Controller
            $products['products']= $product_fileter;
         }
 
-        if(!empty($request['max'])) {
-            $sort_by_fileter = $this->product->active()
-           ->withCount(['wishlist'])
-           ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
-           ->whereBetween('price', [$request['min'], $request['max']])
-           ->orderBy('price', 'DESC');
-
-           if(!empty($request->manufacturer_id) && empty($request['category_id'])) {
-            $sort_by_fileter->whereHas('manufacturer', function ($query) use ($manufacturer_id) {
-                // $query->where('id', $manufacturer_id);
-                $query->Where('seo_en', 'like', "%{$manufacturer_id}%")
-                        ->orWhere('seo_ja', 'like', "%{$manufacturer_id}%");
-            });
-           }
-           $sort_by_fileter->paginate($request['limit'], ['*'], 'page', $request['offset']);
-
-           $products['total_size'] = sizeof($sort_by_fileter->get()->toArray());
-
-           if(!empty($request['category_id'])) {
-            $product_fileter = array();
-            $product_fileter = $product_categoty_fileter_with_sort_by = Helpers::product_data_formatting(CategoryLogic::productsSortByPrice($request['category_id'], $request['limit'], $request['offset'], $request['max'], $request['min'], !empty($request->manufacturer_id) ? $request->manufacturer_id : null), true);
-           } else {
-            $product_fileter = Helpers::product_data_formatting($sort_by_fileter->get(), true);
-           }
-           
-           if(!empty($request['category_id'])) {
-            $product_fileter = array();
-            $product_fileter = $product_categoty_fileter_with_sort_by = Helpers::product_data_formatting(CategoryLogic::productsSortByPrice($request['category_id'], $request['limit'], $request['offset'], $request['max'], $request['min'], !empty($request->manufacturer_id) ? $request->manufacturer_id : null), true);
-           }
-           
-           unset($products['products']);
-           $products['products']= $product_fileter;
-        }
+       
         if(!empty($request['sort_by']) && $request['sort_by'] === 'lowToHigh') {
             $sort_by_fileter = $this->product->active()
            ->withCount(['wishlist'])
@@ -205,7 +173,39 @@ class ProductController extends Controller
            $products['products']= $product_fileter;
         }
 
-        
+        if(!empty($request['max'])) {
+            $sort_by_fileter = $this->product->active()
+           ->withCount(['wishlist'])
+           ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
+           ->whereBetween('price', [$request['min'], $request['max']])
+           ->orderBy('price', 'DESC');
+
+           if(!empty($request->manufacturer_id) && empty($request['category_id'])) {
+            $sort_by_fileter->whereHas('manufacturer', function ($query) use ($manufacturer_id) {
+                // $query->where('id', $manufacturer_id);
+                $query->Where('seo_en', 'like', "%{$manufacturer_id}%")
+                        ->orWhere('seo_ja', 'like', "%{$manufacturer_id}%");
+            });
+           }
+           $sort_by_fileter->paginate($request['limit'], ['*'], 'page', $request['offset']);
+
+           $products['total_size'] = sizeof($sort_by_fileter->get()->toArray());
+
+           if(!empty($request['category_id'])) {
+            $product_fileter = array();
+            $product_fileter = $product_categoty_fileter_with_sort_by = Helpers::product_data_formatting(CategoryLogic::productsSortByPrice($request['category_id'], $request['limit'], $request['offset'], $request['max'], $request['min'], !empty($request->manufacturer_id) ? $request->manufacturer_id : null), true);
+           } else {
+            $product_fileter = Helpers::product_data_formatting($sort_by_fileter->get(), true);
+           }
+           
+           if(!empty($request['category_id'])) {
+            $product_fileter = array();
+            $product_fileter = $product_categoty_fileter_with_sort_by = Helpers::product_data_formatting(CategoryLogic::productsSortByPrice($request['category_id'], $request['limit'], $request['offset'], $request['max'], $request['min'], !empty($request->manufacturer_id) ? $request->manufacturer_id : null), true);
+           }
+           
+           unset($products['products']);
+           $products['products']= $product_fileter;
+        }
 
         if(!empty($request['search'])) {
             if(!empty($request['category_id'])) {
