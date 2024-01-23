@@ -73,7 +73,7 @@ class Helpers
                 $variations = [];
                 $item['category_ids'] = json_decode($item['category_ids']);
                 // $item['image'] = json_decode($item['image']);
-                if(!empty($item['image'])){
+                if(!empty($item['image']) && isset($item['image'])){
                     $item['image'] = array_map(function ($imageName) use ($baseUrl) {
                         return $baseUrl . '/storage/product/' . $imageName;
                     }, json_decode($item['image']));
