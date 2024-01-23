@@ -165,9 +165,9 @@ class ProductController extends Controller
                         ->orWhere('seo_ja', 'like', "%{$manufacturer_id}%");
             });
            }
-           if(!empty($request['max'])){
-                $sort_by_fileter->
-           }
+        //    if(!empty($request['max'])){
+        //         $sort_by_fileter->
+        //    }
            $sort_by_fileter->paginate($request['limit'], ['*'], 'page', $request['offset']);
 
            $products['total_size'] = sizeof($sort_by_fileter->get()->toArray());
