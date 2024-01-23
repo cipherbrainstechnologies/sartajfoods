@@ -74,7 +74,7 @@ class Helpers
                 $item['category_ids'] = json_decode($item['category_ids']);
                 // $item['image'] = json_decode($item['image']);
                 $item['image'] = array_map(function ($imageName) use ($baseUrl) {
-                    return $baseUrl . '/storage/product/image/' . $imageName;
+                    return $baseUrl . '/storage/product/' . $imageName;
                 }, json_decode($item['image']));
 
                 $item['attributes'] = json_decode($item['attributes']);
