@@ -108,7 +108,7 @@ class Helpers
                             $item['name'] = $translation->value;
                         }
                         if ($translation->key == 'description') {
-                            $item['description'] = htmlentities($translation->value);
+                            $item['description'] = !!$translation->value!!;
                         }
                     }
                 }
@@ -153,7 +153,7 @@ class Helpers
                         $data['name'] = $translation->value;
                     }
                     if ($translation->key == 'description') {
-                        $data['description'] = htmlentities($translation->value);
+                        $data['description'] = !!$translation->value!!;
                     }
                 }
             }
