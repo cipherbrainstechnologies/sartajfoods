@@ -93,14 +93,14 @@ class Helpers
                     $item['category_discount'] = [];
                 }
 
-                foreach (json_decode($item['variations'], true) as $var) {
-                    $variations[] = [
-                        'type' => $var['type'],
-                        'price' => (float)$var['price'],
-                        'stock' => isset($var['stock']) ? (integer)$var['stock'] : (integer)0,
-                    ];
-                }
-                $item['variations'] = $variations;
+                // foreach (json_decode($item['variations'], true) as $var) {
+                //     $variations[] = [
+                //         'type' => $var['type'],
+                //         'price' => (float)$var['price'],
+                //         'stock' => isset($var['stock']) ? (integer)$var['stock'] : (integer)0,
+                //     ];
+                // }
+                // $item['variations'] = $variations;
 
                 if (count($item['translations'])) {
                     foreach ($item['translations'] as $translation) {
