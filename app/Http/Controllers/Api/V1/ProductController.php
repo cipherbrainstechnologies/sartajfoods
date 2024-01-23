@@ -223,7 +223,7 @@ class ProductController extends Controller
         }
         ProductLogic::getSoldProducts($products['products']);
         ProductLogic::cal_rating_and_review($products['products']);
-        ProductLogic::deal_of_month($products['products']);
+        //ProductLogic::deal_of_month($products['products']); //commmet temporarily
         
         return response()->json($products, 200);
      }
