@@ -81,7 +81,7 @@ class CategoryLogic
                     }
                 }
             }
-            return sizeof($product_ids);
+            return sizeof(array_unique($product_ids));
         }
         return 0;
     }
