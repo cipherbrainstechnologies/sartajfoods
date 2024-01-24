@@ -108,7 +108,8 @@ class Helpers
                             $item['name'] = $translation->value;
                         }
                         if ($translation->key == 'description') {
-                            $item['description'] = htmlentities($translation->value);
+                            // $item['description'] = htmlentities($translation->value);
+                            $item['description'] = htmlspecialchars($translation->value, ENT_QUOTES, 'UTF-8');
                         }
                     }
                 }
@@ -153,7 +154,8 @@ class Helpers
                         $data['name'] = $translation->value;
                     }
                     if ($translation->key == 'description') {
-                        $data['description'] = htmlentities($translation->value);
+                        // $data['description'] = htmlentities($translation->value);
+                        $item['description'] = htmlspecialchars($translation->value, ENT_QUOTES, 'UTF-8');
                     }
                 }
             }
@@ -1021,7 +1023,6 @@ class Helpers
     }
 
     public static function calculateTotalTaxAmount($order){
-        // echo "<pre>";print_r($order->details->toArray());die;
         $totalTaxAmount['TotalEightPercentTax'] = 0;
         $totalTaxAmount['TotalTenPercentTax'] = 0;
        if(!empty($order->details)){  
