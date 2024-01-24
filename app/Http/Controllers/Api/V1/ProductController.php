@@ -48,7 +48,6 @@ class ProductController extends Controller
     
      public function get_all_products(Request $request): \Illuminate\Http\JsonResponse
      {
-        echo "M";die;
          $products = !empty($request->manufacturer_id) ? ProductLogic::get_all_products($request['limit'], $request['offset'], $request->manufacturer_id) : ProductLogic::get_all_products($request['limit'], $request['offset']);
          $products['products'] = Helpers::product_data_formatting($products['products'], true);
          $product_fileter = array();
