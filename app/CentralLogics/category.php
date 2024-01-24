@@ -70,7 +70,6 @@ class CategoryLogic
 
     public static function getProductCount($category_id) 
     {
-        echo "ds";die;
         $products = Product::active()->get();
         $product_ids = [];
         if(!empty($products)){
