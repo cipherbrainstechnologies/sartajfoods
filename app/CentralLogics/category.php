@@ -81,6 +81,7 @@ class CategoryLogic
                     }
                 }
             }
+            echo "<pre>";print_r($product_ids);die;
             return sizeof(array_unique($product_ids));
         }
         return 0;
