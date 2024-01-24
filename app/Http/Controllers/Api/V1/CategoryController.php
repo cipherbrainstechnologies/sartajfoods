@@ -19,7 +19,7 @@ class CategoryController extends Controller
         if(!empty($categories)){
             foreach($categories->toArray() as $key => $category){
                 $response[] = $category;
-                $response[$key]['image'] = $baseUrl . '/storage/category/' . $category['image'];
+                $response[$key]['image'] = $baseUrl . '/storage/product/' . $category['image'];
             }
         }      
         return $response;

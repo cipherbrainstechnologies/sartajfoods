@@ -72,14 +72,18 @@ class CategoryLogic
     {
         $products = Product::active()->get();
         $product_ids = [];
-        foreach ($products as $product) {
-            foreach (json_decode($product['category_ids'], true) as $category) {
-                if ($category['id'] == $category_id) {
-                    array_push($product_ids, $product['id']);
+        if(!empty($products)){
+            foreach ($products as $product) {
+                foreach (json_decode($product['category_ids'], true) as $category) {
+                    
+                    if ($category['id'] == $category_id) {
+                        array_push($product_ids, $product['id']);
+                    }
                 }
             }
+            return sizeof($product_ids);
         }
-        return sizeof($product_ids);
+        return 0;
     }
 
     public static function productsSort($category_id, $limit = 0, $offset =1, $sort = '', $manufacturer_id = null)
