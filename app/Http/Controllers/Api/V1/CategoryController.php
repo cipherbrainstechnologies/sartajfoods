@@ -27,7 +27,7 @@ class CategoryController extends Controller
 
     public function get_categories(): \Illuminate\Http\JsonResponse
     {
-        echo "Mukesh";die;
+        echo "sdf";die;
         try {
             $categories = $this->category->where(['position'=> 0,'status'=>1])->orderBy('name')->get();
             $Categories = self::addImageUrl($categories);
