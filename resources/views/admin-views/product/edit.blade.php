@@ -64,7 +64,8 @@
                                     <input type="hidden" name="lang[]" value="{{$lang['code']}}">
                                     <div class="form-group">
                                         <label class="input-label" for="{{$lang['code']}}_description">{{translate('short')}} {{translate('description')}}  ({{strtoupper($lang['code'])}})</label>
-                                        <textarea name="description[]" class="form-control h--172px" id="{{$lang['code']}}_hiddenArea">{{$translate[$lang['code']]['description']??$product['description']}}</textarea>
+                                        <!-- <textarea name="description[]" class="form-control h--172px" id="{{$lang['code']}}_hiddenArea">{{$translate[$lang['code']]['description']??$product['description']}} </textarea> -->
+                                        <textarea name="description[]" class="form-control h--172px" id="{{$lang['code']}}_hiddenArea">{{ $translate[$lang['code']]['description'] ?? html_entity_decode($product['description']) }} </textarea>
                                     </div>
                                     <div class="form-group">
                                         <label class="input-label" for="{{$lang['code']}}_meta_title">{{translate('meta tag title')}} ({{strtoupper($lang['code'])}})</label>
@@ -107,7 +108,7 @@
                                 <div class="form-group mb-0">
                                     <label class="input-label"
                                         for="exampleFormControlInput1">{{translate('short')}} {{translate('description')}} (EN)</label>
-                                    <textarea name="description[]" class="form-control h--172px" id="hiddenArea">{{ $product['description'] }}</textarea>
+                                    <textarea name="description[]" class="form-control h--172px" id="hiddenArea">{{!! html_entity_decode($product['description']) !!}}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <label class="input-label" for="exampleFormControlInput1">{{translate('meta tag title')}} (EN)</label>

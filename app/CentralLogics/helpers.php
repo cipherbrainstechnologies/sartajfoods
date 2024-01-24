@@ -109,7 +109,7 @@ class Helpers
                         }
                         if ($translation->key == 'description') {
                             // $item['description'] = htmlentities($translation->value);
-                            $item['description'] = htmlspecialchars($translation->value, ENT_QUOTES, 'UTF-8');
+                            $item['description'] = html_entity_decode($translation->value);
                         }
                     }
                 }
@@ -155,7 +155,7 @@ class Helpers
                     }
                     if ($translation->key == 'description') {
                         // $data['description'] = htmlentities($translation->value);
-                        $item['description'] = htmlspecialchars($translation->value, ENT_QUOTES, 'UTF-8');
+                        $item['description'] = html_entity_decode($translation->value);
                     }
                 }
             }
