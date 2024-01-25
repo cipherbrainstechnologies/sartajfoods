@@ -60,7 +60,7 @@
                         <tr>
                             <td>{{$manufacturers->firstItem()+$key}}</td>
                              <td>
-                                <img src="{{asset('storage/manufacturer')}}/{{$manufacturer['image']}}"
+                                <img src="{{asset('storage/product/image')}}/{{$manufacturer['image']}}"
                                     onerror="this.src='{{asset('public/assets/admin/img/400x400/img2.jpg')}}'" class="img--50 ml-3" alt="">
                             </td>
                             <td>

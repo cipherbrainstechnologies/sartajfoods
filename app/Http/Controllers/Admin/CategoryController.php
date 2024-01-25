@@ -175,6 +175,8 @@ class CategoryController extends Controller
             $category->meta_keywords = $request->meta_keywords[array_search('en', $request->lang)];
         }
         $category->image = $image_name;
+        $category->seo_en  = $request->en_seo;
+        $category->seo_ja = $request->ja_seo;
         $category->parent_id = $request->parent_id == null ? 0 : $request->parent_id;
         $category->position = $request->position;
         $category->save();
@@ -283,6 +285,8 @@ class CategoryController extends Controller
         $category = $this->category->find($id);
         $category->name = $request->name[array_search('en', $request->lang)];
         $category->description = $request->description[array_search('en', $request->lang)];
+        $category->seo_en  = $request->en_seo;
+        $category->seo_ja = $request->ja_seo;
         if (empty($category->parent_id )){
             $category->meta_title = $request->meta_title[array_search('en', $request->lang)];
             $category->meta_description = $request->meta_description[array_search('en', $request->lang)];
