@@ -175,13 +175,13 @@
                                     <td class="text-center">{{$categories->firstItem()+$key}}</td>
                                     <td>
                                         <span class="d-block font-size-sm text-body">
-                                            {{$category->parent['name']}}
+                                        {!! strip_tags(htmlspecialchars_decode($category->parent['name'])) !!}
                                         </span>
                                     </td>
 
                                     <td>
                                         <span class="d-block font-size-sm text-body">
-                                            {{$category['name']}}
+                                        {!! strip_tags(htmlspecialchars_decode($category['name'])) !!}
                                         </span>
                                     </td>
 
