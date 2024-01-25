@@ -56,7 +56,9 @@ class CategoryController extends Controller
         $search = $request['search'];
         if ($request->has('search')) {
             $key = explode(' ', $request['search']);
-            $categories = $this->category->with(['parent'])->where(['position' => 1])
+            // $categories = $this->category->with(['parent'])->where(['position' => 1])
+            $categories = $this->category->with(['parent'])->where('parent_id' ,'!=', 0)
+            // ->where(['position' => 1])
                 ->where(function ($q) use ($key) {
                     foreach ($key as $value) {
                         $q->orWhere('name', 'like', "%{$value}%");
@@ -64,9 +66,10 @@ class CategoryController extends Controller
                 });
             $query_param = ['search' => $request['search']];
         } else {
-            $categories = $this->category->with(['parent'])->where(['position' => 1]);
+            // $categories = $this->category->with(['parent'])->where(['position' => 1]);
+            $categories = $this->category->with(['parent'])->where('parent_id','!=', 0);
         }
-        $categories = $categories->latest()->paginate(Helpers::getPagination())->appends($query_param);
+        $categories = $categories->paginate(Helpers::getPagination())->appends($query_param);
         return view('admin-views.category.sub-index', compact('categories', 'search'));
     }
 
@@ -287,6 +290,9 @@ class CategoryController extends Controller
         $category->description = $request->description[array_search('en', $request->lang)];
         $category->seo_en  = $request->en_seo;
         $category->seo_ja = $request->ja_seo;
+        if(!empty($request->parent_id)){
+            $category->parent_id = $request->parent_id;
+        }
         // if (empty($category->parent_id )){
             $category->meta_title = $request->meta_title[array_search('en', $request->lang)];
             $category->meta_description = $request->meta_description[array_search('en', $request->lang)];

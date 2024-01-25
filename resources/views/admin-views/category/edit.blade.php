@@ -75,12 +75,14 @@
                                 <div class="col-lg-12">
                                     <label class="form-label" for="exampleFormControlInput1">{{ translate('category') }} {{ translate('name') }} ({{ strtoupper($lang['code']) }})</label>
                                     <input type="text" name="name[]" class="form-control" placeholder="{{ translate('category') }} {{ translate('name') }} ({{ strtoupper($lang['code']) }})" maxlength="255"
-                                    {{$lang['status'] == true ? 'required':''}} value="{{$lang['code'] == 'en' ? $category['name'] : ($translate[$lang['code']]['name']??'')}}"
-                                    @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
+                                        {{$lang['status'] == true ? 'required':''}}
+                                        value="{{ $lang['code'] == 'en' ? htmlspecialchars_decode($category['name']) : htmlspecialchars_decode($translate[$lang['code']]['name']) }}"
+                                        @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
+
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="form-label mt-3" for="exampleFormControlInput1">{{ translate('category') }} {{ translate('description') }} ({{ strtoupper($lang['code']) }})</label>
-                                    <textarea name="description[]" class="form-control h--172px">@if($lang['code'] == 'en') {{$category['meta_description']}} @else {!! strip_tags(htmlspecialchars_decode($translate[$lang['code']]['description'])) !!} @endif</textarea>
+                                    <textarea name="description[]" class="form-control h--172px">@if($lang['code'] == 'en') {!! strip_tags(htmlspecialchars_decode($category['meta_description'])) !!} @else {!! strip_tags(htmlspecialchars_decode($translate[$lang['code']]['description'])) !!} @endif</textarea>
                                 </div>
                               {{--  @if(empty($category->parent_id)) --}}
                                     @if($lang['code'] == "en")
@@ -97,19 +99,19 @@
                                     @endif
                                     <div class="col-lg-12">
                                         <label class="form-label mt-3" for="exampleFormControlInput1">{{translate('meta tag title')}} ({{ strtoupper($lang['code']) }})</label>
-                                        <input type="text" name="meta_title[]" class="form-control" maxlength="255" value="{{$lang['code'] == 'en' ? $category['meta_title'] : ($translate[$lang['code']]['meta_title']??'')}}" required>
+                                        <input type="text" name="meta_title[]" class="form-control" maxlength="255" value="{{ $lang['code'] == 'en' ? htmlspecialchars_decode($category['meta_title']) : htmlspecialchars_decode($translate[$lang['code']]['meta_title']) }}" required>
                                     </div>
                                     <div class="col-lg-12">
                                             <label class="form-label mt-3"
                                             for="exampleFormControlInput1">{{translate('meta tag description')}}
                                         ({{ strtoupper($lang['code']) }})</label>
-                                            <textarea name="meta_description[]" class="form-control">{{$lang['code'] == 'en' ? $category['meta_description'] : ($translate[$lang['code']]['meta_description']??'')}}</textarea>
+                                        <textarea name="meta_description[]" class="form-control">{{ $lang['code'] == 'en' ? htmlspecialchars_decode($category['meta_description']) : (isset($translate[$lang['code']]['meta_description'])) }}</textarea>
                                     </div>
                                     <div class="col-lg-12">
                                             <label class="form-label mt-3"
                                             for="exampleFormControlInput1">{{translate('meta tag keywords')}}
                                         ({{ strtoupper($lang['code']) }})</label>
-                                            <textarea name="meta_keywords[]" class="form-control">{{$lang['code'] == 'en' ? $category['meta_keywords'] : ($translate[$lang['code']]['meta_keywords']??'')}}</textarea>
+                                            <textarea name="meta_keywords[]" class="form-control">{{ $lang['code'] == 'en' ? htmlspecialchars_decode($category['meta_keywords']) : (isset($translate[$lang['code']]['meta_keywords'])) }}</textarea>
                                     </div>
                                 {{-- @endif --}}
                             </div>
@@ -121,14 +123,14 @@
                                     <label class="form-label"
                                         for="exampleFormControlInput1">{{translate('category')}} {{ translate('name') }}
                                     ({{ strtoupper($default_lang) }})</label>
-                                    <input type="text" name="name[]" class="form-control" maxlength="255" value="{{$category['name']}}"
+                                    <input type="text" name="name[]" class="form-control" maxlength="255" value="{!! strip_tags(htmlspecialchars_decode($translate[$lang['code']]['description'])) !!}{{$category['name']}}"
                                         placeholder="{{ translate('New Category') }}" required>
                                 </div>
                                 <div class="col-lg-12">
                                         <label class="form-label mt-3"
                                         for="exampleFormControlInput1">{{ translate('category') }} {{ translate('description') }}
                                     ({{ strtoupper($default_lang) }})</label>
-                                        <textarea name="description[]" class="form-control h--172px">@if($lang['code'] == 'en') {{$category['meta_description']}} @else {!! strip_tags(htmlspecialchars_decode($translate[$lang['code']]['description'])) !!} @endif</textarea>
+                                        <textarea name="description[]" class="form-control h--172px">@if($lang['code'] == 'en') {!! strip_tags(htmlspecialchars_decode($category['meta_description'])) !!} @else {!! strip_tags(htmlspecialchars_decode($translate[$lang['code']]['description'])) !!} @endif</textarea>
                                 </div>
                                 @if($lang['code'] == "en")
                                     <div class="col-lg-12">
@@ -162,7 +164,7 @@
                             <input type="hidden" name="lang[]" value="{{$default_lang}}">
                         @endif
                         <input name="position" value="0" hidden>
-                        {{-- @if($category->parent_id == 0) --}}
+                        @if($category->parent_id == 0)
                         <div class="col-sm-6">
                            
                             <label>{{\App\CentralLogics\translate('image')}}</label><small style="color: red">* ( {{\App\CentralLogics\translate('ratio')}} 3:1 )</small>
@@ -176,7 +178,21 @@
                                     src="{{asset('storage/product/image')}}/{{$category['image']}}" alt="image"/>
                             </center>
                         </div>
-                        {{-- @endif --}}
+                        @else
+                        
+                        <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="form-label"
+                                            for="exampleFormControlSelect1">{{translate('main')}} {{translate('category')}}
+                                            <span class="input-label-secondary">*</span></label>
+                                        <select id="exampleFormControlSelect1" name="parent_id" class="form-control" required>
+                                            @foreach(\App\Model\Category::with('translations')->where(['position'=>0])->get() as $cat)
+                                                <option value="{{$cat['id']}}" @if($cat['id'] == $category['parent_id']) selected @endif>{!! strip_tags(htmlspecialchars_decode($cat['name'])) !!}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                        @endif
                         <div class="col-12">
                             <div class="btn--container justify-content-end">
                                 <button type="reset" class="btn btn--reset">{{translate('reset')}}</button>
@@ -192,6 +208,11 @@
 @endsection
 
 @push('script_2')
+<script>
+    $(document).ready(function() {
+        $('select[name="parent_id"]').select2();
+    });
+</script>
     <script>
         $(".lang_link").click(function(e){
             e.preventDefault();
