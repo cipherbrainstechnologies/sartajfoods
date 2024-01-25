@@ -52,6 +52,15 @@
                                             if($t->locale == $lang['code'] && $t->key=="description"){
                                                 $translate[$lang['code']]['description'] = $t->value;
                                             }
+                                            if($t->locale == $lang['code'] && $t->key=="meta_title"){
+                                                $translate[$lang['code']]['meta_title'] = $t->value;
+                                            }
+                                            if($t->locale == $lang['code'] && $t->key=="meta_tag_description"){
+                                                $translate[$lang['code']]['meta_tag_description'] = $t->value;
+                                            }
+                                            if($t->locale == $lang['code'] && $t->key=="meta_tag_keywords"){
+                                                $translate[$lang['code']]['meta_tag_keywords'] = $t->value;
+                                            }
 
                                         }
                                     }
