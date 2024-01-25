@@ -155,7 +155,7 @@
                                 <div class="product--coba">
                                     <div class="row g-2" id="coba">
                                          <div class="spartan_item_wrapper position-relative">
-                                            <img class="img-150 border rounded p-3" src="{{asset('storage/manufacturer')}}/{{$manufacturer['image']}}">
+                                            <img class="img-150 border rounded p-3" src="{{asset('storage/product/image')}}/{{$manufacturer['image']}}">
                                         </div>
                                     </div>
                                 </div>
