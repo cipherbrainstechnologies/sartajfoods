@@ -172,7 +172,7 @@
                             </div>
                              <center>
                                 <img class="img--105" id="viewer" onerror="this.src='{{asset('public/assets/admin/img/900x400/img1.jpg')}}'"
-                                    src="{{asset('storage/category')}}/{{$category['image']}}" alt="image"/>
+                                    src="{{asset('storage/product/image')}}/{{$category['image']}}" alt="image"/>
                             </center>
                         </div>
                         @endif
