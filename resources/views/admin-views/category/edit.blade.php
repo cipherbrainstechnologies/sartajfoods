@@ -74,24 +74,25 @@
                             <div class="col-sm-6 {{$lang['default'] == false ? 'd-none':''}} lang_form" id="{{$lang['code']}}-form">
                                 <div class="col-lg-12">
                                     <label class="form-label" for="exampleFormControlInput1">{{ translate('category') }} {{ translate('name') }} ({{ strtoupper($lang['code']) }})</label>
-                                    <input type="text" name="name[]" class="form-control" placeholder="{{ translate('Ex: Size') }}" maxlength="255"
+                                    <input type="text" name="name[]" class="form-control" placeholder="{{ translate('category') }} {{ translate('name') }} ({{ strtoupper($lang['code']) }})" maxlength="255"
                                     {{$lang['status'] == true ? 'required':''}} value="{{$lang['code'] == 'en' ? $category['name'] : ($translate[$lang['code']]['name']??'')}}"
                                     @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
                                 </div>
                                 <div class="col-lg-12">
                                     <label class="form-label mt-3" for="exampleFormControlInput1">{{ translate('category') }} {{ translate('description') }} ({{ strtoupper($lang['code']) }})</label>
-                                    <textarea name="description[]" class="form-control h--172px">{{$lang['code'] == 'en' ? $category['description'] : ($translate[$lang['code']]['description']??'')}}</textarea>
+                                    <textarea name="description[]" class="form-control h--172px">@if($lang['code'] == 'en') {{$category['meta_description']}} @else {!! strip_tags(htmlspecialchars_decode($translate[$lang['code']]['description'])) !!} @endif</textarea>
                                 </div>
-                                @if(empty($category->parent_id))
+                              {{--  @if(empty($category->parent_id)) --}}
                                     @if($lang['code'] == "en")
                                         <div class="col-lg-12">
                                             <label class="form-label mt-3" for="{{$lang['code']}}_seo_en">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
-                                            <input type="text" name="en_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('EN')}})" value="{{$category['seo_en']??''}}" required>
+                                            <input type="text" name="en_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('EN')}})" value="{{$category['seo_en']??''}}" {{$lang['status'] == true ? 'required':''}}  @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
+                                            
                                         </div>
                                     @else
                                         <div class="col-lg-12">
                                             <label class="form-label mt-3" for="{{$lang['code']}}_seo_ja">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
-                                            <input type="text" name="ja_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('JA')}})" value="{{$category['seo_ja'] ?? ''}}" required>
+                                            <input type="text" name="ja_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('JA')}})" value="{{$category['seo_ja'] ?? ''}}" {{$lang['status'] == true ? 'required':''}}  @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
                                         </div>
                                     @endif
                                     <div class="col-lg-12">
@@ -110,7 +111,7 @@
                                         ({{ strtoupper($lang['code']) }})</label>
                                             <textarea name="meta_keywords[]" class="form-control">{{$lang['code'] == 'en' ? $category['meta_keywords'] : ($translate[$lang['code']]['meta_keywords']??'')}}</textarea>
                                     </div>
-                                @endif
+                                {{-- @endif --}}
                             </div>
                             <input type="hidden" name="lang[]" value="{{$lang['code']}}">
                         @endforeach
@@ -127,7 +128,7 @@
                                         <label class="form-label mt-3"
                                         for="exampleFormControlInput1">{{ translate('category') }} {{ translate('description') }}
                                     ({{ strtoupper($default_lang) }})</label>
-                                        <textarea name="description[]" class="form-control h--172px">value="{{$category['description']}}"</textarea>
+                                        <textarea name="description[]" class="form-control h--172px">@if($lang['code'] == 'en') {{$category['meta_description']}} @else {!! strip_tags(htmlspecialchars_decode($translate[$lang['code']]['description'])) !!} @endif</textarea>
                                 </div>
                                 @if($lang['code'] == "en")
                                     <div class="col-lg-12">
@@ -161,7 +162,7 @@
                             <input type="hidden" name="lang[]" value="{{$default_lang}}">
                         @endif
                         <input name="position" value="0" hidden>
-                        @if($category->parent_id == 0)
+                        {{-- @if($category->parent_id == 0) --}}
                         <div class="col-sm-6">
                            
                             <label>{{\App\CentralLogics\translate('image')}}</label><small style="color: red">* ( {{\App\CentralLogics\translate('ratio')}} 3:1 )</small>
@@ -175,7 +176,7 @@
                                     src="{{asset('storage/product/image')}}/{{$category['image']}}" alt="image"/>
                             </center>
                         </div>
-                        @endif
+                        {{-- @endif --}}
                         <div class="col-12">
                             <div class="btn--container justify-content-end">
                                 <button type="reset" class="btn btn--reset">{{translate('reset')}}</button>

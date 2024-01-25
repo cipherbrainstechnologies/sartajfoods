@@ -169,11 +169,11 @@ class CategoryController extends Controller
         $category = $this->category;
         $category->name = $request->name[array_search('en', $request->lang)];
         $category->description = $request->description[array_search('en', $request->lang)];
-        if ($previousRouteName != 'admin.category.add-sub-category') {
+        // if ($previousRouteName != 'admin.category.add-sub-category') {
             $category->meta_title = $request->meta_title[array_search('en', $request->lang)];
             $category->meta_description = $request->meta_description[array_search('en', $request->lang)];
             $category->meta_keywords = $request->meta_keywords[array_search('en', $request->lang)];
-        }
+        // }
         $category->image = $image_name;
         $category->seo_en  = $request->en_seo;
         $category->seo_ja = $request->ja_seo;
@@ -287,16 +287,16 @@ class CategoryController extends Controller
         $category->description = $request->description[array_search('en', $request->lang)];
         $category->seo_en  = $request->en_seo;
         $category->seo_ja = $request->ja_seo;
-        if (empty($category->parent_id )){
+        // if (empty($category->parent_id )){
             $category->meta_title = $request->meta_title[array_search('en', $request->lang)];
             $category->meta_description = $request->meta_description[array_search('en', $request->lang)];
             $category->meta_keywords = $request->meta_keywords[array_search('en', $request->lang)];
-        }
+        // }
 
         $category->image = $request->has('image') ? Helpers::update('product/image/', $category->image, 'png', $request->file('image')) : $category->image;
         $category->save();
         foreach ($request->lang as $index => $key) {
-            if ($request->name[$index] && $key != 'en') {
+            if ($key != 'en') {
                 Translation::updateOrInsert(
                     ['translationable_type' => 'App\Model\Category',
                         'translationable_id' => $category->id,
@@ -305,7 +305,7 @@ class CategoryController extends Controller
                     ['value' => $request->name[$index]]
                 );
             }
-            if ($request->description[$index] && $key != 'en') {
+            if ($key != 'en') {
                 Translation::updateOrInsert(
                     ['translationable_type' => 'App\Model\Category',
                         'translationable_id' => $category->id,
@@ -314,8 +314,9 @@ class CategoryController extends Controller
                     ['value' => $request->description[$index]]
                 );
             }
-            if (empty($category->parent_id )){
-                if ($request->meta_title[$index] && $key != 'en') {
+            // if (empty($category->parent_id )){
+                if ( $key != 'en') {
+                    
                     Translation::updateOrInsert(
                         ['translationable_type' => 'App\Model\Category',
                             'translationable_id' => $category->id,
@@ -324,7 +325,7 @@ class CategoryController extends Controller
                         ['value' => $request->meta_title[$index]]
                     );
                 }
-                if ($request->meta_description[$index] && $key != 'en') {
+                if ( $key != 'en') {
                     Translation::updateOrInsert(
                         ['translationable_type' => 'App\Model\Category',
                             'translationable_id' => $category->id,
@@ -333,7 +334,7 @@ class CategoryController extends Controller
                         ['value' => $request->meta_description[$index]]
                     );
                 }
-                if ($request->meta_keywords[$index] && $key != 'en') {
+                if ( $key != 'en') {
                     Translation::updateOrInsert(
                         ['translationable_type' => 'App\Model\Category',
                             'translationable_id' => $category->id,
@@ -342,8 +343,10 @@ class CategoryController extends Controller
                         ['value' => $request->meta_keywords[$index]]
                     );
                 }
-            }
+            // }
         }
+        
+        
         Toastr::success($category->parent_id == 0 ? translate('Category updated successfully!') : translate('Sub Category updated successfully!'));
         return back();
     }
