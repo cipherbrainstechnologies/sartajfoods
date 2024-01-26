@@ -112,9 +112,9 @@
                                         <label class="form-label"
                                             for="exampleFormControlSelect1">{{translate('main')}} {{translate('category')}}
                                             <span class="input-label-secondary">*</span></label>
-                                        <select id="exampleFormControlSelect1" name="parent_id" class="form-control" required>
+                                        <select id="exampleFormControlSelect1" name="parent_id" class="form-control js-select2-custom" required>
                                             @foreach(\App\Model\Category::where(['position'=>0])->get() as $category)
-                                                <option value="{{$category['id']}}">{{$category['name']}}</option>
+                                                <option value="{{$category['id']}}">{!! strip_tags(htmlspecialchars_decode($category['name'])) !!}</option>
                                             @endforeach
                                         </select>
                                     </div>

@@ -185,7 +185,7 @@
                                         <label class="form-label"
                                             for="exampleFormControlSelect1">{{translate('main')}} {{translate('category')}}
                                             <span class="input-label-secondary">*</span></label>
-                                        <select id="exampleFormControlSelect1" name="parent_id" class="form-control" required>
+                                        <select id="exampleFormControlSelect1" name="parent_id" class="form-control js-select2-custom" required>
                                             @foreach(\App\Model\Category::with('translations')->where(['position'=>0])->get() as $cat)
                                                 <option value="{{$cat['id']}}" @if($cat['id'] == $category['parent_id']) selected @endif>{!! strip_tags(htmlspecialchars_decode($cat['name'])) !!}</option>
                                             @endforeach
