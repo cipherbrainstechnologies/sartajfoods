@@ -122,10 +122,10 @@
                                     <td class="pt-1 pb-3  {{$key == 0 ? 'pt-4' : '' }}">{{$products->firstItem()+$key}}</td>
                                     <td class="pt-1 pb-3  {{$key == 0 ? 'pt-4' : '' }}">
                                         <a href="{{route('admin.product.view',[$product['id']])}}" class="product-list-media">
-                                            <?php echo $product['image'];die; ?>
-                                        @if (!empty(json_decode($product['image'],true)))
+                                        {{--@if (!empty(json_decode($product['image'],true))) --}}
+                                        @if(!empty($product['image']))
                                         <img
-                                            src="{{asset('storage/product')}}/{{json_decode($product['image'],true)[0]}}"
+                                            src="{{asset('storage/product')}}/{{$product['image'][0]}}"
                                             onerror="this.src='{{asset('public/assets/admin/img/400x400/img2.jpg')}}'">
                                         @else
                                             <img src="{{asset('public/assets/admin/img/400x400/img2.jpg')}}">
