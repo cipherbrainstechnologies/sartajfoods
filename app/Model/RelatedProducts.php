@@ -34,16 +34,24 @@ class RelatedProducts extends Model
 
     public function getImageAttribute()
     {
-        if (!empty($this->relatedProduct->image)) {
-            $modifiedImages = [];
-            $images = json_decode($this->relatedProduct->image,true);
-            foreach ($images as $image) {
-                $modifiedImages[] = config('app.url') . '/storage/product/' . $image;
+        $modifiedImages = [];
+        if(is_array($this->relatedProduct->image) && !empty($this->relatedProduct->image)){
+            foreach ($this->relatedProduct->image as $image) {
+                $modifiedImages[] = config('app.url') . '/storage/product/image/' . $image;
             }
             $this->relatedProduct->image = $modifiedImages;
              return $modifiedImages;
-            // return config('app.url') . '/storage/products/' . $this->relatedProduct->image;
         }
+        // if (!empty($this->relatedProduct->image)) {
+           
+        //     $images = json_decode($this->relatedProduct->image,true);
+        //     foreach ($images as $image) {
+        //         $modifiedImages[] = config('app.url') . '/storage/product/image/' . $image;
+        //     }
+        //     $this->relatedProduct->image = $modifiedImages;
+        //      return $modifiedImages;
+        //     // return config('app.url') . '/storage/products/' . $this->relatedProduct->image;
+        // }
         return null;
        
     }
