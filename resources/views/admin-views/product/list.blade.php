@@ -122,12 +122,13 @@
                                     <td class="pt-1 pb-3  {{$key == 0 ? 'pt-4' : '' }}">{{$products->firstItem()+$key}}</td>
                                     <td class="pt-1 pb-3  {{$key == 0 ? 'pt-4' : '' }}">
                                         <a href="{{route('admin.product.view',[$product['id']])}}" class="product-list-media">
-                                        {{--@if (!empty(json_decode($product['image'],true))) --}}
-                                        @if(!empty($product['image']))
+                                        @if (!empty(json_decode($product['image'],true)))
+                                        <?php echo 'dsf';die; ?>
                                         <img
-                                            src="{{asset('storage/product')}}/{{$product['image']}}"
+                                            src="{{asset('storage/product')}}/{{json_decode($product['image'],true)[0]}}"
                                             onerror="this.src='{{asset('public/assets/admin/img/400x400/img2.jpg')}}'">
                                         @else
+                                        <?php echo 'dssf';die; ?>
                                             <img src="{{asset('public/assets/admin/img/400x400/img2.jpg')}}">
                                         @endif
                                         <h6 class="name line--limit-2">
