@@ -125,7 +125,7 @@
                                         {{--@if (!empty(json_decode($product['image'],true))) --}}
                                         @if(!empty($product['image']))
                                         <img
-                                            src="{{asset('storage/product')}}/{{$product['image'][0]}}"
+                                            src="{{asset('storage/product')}}/{{$product['image']}}"
                                             onerror="this.src='{{asset('public/assets/admin/img/400x400/img2.jpg')}}'">
                                         @else
                                             <img src="{{asset('public/assets/admin/img/400x400/img2.jpg')}}">
