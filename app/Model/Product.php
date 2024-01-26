@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Date;
 class Product extends Model
 {
 
-    protected $appends = ['actual_price','overall_rating','total_reviews','badges'];
+    protected $appends = ['actual_price','overall_rating','total_reviews','badges','image'];
     protected $casts = [
         'tax'         => 'float',
         'price'       => 'float',
@@ -27,6 +27,19 @@ class Product extends Model
         'updated_at'  => 'datetime',
         'is_featured'  => 'integer',
     ];
+
+    public function getImageAttribute(): string
+    {
+        $imageUrl = [];
+        if(!empty($this->attributes['image'])){
+            $images = json_decode($this->attributes['image'],true);
+            foreach($images as $image){
+                $imageUrl = config('app.url').'/storage/product/'.$image;
+            }
+        }
+    
+        return $imageUrl;
+    }
 
     public function relatedProducts()
     {
@@ -99,7 +112,7 @@ class Product extends Model
 
     public function manufacturer(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->BelongsTo(Manufacturer::class);
+        return $this->belongsTo(Manufacturer::class);
     }
 
     // public function getImageAttribute($value)

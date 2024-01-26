@@ -24,7 +24,7 @@ class ManufacturerController extends Controller
         if(!empty($manufacturers)){
             foreach($manufacturers->toArray() as $key => $manufacturer){
                 $response[] = $manufacturer;
-                $response[$key]['image'] = $baseUrl . '/storage/manufacturer/' . $manufacturer['image'];
+                $response[$key]['image'] = $baseUrl . '/storage/product/image/' . $manufacturer['image'];
             }
         }      
         return $response;
