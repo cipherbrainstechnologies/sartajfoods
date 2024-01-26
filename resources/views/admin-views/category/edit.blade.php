@@ -105,13 +105,14 @@
                                             <label class="form-label mt-3"
                                             for="exampleFormControlInput1">{{translate('meta tag description')}}
                                         ({{ strtoupper($lang['code']) }})</label>
-                                        <textarea name="meta_description[]" class="form-control">{{ $lang['code'] == 'en' ? htmlspecialchars_decode($category['meta_description']) : $translate[$lang['code']]['meta_description'] }}</textarea>
+                                        <textarea name="meta_description[]" class="form-control">{{ $lang['code'] == 'en' ? htmlspecialchars_decode($category['meta_description']) : ($translate[$lang['code']]['meta_description'] ?? '') }}</textarea>
+
                                     </div>
                                     <div class="col-lg-12">
                                             <label class="form-label mt-3"
                                             for="exampleFormControlInput1">{{translate('meta tag keywords')}}
                                         ({{ strtoupper($lang['code']) }})</label>
-                                            <textarea name="meta_keywords[]" class="form-control">{{ $lang['code'] == 'en' ? htmlspecialchars_decode($category['meta_keywords']) : $translate[$lang['code']]['meta_keywords'] }}</textarea>
+                                            <textarea name="meta_keywords[]" class="form-control">{{ $lang['code'] == 'en' ? htmlspecialchars_decode($category['meta_keywords']) : ($translate[$lang['code']]['meta_keywords'] ?? '') }}</textarea>
                                     </div>
                                 {{-- @endif --}}
                             </div>
