@@ -214,7 +214,7 @@ class ProductController extends Controller
         $img_names = [];
         if (!empty($request->file('images'))) {
             foreach ($request->images as $img) {
-                $image_data = Helpers::upload('product/image/', 'png', $img);
+                $image_data = Helpers::upload('product/', 'png', $img);
                 $img_names[] = $image_data;
             }
             $image_data = json_encode($img_names);
@@ -529,7 +529,7 @@ class ProductController extends Controller
         $images = json_decode($p->image);
         if (!empty($request->file('images'))) {
             foreach ($request->images as $img) {
-                $image_data = Helpers::upload('product/image/', 'png', $img);
+                $image_data = Helpers::upload('product/', 'png', $img);
                 $images[] = $image_data;
             }
 
