@@ -61,7 +61,7 @@ class RelatedProducts extends Model
             // Check if $images is an array
             if (is_array($images)) {
                 foreach ($images as $image) {
-                    $modifiedImages[] = config('app.url') . '/storage/product/image/' . $image;
+                    $modifiedImages[] = config('app.url') . '/storage/product/' . $image;
                 }
 
                 $this->relatedProduct->image = $modifiedImages;
