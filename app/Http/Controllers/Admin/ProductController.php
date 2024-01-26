@@ -786,7 +786,7 @@ class ProductController extends Controller
     public function remove_image($id, $name)
     {      
         if (Storage::disk('public')->exists('product/' . $name)) {
-            Storage::disk('public')->delete('product/image/' . $name);
+            Storage::disk('public')->delete('product/' . $name);
         }
 
         $product = $this->product->find($id);
