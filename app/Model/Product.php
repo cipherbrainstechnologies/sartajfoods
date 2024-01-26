@@ -28,18 +28,18 @@ class Product extends Model
         'is_featured'  => 'integer',
     ];
 
-    public function getImageAttribute(): string
-    {
-        $imageUrl = [];
-        if(!empty($this->attributes['image'])){
-            $images = json_decode($this->attributes['image'],true);
-            foreach($images as $image){
-                $imageUrl = config('app.url').'/storage/product/'.$image;
-            }
-        }
+    // public function getImageAttribute()
+    // {
+    //     $imageUrl = [];
+    //     if(!empty($this->attributes['image'])){
+    //         $images = json_decode($this->attributes['image'],true);
+    //         foreach($images as $image){
+    //             array_push($imageUrl,config('app.url').'/storage/product/'.$image);
+    //         }
+    //     }
     
-        return $imageUrl;
-    }
+    //     return $imageUrl;
+    // }
 
     public function relatedProducts()
     {
