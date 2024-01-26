@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Date;
 class Product extends Model
 {
 
-    protected $appends = ['actual_price','overall_rating','total_reviews','badges','image'];
+    protected $appends = ['actual_price','overall_rating','total_reviews','badges'];
     protected $casts = [
         'tax'         => 'float',
         'price'       => 'float',
