@@ -187,7 +187,7 @@
                                             for="exampleFormControlSelect1">{{translate('sub_category')}}<span
                                             class="input-label-secondary"></span></label>
                                     <select name="sub_category_id" id="sub-categories"
-                                            data-id="{{count($product_category)>=2?$product_category[1]->id:''}}"
+                                            data-id="{{count($product_category)>=2?$product_category[1]['id']:''}}"
                                             class="form-control js-select2-custom"
                                             onchange="getRequest('{{url('/')}}/admin/product/get-categories?parent_id='+this.value,'sub-sub-categories')">
 
@@ -804,8 +804,8 @@
         $(document).ready(function () {
             setTimeout(function () {
                 let category = $("#category-id").val();
-                let sub_category = '{{count($product_category)>=2?$product_category[1]->id:''}}';
-                let sub_sub_category = '{{count($product_category)>=3?$product_category[2]->id:''}}';
+                let sub_category = '{{count($product_category)>=2?$product_category[1]['id']:''}}';
+                let sub_sub_category = '{{count($product_category)>=3?$product_category[2]['id']:''}}';
                 getRequest('{{url('/')}}/admin/product/get-categories?parent_id=' + category + '&&sub_category=' + sub_category, 'sub-categories');
                 getRequest('{{url('/')}}/admin/product/get-categories?parent_id=' + sub_category + '&&sub_category=' + sub_sub_category, 'sub-sub-categories');
             }, 1000)
