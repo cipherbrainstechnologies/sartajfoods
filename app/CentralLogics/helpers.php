@@ -85,8 +85,9 @@ class Helpers
                 if(!is_null($categories) && count($categories) > 0) {
                     $ids = [];
                     foreach ($categories as $value) {
-                        if ($value->position == 1) {
-                            $ids[] = $value->id;
+                        // if ($value->position == 1) {
+                        if ($value['position'] > 0) {
+                            $ids[] = $value['id'];
                         }
                     }
                     $item['category_discount']= CategoryDiscount::active()->where('category_id', $ids)->first();
@@ -129,11 +130,13 @@ class Helpers
 
             // $categories = gettype($data['category_ids']) == 'array' ? $data['category_ids'] : json_decode($data['category_ids']);
             $categories = $data['category_ids'];
+            
             if(!is_null($categories) && count($categories) > 0) {
                 $ids = [];
                 foreach ($categories as $value) {
-                    if ($value->position == 1) {
-                        $ids[] = $value->id;
+                    // if ($value->position == 1) {
+                    if ($value['position'] > 0) {
+                        $ids[] = $value['id'];
                     }
                 }
                 $data['category_discount']= CategoryDiscount::active()->where('category_id', $ids)->first();
@@ -160,7 +163,7 @@ class Helpers
                 }
             }
         }
-        
+        echo "<pre>";print_r($data);die;
         return $data;
     }
 
