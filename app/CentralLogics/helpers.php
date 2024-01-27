@@ -80,7 +80,8 @@ class Helpers
                 $item['attributes'] = json_decode($item['attributes']);
                 $item['choice_options'] = json_decode($item['choice_options']);
 
-                $categories = gettype($item['category_ids']) == 'array' ? $item['category_ids'] : json_decode($item['category_ids']);
+                // $categories = gettype($item['category_ids']) == 'array' ? $item['category_ids'] : json_decode($item['category_ids']);
+                $categories = $data['category_ids'];
                 if(!is_null($categories) && count($categories) > 0) {
                     $ids = [];
                     foreach ($categories as $value) {
@@ -120,9 +121,9 @@ class Helpers
             $variations = [];
             // $data['category_ids'] = json_decode($data['category_ids']);
             // $data['image'] = json_decode($data['image']);
-            $data['image'] = array_map(function ($imageName) use ($baseUrl) {
-                return $baseUrl . '/storage/product/' . $imageName;
-            }, json_decode($data['image']));
+            // $data['image'] = array_map(function ($imageName) use ($baseUrl) {
+            //     return $baseUrl . '/storage/product/' . $imageName;
+            // }, json_decode($data['image']));
             $data['attributes'] = json_decode($data['attributes']);
             $data['choice_options'] = json_decode($data['choice_options']);
 
