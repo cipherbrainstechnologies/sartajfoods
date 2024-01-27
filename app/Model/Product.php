@@ -26,7 +26,7 @@ class Product extends Model
         'created_at'  => 'datetime',
         'updated_at'  => 'datetime',
         'is_featured'  => 'integer',
-        // 'category_ids' => 'array'
+        
     ];
 
     // public function getImageAttribute()
