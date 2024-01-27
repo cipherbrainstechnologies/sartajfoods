@@ -55,9 +55,9 @@ class ProductController extends Controller
                     ->with(['rating', 'active_reviews','manufacturer', 'soldProduct','relatedProducts.relatedProduct']);
         
                 if(!empty($request->manufacturer_id)){
-                    $Query->whereHas('manufacturer', function ($query) use ($manufacturer_id) {
-                        $query->Where('seo_en', 'like', "%{$manufacturer_id}%")
-                        ->orWhere('seo_ja', 'like', "%{$manufacturer_id}%");
+                    $Query->whereHas('manufacturer', function ($query) use ($request->manufacturer_id) {
+                        $query->Where('seo_en', 'like', "%{$request->manufacturer_id}%")
+                        ->orWhere('seo_ja', 'like', "%{$request->manufacturer_id}%");
                     });
                 }
                 if(!empty($request->category_id)){
