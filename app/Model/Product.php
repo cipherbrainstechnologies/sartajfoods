@@ -26,6 +26,7 @@ class Product extends Model
         'created_at'  => 'datetime',
         'updated_at'  => 'datetime',
         'is_featured'  => 'integer',
+        'category_ids' => 'array'
     ];
 
     // public function getImageAttribute()
@@ -208,6 +209,11 @@ class Product extends Model
         ->select(DB::raw('sum(quantity) sold_products, product_id'))
         ->groupBy('product_id');
         return $sold_product;
+    }
+
+    public function scopeByCategory($query, $categoryId)
+    {
+        return $query->whereJsonContains('category_ids', ['id' =>$categoryId]);
     }
 
 }

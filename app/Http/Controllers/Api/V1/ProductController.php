@@ -48,181 +48,151 @@ class ProductController extends Controller
     
      public function get_all_products(Request $request): \Illuminate\Http\JsonResponse
      {
-         $products = !empty($request->manufacturer_id) ? ProductLogic::get_all_products($request['limit'], $request['offset'], $request->manufacturer_id) : ProductLogic::get_all_products($request['limit'], $request['offset']);
-         $products['products'] = Helpers::product_data_formatting($products['products'], true);
-         $product_fileter = array();
-         $manufacturer_id = $request->manufacturer_id;
-         if(!empty($request['category_id'])) {
-            $product_fileter = Helpers::product_data_formatting(CategoryLogic::products($request['category_id'], $request['limit'], $request['offset'], !empty($request->manufacturer_id) ? $request->manufacturer_id : null), true);
-            $size = CategoryLogic::getProductCount($request['category_id']);
-            $products['total_size'] = $size;
-            unset($products['products']);
-            $products['products']= $product_fileter;
-         }
-
-         if(!empty($request['sort_by']) && $request['sort_by'] === 'featured') {
-           $sort_by_fileter = $this->product->active()
-           ->withCount(['wishlist'])
-           ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
-           ->where(['is_featured' => 1])
-           ->orderBy('id', 'desc');
-           
-           if(!empty($request->manufacturer_id) && empty($request['category_id'])) {
-            $sort_by_fileter->whereHas('manufacturer', function ($query) use ($manufacturer_id) {
-                // $query->where('id', $manufacturer_id);
-                $query->Where('seo_en', 'like', "%{$manufacturer_id}%")
-                        ->orWhere('seo_ja', 'like', "%{$manufacturer_id}%");
-            });
-           }
-           $sort_by_fileter->paginate($request['limit'], ['*'], 'page', $request['offset']);
-
-           $products['total_size'] = sizeof($sort_by_fileter->get()->toArray());
-
-           if(!empty($request['category_id'])) {
-                $product_fileter = array();
-                $product_fileter = $product_categoty_fileter_with_sort_by = Helpers::product_data_formatting(CategoryLogic::productsSort($request['category_id'], $request['limit'], $request['offset'], $request['sort_by'], !empty($request->manufacturer_id) ? $request->manufacturer_id : null), true);
-           } else {
-             $product_fileter = Helpers::product_data_formatting($sort_by_fileter->get(), true);
-           }
-
-           unset($products['products']);
-           $products['products']= $product_fileter;
-         }
-
-         if(!empty($request['sort_by']) && $request['sort_by'] === 'trending') {
-            $sort_by_fileter = $this->product->active()
-           ->withCount(['wishlist'])
-           ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
-           ->where('popularity_count', '<>' , 0)
-           ->orderBy('popularity_count', 'DESC');
-
-           if(!empty($request->manufacturer_id) && empty($request['category_id'])) {
-            $sort_by_fileter->whereHas('manufacturer', function ($query) use ($manufacturer_id) {
-                $query->where('id', $manufacturer_id);
-            });
-           }
-           $sort_by_fileter->paginate($request['limit'], ['*'], 'page', $request['offset']);
-
-           $products['total_size'] = sizeof($sort_by_fileter->get()->toArray());
-
-           if(!empty($request['category_id'])) {
-            $product_fileter = array();
-            $product_fileter = $product_categoty_fileter_with_sort_by = Helpers::product_data_formatting(CategoryLogic::productsSort($request['category_id'], $request['limit'], $request['offset'], $request['sort_by'], !empty($request->manufacturer_id) ? $request->manufacturer_id : null), true);
-           } else {
-            $product_fileter = Helpers::product_data_formatting($sort_by_fileter->get(), true);
-           }
-
-           unset($products['products']);
-           $products['products']= $product_fileter;
-        }
-
-       
-       
-
-        if(!empty($request['max'])) {
-            $sort_by_fileter = $this->product->active()
-           ->withCount(['wishlist'])
-           ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
-           ->whereBetween('price', [$request['min'], $request['max']])
-           ->orderBy('price', 'DESC');
-
-           if(!empty($request->manufacturer_id) && empty($request['category_id'])) {
-            $sort_by_fileter->whereHas('manufacturer', function ($query) use ($manufacturer_id) {
-                // $query->where('id', $manufacturer_id);
-                $query->Where('seo_en', 'like', "%{$manufacturer_id}%")
-                        ->orWhere('seo_ja', 'like', "%{$manufacturer_id}%");
-            });
-           }
-           $sort_by_fileter->paginate($request['limit'], ['*'], 'page', $request['offset']);
-
-           $products['total_size'] = sizeof($sort_by_fileter->get()->toArray());
-
-           if(!empty($request['category_id'])) {
-            $product_fileter = array();
-            $product_fileter = $product_categoty_fileter_with_sort_by = Helpers::product_data_formatting(CategoryLogic::productsSortByPrice($request['category_id'], $request['limit'], $request['offset'], $request['max'], $request['min'], !empty($request->manufacturer_id) ? $request->manufacturer_id : null), true);
-           } else {
-            $product_fileter = Helpers::product_data_formatting($sort_by_fileter->get(), true);
-           }
-           
-           if(!empty($request['category_id'])) {
-            $product_fileter = array();
-            $product_fileter = $product_categoty_fileter_with_sort_by = Helpers::product_data_formatting(CategoryLogic::productsSortByPrice($request['category_id'], $request['limit'], $request['offset'], $request['max'], $request['min'], !empty($request->manufacturer_id) ? $request->manufacturer_id : null), true);
-           }
-           
-           unset($products['products']);
-           $products['products']= $product_fileter;
-        }
-        if(!empty($request['sort_by']) && $request['sort_by'] === 'lowToHigh') {
-            $sort_by_fileter = $this->product->active()
-           ->withCount(['wishlist'])
-           ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
-           ->orderBy('price', 'ASC');
-
-           if(!empty($request->manufacturer_id) && empty($request['category_id'])) {
-            $sort_by_fileter->whereHas('manufacturer', function ($query) use ($manufacturer_id) {
-                // $query->where('id', $manufacturer_id);
-                $query->Where('seo_en', 'like', "%{$manufacturer_id}%")
-                        ->orWhere('seo_ja', 'like', "%{$manufacturer_id}%");
-            });
-           }
+        $orderByColumn = 'id';
+        $orderBySort = 'desc';
+        $Query = Product::active()
+                    ->withCount(['wishlist','order_details','relatedProducts'])
+                    ->with(['rating', 'active_reviews','manufacturer', 'soldProduct','relatedProducts.relatedProduct']);
         
-           $sort_by_fileter->paginate($request['limit'], ['*'], 'page', $request['offset']);
-
-           $products['total_size'] = sizeof($sort_by_fileter->get()->toArray());
-
-           if(!empty($request['category_id'])) {
-            $product_fileter = array();
-            $product_fileter = $product_categoty_fileter_with_sort_by = Helpers::product_data_formatting(CategoryLogic::productsSort($request['category_id'], $request['limit'], $request['offset'], $request['sort_by'], !empty($request->manufacturer_id) ? $request->manufacturer_id : null), true);
-           } else {
-            $product_fileter = Helpers::product_data_formatting($sort_by_fileter->get(), true);
-           }
-
-           unset($products['products']);
-           $products['products']= $product_fileter;
-        }
-
-        if(!empty($request['sort_by']) && $request['sort_by'] === 'highToLow') {
-            $sort_by_fileter = $this->product->active()
-           ->withCount(['wishlist'])
-           ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
-           ->orderBy('price', 'DESC');
-           
-           if(!empty($request->manufacturer_id) && empty($request['category_id'])) {
-            $sort_by_fileter->whereHas('manufacturer', function ($query) use ($manufacturer_id) {
-                // $query->where('id', $manufacturer_id);
-                $query->Where('seo_en', 'like', "%{$manufacturer_id}%")
+                if(!empty($request->manufacturer_id)){
+                    $Query->whereHas('manufacturer', function ($query) use ($manufacturer_id) {
+                        $query->Where('seo_en', 'like', "%{$manufacturer_id}%")
                         ->orWhere('seo_ja', 'like', "%{$manufacturer_id}%");
-            });
-           }
-           $sort_by_fileter->paginate($request['limit'], ['*'], 'page', $request['offset']);
+                    });
+                }
+                if(!empty($request->category_id)){
+                    $Query->byCategory($request->category_id);
+                }
+                if(!empty($request->max)){
+                    $Query->whereBetween('price', [$request->min, $request->max]);
+                }
+                if(!empty($request['sort_by']) && $request['sort_by'] === 'lowToHigh') {
+                    $orderByColumn= 'price';
+                    $orderBySort = 'ASC';
+                }
+                if(!empty($request['sort_by']) && $request['sort_by'] === 'highToLow') {
+                    $orderByColumn= 'price';
+                    $orderBySort = 'DESC';
+                }
+            $products = $Query->orderBy($orderByColumn,$orderBySort)->paginate($request->limit, ['*'], 'page', $request->offset);
+            // echo "<pre>";print_r($product->toArray());die;
 
-           $products['total_size'] = sizeof($sort_by_fileter->get()->toArray());
+        // $products = !empty($request->manufacturer_id) ? ProductLogic::get_all_products($request['limit'], $request['offset'], $request->manufacturer_id) : ProductLogic::get_all_products($request['limit'], $request['offset']);
+        // $products['products'] = Helpers::product_data_formatting($products['products'], true);
+        // $product_fileter = array();
+        // $manufacturer_id = $request->manufacturer_id;
+        // if(!empty($request['category_id'])) {
+        //     $product_fileter = Helpers::product_data_formatting(CategoryLogic::products($request['category_id'], $request['limit'], $request['offset'], !empty($request->manufacturer_id) ? $request->manufacturer_id : null), true);
+        //     $size = CategoryLogic::getProductCount($request['category_id']);
+        //     $products['total_size'] = $size;
+        //     unset($products['products']);
+        //     $products['products']= $product_fileter;
+        // }
 
-           if(!empty($request['category_id'])) {
-            $product_fileter = array();
-            $product_fileter = $product_categoty_fileter_with_sort_by = Helpers::product_data_formatting(CategoryLogic::productsSort($request['category_id'], $request['limit'], $request['offset'], $request['sort_by'], !empty($request->manufacturer_id) ? $request->manufacturer_id : null), true);
-           } else {
-            $product_fileter = Helpers::product_data_formatting($sort_by_fileter->get(), true);
-           }
+        // if(!empty($request['max'])) {
+        //     $sort_by_fileter = $this->product->active()
+        //    ->withCount(['wishlist'])
+        //    ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
+        //    ->whereBetween('price', [$request['min'], $request['max']])
+        //    ->orderBy('price', 'DESC');
 
-           unset($products['products']);
-           $products['products']= $product_fileter;
-        }
-        if(!empty($request['search'])) {
-            if(!empty($request['category_id'])) {
-                $sort_by_fileter = ProductLogic::search_products_all($request['search'], $request['limit'], $request['offset'], $request['category_id']);
-            } else {
-                $sort_by_fileter = ProductLogic::search_products_all($request['search'], $request['limit'], $request['offset']);
-            }
+        //    if(!empty($request->manufacturer_id) && empty($request['category_id'])) {
+        //     $sort_by_fileter->whereHas('manufacturer', function ($query) use ($manufacturer_id) {
+        //         // $query->where('id', $manufacturer_id);
+        //         $query->Where('seo_en', 'like', "%{$manufacturer_id}%")
+        //                 ->orWhere('seo_ja', 'like', "%{$manufacturer_id}%");
+        //     });
+        //    }
+        //    $sort_by_fileter->paginate($request['limit'], ['*'], 'page', $request['offset']);
+
+        //    $products['total_size'] = sizeof($sort_by_fileter->get()->toArray());
+
+        //    if(!empty($request['category_id'])) {
+        //     $product_fileter = array();
+        //     $product_fileter = $product_categoty_fileter_with_sort_by = Helpers::product_data_formatting(CategoryLogic::productsSortByPrice($request['category_id'], $request['limit'], $request['offset'], $request['max'], $request['min'], !empty($request->manufacturer_id) ? $request->manufacturer_id : null), true);
+        //    } else {
+        //     $product_fileter = Helpers::product_data_formatting($sort_by_fileter->get(), true);
+        //    }
+           
+        //    if(!empty($request['category_id'])) {
+        //     $product_fileter = array();
+        //     $product_fileter = $product_categoty_fileter_with_sort_by = Helpers::product_data_formatting(CategoryLogic::productsSortByPrice($request['category_id'], $request['limit'], $request['offset'], $request['max'], $request['min'], !empty($request->manufacturer_id) ? $request->manufacturer_id : null), true);
+        //    }
+           
+        //    unset($products['products']);
+        //    $products['products']= $product_fileter;
+        // }
+        // if(!empty($request['sort_by']) && $request['sort_by'] === 'lowToHigh') {
+        //     $sort_by_fileter = $this->product->active()
+        //    ->withCount(['wishlist'])
+        //    ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
+        //    ->orderBy('price', 'ASC');
+
+        //    if(!empty($request->manufacturer_id) && empty($request['category_id'])) {
+        //     $sort_by_fileter->whereHas('manufacturer', function ($query) use ($manufacturer_id) {
+        //         // $query->where('id', $manufacturer_id);
+        //         $query->Where('seo_en', 'like', "%{$manufacturer_id}%")
+        //                 ->orWhere('seo_ja', 'like', "%{$manufacturer_id}%");
+        //     });
+        //    }
+        
+        //    $sort_by_fileter->paginate($request['limit'], ['*'], 'page', $request['offset']);
+
+        //    $products['total_size'] = sizeof($sort_by_fileter->get()->toArray());
+
+        //    if(!empty($request['category_id'])) {
+        //     $product_fileter = array();
+        //     $product_fileter = $product_categoty_fileter_with_sort_by = Helpers::product_data_formatting(CategoryLogic::productsSort($request['category_id'], $request['limit'], $request['offset'], $request['sort_by'], !empty($request->manufacturer_id) ? $request->manufacturer_id : null), true);
+        //    } else {
+        //     $product_fileter = Helpers::product_data_formatting($sort_by_fileter->get(), true);
+        //    }
+
+        //    unset($products['products']);
+        //    $products['products']= $product_fileter;
+        // }
+
+        // if(!empty($request['sort_by']) && $request['sort_by'] === 'highToLow') {
+        //     $sort_by_fileter = $this->product->active()
+        //    ->withCount(['wishlist'])
+        //    ->with(['rating', 'active_reviews','manufacturer', 'soldProduct'])
+        //    ->orderBy('price', 'DESC');
+           
+        //    if(!empty($request->manufacturer_id) && empty($request['category_id'])) {
+        //     $sort_by_fileter->whereHas('manufacturer', function ($query) use ($manufacturer_id) {
+        //         // $query->where('id', $manufacturer_id);
+        //         $query->Where('seo_en', 'like', "%{$manufacturer_id}%")
+        //                 ->orWhere('seo_ja', 'like', "%{$manufacturer_id}%");
+        //     });
+        //    }
+        //    $sort_by_fileter->paginate($request['limit'], ['*'], 'page', $request['offset']);
+
+        //    $products['total_size'] = sizeof($sort_by_fileter->get()->toArray());
+
+        //    if(!empty($request['category_id'])) {
+        //     $product_fileter = array();
+        //     $product_fileter = $product_categoty_fileter_with_sort_by = Helpers::product_data_formatting(CategoryLogic::productsSort($request['category_id'], $request['limit'], $request['offset'], $request['sort_by'], !empty($request->manufacturer_id) ? $request->manufacturer_id : null), true);
+        //    } else {
+        //     $product_fileter = Helpers::product_data_formatting($sort_by_fileter->get(), true);
+        //    }
+
+        //    unset($products['products']);
+        //    $products['products']= $product_fileter;
+        // }
+        // if(!empty($request['search'])) {
+        //     if(!empty($request['category_id'])) {
+        //         $sort_by_fileter = ProductLogic::search_products_all($request['search'], $request['limit'], $request['offset'], $request['category_id']);
+        //     } else {
+        //         $sort_by_fileter = ProductLogic::search_products_all($request['search'], $request['limit'], $request['offset']);
+        //     }
             
-            $products['total_size'] = sizeof($sort_by_fileter);
-            $product_fileter =  Helpers::product_data_formatting($sort_by_fileter, true);
+        //     $products['total_size'] = sizeof($sort_by_fileter);
+        //     $product_fileter =  Helpers::product_data_formatting($sort_by_fileter, true);
           
-            unset($products['products']);
-            $products['products'] = $product_fileter;
-        }
-        ProductLogic::getSoldProducts($products['products']);
-        ProductLogic::cal_rating_and_review($products['products']);
+        //     unset($products['products']);
+        //     $products['products'] = $product_fileter;
+        // }
+        // ProductLogic::getSoldProducts($products['products']);
+        // ProductLogic::cal_rating_and_review($products['products']);
         //ProductLogic::deal_of_month($products['products']); //commmet temporarily
         
         return response()->json($products, 200);
