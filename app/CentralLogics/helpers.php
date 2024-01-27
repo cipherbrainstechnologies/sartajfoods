@@ -163,7 +163,6 @@ class Helpers
                 }
             }
         }
-        echo "<pre>";print_r($data);die;
         return $data;
     }
 
