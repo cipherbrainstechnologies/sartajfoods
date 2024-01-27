@@ -121,9 +121,9 @@ class Helpers
             $variations = [];
             // $data['category_ids'] = json_decode($data['category_ids']);
             // $data['image'] = json_decode($data['image']);
-            $data['image'] = array_map(function ($imageName) use ($baseUrl) {
-                return $baseUrl . '/storage/product/' . $imageName;
-            }, json_decode($data['image']));
+            // $data['image'] = array_map(function ($imageName) use ($baseUrl) {
+            //     return $baseUrl . '/storage/product/' . $imageName;
+            // }, json_decode($data['image']));
             $data['attributes'] = json_decode($data['attributes']);
             $data['choice_options'] = json_decode($data['choice_options']);
 
