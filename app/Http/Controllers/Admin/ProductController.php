@@ -261,7 +261,8 @@ class ProductController extends Controller
             ];
         }
 
-        $p->category_ids = json_encode($category);
+        
+        $p->category_ids = $category;
         $p->description = $request->description[array_search('en', $request->lang)];
 
         $choice_options = [];
@@ -527,7 +528,8 @@ class ProductController extends Controller
         
         $p = $this->product->find($id);
 
-        $images = json_decode($p->image);
+        // $images = json_decode($p->image);
+        $images = $p->image;
         if (!empty($request->file('images'))) {
             foreach ($request->images as $img) {
                 $image_data = Helpers::upload('product/', 'png', $img);
@@ -551,6 +553,7 @@ class ProductController extends Controller
                 'position' => 1,
             ];
         }
+        
         if ($request->sub_category_id != null) {
             $category[] = [
                 'id' => $request->sub_category_id,
@@ -564,7 +567,7 @@ class ProductController extends Controller
             ];
         }
 
-        $p->category_ids = json_encode($category);
+        $p->category_ids = $category;
         $p->description = $request->description[array_search('en', $request->lang)];
 
         $choice_options = [];
@@ -797,7 +800,8 @@ class ProductController extends Controller
         //     return back();
         // }
 
-        foreach (json_decode($product['image'], true) as $img) {
+        // foreach (json_decode($product['image'], true) as $img) {
+        foreach ($product['image'] as $img) {
             if (strcmp($img, $name) != 0) {
                 $img_arr[] = $img;
             }

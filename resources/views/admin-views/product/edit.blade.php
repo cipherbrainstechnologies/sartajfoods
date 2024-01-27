@@ -401,7 +401,7 @@
                                 @if (!empty($product['image']))
                                     @foreach($product['image'] as $img)
                                         <div class="spartan_item_wrapper position-relative">
-                                            <img class="img-150 border rounded p-3" src="{{asset('storage/product')}}/{{$img}}">
+                                            <img class="img-150 border rounded p-3" src="{{$img}}">
                                             {{--<a href="{{route('admin.rm-image',[$product['id'],$img])}}" class="spartan__close"><i class="tio-add-to-trash"></i></a>--}}
                                             <a href="{{route('admin.rm-image',[$product['id'],$img])}}" class="spartan__close" >
                                                 <i class="tio-add-to-trash"></i>
@@ -926,7 +926,7 @@
                 contentType: false,
                 processData: false,
                 success: function (data) {
-                    
+
                     if (data.errors) {
                         for (var i = 0; i < data.errors.length; i++) {
                             toastr.error(data.errors[i].message, {
