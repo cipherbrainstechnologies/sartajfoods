@@ -48,6 +48,7 @@ class ProductController extends Controller
     
      public function get_all_products(Request $request): \Illuminate\Http\JsonResponse
      {
+        
         $orderByColumn = 'id';
         $orderBySort = 'desc';
         $Query = Product::active()
@@ -74,7 +75,7 @@ class ProductController extends Controller
                     $orderByColumn= 'price';
                     $orderBySort = 'DESC';
                 }
-            $products = $Query->orderBy($orderByColumn,$orderBySort)->paginate($request->limit, ['*'], 'page', $request->offset);
+            $products['products'] = $Query->orderBy($orderByColumn,$orderBySort)->paginate($request->limit, ['*'], 'page', $request->offset);
             // echo "<pre>";print_r($product->toArray());die;
 
         // $products = !empty($request->manufacturer_id) ? ProductLogic::get_all_products($request['limit'], $request['offset'], $request->manufacturer_id) : ProductLogic::get_all_products($request['limit'], $request['offset']);
@@ -193,7 +194,7 @@ class ProductController extends Controller
         // }
         // ProductLogic::getSoldProducts($products['products']);
         // ProductLogic::cal_rating_and_review($products['products']);
-        //ProductLogic::deal_of_month($products['products']); //commmet temporarily
+        // ProductLogic::deal_of_month($products['products']); //commmet temporarily
         
         return response()->json($products, 200);
      }

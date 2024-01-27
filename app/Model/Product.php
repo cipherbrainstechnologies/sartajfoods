@@ -38,7 +38,6 @@ class Product extends Model
                 array_push($imageUrl,config('app.url').'/storage/product/'.$image);
             }
         }
-    
         return $imageUrl;
     }
 
