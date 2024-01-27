@@ -74,7 +74,8 @@ class CategoryLogic
         $product_ids = [];
         if(!empty($products)){
             foreach ($products as $product) {
-                foreach (json_decode($product['category_ids'], true) as $category) {
+                // foreach (json_decode($product['category_ids'], true) as $category) {
+                foreach ($product['category_ids'] as $category) {
                     
                     if ($category['id'] == $category_id) {
                         array_push($product_ids, $product['id']);

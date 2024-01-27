@@ -26,20 +26,21 @@ class Product extends Model
         'created_at'  => 'datetime',
         'updated_at'  => 'datetime',
         'is_featured'  => 'integer',
+        'category_ids' => 'array',
         
     ];
 
-    // public function getImageAttribute()
-    // {
-    //     $imageUrl = [];
-    //     if(!empty($this->attributes['image'])){
-    //         $images = json_decode($this->attributes['image'],true);
-    //         foreach($images as $image){
-    //             array_push($imageUrl,config('app.url').'/storage/product/'.$image);
-    //         }
-    //     }
-    //     return $imageUrl;
-    // }
+    public function getImageAttribute()
+    {
+        $imageUrl = [];
+        if(!empty($this->attributes['image'])){
+            $images = json_decode($this->attributes['image'],true);
+            foreach($images as $image){
+                array_push($imageUrl,config('app.url').'/storage/product/'.$image);
+            }
+        }
+        return $imageUrl;
+    }
 
     public function relatedProducts()
     {
@@ -210,9 +211,9 @@ class Product extends Model
         return $sold_product;
     }
 
-    // public function scopeByCategory($query, $categoryId)
-    // {
-    //     return $query->whereJsonContains('category_ids', ['id' =>$categoryId]);
-    // }
+    public function scopeByCategory($query, $categoryId)
+    {
+        return $query->whereJsonContains('category_ids', ['id' =>$categoryId]);
+    }
 
 }
