@@ -164,6 +164,7 @@
                             </span>
                         </h5>
                     </div>
+                   
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-6">
@@ -175,7 +176,7 @@
                                             onchange="getRequest('{{url('/')}}/admin/product/get-categories?parent_id='+this.value,'sub-categories')">
                                         @foreach($categories as $category)
                                             <option
-                                                value="{{$category['id']}}" {{ $category->id==$product_category[0]->id ? 'selected' : ''}} >{{$category['name']}}</option>
+                                                value="{{$category['id']}}" {{ $category['id']==$product_category[0]['id'] ? 'selected' : ''}} >{{$category['name']}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -397,8 +398,8 @@
                         class="text-danger">* ( {{translate('ratio')}} 1:1 )</small></h5>
                         <div class="product--coba">
                             <div class="row g-2" id="coba">
-                                @if (!empty(json_decode($product['image'],true)))
-                                    @foreach(json_decode($product['image'],true) as $img)
+                                @if (!empty($product['image']))
+                                    @foreach($product['image'] as $img)
                                         <div class="spartan_item_wrapper position-relative">
                                             <img class="img-150 border rounded p-3" src="{{asset('storage/product')}}/{{$img}}">
                                             {{--<a href="{{route('admin.rm-image',[$product['id'],$img])}}" class="spartan__close"><i class="tio-add-to-trash"></i></a>--}}

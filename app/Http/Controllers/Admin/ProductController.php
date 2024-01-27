@@ -436,7 +436,8 @@ class ProductController extends Controller
     {
         $products = $this->product->active()->get();
         $product = $this->product->withoutGlobalScopes()->with('translations','relatedProducts')->find($id);
-        $product_category = json_decode($product->category_ids);
+        // $product_category = json_decode($product->category_ids);
+        $product_category = $product->category_ids;
         $categories = $this->category->where(['parent_id' => 0])->get();
         $manufacturers = $this->manufacturer->get();
         $filters = $this->filter->get();
