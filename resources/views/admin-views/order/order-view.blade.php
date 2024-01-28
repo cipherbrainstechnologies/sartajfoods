@@ -215,7 +215,7 @@
                                                         onerror="this.src='{{asset('public/assets/admin/img/160x160/2.png')}}'"
                                                         alt="Image Description"> --}}
                                                         <img class="img-fluid rounded aspect-ratio-1"
-                                                         src="{{asset('storage/product')}}/{{json_decode($product['image'],true)[0]?? ''}}"
+                                                         src="{{$product['image'][0]?? ''}}"
                                                         onerror="this.src='{{asset('public/assets/admin/img/160x160/2.png')}}'"
                                                         alt="Image Description"> 
                                                     @else
