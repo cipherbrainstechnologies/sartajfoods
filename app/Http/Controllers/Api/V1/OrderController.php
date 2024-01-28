@@ -269,7 +269,8 @@ class OrderController extends Controller
                     //                }
 
                 $category_id = null;
-                foreach (json_decode($product['category_ids'], true) as $cat) {
+                // foreach (json_decode($product['category_ids'], true) as $cat) {
+                foreach ($product['category_ids'] as $cat) {
                     if ($cat['position'] == 1){
                         $category_id = ($cat['id']);
                     }
