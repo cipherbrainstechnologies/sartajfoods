@@ -123,6 +123,7 @@
                                     <td class="pt-1 pb-3  {{$key == 0 ? 'pt-4' : '' }}">
                                         <a href="{{route('admin.product.view',[$product['id']])}}" class="product-list-media">
                                     {{-- @if (!empty(json_decode($product['image'],true))) --}}
+                                   
                                         @if (!empty($product['image']))
                                         <img
                                             src="{{$product['image'][0]}}"

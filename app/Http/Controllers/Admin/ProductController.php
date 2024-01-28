@@ -34,6 +34,8 @@ use App\Model\Manufacturer;
 use App\Model\Filter;
 use App\Model\Downloads;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 
 class ProductController extends Controller
 {
@@ -527,9 +529,11 @@ class ProductController extends Controller
         }
         
         $p = $this->product->find($id);
-
         // $images = json_decode($p->image);
-        $images = $p->image;
+        $imageUrls = $p->image;
+        $images = collect($imageUrls)->map(function ($imageUrl) {
+            return Str::after($imageUrl, 'product/');
+        })->toArray();
         if (!empty($request->file('images'))) {
             foreach ($request->images as $img) {
                 $image_data = Helpers::upload('product/', 'png', $img);
@@ -537,7 +541,6 @@ class ProductController extends Controller
             }
 
         }
-
         // if (!count($images)) {
         //     $validator->getMessageBag()->add('images', 'Image can not be empty!');
         // }
@@ -566,7 +569,7 @@ class ProductController extends Controller
                 'position' => 3,
             ];
         }
-
+        
         $p->category_ids = $category;
         $p->description = $request->description[array_search('en', $request->lang)];
 
