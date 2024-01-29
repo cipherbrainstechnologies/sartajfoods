@@ -916,7 +916,7 @@ class ProductController extends Controller
             $data[] = [
                 'name' => $collection['name'],
                 'description' => $collection['description'],
-                'image' => json_encode(['download.png']),
+                'image' => json_encode(['def.png']),
                 'price' => $collection['price'],
                 'variations' => json_encode([]),
                 'tax' => $collection['tax'],

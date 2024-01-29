@@ -74,21 +74,9 @@ class ProductController extends Controller
                     $orderByColumn= 'price';
                     $orderBySort = 'DESC';
                 }
-                // if(!empty($request['search'])) {
-                //     $key = explode(' ', $name);
-                //     $Query->where(function ($q) use ($key) {
-                //         foreach ($key as $value) {
-                //             $q->orWhere('name', 'like', "%{$value}%");
-                //         }
-                //         $q->orWhereHas('tags',function($query) use ($key){
-                //             $query->where(function($q) use ($key){
-                //                 foreach ($key as $value) {
-                //                     $q->where('tag', 'like', "%{$value}%");
-                //                 };
-                //             });
-                //         });
-                //     })
-                // }
+                if(!empty($request['search'])){
+                    $Query->Where('name', 'like', "%{$request['search']}%");
+                }
             $products = $Query->orderBy($orderByColumn,$orderBySort)->paginate($request->limit, ['*'], 'page', $request->offset);
         // $products = !empty($request->manufacturer_id) ? ProductLogic::get_all_products($request['limit'], $request['offset'], $request->manufacturer_id) : ProductLogic::get_all_products($request['limit'], $request['offset']);
         // $products['products'] = Helpers::product_data_formatting($products['products'], true);
@@ -191,21 +179,22 @@ class ProductController extends Controller
         //    unset($products['products']);
         //    $products['products']= $product_fileter;
         // }
-        if(!empty($request['search'])) {
-            if(!empty($request['category_id'])) {
-                $sort_by_fileter = ProductLogic::search_products_all($request['search'], $request['limit'], $request['offset'], $request['category_id']);
-            } else {
-                $sort_by_fileter = ProductLogic::search_products_all($request['search'], $request['limit'], $request['offset']);
-            }
+        // if(!empty($request['search'])) {
+        //     if(!empty($request['category_id'])) {
+        //         $sort_by_fileter = ProductLogic::search_products_all($request['search'], $request['limit'], $request['offset'], $request['category_id']);
+        //     } else {
+        //         $sort_by_fileter = ProductLogic::search_products_all($request['search'], $request['limit'], $request['offset']);
+        //     }
             
-            $products['total_size'] = sizeof($sort_by_fileter);
-            $product_fileter =  Helpers::product_data_formatting($sort_by_fileter, true);
+        //     $products['total_size'] = sizeof($sort_by_fileter);
+        //     $product_fileter =  Helpers::product_data_formatting($sort_by_fileter, true);
           
-            unset($products['products']);
-            $products['products'] = $product_fileter;
-        }
-        // ProductLogic::getSoldProducts($products['products']);
-        // ProductLogic::cal_rating_and_review($products['products']);
+        //     unset($products['products']);
+        //     $products['products'] = $product_fileter;
+        // }
+       
+        ProductLogic::getSoldProducts($products->items());
+        ProductLogic::cal_rating_and_review($products->items());
         // ProductLogic::deal_of_month($products['products']); //commmet temporarily
         
         return response()->json(['total_size' => $products->total(),
