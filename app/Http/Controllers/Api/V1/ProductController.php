@@ -204,8 +204,8 @@ class ProductController extends Controller
             unset($products['products']);
             $products['products'] = $product_fileter;
         }
-        ProductLogic::getSoldProducts($products['products']);
-        ProductLogic::cal_rating_and_review($products['products']);
+        // ProductLogic::getSoldProducts($products['products']);
+        // ProductLogic::cal_rating_and_review($products['products']);
         // ProductLogic::deal_of_month($products['products']); //commmet temporarily
         
         return response()->json(['total_size' => $products->total(),
