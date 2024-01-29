@@ -145,7 +145,7 @@ class DeliveryManController extends Controller
         if ($request->has('image')) {
             $image_name = Helpers::upload('delivery-man/', 'png', $request->file('image'));
         } else {
-            $image_name = 'def.png';
+            $image_name = 'download.png';
         }
 
         $id_img_names = [];

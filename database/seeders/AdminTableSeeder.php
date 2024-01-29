@@ -19,7 +19,7 @@ class AdminTableSeeder extends Seeder
             'l_name' => 'Khandakar',
             'phone' => '01759412381',
             'email' => 'admin@admin.com',
-            'image' => 'def.png',
+            'image' => 'download.png',
             'password' => bcrypt(12345678),
             'remember_token' =>Str::random(10),
             'created_at'=>now(),

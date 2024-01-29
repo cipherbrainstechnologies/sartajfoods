@@ -652,7 +652,7 @@ class CustomerAuthController extends Controller
                 $user->l_name = $last_name;
                 $user->email = $data['email'];
                 $user->phone = null;
-                $user->image = 'def.png';
+                $user->image = 'download.png';
                 $user->password = bcrypt($request->ip());
                 $user->is_block = 0;
                 $user->login_medium = $request['medium'];

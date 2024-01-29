@@ -165,7 +165,7 @@ class CategoryController extends Controller
         if (!empty($request->file('image'))) {
             $image_name = Helpers::upload('product/image/', 'png', $request->file('image'));
         } else {
-            $image_name = 'def.png';
+            $image_name = 'download.png';
         }
 
         //into db

@@ -749,7 +749,7 @@ class Helpers
             }
             Storage::disk('public')->put($dir . $imageName, file_get_contents($image));
         } else {
-            $imageName = 'def.png';
+            $imageName = 'download.png';
         }
         return $imageName;
     }
