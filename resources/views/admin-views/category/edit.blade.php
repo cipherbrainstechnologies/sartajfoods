@@ -165,8 +165,22 @@
                             <input type="hidden" name="lang[]" value="{{$default_lang}}">
                         @endif
                         <input name="position" value="0" hidden>
-                        @if($category->parent_id == 0)
+                        
+                        
                         <div class="col-sm-6">
+                        @if($category->parent_id !=0)
+                            <div class="form-group">
+                                <label class="form-label"
+                                    for="exampleFormControlSelect1">{{translate('main')}} {{translate('category')}}
+                                    <span class="input-label-secondary">*</span></label>
+                                <select id="exampleFormControlSelect1" name="parent_id" class="form-control js-select2-custom" required>
+                                    @foreach(\App\Model\Category::with('translations')->where(['position'=>0])->get() as $cat)
+                                        <option value="{{$cat['id']}}" @if($cat['id'] == $category['parent_id']) selected @endif>{!! strip_tags(htmlspecialchars_decode($cat['name'])) !!}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                           @endif
+                            <div class="col-lg-12">
                            
                             <label>{{\App\CentralLogics\translate('image')}}</label><small style="color: red">* ( {{\App\CentralLogics\translate('ratio')}} 3:1 )</small>
                             <div class="custom-file mb-3">
@@ -176,24 +190,10 @@
                             </div>
                              <center>
                                 <img class="img--105" id="viewer" onerror="this.src='{{asset('public/assets/admin/img/900x400/img1.jpg')}}'"
-                                    src="{{asset('storage/product/image')}}/{{$category['image']}}" alt="image"/>
+                                    src="{{asset('storage/product/')}}/{{$category['image']}}" alt="image"/>
                             </center>
                         </div>
-                        @else
-                        
-                        <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label class="form-label"
-                                            for="exampleFormControlSelect1">{{translate('main')}} {{translate('category')}}
-                                            <span class="input-label-secondary">*</span></label>
-                                        <select id="exampleFormControlSelect1" name="parent_id" class="form-control js-select2-custom" required>
-                                            @foreach(\App\Model\Category::with('translations')->where(['position'=>0])->get() as $cat)
-                                                <option value="{{$cat['id']}}" @if($cat['id'] == $category['parent_id']) selected @endif>{!! strip_tags(htmlspecialchars_decode($cat['name'])) !!}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                        @endif
+                        </div>
                         <div class="col-12">
                             <div class="btn--container justify-content-end">
                                 <button type="reset" class="btn btn--reset">{{translate('reset')}}</button>
@@ -209,6 +209,23 @@
 @endsection
 
 @push('script_2')
+<script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#viewer').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#customFileEg1").change(function () {
+            readURL(this);
+        });
+    </script>
 <script>
     $(document).ready(function() {
         $('select[name="parent_id"]').select2();

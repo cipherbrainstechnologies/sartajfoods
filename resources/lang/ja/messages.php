@@ -2210,4 +2210,5 @@
   'Shipping Address' => 'Shipping Address',
   'Hey' => 'Hey',
   'Order Confirmation' => 'Order Confirmation',
+  'sub_category_image' => 'Sub category image',
 );

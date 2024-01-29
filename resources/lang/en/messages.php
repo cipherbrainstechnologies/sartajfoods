@@ -2216,4 +2216,7 @@
   'You have requested to have your password reset for your account. To continue, click the button below:' => 'You have requested to have your password reset for your account. To continue  click the button below:',
   'PASSWORD RESET' => 'PASSWORD RESET',
   'Order Pending' => 'Order Pending',
+  'sub category image' => 'Sub category image',
+  'sub_category_image' => 'Sub category image',
+  '1 JPY Equal To How Much Loyalty Points?' => '1 JPY Equal To How Much Loyalty Points ',
 );

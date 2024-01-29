@@ -69,7 +69,8 @@ class CategoryController extends Controller
             // $categories = $this->category->with(['parent'])->where(['position' => 1]);
             $categories = $this->category->with(['parent'])->where('parent_id','!=', 0);
         }
-        $categories = $categories->paginate(Helpers::getPagination())->appends($query_param);
+        
+        $categories = $categories->orderBy('id','desc')->paginate(Helpers::getPagination())->appends($query_param);
         return view('admin-views.category.sub-index', compact('categories', 'search'));
     }
 
@@ -120,6 +121,7 @@ class CategoryController extends Controller
      */
     function store(Request $request): RedirectResponse
     {
+        
         // $request->validate([
         //     'name' => 'required',
         //     'meta_title' => 'required',
@@ -163,7 +165,7 @@ class CategoryController extends Controller
 
         //image upload
         if (!empty($request->file('image'))) {
-            $image_name = Helpers::upload('product/image/', 'png', $request->file('image'));
+            $image_name = Helpers::upload('product/', 'png', $request->file('image'));
         } else {
             $image_name = 'def.png';
         }
@@ -178,8 +180,8 @@ class CategoryController extends Controller
             $category->meta_keywords = $request->meta_keywords[array_search('en', $request->lang)];
         // }
         $category->image = $image_name;
-        $category->seo_en  = $request->en_seo;
-        $category->seo_ja = $request->ja_seo;
+        $category->seo_en  = $request->en_seo ?? '';
+        $category->seo_ja = $request->ja_seo?? '';
         $category->parent_id = $request->parent_id == null ? 0 : $request->parent_id;
         $category->position = $request->position;
         $category->save();
@@ -205,7 +207,7 @@ class CategoryController extends Controller
                     'value' => $request->description[$index],
                 );
             }
-            if ($previousRouteName != 'admin.category.add-sub-category'){
+           
                 if ($request->meta_title[$index] && $key != 'en') {
                     $data[] = array(
                         'translationable_type' => 'App\Model\Category',
@@ -233,7 +235,7 @@ class CategoryController extends Controller
                         'value' => $request->meta_keywords[$index],
                     );
                 }
-            }
+            
             
         }
         if (count($data)) {
@@ -299,7 +301,7 @@ class CategoryController extends Controller
             $category->meta_keywords = $request->meta_keywords[array_search('en', $request->lang)];
         // }
 
-        $category->image = $request->has('image') ? Helpers::update('product/image/', $category->image, 'png', $request->file('image')) : $category->image;
+        $category->image = $request->has('image') ? Helpers::update('product/', $category->image, 'png', $request->file('image')) : $category->image;
         $category->save();
         foreach ($request->lang as $index => $key) {
             if ($key != 'en') {

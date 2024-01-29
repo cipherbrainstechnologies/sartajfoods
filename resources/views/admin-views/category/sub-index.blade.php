@@ -53,7 +53,18 @@
                                                 ({{ strtoupper($lang['code']) }})</label>
                                             <textarea name="description[]" class="form-control h--172px"></textarea>
                                         </div>
-                                        
+                                        @if($lang['code'] == "en")
+                                            <div class="col-lg-12">
+                                                <label class="form-label mt-3" for="{{$lang['code']}}_seo_en">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                                <input type="text" name="en_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('EN')}})" value="{{$category['seo_en']??''}}" {{$lang['status'] == true ? 'required':''}}  @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
+                                                
+                                            </div>
+                                        @else
+                                            <div class="col-lg-12">
+                                                <label class="form-label mt-3" for="{{$lang['code']}}_seo_ja">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                                <input type="text" name="ja_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('JA')}})" value="{{$category['seo_ja'] ?? ''}}" {{$lang['status'] == true ? 'required':''}}  @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
+                                            </div>
+                                        @endif
                                         <div class="col-lg-12 mt-3">
                                             <label class="form-label" for="exampleFormControlInput1">{{translate('meta tag title')}} ({{ strtoupper($lang['code']) }})</label>
                                             <input type="text" name="meta_title[]" class="form-control" maxlength="255" required>
@@ -84,6 +95,18 @@
                                         <label class="form-label mt-3" for="exampleFormControlInput1">{{translate('sub_category')}} {{ translate('description') }} ({{strtoupper($default_lang)}})</label>
                                         <textarea name="description[]" class="form-control h--172px"></textarea>
                                     </div>
+                                    @if($lang['code'] == "en")
+                                        <div class="col-lg-12">
+                                            <label class="form-label mt-3" for="{{$lang['code']}}_seo_en">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                            <input type="text" name="en_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('EN')}})" value="{{$category['seo_en']??''}}" {{$lang['status'] == true ? 'required':''}}  @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
+                                            
+                                        </div>
+                                    @else
+                                        <div class="col-lg-12">
+                                            <label class="form-label mt-3" for="{{$lang['code']}}_seo_ja">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
+                                            <input type="text" name="ja_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('JA')}})" value="{{$category['seo_ja'] ?? ''}}" {{$lang['status'] == true ? 'required':''}}  @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
+                                        </div>
+                                    @endif
                                     
                                     <div class="col-lg-12 mt-3">
                                         <label class="form-label" for="exampleFormControlInput1">{{translate('meta tag title')}} ({{ strtoupper($default_lang) }})</label>
@@ -105,8 +128,7 @@
                                 </div>
                                 <input type="hidden" name="lang[]" value="{{$default_lang}}">
                                 @endif
-                                <input name="position" value="1" hidden>
-                               
+                                
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label class="form-label"
@@ -117,6 +139,22 @@
                                                 <option value="{{$category['id']}}">{!! strip_tags(htmlspecialchars_decode($category['name'])) !!}</option>
                                             @endforeach
                                         </select>
+                                    </div>
+                                    
+                                    <div class="col-lg-12">
+                                    <input name="position" value="1" hidden>
+                                        <label class="form-label text-capitalize">{{ translate('sub category image') }}</label><small class="text-danger">* ( {{ translate('ratio') }}
+                                            3:1 )</small>
+                                        <div class="custom-file mb-3">
+                                            <input type="file" name="image" id="customFileEg1" class="custom-file-input"
+                                                    accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" required oninvalid="document.getElementById('en-link').click()">
+                                            <label class="custom-file-label" for="customFileEg1">{{ translate('choose') }}
+                                                {{ translate('file') }}</label>
+                                        </div>
+                                            <center>
+                                                <img id="viewer" class="img--105" src="{{ asset('public/assets/admin/img/160x160/1.png') }}" alt="image" />
+                                            </center>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -161,6 +199,7 @@
                             <thead class="thead-light">
                             <tr>
                                 <th class="text-center">{{translate('#')}}</th>
+                                <th>{{translate('sub_category_image')}}</th>
                                 <th>{{translate('main')}} {{translate('category')}}</th>
                                 <th>{{translate('sub_category')}}</th>
                                 <th>{{translate('status')}}</th>
@@ -173,6 +212,10 @@
                             @foreach($categories as $key=>$category)
                                 <tr>
                                     <td class="text-center">{{$categories->firstItem()+$key}}</td>
+                                    <td>
+                                        <img src="{{asset('storage/product/')}}/{{$category['image']}}"
+                                             class="img--50 ml-3" onerror="this.src='{{asset('public/assets/admin/img/400x400/img2.jpg')}}'" alt="">
+                                    </td>
                                     <td>
                                         <span class="d-block font-size-sm text-body">
                                         {!! strip_tags(htmlspecialchars_decode($category->parent['name'])) !!}
@@ -243,6 +286,23 @@
 @endsection
 
 @push('script_2')
+<script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#viewer').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#customFileEg1").change(function () {
+            readURL(this);
+        });
+    </script>
 <script>
     $(document).ready(function() {
         $('select[name="parent_id"]').select2();
