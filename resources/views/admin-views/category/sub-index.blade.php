@@ -213,7 +213,7 @@
                                 <tr>
                                     <td class="text-center">{{$categories->firstItem()+$key}}</td>
                                     <td>
-                                        <img src="{{asset('storage/product/image/')}}/{{$category['image']}}"
+                                        <img src="{{asset('storage/product/')}}/{{$category['image']}}"
                                              class="img--50 ml-3" alt="">
                                     </td>
                                     <td>
