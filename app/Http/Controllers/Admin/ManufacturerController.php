@@ -179,39 +179,43 @@ class manufacturerController extends Controller
         $manufacturer->save();
 
         foreach ($request->lang as $index => $key) {
-            if ($request->name[$index] && $key != 'en') {
+            if ( $key != 'en') { //$request->name[$index] &&
                 $this->translation->updateOrInsert(
                     ['translationable_type' => 'App\Model\manufacturer',
                         'translationable_id' => $manufacturer->id,
                         'locale' => $key,
-                        'key' => 'name'],
+                        // 'key' => 'name'
+                    ],
                     ['value' => $request->name[$index]]
                 );
             }
-            if ($request->meta_title[$index] && $key != 'en') {
+            if ( $key != 'en') { //$request->meta_title[$index] &&
                 Translation::updateOrInsert(
                     ['translationable_type' => 'App\Model\manufacturer',
                         'translationable_id' => $manufacturer->id,
                         'locale' => $key,
-                        'key' => 'meta_title'],
+                        // 'key' => 'meta_title'
+                    ],
                     ['value' => $request->meta_title[$index]]
                 );
             }
-            if ($request->meta_description[$index] && $key != 'en') {
+            if ($key != 'en') { //$request->meta_description[$index] && 
                 Translation::updateOrInsert(
                     ['translationable_type' => 'App\Model\manufacturer',
                         'translationable_id' => $manufacturer->id,
                         'locale' => $key,
-                        'key' => 'meta_description'],
+                        // 'key' => 'meta_description'
+                    ],
                     ['value' => $request->meta_description[$index]]
                 );
             }
-            if ($request->meta_keywords[$index] && $key != 'en') {
+            if ( $key != 'en') { //$request->meta_keywords[$index]
                 Translation::updateOrInsert(
                     ['translationable_type' => 'App\Model\manufacturer',
                         'translationable_id' => $manufacturer->id,
                         'locale' => $key,
-                        'key' => 'meta_keywords'],
+                        // 'key' => 'meta_keywords'
+                    ],
                     ['value' => $request->meta_keywords[$index]]
                 );
             }
