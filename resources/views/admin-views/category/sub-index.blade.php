@@ -24,7 +24,7 @@
             <div class="col-sm-12 col-lg-12 mb-3 mb-lg-2">
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{route('admin.category.store')}}" method="post">
+                        <form action="{{route('admin.category.store')}}" method="post"  enctype="multipart/form-data">
                             @csrf
                             @php($data = Helpers::get_business_settings('language'))
                             @php($default_lang = Helpers::get_default_language())
