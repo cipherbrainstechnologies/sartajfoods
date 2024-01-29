@@ -98,13 +98,13 @@
                                     @if($lang['code'] == "en")
                                         <div class="col-lg-12">
                                             <label class="form-label mt-3" for="{{$lang['code']}}_seo_en">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
-                                            <input type="text" name="en_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('EN')}})" value="{{$category['seo_en']??''}}" {{$lang['status'] == true ? 'required':''}}  @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
+                                            <input type="text" name="en_seo" class="form-control" id="{{$lang['code']}}_seo"  value="{{$category['seo_en']??''}}" {{$lang['status'] == true ? 'required':''}}  @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
                                             
                                         </div>
                                     @else
                                         <div class="col-lg-12">
                                             <label class="form-label mt-3" for="{{$lang['code']}}_seo_ja">{{translate('SEO')}} ({{strtoupper($lang['code'])}})</label>
-                                            <input type="text" name="ja_seo" class="form-control" id="{{$lang['code']}}_seo" placeholder="{{translate('SEO')}} ({{translate('JA')}})" value="{{$category['seo_ja'] ?? ''}}" {{$lang['status'] == true ? 'required':''}}  @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
+                                            <input type="text" name="ja_seo" class="form-control" id="{{$lang['code']}}_seo"  value="{{$category['seo_ja'] ?? ''}}" {{$lang['status'] == true ? 'required':''}}  @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
                                         </div>
                                     @endif
                                     
