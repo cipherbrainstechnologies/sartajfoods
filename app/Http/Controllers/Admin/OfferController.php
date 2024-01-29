@@ -70,7 +70,7 @@ class OfferController extends Controller
         if (!empty($request->file('image'))) {
             $image_name = Helpers::upload('offer/', 'png', $request->file('image'));
         } else {
-            $image_name = 'download.png';
+            $image_name = 'def.png';
         }
 
         $flash_deal = $this->flash_deal;

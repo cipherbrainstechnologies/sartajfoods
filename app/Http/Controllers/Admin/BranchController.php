@@ -92,7 +92,7 @@ class   BranchController extends Controller
         if (!empty($request->file('image'))) {
             $image_name = Helpers::upload('branch/', 'png', $request->file('image'));
         } else {
-            $image_name = 'download.png';
+            $image_name = 'def.png';
         }
 
         $branch = $this->branch;
