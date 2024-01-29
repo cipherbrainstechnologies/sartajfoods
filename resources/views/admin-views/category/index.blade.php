@@ -210,7 +210,7 @@
                                     <td class="text-center">{{$categories->firstItem()+$key}}</td>
                                     <td>
                                         <img src="{{asset('storage/product/image')}}/{{$category['image']}}"
-                                            onerror="this.src='{{asset('public/assets/admin/img/400x400/img2.jpg')}}'" class="img--50 ml-3" alt="">
+                                             class="img--50 ml-3" alt="">
                                     </td>
                                     <td>
                                     <span class="d-block font-size-sm text-body text-trim-50">
