@@ -74,21 +74,21 @@ class ProductController extends Controller
                     $orderByColumn= 'price';
                     $orderBySort = 'DESC';
                 }
-                if(!empty($request['search'])) {
-                    $key = explode(' ', $name);
-                    $Query->where(function ($q) use ($key) {
-                        foreach ($key as $value) {
-                            $q->orWhere('name', 'like', "%{$value}%");
-                        }
-                        $q->orWhereHas('tags',function($query) use ($key){
-                            $query->where(function($q) use ($key){
-                                foreach ($key as $value) {
-                                    $q->where('tag', 'like', "%{$value}%");
-                                };
-                            });
-                        });
-                    })
-                }
+                // if(!empty($request['search'])) {
+                //     $key = explode(' ', $name);
+                //     $Query->where(function ($q) use ($key) {
+                //         foreach ($key as $value) {
+                //             $q->orWhere('name', 'like', "%{$value}%");
+                //         }
+                //         $q->orWhereHas('tags',function($query) use ($key){
+                //             $query->where(function($q) use ($key){
+                //                 foreach ($key as $value) {
+                //                     $q->where('tag', 'like', "%{$value}%");
+                //                 };
+                //             });
+                //         });
+                //     })
+                // }
             $products = $Query->orderBy($orderByColumn,$orderBySort)->paginate($request->limit, ['*'], 'page', $request->offset);
         // $products = !empty($request->manufacturer_id) ? ProductLogic::get_all_products($request['limit'], $request['offset'], $request->manufacturer_id) : ProductLogic::get_all_products($request['limit'], $request['offset']);
         // $products['products'] = Helpers::product_data_formatting($products['products'], true);
