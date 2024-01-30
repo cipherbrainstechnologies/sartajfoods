@@ -11,6 +11,7 @@ use App\Model\Product;
 use App\Model\ProductSearchedByUser;
 use App\Model\RecentSearch;
 use App\Model\Review;
+use App\Model\Category;
 use App\Model\SearchedCategory;
 use App\Model\SearchedKeywordCount;
 use App\Model\SearchedKeywordUser;
@@ -195,7 +196,7 @@ class ProductController extends Controller
        
         ProductLogic::getSoldProducts($products->items());
         ProductLogic::cal_rating_and_review($products->items());
-        // ProductLogic::deal_of_month($products['products']); //commmet temporarily
+        // ProductLogic::deal_of_month($products->items()); //commmet temporarily
         
         return response()->json(['total_size' => $products->total(),
         'limit' => $request->limit,
@@ -794,5 +795,26 @@ class ProductController extends Controller
         ProductLogic::getSoldProducts($products);
         
         return response()->json($products, 200);
+    }
+
+    public function get_seo_category($seo){
+        // try {
+            $categoryData = Category::where(function ($q) use($seo){
+                $q->where('seo_en',$seo)->orWhere('seo_ja',$seo);
+            })->where('status',1)->first();
+            if(!empty($categoryData)){
+                $productData =Product::active()
+                ->withCount(['wishlist','order_details','relatedProducts'])
+                ->with(['rating', 'active_reviews','manufacturer', 'soldProduct','relatedProducts.relatedProduct'])
+                ->byCategory("{$categoryData->id}")
+                ->take(10)
+                ->get();
+            }
+           
+            
+            return response()->json(["products" =>$productData], 200);
+        // } catch (\Exception $e) {
+        //  return response()->json([], 200);
+        // }
     }
 }

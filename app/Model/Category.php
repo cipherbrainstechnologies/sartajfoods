@@ -44,9 +44,11 @@ class Category extends Model
     protected static function booted(): void
     {
         static::addGlobalScope('translate', function (Builder $builder) {
-            $builder->with(['translations' => function($query){
-                return $query->where('locale', app()->getLocale());
-            }]);
+            // $builder->with(['translations' => function($query){
+            //     return $query->where('locale', app()->getLocale());
+            // }]);
+            $builder->with(['translations']);
         });
     }
+    
 }

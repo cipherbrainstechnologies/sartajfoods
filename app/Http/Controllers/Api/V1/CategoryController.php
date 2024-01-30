@@ -6,6 +6,7 @@ use App\CentralLogics\CategoryLogic;
 use App\CentralLogics\Helpers;
 use App\Http\Controllers\Controller;
 use App\Model\Category;
+use App\Model\Product;
 
 class CategoryController extends Controller
 {
@@ -72,4 +73,6 @@ class CategoryController extends Controller
             return response()->json([], 200);
         }
     }
+
+    
 }
