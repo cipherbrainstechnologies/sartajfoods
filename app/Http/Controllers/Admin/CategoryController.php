@@ -46,31 +46,46 @@ class CategoryController extends Controller
         return view('admin-views.category.index', compact('categories', 'search'));
     }
 
-    /**
-     * @param Request $request
-     * @return Application|Factory|View
-     */
-    function sub_index(Request $request): View|Factory|Application
+    function sub_sub_index(Request $request): View|Factory|Application
     {
         $query_param = [];
+        $Query = $this->category->with(['parent'])->where('position' , 2);
         $search = $request['search'];
         if ($request->has('search')) {
             $key = explode(' ', $request['search']);
             // $categories = $this->category->with(['parent'])->where(['position' => 1])
-            $categories = $this->category->with(['parent'])->where('parent_id' ,'!=', 0)
-            // ->where(['position' => 1])
-                ->where(function ($q) use ($key) {
+                $Query->where(function ($q) use ($key) {
                     foreach ($key as $value) {
                         $q->orWhere('name', 'like', "%{$value}%");
                     }
                 });
-            $query_param = ['search' => $request['search']];
-        } else {
-            // $categories = $this->category->with(['parent'])->where(['position' => 1]);
-            $categories = $this->category->with(['parent'])->where('parent_id','!=', 0);
-        }
+        } 
+        $categories = $Query->orderBy('id','desc')->paginate(Helpers::getPagination());
+        return view('admin-views.category.middle-sub-index', compact('categories', 'search'));
+    }
+
+    /**
+     * @param Request $request
+     * @return Application|Factory|View
+     */
+
+
+    function sub_index(Request $request): View|Factory|Application
+    {
+        $query_param = [];
+        $search = $request['search'];
+        $Query = $this->category->with(['parent'])->where('position' , 1);
+        if ($request->has('search')) {
+            $key = explode(' ', $request['search']);
+            // $categories = $this->category->with(['parent'])->where(['position' => 1])
+            $categories = $Query->where(function ($q) use ($key) {
+                    foreach ($key as $value) {
+                        $q->orWhere('name', 'like', "%{$value}%");
+                    }
+                });
+        } 
         
-        $categories = $categories->orderBy('id','desc')->paginate(Helpers::getPagination())->appends($query_param);
+        $categories = $Query->orderBy('id','desc')->paginate(Helpers::getPagination());
         return view('admin-views.category.sub-index', compact('categories', 'search'));
     }
 
@@ -94,10 +109,10 @@ class CategoryController extends Controller
     /**
      * @return Factory|View|Application
      */
-    function sub_sub_index(): View|Factory|Application
-    {
-        return view('admin-views.category.sub-sub-index');
-    }
+    // function sub_sub_index(): View|Factory|Application
+    // {
+    //     return view('admin-views.category.sub-sub-index');
+    // }
 
     /**
      * @return Factory|View|Application

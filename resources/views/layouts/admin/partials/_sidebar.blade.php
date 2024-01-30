@@ -253,6 +253,8 @@
                                         </a>
                                     </li>
 
+                                   
+
                                     <li class="nav-item {{Request::is('admin/category/add-sub-category')?'active':''}}">
                                         <a class="nav-link " href="{{route('admin.category.add-sub-category')}}"
                                            title="{{translate('sub_categories')}}">
@@ -260,6 +262,16 @@
                                             <span class="text-truncate">{{translate('sub_categories')}}</span>
                                         </a>
                                     </li>
+
+                                    <li class="nav-item {{Request::is('admin/category/add-sub-sub-category')?'active':''}}">
+                                        <a class="nav-link " href="{{route('admin.category.add-sub-sub-category')}}"
+                                           title="{{translate('sub_categories')}}">
+                                            <span class="tio-circle nav-indicator-icon"></span>
+                                            <span class="text-truncate">{{translate('sub_categories')}}</span>
+                                        </a>
+                                    </li>
+
+                                    
                                 </ul>
                             </li>
                             <!-- End Pages -->

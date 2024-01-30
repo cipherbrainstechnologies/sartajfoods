@@ -168,7 +168,8 @@
                         
                         
                         <div class="col-sm-6">
-                        @if($category->parent_id !=0)
+                        @if($category['position']==1 )
+                            <input name="position" value="1" hidden>
                             <div class="form-group">
                                 <label class="form-label"
                                     for="exampleFormControlSelect1">{{translate('main')}} {{translate('category')}}
@@ -179,7 +180,20 @@
                                     @endforeach
                                 </select>
                             </div>
-                           @endif
+                        @endif
+                        @if($category['position']==2 )
+                        <input name="position" value="2" hidden>
+                            <div class="form-group">
+                                <label class="form-label"
+                                    for="exampleFormControlSelect1">{{translate('main')}} {{translate('category')}}
+                                    <span class="input-label-secondary">*</span></label>
+                                <select id="exampleFormControlSelect1" name="parent_id" class="form-control js-select2-custom" required>
+                                    @foreach(\App\Model\Category::with('translations')->where(['position'=>1])->get() as $cat)
+                                        <option value="{{$cat['id']}}" @if($cat['id'] == $category['parent_id']) selected @endif>{!! strip_tags(htmlspecialchars_decode($cat['name'])) !!}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
                             <div class="col-lg-12">
                            
                             <label>{{\App\CentralLogics\translate('image')}}</label><small style="color: red">* ( {{\App\CentralLogics\translate('ratio')}} 3:1 )</small>
