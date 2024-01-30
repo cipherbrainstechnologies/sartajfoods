@@ -810,7 +810,7 @@ class ProductController extends Controller
                 ->with(['rating', 'active_reviews','manufacturer', 'soldProduct','relatedProducts.relatedProduct'])
                 ->byCategory("{$categoryData->id}")
                 ->take(1)
-                ->get();
+                ->first();
                 $data['products'] = $productData;
             }
             return response()->json([$data], 200);
