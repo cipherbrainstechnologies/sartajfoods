@@ -2219,4 +2219,5 @@
   'sub category image' => 'Sub category image',
   'sub_category_image' => 'Sub category image',
   '1 JPY Equal To How Much Loyalty Points?' => '1 JPY Equal To How Much Loyalty Points ',
+  'manufacturer removed!' => 'Manufacturer removed!',
 );
