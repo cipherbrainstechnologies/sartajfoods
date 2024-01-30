@@ -799,20 +799,21 @@ class ProductController extends Controller
 
     public function get_seo_category($seo){
         // try {
-            $categoryData = Category::where(function ($q) use($seo){
+            
+            $categoryData = Category::with('translations')->where(function ($q) use($seo){
                 $q->where('seo_en',$seo)->orWhere('seo_ja',$seo);
             })->where('status',1)->first();
             if(!empty($categoryData)){
+                $data['categories'] = $categoryData;
                 $productData =Product::active()
                 ->withCount(['wishlist','order_details','relatedProducts'])
                 ->with(['rating', 'active_reviews','manufacturer', 'soldProduct','relatedProducts.relatedProduct'])
                 ->byCategory("{$categoryData->id}")
-                ->take(10)
+                ->take(1)
                 ->get();
+                $data['products'] = $productData;
             }
-           
-            
-            return response()->json(["products" =>$productData], 200);
+            return response()->json([$data], 200);
         // } catch (\Exception $e) {
         //  return response()->json([], 200);
         // }
