@@ -189,7 +189,7 @@ class CategoryController extends Controller
         //translation
         $data = [];
         foreach ($request->lang as $index => $key) {
-            if ($request->name[$index] && $key != 'en') {
+            // if ($request->name[$index] && $key != 'en') {
                 $data[] = array(
                     'translationable_type' => 'App\Model\Category',
                     'translationable_id' => $category->id,
@@ -197,8 +197,8 @@ class CategoryController extends Controller
                     'key' => 'name',
                     'value' => $request->name[$index],
                 );
-            }
-            if ($request->description[$index] && $key != 'en') {
+            // }
+            // if ($request->description[$index] && $key != 'en') {
                 $data[] = array(
                     'translationable_type' => 'App\Model\Category',
                     'translationable_id' => $category->id,
@@ -206,9 +206,9 @@ class CategoryController extends Controller
                     'key' => 'description',
                     'value' => $request->description[$index],
                 );
-            }
+            // }
            
-                if ($request->meta_title[$index] && $key != 'en') {
+                // if ($request->meta_title[$index] && $key != 'en') {
                     $data[] = array(
                         'translationable_type' => 'App\Model\Category',
                         'translationable_id' => $category->id,
@@ -216,8 +216,8 @@ class CategoryController extends Controller
                         'key' => 'meta_title',
                         'value' => $request->meta_title[$index],
                     );
-                }
-                if ($request->meta_description[$index] && $key != 'en') {
+                // }
+                // if ($request->meta_description[$index] && $key != 'en') {
                     $data[] = array(
                         'translationable_type' => 'App\Model\Category',
                         'translationable_id' => $category->id,
@@ -225,8 +225,8 @@ class CategoryController extends Controller
                         'key' => 'meta_description',
                         'value' => $request->meta_description[$index],
                     );
-                }
-                if ($request->meta_keywords[$index] && $key != 'en') {
+                // }
+                // if ($request->meta_keywords[$index] && $key != 'en') {
                     $data[] = array(
                         'translationable_type' => 'App\Model\Category',
                         'translationable_id' => $category->id,
@@ -234,7 +234,7 @@ class CategoryController extends Controller
                         'key' => 'meta_keywords',
                         'value' => $request->meta_keywords[$index],
                     );
-                }
+                // }
             
             
         }
@@ -304,7 +304,7 @@ class CategoryController extends Controller
         $category->image = $request->has('image') ? Helpers::update('product/', $category->image, 'png', $request->file('image')) : $category->image;
         $category->save();
         foreach ($request->lang as $index => $key) {
-            if ($key != 'en') {
+            // if ($key != 'en') {
                 Translation::updateOrInsert(
                     ['translationable_type' => 'App\Model\Category',
                         'translationable_id' => $category->id,
@@ -312,8 +312,8 @@ class CategoryController extends Controller
                         'key' => 'name'],
                     ['value' => $request->name[$index]]
                 );
-            }
-            if ($key != 'en') {
+            // }
+            // if ($key != 'en') {
                 Translation::updateOrInsert(
                     ['translationable_type' => 'App\Model\Category',
                         'translationable_id' => $category->id,
@@ -321,9 +321,9 @@ class CategoryController extends Controller
                         'key' => 'description'],
                     ['value' => $request->description[$index]]
                 );
-            }
+            // }
             // if (empty($category->parent_id )){
-                if ( $key != 'en') {
+                // if ( $key != 'en') {
                     
                     Translation::updateOrInsert(
                         ['translationable_type' => 'App\Model\Category',
@@ -332,8 +332,8 @@ class CategoryController extends Controller
                             'key' => 'meta_title'],
                         ['value' => $request->meta_title[$index]]
                     );
-                }
-                if ( $key != 'en') {
+                // }
+                // if ( $key != 'en') {
                     Translation::updateOrInsert(
                         ['translationable_type' => 'App\Model\Category',
                             'translationable_id' => $category->id,
@@ -341,8 +341,8 @@ class CategoryController extends Controller
                             'key' => 'meta_description'],
                         ['value' => $request->meta_description[$index]]
                     );
-                }
-                if ( $key != 'en') {
+                // }
+                // if ( $key != 'en') {
                     Translation::updateOrInsert(
                         ['translationable_type' => 'App\Model\Category',
                             'translationable_id' => $category->id,
@@ -350,7 +350,7 @@ class CategoryController extends Controller
                             'key' => 'meta_keywords'],
                         ['value' => $request->meta_keywords[$index]]
                     );
-                }
+                // }
             // }
         }
         

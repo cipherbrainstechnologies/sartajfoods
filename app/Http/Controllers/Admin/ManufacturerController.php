@@ -87,7 +87,7 @@ class manufacturerController extends Controller
 
         $data = [];
         foreach ($request->lang as $index => $key) {
-            if ($request->name[$index] && $key != 'en') {
+            // if ($request->name[$index] && $key != 'en') {
                 $data[] = array(
                     'translationable_type' => 'App\Model\manufacturer',
                     'translationable_id' => $manufacturer->id,
@@ -95,8 +95,8 @@ class manufacturerController extends Controller
                     'key' => 'name',
                     'value' => $request->name[$index],
                 );
-            }
-            if ($request->meta_title[$index] && $key != 'en') {
+            // }
+            // if ($request->meta_title[$index] && $key != 'en') {
                 Translation::updateOrInsert(
                     ['translationable_type' => 'App\Model\manufacturer',
                         'translationable_id' => $manufacturer->id,
@@ -104,8 +104,8 @@ class manufacturerController extends Controller
                         'key' => 'meta_title'],
                     ['value' => $request->meta_title[$index]]
                 );
-            }
-            if ($request->meta_description[$index] && $key != 'en') {
+            // }
+            // if ($request->meta_description[$index] && $key != 'en') {
                 Translation::updateOrInsert(
                     ['translationable_type' => 'App\Model\manufacturer',
                         'translationable_id' => $manufacturer->id,
@@ -113,8 +113,8 @@ class manufacturerController extends Controller
                         'key' => 'meta_description'],
                     ['value' => $request->meta_description[$index]]
                 );
-            }
-            if ($request->meta_keywords[$index] && $key != 'en') {
+            // }
+            // if ($request->meta_keywords[$index] && $key != 'en') {
                 Translation::updateOrInsert(
                     ['translationable_type' => 'App\Model\manufacturer',
                         'translationable_id' => $manufacturer->id,
@@ -122,7 +122,7 @@ class manufacturerController extends Controller
                         'key' => 'meta_keywords'],
                     ['value' => $request->meta_keywords[$index]]
                 );
-            }
+            // }
         }
         if (count($data)) {
             $this->translation->insert($data);
@@ -179,7 +179,7 @@ class manufacturerController extends Controller
         $manufacturer->save();
 
         foreach ($request->lang as $index => $key) {
-            if ( $key != 'en') { //$request->name[$index] &&
+            // if ( $key != 'en') { //$request->name[$index] &&
                 $this->translation->updateOrInsert(
                     ['translationable_type' => 'App\Model\manufacturer',
                         'translationable_id' => $manufacturer->id,
@@ -188,8 +188,8 @@ class manufacturerController extends Controller
                     ],
                     ['value' => $request->name[$index]]
                 );
-            }
-            if ( $key != 'en') { //$request->meta_title[$index] &&
+            // }
+            // if ( $key != 'en') { //$request->meta_title[$index] &&
                 Translation::updateOrInsert(
                     ['translationable_type' => 'App\Model\manufacturer',
                         'translationable_id' => $manufacturer->id,
@@ -198,8 +198,8 @@ class manufacturerController extends Controller
                     ],
                     ['value' => $request->meta_title[$index]]
                 );
-            }
-            if ($key != 'en') { //$request->meta_description[$index] && 
+            // }
+            // if ($key != 'en') { //$request->meta_description[$index] && 
                 Translation::updateOrInsert(
                     ['translationable_type' => 'App\Model\manufacturer',
                         'translationable_id' => $manufacturer->id,
@@ -208,8 +208,8 @@ class manufacturerController extends Controller
                     ],
                     ['value' => $request->meta_description[$index]]
                 );
-            }
-            if ( $key != 'en') { //$request->meta_keywords[$index]
+            // }
+            // if ( $key != 'en') { //$request->meta_keywords[$index]
                 Translation::updateOrInsert(
                     ['translationable_type' => 'App\Model\manufacturer',
                         'translationable_id' => $manufacturer->id,
@@ -218,7 +218,7 @@ class manufacturerController extends Controller
                     ],
                     ['value' => $request->meta_keywords[$index]]
                 );
-            }
+            // }
         }
 
         Toastr::success(translate('manufacturer updated successfully!'));
