@@ -141,9 +141,7 @@
                                         <input type="hidden" name="lang[]" value="{{ $default_lang }}">
                                     @endif
                                     <input name="position" value="0" hidden>
-                                    
                                     <div class="col-sm-6">
-                                        
                                         <label class="form-label text-capitalize">{{ translate('category image') }}</label><small class="text-danger">* ( {{ translate('ratio') }}
                                             3:1 )</small>
                                         <div class="custom-file mb-3">
