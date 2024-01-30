@@ -799,7 +799,7 @@ class ProductController extends Controller
 
     public function get_seo_category($seo){
         // try {
-            
+            $data = [];
             $categoryData = Category::with('translations')->where(function ($q) use($seo){
                 $q->where('seo_en',$seo)->orWhere('seo_ja',$seo);
             })->where('status',1)->first();
