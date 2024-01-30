@@ -184,7 +184,7 @@ class manufacturerController extends Controller
                     ['translationable_type' => 'App\Model\manufacturer',
                         'translationable_id' => $manufacturer->id,
                         'locale' => $key,
-                        // 'key' => 'name'
+                        'key' => 'name'
                     ],
                     ['value' => $request->name[$index]]
                 );
@@ -194,7 +194,7 @@ class manufacturerController extends Controller
                     ['translationable_type' => 'App\Model\manufacturer',
                         'translationable_id' => $manufacturer->id,
                         'locale' => $key,
-                        // 'key' => 'meta_title'
+                        'key' => 'meta_title'
                     ],
                     ['value' => $request->meta_title[$index]]
                 );
@@ -204,7 +204,7 @@ class manufacturerController extends Controller
                     ['translationable_type' => 'App\Model\manufacturer',
                         'translationable_id' => $manufacturer->id,
                         'locale' => $key,
-                        // 'key' => 'meta_description'
+                        'key' => 'meta_description'
                     ],
                     ['value' => $request->meta_description[$index]]
                 );
@@ -214,7 +214,7 @@ class manufacturerController extends Controller
                     ['translationable_type' => 'App\Model\manufacturer',
                         'translationable_id' => $manufacturer->id,
                         'locale' => $key,
-                        // 'key' => 'meta_keywords'
+                        'key' => 'meta_keywords'
                     ],
                     ['value' => $request->meta_keywords[$index]]
                 );
