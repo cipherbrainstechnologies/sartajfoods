@@ -14,25 +14,15 @@ class CategoryController extends Controller
         private Category $category
     ){}
 
-    public function addImageUrl($categories){
-        $baseUrl = config('app.url');
-        $response = [];
-        if(!empty($categories)){
-            foreach($categories->toArray() as $key => $category){
-                $response[] = $category;
-                $response[$key]['image'] = $baseUrl . '/storage/product/' . $category['image'];
-            }
-        }      
-        return $response;
-    }
 
     public function get_categories(): \Illuminate\Http\JsonResponse
     {
         try {
-            $categories = $this->category->where(['position'=> 0,'status'=>1])->orderBy('name')->get();
-            $Categories = self::addImageUrl($categories);
+            $Categories = $this->category->where(['position'=> 0,'status'=>1])->orderBy('name')->get();
+            // $Categories = self::addImageUrl($categories);
             foreach($Categories as $key => $category) {
-                $Categories[$key]['total_produts'] = CategoryLogic::getProductCount($category["id"]);
+                // $Categories[$key]['total_produts'] = CategoryLogic::getProductCount($category["id"]);
+                $Categories[$key]['total_produts'] =  Product::active()->whereJsonContains('category_ids', ['id' => "{$category->id}"])->count();
             }
             return response()->json($Categories, 200);
         } catch (\Exception $e) {

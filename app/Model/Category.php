@@ -12,7 +12,14 @@ class Category extends Model
         'position' => 'integer',
         'status' => 'integer'
     ];
-
+    public function getImageAttribute()
+    {
+        $imageUrl = '';
+        if(!empty($this->attributes['image'])){
+           $imageUrl = config('app.url').'/storage/product/'.$this->attributes['image'];
+        }
+        return $imageUrl;
+    }
     public function translations(): \Illuminate\Database\Eloquent\Relations\MorphMany
     {
         return $this->morphMany('App\Model\Translation', 'translationable');
@@ -44,9 +51,9 @@ class Category extends Model
     protected static function booted(): void
     {
         static::addGlobalScope('translate', function (Builder $builder) {
-            // $builder->with(['translations' => function($query){
-            //     return $query->where('locale', app()->getLocale());
-            // }]);
+            $builder->with(['translations' => function($query){
+                return $query->where('locale', app()->getLocale());
+            }]);
             $builder->with(['translations']);
         });
     }
