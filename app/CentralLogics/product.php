@@ -247,7 +247,7 @@ class ProductLogic
         } else {
             $paginator = Product::active()
                 ->withCount('order_details','relatedProducts')
-                ->with(['rating', 'active_reviews','manufacturer','relatedProducts.relatedProduct'])
+                ->with(['rating', 'active_reviews','manufacturer','relatedProducts.relatedProduct','translations'])
                 ->inRandomOrder();
                 // ->paginate($limit, ['*'], 'page', $offset);
                 if(!is_null($take)){
