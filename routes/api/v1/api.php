@@ -27,7 +27,10 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         });
     });
 
-    
+    // Route::group(['prefix' => 'payment'],function (){
+    //     Route::get('/','PaymentController@available_methods');
+    // });
+
     Route::group(['prefix' => 'config'], function () {
         Route::get('/', 'ConfigController@configuration');
     });
@@ -218,6 +221,10 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
 
     Route::group(['prefix' => 'browser-history'], function () {
         Route::post('store-browser-detail','BrowserHistoryController@store');
+    });
+
+    Route::group(['prefix' => 'paypal'], function () {
+        Route::post('/pay', 'PaypalPaymentController@payWithPaypal');
     });
 
     // Product Seo Manage
