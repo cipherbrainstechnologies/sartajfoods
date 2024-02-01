@@ -66,7 +66,7 @@
                                         <a href="{{route('admin.product.view',[$product['id']])}}" class="product-list-media">
                                             @if (!empty($product['image']))
                                                 <img
-                                                    src="{{asset('storage/product')}}/{{$product['image'][0]}}"
+                                                    src="{{$product['image'][0]}}"
                                                     onerror="this.src='{{asset('public/assets/admin/img/400x400/img2.jpg')}}'">
                                             @else
                                                 <img src="{{asset('public/assets/admin/img/400x400/img2.jpg')}}">
