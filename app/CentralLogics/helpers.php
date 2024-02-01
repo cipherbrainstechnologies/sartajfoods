@@ -114,7 +114,7 @@ class Helpers
                         }
                     }
                 }
-                unset($item['translations']);
+                // unset($item['translations']);
                 array_push($storage, $item);
             }
             $data = $storage;
