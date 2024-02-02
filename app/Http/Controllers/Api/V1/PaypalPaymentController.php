@@ -128,13 +128,14 @@ class PaypalPaymentController extends Controller
     // }
 
 
-    public function payWithPaypal(Request $request)
+    public function payWithpaypal(Request $request)
     {
         $order_amount = $request['order_amount'];
         $customer = User::find($request['customer_id']);
         $callback = $request['callback'];
 
         $tr_ref = Str::random(6) . '-' . rand(1, 1000);
+
         $payer = new Payer();
         $payer->setPaymentMethod('paypal');
 
@@ -143,7 +144,7 @@ class PaypalPaymentController extends Controller
         $item->setName($customer['f_name'])
             ->setCurrency(Helpers::currency_code())
             ->setQuantity(1)
-            ->setPrice(5000);  // Set your item price here
+            ->setPrice($order_amount);
         array_push($items_array, $item);
 
         $item_list = new ItemList();
@@ -153,14 +154,13 @@ class PaypalPaymentController extends Controller
         $amount->setCurrency(Helpers::currency_code())
             ->setTotal($order_amount);
 
-        Session::put('transaction_reference', $tr_ref);
+        \session()->put('transaction_reference', $tr_ref);
         $transaction = new Transaction();
         $transaction->setAmount($amount)
             ->setItemList($item_list)
             ->setDescription($tr_ref);
 
         $redirect_urls = new RedirectUrls();
-        echo URL::route('/api/V1/paypal-status', ['callback' => $callback, 'transaction_reference' => $tr_ref]);die;
         $redirect_urls->setReturnUrl(URL::route('paypal-status', ['callback' => $callback, 'transaction_reference' => $tr_ref]))
             ->setCancelUrl(URL::route('payment-fail', ['callback' => $callback, 'transaction_reference' => $tr_ref]));
 
@@ -168,8 +168,7 @@ class PaypalPaymentController extends Controller
         $payment->setIntent('Sale')
             ->setPayer($payer)
             ->setRedirectUrls($redirect_urls)
-            ->setTransactions([$transaction]);
-
+            ->setTransactions(array($transaction));
         try {
             $payment->create($this->_api_context);
 
@@ -182,15 +181,18 @@ class PaypalPaymentController extends Controller
 
             Session::put('paypal_payment_id', $payment->getId());
             if (isset($redirect_url)) {
-                return response()->json(['redirect_url' => $redirect_url], 200);
+                return Redirect::away($redirect_url);
             }
 
         } catch (\Exception $ex) {
-            return response()->json(['error' => $ex->getMessage()], 500);
+            Toastr::error(translate('Your currency is not supported by PAYPAL.'));
+            return back()->withErrors(['error' => 'Failed']);
         }
 
-        return response()->json(['error' => 'Configure your PayPal account.'], 500);
+        Session::put('error', 'Configure your paypal account.');
+        return back()->withErrors(['error' => 'Failed']);
     }
+
     public function getPaymentStatus(Request $request)
     {
         $callback = $request['callback'];
