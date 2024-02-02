@@ -382,7 +382,7 @@ class ProductController extends Controller
     {
 
         try {
-            $product = ProductLogic::get_seo_product($seo,$request->header('x-localization'));
+            // $product = ProductLogic::get_seo_product($seo,$request->header('x-localization'));
             if (!isset($product)) {
                 return response()->json(['errors' => ['code' => 'product-001', 'message' => 'Product not found!']], 404);
             }
