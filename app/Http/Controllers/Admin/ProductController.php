@@ -426,6 +426,15 @@ class ProductController extends Controller
                     'key' => 'description',
                     'value' => $request->description[$index],
                 );
+
+                $data[] = array(
+                    'translationable_type' => 'App\Model\Product',
+                    'translationable_id' => $p->id,
+                    'locale' => $key,
+                    'key' => 'product_tag',
+                    'value' => $request->product_tag[$index],
+                );
+                
             // }
             // if ($request->meta_title[$index] && $key != 'en') {
                 $data[] = array(
@@ -747,53 +756,61 @@ class ProductController extends Controller
         {
             // if($key != 'en') //$request->name[$index] && 
             // {
-                $this->translation->updateOrInsert(
+                Translation::updateOrInsert(
                     ['translationable_type'  => 'App\Model\Product',
                         'translationable_id'    => $p->id,
                         'locale'                => $key,
-                        // 'key'                   => 'name'
+                        'key'                   => 'name'
                     ],
                     ['value'                 => $request->name[$index]]
                 );
             // }
             // if($ $key != 'en') //request->description[$index] &&
             // {
-                $this->translation->updateOrInsert(
+                Translation::updateOrInsert(
                     ['translationable_type'  => 'App\Model\Product',
                         'translationable_id'    => $p->id,
                         'locale'                => $key,
-                        // 'key'                   => 'description'
+                        'key'                   => 'description'
                     ],
                     ['value'                 => $request->description[$index]]
                 );
             // }
+                Translation::updateOrInsert(
+                    ['translationable_type'  => 'App\Model\Product',
+                        'translationable_id'    => $p->id,
+                        'locale'                => $key,
+                        'key'                   => 'product_tag'
+                    ],
+                    ['value'                 => $request->product_tag[$index]]
+                );
             // if ( $key != 'en') {
                 
-                $this->translation->updateOrInsert(
+                Translation::updateOrInsert(
                     ['translationable_type' => 'App\Model\Product',
                         'translationable_id' => $p->id,
                         'locale' => $key,
-                        // 'key' => 'meta_title'
+                        'key' => 'meta_title'
                     ],
                     ['value' => $request->meta_title[$index]]
                 );
             // }
             // if ( $key != 'en') {
-                $this->translation->updateOrInsert(
+                Translation::updateOrInsert(
                     ['translationable_type' => 'App\Model\Product',
                         'translationable_id' => $p->id,
                         'locale' => $key,
-                        // 'key' => 'meta_description'
+                        'key' => 'meta_description'
                     ],
                     ['value' => $request->meta_description[$index]]
                 );
             // }
             // if ( $key != 'en') {
-                $this->translation->updateOrInsert(
+                Translation::updateOrInsert(
                     ['translationable_type' => 'App\Model\Product',
                         'translationable_id' => $p->id,
                         'locale' => $key,
-                        // 'key' => 'meta_keywords'
+                        'key' => 'meta_keywords'
                     ],
                     ['value' => $request->meta_keywords[$index]]
                 );
