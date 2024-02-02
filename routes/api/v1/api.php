@@ -224,8 +224,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
     });
 
     // Route::group(['prefix' => 'paypal'], function () {
-        Route::post('pay', 'PaypalPaymentController@payWithPaypal');
-        Route::get('paypal-status', 'PaypalPaymentController@getPaymentStatus')->name('paypal-status');
+       
     // });
 
     // Product Seo Manage
@@ -235,4 +234,12 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
     Route::post('seo_type_check', 'ManufacturerController@seo_type_test')->where('seo', '.*');
     Route::get('hot-deals', 'HotDealsController@getHotDeals');
     
+
+    Route::get('/payment-mobile', 'PaymentController@payment')->name('payment-mobile');
+
+    Route::post('pay', 'PaypalPaymentController@payWithPaypal');
+    Route::get('paypal-status', 'PaypalPaymentController@getPaymentStatus')->name('paypal-status');
+
+    Route::get('paywithrazorpay', 'RazorPayController@payWithRazorpay')->name('paywithrazorpay');
+    Route::post('payment-razor', 'RazorPayController@payment')->name('payment-razor');
 });
