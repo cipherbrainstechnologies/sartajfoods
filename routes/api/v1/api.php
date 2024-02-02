@@ -223,9 +223,10 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         Route::post('store-browser-detail','BrowserHistoryController@store');
     });
 
-    Route::group(['prefix' => 'paypal'], function () {
+    // Route::group(['prefix' => 'paypal'], function () {
         Route::post('/pay', 'PaypalPaymentController@payWithPaypal');
-    });
+        Route::get('paypal-status', 'PaypalPaymentController@getPaymentStatus')->name('paypal-status');
+    // });
 
     // Product Seo Manage
     Route::get('product_seo/{seo}', 'ProductController@get_seo_product')->where('seo', '.*');
