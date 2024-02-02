@@ -224,7 +224,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
     });
 
     // Route::group(['prefix' => 'paypal'], function () {
-        Route::post('/pay', 'PaypalPaymentController@payWithPaypal');
+        Route::post('pay', 'PaypalPaymentController@payWithPaypal');
         Route::get('paypal-status', 'PaypalPaymentController@getPaymentStatus')->name('paypal-status');
     // });
 
