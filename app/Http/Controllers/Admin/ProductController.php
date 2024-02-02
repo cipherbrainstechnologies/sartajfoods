@@ -811,7 +811,7 @@ class ProductController extends Controller
     public function delete(Request $request): \Illuminate\Http\RedirectResponse
     {
         $product = $this->product->find($request->id);
-        foreach (json_decode($product['image'], true) as $img) {
+        foreach ($product['image'] as $img) {
             if (Storage::disk('public')->exists('product/' . $img)) {
                 Storage::disk('public')->delete('product/' . $img);
             }
