@@ -242,4 +242,8 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
 
     Route::get('paywithrazorpay', 'RazorPayController@payWithRazorpay')->name('paywithrazorpay');
     Route::post('payment-razor', 'RazorPayController@payment')->name('payment-razor');
+
+    Route::get('pay-stripe', 'StripePaymentController@payment_process_3d')->name('pay-stripe');
+    Route::get('pay-stripe/success', 'StripePaymentController@success')->name('pay-stripe.success');
+    Route::get('pay-stripe/fail', 'StripePaymentController@success')->name('pay-stripe.fail');
 });
