@@ -160,6 +160,7 @@ class PaypalPaymentController extends Controller
             ->setDescription($tr_ref);
 
         $redirect_urls = new RedirectUrls();
+        echo URL::route('paypal-status', ['callback' => $callback, 'transaction_reference' => $tr_ref]);die;
         $redirect_urls->setReturnUrl(URL::route('paypal-status', ['callback' => $callback, 'transaction_reference' => $tr_ref]))
             ->setCancelUrl(URL::route('payment-fail', ['callback' => $callback, 'transaction_reference' => $tr_ref]));
 
@@ -180,7 +181,6 @@ class PaypalPaymentController extends Controller
             }
 
             Session::put('paypal_payment_id', $payment->getId());
-            
             if (isset($redirect_url)) {
                 return response()->json(['redirect_url' => $redirect_url], 200);
             }
