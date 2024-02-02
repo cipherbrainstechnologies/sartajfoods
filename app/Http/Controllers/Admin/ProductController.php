@@ -251,14 +251,18 @@ class ProductController extends Controller
             ];
         }
         if ($request->sub_category_id != null) {
+            $categoryDetail = Category::where('id',$request->category_id)->first();
             $category[] = [
                 'id' => $request->sub_category_id,
+                'name' => $categoryDetail->name,
                 'position' => 2,
             ];
         }
         if ($request->sub_sub_category_id != null) {
+            $categoryDetail = Category::where('id',$request->category_id)->first();
             $category[] = [
                 'id' => $request->sub_sub_category_id,
+                'name' => $categoryDetail->name,
                 'position' => 3,
             ];
         }
@@ -585,14 +589,18 @@ class ProductController extends Controller
         }
         
         if ($request->sub_category_id != null) {
+            $categoryDetail = Category::where('id',$request->category_id)->first();
             $category[] = [
                 'id' => $request->sub_category_id,
+                'name' =>$categoryDetail->name,
                 'position' => 2,
             ];
         }
         if ($request->sub_sub_category_id != null) {
+            $categoryDetail = Category::where('id',$request->category_id)->first();
             $category[] = [
                 'id' => $request->sub_sub_category_id,
+                'name' =>$categoryDetail->name,
                 'position' => 3,
             ];
         }
@@ -739,58 +747,48 @@ class ProductController extends Controller
 
         foreach($request->lang as $index=>$key)
         {
-            // if($key != 'en') //$request->name[$index] && 
-            // {
                 $this->translation->updateOrInsert(
                     ['translationable_type'  => 'App\Model\Product',
                         'translationable_id'    => $p->id,
                         'locale'                => $key,
-                        // 'key'                   => 'name'
+                        'key'                   => 'name'
                     ],
                     ['value'                 => $request->name[$index]]
                 );
-            // }
-            // if($ $key != 'en') //request->description[$index] &&
-            // {
                 $this->translation->updateOrInsert(
                     ['translationable_type'  => 'App\Model\Product',
                         'translationable_id'    => $p->id,
                         'locale'                => $key,
-                        // 'key'                   => 'description'
+                        'key'                   => 'description'
                     ],
                     ['value'                 => $request->description[$index]]
                 );
-            // }
-            // if ( $key != 'en') {
-                Translation::updateOrInsert(
-                    ['translationable_type' => 'App\Model\Product',
-                        'translationable_id' => $p->id,
-                        'locale' => $key,
-                        // 'key' => 'meta_title'
-                    ],
-                    ['value' => $request->meta_title[$index]]
-                );
-            // }
-            // if ( $key != 'en') {
-                Translation::updateOrInsert(
-                    ['translationable_type' => 'App\Model\Product',
-                        'translationable_id' => $p->id,
-                        'locale' => $key,
-                        // 'key' => 'meta_description'
-                    ],
-                    ['value' => $request->meta_description[$index]]
-                );
-            // }
-            // if ( $key != 'en') {
-                Translation::updateOrInsert(
-                    ['translationable_type' => 'App\Model\Product',
-                        'translationable_id' => $p->id,
-                        'locale' => $key,
-                        // 'key' => 'meta_keywords'
-                    ],
-                    ['value' => $request->meta_keywords[$index]]
-                );
-            // }
+        
+            Translation::updateOrInsert(
+                ['translationable_type' => 'App\Model\Product',
+                    'translationable_id' => $p->id,
+                    'locale' => $key,
+                    'key' => 'meta_title'
+                ],
+                ['value' => $request->meta_title[$index]]
+            );
+            Translation::updateOrInsert(
+                ['translationable_type' => 'App\Model\Product',
+                    'translationable_id' => $p->id,
+                    'locale' => $key,
+                    'key' => 'meta_description'
+                ],
+                ['value' => $request->meta_description[$index]]
+            );
+
+            Translation::updateOrInsert(
+                ['translationable_type' => 'App\Model\Product',
+                    'translationable_id' => $p->id,
+                    'locale' => $key,
+                    'key' => 'meta_keywords'
+                ],
+                ['value' => $request->meta_keywords[$index]]
+            );
 
         }
 
