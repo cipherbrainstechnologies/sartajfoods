@@ -28,9 +28,12 @@ use App\Model\BusinessSetting;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Carbon;
 use App\Model\OrderHistory;
+use App\CentralLogics\PaypalLogic;
+use App\Http\Controllers\Api\V1\PaypalPaymentController;
 
 class OrderController extends Controller
 {
+    private $paypal;
     public function __construct(
         private Coupon $coupon,
         private CustomerAddress $customer_address,
@@ -41,7 +44,10 @@ class OrderController extends Controller
         private Review $review,
         private User $user,
         private BusinessSetting $business_setting,
-    ){}
+        PaypalPaymentController $paypal
+    ){
+        $this->paypal = $paypal;
+    }
 
     /**
      * @param Request $request
@@ -60,6 +66,38 @@ class OrderController extends Controller
         return response()->json(OrderLogic::track_order($request['order_id'],$request->user()->id), 200);
     }
 
+    protected function payWithPaypal($request)
+    {
+        // Replace with your actual PayPal API credentials and endpoint
+        $paypalEndpoint = 'https://api.paypal.com';
+        $clientId = 'AbqwpMz0y23LtU6DChLadDR905VbjGux2cv52hxDRJ7lw4OsgFO0P_qJvoFXUKIWYTrhByj5CCM9Kjui';
+        $clientSecret = 'EItaaSmeXcd8bvsBJw6aHZaH-igNO2xis5_hEW2LIF6oQoUI5cYTWYztQDGl9zdMQq2dL_R-GWPBAnLS';
+
+        $customerName = $request->user()->name;
+
+        $response = \Illuminate\Support\Facades\Http::withHeaders([
+            'Accept' => 'application/json',
+        ])->post("$paypalEndpoint/v1/oauth2/token", [
+            'grant_type' => 'client_credentials',
+        ], [
+            'auth' => [$clientId, $clientSecret],
+        ]);
+
+        $accessToken = $response->json('access_token');
+
+        // Replace with your actual logic to create a PayPal payment
+        // You should interact with PayPal API to create a payment and handle the response accordingly
+        // This is just a basic example, and you should adapt it based on your specific requirements
+
+        // Simulate a successful payment
+        $transactionId = 'txn_' . time() . '_' . uniqid();
+        return [
+            'status' => 'success',
+            'transaction_id' => $transactionId,
+        ];
+    }
+
+    
     /**
      * @param Request $request
      * @return JsonResponse
@@ -77,6 +115,20 @@ class OrderController extends Controller
 
         if ($validator->fails()) {
             return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+        }
+        
+        if ($request->payment_method == 'paypal') {
+            $paypalResponse = $this->payWithPaypal($request);
+
+            // Check the PayPal payment response and set order status accordingly
+            if ($paypalResponse['status'] == 'success') {
+                $orderStatus = 'confirmed'; // Set your order status for successful PayPal payment
+            } else {
+                $orderStatus = 'failed'; // Set your order status for failed PayPal payment
+            }
+        } else {
+            // Set order status for other payment methods
+            $orderStatus = ($request->payment_method == 'cash_on_delivery' || $request->payment_method == 'offline_payment') ? 'pending' : 'confirmed';
         }
 
         if($request->payment_method == 'wallet_payment' && Helpers::get_business_settings('wallet_status', false) != 1)
@@ -214,7 +266,7 @@ class OrderController extends Controller
                 'coupon_discount_amount' => $request->coupon_discount_amount,
                 'coupon_discount_title' => $request->coupon_discount_title == 0 ? null : 'coupon_discount_title',
                 'payment_status' => ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'unpaid':'paid',
-                'order_status' => ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'pending':'confirmed',
+                'order_status' => $orderStatus,//($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'pending':'confirmed',
                 'payment_method' => $request->payment_method,
                 'transaction_reference' => $request->transaction_reference ?? null,
                 'order_note' => !empty($request['order_note']) ? $request['order_note'] : null,
@@ -232,7 +284,9 @@ class OrderController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
-
+            if($request->payment_method = 'paypal'){
+                $paypalResponse = $this->payWithpaypal($request);
+            }
             $o_time = $or['time_slot_id'];
             $o_delivery = $or['delivery_date'];
 
