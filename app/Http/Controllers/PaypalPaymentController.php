@@ -65,7 +65,9 @@ class PaypalPaymentController extends Controller
 
     public function payWithpaypal(Request $request)
     {
+        echo "dsfs";die;
         $order_amount = $request['order_amount'];
+        $customerId = !empty($request['customer_id']) ? $request['customer_id'] : auth()->user()->id;
         $customer = User::find($request['customer_id']);
         $callback = $request['callback'];
 
