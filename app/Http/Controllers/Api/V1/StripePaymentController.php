@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
 use Stripe\Charge;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
+use Stripe\Checkout\Session;
 
 class StripePaymentController extends Controller
 {
