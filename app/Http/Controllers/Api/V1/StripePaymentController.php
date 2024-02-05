@@ -20,6 +20,7 @@ class StripePaymentController extends Controller
     {
         $tran = Str::random(6) . '-' . rand(1, 1000);
         $order_amount = $request['order_amount'];
+        echo $order_amount;die;
         $callback = $request['callback'];
         $config = Helpers::get_business_settings('stripe');
         
