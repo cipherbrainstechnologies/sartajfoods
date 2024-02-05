@@ -384,7 +384,6 @@ class OrderController extends Controller
             }
 
             if($request->payment_method == "stripe"){
-                echo "ds";die;
                 $res = $this->stripe->payment_process_3d($request);
             }
             

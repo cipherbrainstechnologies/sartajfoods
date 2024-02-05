@@ -18,6 +18,7 @@ class StripePaymentController extends Controller
 {
     public function payment_process_3d(Request $request)
     {
+        echo "sd";die;
         $tran = Str::random(6) . '-' . rand(1, 1000);
         $order_amount = $request['order_amount'];
         $callback = $request['callback'];
