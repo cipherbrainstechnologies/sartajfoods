@@ -208,7 +208,7 @@ class OrderController extends Controller
         }
 
         if($request->payment_method == "paypal"){
-                $res = $this->paypal->payWithpaypal($request);
+                
         }
 
         if($request->payment_method == "stripe"){
