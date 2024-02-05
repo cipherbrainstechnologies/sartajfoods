@@ -247,5 +247,5 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
     Route::get('pay-stripe/success', 'StripePaymentController@success')->name('pay-stripe.success');
     Route::get('pay-stripe/fail', 'StripePaymentController@success')->name('pay-stripe.fail');
 
-    Route::post('/create-checkout-session', 'StripePaymentController@createCheckoutSession');
+    Route::post('create-checkout-session', 'StripePaymentController@createCheckoutSession');
 });
