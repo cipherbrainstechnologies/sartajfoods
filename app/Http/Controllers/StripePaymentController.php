@@ -22,7 +22,7 @@ class StripePaymentController extends Controller
         $order_amount = $request['order_amount'];
         $callback = $request['callback'];
         $config = Helpers::get_business_settings('stripe');
-        echo "<pre>";print_r($config);die;
+        
         Stripe::setApiKey($config['api_key']);
         header('Content-Type: application/json');
         $currency_code = Helpers::get_business_settings('currency');
