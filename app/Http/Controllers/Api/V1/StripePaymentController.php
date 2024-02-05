@@ -25,41 +25,41 @@ class StripePaymentController extends Controller
         $config = Helpers::get_business_settings('stripe');
         
         Stripe::setApiKey($config['api_key']);
-        $invoice = Invoice::create([
-            'customer' => 'customer_id', // replace with your customer ID
-            'collection_method' => 'send_invoice',
-            'days_until_due' => 30,
-            'amount_due' => $order_amount * 100, // amount in cents
-            'currency' => $currency_code ?? 'usd',
-        ]);
-        
-        // Retrieve the hosted invoice URL
-        $invoiceUrl = $invoice->hosted_invoice_url;
-        
-        // $stripe->paymentLinks->create([
-        //     'line_items' => [
-        //         [
-        //           'price' => 'price_1MoC3TLkdIwHu7ixcIbKelAC',
-        //           'quantity' => 1,
+        header('Content-Type: application/json');
+        $currency_code = Helpers::get_business_settings('currency');
+
+        // $checkout_session = \Stripe\Checkout\Session::create([
+        //     'payment_method_types' => ['card'],
+        //     'line_items' => [[
+        //         'price_data' => [
+        //             'currency' => $currency_code ?? 'usd',
+        //             'unit_amount' => $order_amount * 100,
+        //             'product_data' => [
+        //                 'name' => BusinessSetting::where(['key' => 'restaurant_name'])->first()->value,
+        //                 'images' => [asset('storage/app/public/restaurant') . '/' . BusinessSetting::where(['key' => 'logo'])->first()->value],
+        //             ],
         //         ],
-        //       ],
-            // 'payment_method_types' => ['card'],
-            // 'line_items' => [[
-            //     'price_data' => [
-            //         'currency' => $currency_code ?? 'usd',
-            //         'unit_amount' => $order_amount * 100,
-            //         'product_data' => [
-            //             'name' => BusinessSetting::where(['key' => 'restaurant_name'])->first()->value,
-            //             'images' => [asset('storage/app/public/restaurant') . '/' . BusinessSetting::where(['key' => 'logo'])->first()->value],
-            //         ],
-            //     ],
-            //     'quantity' => 1,
-            // ]],
-            // 'mode' => 'payment',
-            // 'success_url' => route('pay-stripe.success', ['callback' => $callback, 'transaction_reference' => $tran]),
-            // 'cancel_url' => url()->previous(),
+        //         'quantity' => 1,
+        //     ]],
+        //     'mode' => 'payment',
+        //     'success_url' => route('pay-stripe.success', ['callback' => $callback, 'transaction_reference' => $tran]),
+        //     'cancel_url' => url()->previous(),
         // ]);
-        return response()->json(['payment_link' => $invoiceUrl]);
+        $orderAmount = 1000; // in cents
+        $currencyCode = 'usd';
+    
+        // Create a PaymentIntent to get its ID
+        $paymentIntent = PaymentIntent::create([
+            'amount' => $orderAmount,
+            'currency' => $currencyCode,
+        ]);
+    
+        // Use the PaymentIntent ID to create a Payment Link
+        $paymentLink = PaymentIntent::createPaymentLink($paymentIntent->id);
+
+         // Retrieve the URL for the Payment Link
+        $paymentLinkUrl = $paymentLink->url;
+        return redirect()->away($paymentLinkUrl);
     }
 
     public function success(Request $request)
