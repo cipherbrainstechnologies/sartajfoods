@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use Stripe\Stripe;
 use Stripe\Checkout\Session;
 
@@ -18,8 +17,8 @@ class StripePaymentController extends Controller
             'payment_method_types' => ['card'],
             'line_items' => [[
                 'price_data' => [
-                    'currency' => 'jpy',
-                    'unit_amount' => 1000,
+                    'currency' => 'usd',
+                    'unit_amount' => $request->input('order_amount') * 100,
                     'product_data' => [
                         'name' => 'Product Name', // Replace with your product name
                     ],
@@ -33,5 +32,4 @@ class StripePaymentController extends Controller
 
         return response()->json(['id' => $checkout_session->id]);
     }
-
 }
