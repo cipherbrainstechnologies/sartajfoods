@@ -384,7 +384,7 @@ class OrderController extends Controller
             }
 
             if($request->payment_method == "stripe"){
-                $res = $this->stripe->payment_process_3d($request);
+                return response()->json(["token"=>$this->stripe->payment_process_3d($request)],200);
             }
             
             return response()->json([
