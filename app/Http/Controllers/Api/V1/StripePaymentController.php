@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use Stripe\Charge;
 use Stripe\Stripe;
-use Stripe\PaymentIntent;
-use Stripe\Checkout\Session;
 
 class StripePaymentController extends Controller
 {
@@ -29,49 +27,24 @@ class StripePaymentController extends Controller
         header('Content-Type: application/json');
         $currency_code = Helpers::get_business_settings('currency');
 
-        // $checkout_session = \Stripe\Checkout\Session::create([
-        //     'payment_method_types' => ['card'],
-        //     'line_items' => [[
-        //         'price_data' => [
-        //             'currency' => $currency_code ?? 'usd',
-        //             'unit_amount' => $order_amount * 100,
-        //             'product_data' => [
-        //                 'name' => BusinessSetting::where(['key' => 'restaurant_name'])->first()->value,
-        //                 'images' => [asset('storage/app/public/restaurant') . '/' . BusinessSetting::where(['key' => 'logo'])->first()->value],
-        //             ],
-        //         ],
-        //         'quantity' => 1,
-        //     ]],
-        //     'mode' => 'payment',
-        //     'success_url' => route('pay-stripe.success', ['callback' => $callback, 'transaction_reference' => $tran]),
-        //     'cancel_url' => url()->previous(),
-        // ]);
-        $orderAmount = 1000; // in cents
-    $currencyCode = 'usd';
-
-    // Create a Checkout Session
-    $session = Session::create([
-        'payment_method_types' => ['card'],
-        'line_items' => [[
-            'price_data' => [
-                'currency' => $currencyCode,
-                'unit_amount' => $orderAmount,
-                'product_data' => [
-                    'name' => 'Your Product Name',
+        $checkout_session = \Stripe\Checkout\Session::create([
+            'payment_method_types' => ['card'],
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => $currency_code ?? 'usd',
+                    'unit_amount' => $order_amount * 100,
+                    'product_data' => [
+                        'name' => BusinessSetting::where(['key' => 'restaurant_name'])->first()->value,
+                        'images' => [asset('storage/app/public/restaurant') . '/' . BusinessSetting::where(['key' => 'logo'])->first()->value],
+                    ],
                 ],
-            ],
-            'quantity' => 1,
-        ]],
-        'mode' => 'payment',
-        'success_url' => route('pay-stripe.success', ['callback' => $request->callback, 'transaction_reference' => $tran]),
-        'cancel_url' => url()->previous(),
-    ]);
-
-    // Retrieve the URL for the Checkout Session
-    $paymentLinkUrl = $session->url;
-
-    // Redirect the user to the Payment Link URL
-    return redirect()->away($paymentLinkUrl);
+                'quantity' => 1,
+            ]],
+            'mode' => 'payment',
+            'success_url' => route('pay-stripe.success', ['callback' => $callback, 'transaction_reference' => $tran]),
+            'cancel_url' => url()->previous(),
+        ]);
+        return response()->json(['id' => $checkout_session->id]);
     }
 
     public function success(Request $request)
