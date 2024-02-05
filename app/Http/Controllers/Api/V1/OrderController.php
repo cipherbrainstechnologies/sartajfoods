@@ -28,16 +28,8 @@ use App\Model\BusinessSetting;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Carbon;
 use App\Model\OrderHistory;
-use App\CentralLogics\PaypalLogic;
-use App\Http\Controllers\Api\V1\PaypalPaymentController;
+use App\Http\Controllers\PaypalPaymentController;
 
-use PayPal\Api\Payer;
-use PayPal\Api\Item;
-use PayPal\Api\ItemList;
-use PayPal\Api\Amount;
-use PayPal\Api\Transaction;
-use PayPal\Api\RedirectUrls;
-use PayPal\Api\Payment;
 
 class OrderController extends Controller
 {
@@ -73,38 +65,6 @@ class OrderController extends Controller
 
         return response()->json(OrderLogic::track_order($request['order_id'],$request->user()->id), 200);
     }
-
-    protected function payWithPaypal($request)
-    {
-        // Replace with your actual PayPal API credentials and endpoint
-        $paypalEndpoint = 'https://api.paypal.com';
-        $clientId = 'AbqwpMz0y23LtU6DChLadDR905VbjGux2cv52hxDRJ7lw4OsgFO0P_qJvoFXUKIWYTrhByj5CCM9Kjui';
-        $clientSecret = 'EItaaSmeXcd8bvsBJw6aHZaH-igNO2xis5_hEW2LIF6oQoUI5cYTWYztQDGl9zdMQq2dL_R-GWPBAnLS';
-
-        $customerName = $request->user()->name;
-
-        $response = \Illuminate\Support\Facades\Http::withHeaders([
-            'Accept' => 'application/json',
-        ])->post("$paypalEndpoint/v1/oauth2/token", [
-            'grant_type' => 'client_credentials',
-        ], [
-            'auth' => [$clientId, $clientSecret],
-        ]);
-
-        $accessToken = $response->json('access_token');
-
-        // Replace with your actual logic to create a PayPal payment
-        // You should interact with PayPal API to create a payment and handle the response accordingly
-        // This is just a basic example, and you should adapt it based on your specific requirements
-
-        // Simulate a successful payment
-        $transactionId = 'txn_' . time() . '_' . uniqid();
-        return [
-            'status' => 'success',
-            'transaction_id' => $transactionId,
-        ];
-    }
-
     
     /**
      * @param Request $request
@@ -248,7 +208,7 @@ class OrderController extends Controller
         }
 
         if($request->payment_method == "paypal"){
-                
+                $res = $this->paypal->payWithpaypal($request);
         }
 
         if($request->payment_method == "stripe"){
