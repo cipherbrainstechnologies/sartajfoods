@@ -10,8 +10,8 @@
         @foreach($top_sell as $key=>$item)
             @if(isset($item->product))
             <a class="grid--card" href="{{route('admin.product.view',[$item['product_id']])}}">
-                @if (!empty(json_decode($item->product->image,true)))
-                <img src="{{ asset('storage/product').'/'.json_decode($item->product->image)[0]  ?? '' }}"
+                @if (!empty($item->product->image))
+                <img src="{{ $item->product->image[0]  ?? '' }}"
                      onerror="this.src='{{asset('public/assets/admin/img/400x400/img2.jpg')}}'"
                      alt="{{$item->product->name}} image">
                 @endif
