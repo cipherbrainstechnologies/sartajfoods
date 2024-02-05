@@ -31,6 +31,14 @@ use App\Model\OrderHistory;
 use App\CentralLogics\PaypalLogic;
 use App\Http\Controllers\Api\V1\PaypalPaymentController;
 
+use PayPal\Api\Payer;
+use PayPal\Api\Item;
+use PayPal\Api\ItemList;
+use PayPal\Api\Amount;
+use PayPal\Api\Transaction;
+use PayPal\Api\RedirectUrls;
+use PayPal\Api\Payment;
+
 class OrderController extends Controller
 {
     private $paypal;
@@ -116,8 +124,6 @@ class OrderController extends Controller
         if ($validator->fails()) {
             return response()->json(['errors' => Helpers::error_processor($validator)], 403);
         }
-        
-       
 
         if($request->payment_method == 'wallet_payment' && Helpers::get_business_settings('wallet_status', false) != 1)
         {
@@ -240,6 +246,80 @@ class OrderController extends Controller
                 ], 401);
             }
         }
+
+        if($request->payment_method == "paypal"){
+            $payer = new Payer();
+            $payer->setPaymentMethod('paypal');
+    
+            $items_array = [];
+            foreach ($request['cart'] as $c) {
+                // Assuming $c['product'] contains product details
+                $product = $c['product'];
+                $item = new Item();
+                $item->setName($product['name'])
+                    ->setCurrency(Helpers::currency_code())
+                    ->setQuantity($c['quantity'])
+                    ->setPrice($product['actual_price']); // Change this based on your price logic
+                array_push($items_array, $item);
+            }
+    
+            $item_list = new ItemList();
+            $item_list->setItems($items_array);
+    
+            $amount = new Amount();
+            $amount->setCurrency(Helpers::currency_code())
+                ->setTotal($request['order_amount']);
+    
+            $transaction = new Transaction();
+            $transaction->setAmount($amount)
+                ->setItemList($item_list)
+                ->setDescription('Order payment');
+    
+            $redirect_urls = new RedirectUrls();
+            $redirect_urls->setReturnUrl(url('/paypal-status'))
+                ->setCancelUrl(url('/payment-fail'));
+    
+            $payment = new Payment();
+            $payment->setIntent('sale')
+                ->setPayer($payer)
+                ->setRedirectUrls($redirect_urls)
+                ->setTransactions([$transaction]);
+    
+            try {
+                $payment->create($this->_api_context);
+    
+                foreach ($payment->getLinks() as $link) {
+                    if ($link->getRel() == 'approval_url') {
+                        $redirect_url = $link->getHref();
+                        break;
+                    }
+                }
+    
+                // Save payment ID to session
+                Session::put('paypal_payment_id', $payment->getId());
+    
+                if (isset($redirect_url)) {
+                    // Redirect the user to the PayPal login page
+                    return response()->json([
+                        'message' => 'Redirecting to PayPal login page...',
+                        'approval_url' => $redirect_url,
+                    ], 200);
+                }
+            } catch (\Exception $ex) {
+                // Handle payment creation error
+                return response()->json(['errors' => $ex->getMessage()], 500);
+            }
+        }
+    
+
+        if($request->payment_method == "stripe"){
+
+        }
+
+        if($request->payment_method == "razorpay"){
+
+        }
+
         $browserHistory = OrderLogic::browserHistory($request->user()->id,$request->ip_address,$request->forwarded_ip,$request->user_agent,$request->accept_language);
         // try {
             //DB::beginTransaction();
@@ -272,6 +352,9 @@ class OrderController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
+
+           
+
             $o_time = $or['time_slot_id'];
             $o_delivery = $or['delivery_date'];
 
