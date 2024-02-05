@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Carbon;
 use App\Model\OrderHistory;
 use App\Http\Controllers\PaypalPaymentController;
-
+use App\Http\Controllers\StripePaymentController;
 
 class OrderController extends Controller
 {
@@ -44,9 +44,11 @@ class OrderController extends Controller
         private Review $review,
         private User $user,
         private BusinessSetting $business_setting,
-        PaypalPaymentController $paypal
+        PaypalPaymentController $paypal,
+        StripePaymentController $stripe
     ){
         $this->paypal = $paypal;
+        $this->stripe = $stripe;
     }
 
     /**
@@ -208,10 +210,11 @@ class OrderController extends Controller
         }
 
         if($request->payment_method == "paypal"){
-                $res = $this->paypal->payWithpaypal($request);
+            $res = $this->paypal->payWithpaypal($request);
         }
 
         if($request->payment_method == "stripe"){
+            $res = $this->stripe->payment_process_3d($request);
 
         }
 
