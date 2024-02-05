@@ -11,7 +11,8 @@ class StripePaymentController extends Controller
 {
     public function createCheckoutSession(Request $request)
     {
-        Stripe::setApiKey(config('services.stripe.secret'));
+        $config = Helpers::get_business_settings('stripe');
+        Stripe::setApiKey($config['api_key']);
 
         $checkout_session = Session::create([
             'payment_method_types' => ['card'],
