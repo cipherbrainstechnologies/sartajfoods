@@ -44,7 +44,6 @@ class StripePaymentController extends Controller
             'success_url' => route('pay-stripe.success', ['callback' => $callback, 'transaction_reference' => $tran]),
             'cancel_url' => url()->previous(),
         ]);
-        echo $checkout_session->id;die;
         return response()->json(['id' => $checkout_session->id]);
     }
 
