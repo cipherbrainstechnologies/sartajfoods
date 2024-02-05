@@ -25,20 +25,17 @@ class StripePaymentController extends Controller
         $config = Helpers::get_business_settings('stripe');
         
         Stripe::setApiKey($config['api_key']);
-        header('Content-Type: application/json');
-        $currency_code = Helpers::get_business_settings('currency');
-
-        $paymentIntent = PaymentIntent::create([
-            'amount' => 1000, // amount in cents
-            'currency' => 'usd',
+        $invoice = Invoice::create([
+            'customer' => 'customer_id', // replace with your customer ID
+            'collection_method' => 'send_invoice',
+            'days_until_due' => 30,
+            'amount_due' => $order_amount * 100, // amount in cents
+            'currency' => $currency_code ?? 'usd',
         ]);
-
-
-        $paymentLink = \Stripe\PaymentIntent::createPaymentLink(
-            $paymentIntent->id,
-            ['refresh_url' => 'https://example.com/refresh']
-        );
-
+        
+        // Retrieve the hosted invoice URL
+        $invoiceUrl = $invoice->hosted_invoice_url;
+        
         // $stripe->paymentLinks->create([
         //     'line_items' => [
         //         [
@@ -62,7 +59,7 @@ class StripePaymentController extends Controller
             // 'success_url' => route('pay-stripe.success', ['callback' => $callback, 'transaction_reference' => $tran]),
             // 'cancel_url' => url()->previous(),
         // ]);
-        return response()->json(['payment_link' => $paymentLink->url]);
+        return response()->json(['payment_link' => $invoiceUrl]);
     }
 
     public function success(Request $request)
