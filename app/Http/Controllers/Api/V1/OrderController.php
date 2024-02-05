@@ -28,8 +28,8 @@ use App\Model\BusinessSetting;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Carbon;
 use App\Model\OrderHistory;
-use App\Http\Controllers\PaypalPaymentController;
-use App\Http\Controllers\StripePaymentController;
+use App\CentralLogics\PaypalLogic;
+use App\Http\Controllers\Api\V1\PaypalPaymentController;
 
 class OrderController extends Controller
 {
@@ -44,11 +44,9 @@ class OrderController extends Controller
         private Review $review,
         private User $user,
         private BusinessSetting $business_setting,
-        PaypalPaymentController $paypal,
-        StripePaymentController $stripe
+        PaypalPaymentController $paypal
     ){
         $this->paypal = $paypal;
-        $this->stripe = $stripe;
     }
 
     /**
@@ -67,6 +65,7 @@ class OrderController extends Controller
 
         return response()->json(OrderLogic::track_order($request['order_id'],$request->user()->id), 200);
     }
+
     
     /**
      * @param Request $request
@@ -208,20 +207,6 @@ class OrderController extends Controller
                 ], 401);
             }
         }
-
-        if($request->payment_method == "paypal"){
-            $res = $this->paypal->payWithpaypal($request);
-        }
-
-        if($request->payment_method == "stripe"){
-            $res = $this->stripe->payment_process_3d($request);
-
-        }
-
-        if($request->payment_method == "razorpay"){
-
-        }
-
         $browserHistory = OrderLogic::browserHistory($request->user()->id,$request->ip_address,$request->forwarded_ip,$request->user_agent,$request->accept_language);
         // try {
             //DB::beginTransaction();
@@ -236,7 +221,7 @@ class OrderController extends Controller
                 'coupon_discount_amount' => $request->coupon_discount_amount,
                 'coupon_discount_title' => $request->coupon_discount_title == 0 ? null : 'coupon_discount_title',
                 'payment_status' => ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'unpaid':'paid',
-                'order_status' => ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'pending':'confirmed',
+                'order_status' => $orderStatus,//($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'pending':'confirmed',
                 'payment_method' => $request->payment_method,
                 'transaction_reference' => $request->transaction_reference ?? null,
                 'order_note' => !empty($request['order_note']) ? $request['order_note'] : null,
@@ -254,9 +239,6 @@ class OrderController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
-
-           
-
             $o_time = $or['time_slot_id'];
             $o_delivery = $or['delivery_date'];
 
@@ -385,13 +367,17 @@ class OrderController extends Controller
                 }
 
                 //send email
-                $emailServices = Helpers::get_business_settings('mail_config');
+                $emailServices = Helpers::get_business_settings('mail_config') ;
 
                 if (isset($emailServices['status']) && $emailServices['status'] == 1) {
                     Mail::to($request->user()->email)->send(new \App\Mail\OrderPlaced($order_id));
                 }
 
             } catch (\Exception $e) {
+            }
+
+            if($request->payment_method == "paypal"){
+                $res = $this->paypal->payWithpaypal($request);
             }
             
             return response()->json([
