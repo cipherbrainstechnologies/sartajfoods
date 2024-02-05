@@ -46,20 +46,31 @@ class StripePaymentController extends Controller
         //     'cancel_url' => url()->previous(),
         // ]);
         $orderAmount = 1000; // in cents
-        $currencyCode = 'usd';
-    
-        // Create a PaymentIntent to get its ID
-        $paymentIntent = PaymentIntent::create([
-            'amount' => $orderAmount,
-            'currency' => $currencyCode,
-        ]);
-    
-        // Use the PaymentIntent ID to create a Payment Link
-        $paymentLink = PaymentIntent::createPaymentLink($paymentIntent->id);
+    $currencyCode = 'usd';
 
-         // Retrieve the URL for the Payment Link
-        $paymentLinkUrl = $paymentLink->url;
-        return redirect()->away($paymentLinkUrl);
+    // Create a Checkout Session
+    $session = Session::create([
+        'payment_method_types' => ['card'],
+        'line_items' => [[
+            'price_data' => [
+                'currency' => $currencyCode,
+                'unit_amount' => $orderAmount,
+                'product_data' => [
+                    'name' => 'Your Product Name',
+                ],
+            ],
+            'quantity' => 1,
+        ]],
+        'mode' => 'payment',
+        'success_url' => route('pay-stripe.success', ['callback' => $request->callback, 'transaction_reference' => $tran]),
+        'cancel_url' => url()->previous(),
+    ]);
+
+    // Retrieve the URL for the Checkout Session
+    $paymentLinkUrl = $session->url;
+
+    // Redirect the user to the Payment Link URL
+    return redirect()->away($paymentLinkUrl);
     }
 
     public function success(Request $request)
