@@ -68,7 +68,7 @@ class PaypalPaymentController extends Controller
         $order_amount = $request['order_amount'];
         $customerId = !empty($request['customer_id']) ? $request['customer_id'] : auth()->user()->id;
         $customer = User::find($customerId);
-        echo "<pre>";print_r($customer);die;
+        echo "<pre>";print_r($customer['f_name']);die;
         $callback = $request['callback'];
 
         $tr_ref = Str::random(6) . '-' . rand(1, 1000);
