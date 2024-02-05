@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use Stripe\Charge;
 use Stripe\Stripe;
+use Stripe\PaymentIntent;
 
 class StripePaymentController extends Controller
 {
