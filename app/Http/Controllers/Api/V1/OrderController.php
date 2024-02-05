@@ -117,19 +117,7 @@ class OrderController extends Controller
             return response()->json(['errors' => Helpers::error_processor($validator)], 403);
         }
         
-        if ($request->payment_method == 'paypal') {
-            $paypalResponse = $this->payWithPaypal($request);
-
-            // Check the PayPal payment response and set order status accordingly
-            if ($paypalResponse['status'] == 'success') {
-                $orderStatus = 'confirmed'; // Set your order status for successful PayPal payment
-            } else {
-                $orderStatus = 'failed'; // Set your order status for failed PayPal payment
-            }
-        } else {
-            // Set order status for other payment methods
-            $orderStatus = ($request->payment_method == 'cash_on_delivery' || $request->payment_method == 'offline_payment') ? 'pending' : 'confirmed';
-        }
+       
 
         if($request->payment_method == 'wallet_payment' && Helpers::get_business_settings('wallet_status', false) != 1)
         {
@@ -266,7 +254,7 @@ class OrderController extends Controller
                 'coupon_discount_amount' => $request->coupon_discount_amount,
                 'coupon_discount_title' => $request->coupon_discount_title == 0 ? null : 'coupon_discount_title',
                 'payment_status' => ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'unpaid':'paid',
-                'order_status' => $orderStatus,//($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'pending':'confirmed',
+                'order_status' => ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'pending':'confirmed',
                 'payment_method' => $request->payment_method,
                 'transaction_reference' => $request->transaction_reference ?? null,
                 'order_note' => !empty($request['order_note']) ? $request['order_note'] : null,
@@ -284,9 +272,6 @@ class OrderController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
-            if($request->payment_method = 'paypal'){
-                $paypalResponse = $this->payWithpaypal($request);
-            }
             $o_time = $or['time_slot_id'];
             $o_delivery = $or['delivery_date'];
 
