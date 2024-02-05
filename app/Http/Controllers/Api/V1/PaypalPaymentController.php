@@ -31,7 +31,6 @@ class PaypalPaymentController extends Controller
 {
     public function __construct()
     {
-        echo "df";die;
         //configuration initialization
         $mode = env('APP_MODE');
         $paypal = Helpers::get_business_settings('paypal');
