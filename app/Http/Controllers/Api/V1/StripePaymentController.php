@@ -82,6 +82,7 @@ class StripePaymentController extends Controller
                         'quantity' => $detail['quantity'], // Use the quantity from order details
                     ];
                 }
+                echo "<pre>";print_r($line_items);die;
 
                 // Create a Checkout Session
                 $checkout_session = \Stripe\Checkout\Session::create([
