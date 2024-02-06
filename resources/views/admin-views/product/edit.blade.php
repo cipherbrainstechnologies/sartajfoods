@@ -197,6 +197,18 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="input-label"
+                                            for="exampleFormControlSelect1">{{translate('sub_category')}}<span
+                                            class="input-label-secondary"></span></label>
+                                    <select name="sub_sub_category_id" id="sub-sub-categories"
+                                            data-id="{{count($product_category)>2?$product_category[2]['id']:''}}"
+                                            class="form-control js-select2-custom">
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="input-label"
                                             for="exampleFormControlInput1">{{translate('unit')}}</label>
                                     <select name="unit" class="form-control js-select2-custom">
                                         <option value="kg" {{$product['unit']=='kg'?'selected':''}}>{{translate('kg')}}</option>
@@ -926,7 +938,7 @@
                 contentType: false,
                 processData: false,
                 success: function (data) {
-
+   
                     if (data.errors) {
                         for (var i = 0; i < data.errors.length; i++) {
                             toastr.error(data.errors[i].message, {

@@ -55,7 +55,7 @@ class StripePaymentController extends Controller
 {
     try {
         $config = Helpers::get_business_settings('stripe');
-    
+        echo $config['api_key'];die;
         Stripe::setApiKey($config['api_key']);
 
         $session = Http::post('https://api.stripe.com/v1/checkout/sessions', [
