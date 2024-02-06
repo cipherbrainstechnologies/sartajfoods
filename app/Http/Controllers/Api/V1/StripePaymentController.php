@@ -51,7 +51,7 @@ class StripePaymentController extends Controller
     //     }
     // }
 
-    public function createPaymentLink(Request $request)
+    public function createPaymentLink(Request $request,$order_id)
 {
     try {
         $tran = Str::random(6) . '-' . rand(1, 1000);
@@ -62,13 +62,17 @@ class StripePaymentController extends Controller
         Stripe::setApiKey($config['api_key']);
         header('Content-Type: application/json');
         $currency_code = Helpers::get_business_settings('currency');
+        $products = [];
+        $orders = Order::with('details')->where('id',$order_id)->first();
+        echo "<pre>";print_r($orders->toArray());die;
+
 
         $checkout_session = \Stripe\Checkout\Session::create([
             'payment_method_types' => ['card'],
             'line_items' => [[
                 'price_data' => [
                     'currency' => $currency_code ?? 'usd',
-                    'unit_amount' => $order_amount * 100,
+                    'unit_amount' => $order_amount,
                     'product_data' => [
                         'name' => BusinessSetting::where(['key' => 'restaurant_name'])->first()->value,
                         'images' => [asset('storage/app/public/restaurant') . '/' . BusinessSetting::where(['key' => 'logo'])->first()->value],
