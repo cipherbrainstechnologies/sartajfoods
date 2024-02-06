@@ -31,7 +31,7 @@ class StripePaymentController extends Controller
         //     'refresh_url' => 'https://sartaj.vercel.app/', // Set your refresh URL
         // ]);
 
-        return response()->json(['payment_link' => $paymentLink->url]);
+        return response()->json(['payment_link' => $paymentIntent->url]);
     }
 
     public function payment_process_3d(Request $request)
