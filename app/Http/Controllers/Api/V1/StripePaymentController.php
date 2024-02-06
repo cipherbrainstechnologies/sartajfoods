@@ -21,8 +21,11 @@ class StripePaymentController extends Controller
     public function createPaymentLink(Request $request)
     {
         try {
-            // Set your Stripe API key
-            Stripe::setApiKey(config('services.stripe.secret'));
+            $config = Helpers::get_business_settings('stripe');
+        
+            Stripe::setApiKey($config['api_key']);
+
+            // Stripe::setApiKey(config('services.stripe.secret'));
 
             // Create a Payment Link
             $paymentLink = \Stripe\PaymentLink::create([
