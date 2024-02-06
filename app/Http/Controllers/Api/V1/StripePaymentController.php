@@ -83,8 +83,6 @@ class StripePaymentController extends Controller
                 ];
             }
 
-            echo "<pre>";print_r($line_items);die;
-
             // Create a Checkout Session
             $checkout_session = \Stripe\Checkout\Session::create([
                 'payment_method_types' => ['card'],
