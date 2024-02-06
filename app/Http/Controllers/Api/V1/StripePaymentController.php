@@ -63,6 +63,7 @@ class StripePaymentController extends Controller
         header('Content-Type: application/json');
         $currency_code = Helpers::get_business_settings('currency');
         $products = [];
+        $orders = Order::with('details')->where('id', $order_id)->first();
         if (!empty($orders)) {
             $line_items = [];
 
