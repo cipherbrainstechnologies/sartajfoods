@@ -233,6 +233,11 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
     Route::get('category_seo/{seo}', 'ProductController@get_seo_category')->where('seo', '.*');
     Route::post('seo_type_check', 'ManufacturerController@seo_type_test')->where('seo', '.*');
     Route::get('hot-deals', 'HotDealsController@getHotDeals');
+
+    // routes/api.php
+
+    Route::post('/inquiry', 'InquiryController@store')->name('inquiry');
+
     
 
     Route::get('/payment-mobile', 'PaymentController@payment')->name('payment-mobile');
