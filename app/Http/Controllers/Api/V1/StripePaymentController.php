@@ -19,7 +19,37 @@ use Stripe\Stripe;
 
 class StripePaymentController extends Controller
 {
+    // public function createPaymentLink(Request $request)
+    // {
+    //     try {
+    //         $config = Helpers::get_business_settings('stripe');
+        
+    //         Stripe::setApiKey($config['api_key']);
+
+    //         $session = Http::post('https://api.stripe.com/v1/checkout/sessions', [
+    //             'payment_method_types' => ['card'],
+    //             'line_items' => [[
+    //                 'price_data' => [
+    //                     'currency' => 'usd',
+    //                     'product_data' => [
+    //                         'name' => 'Your Product Name',
+    //                     ],
+    //                     'unit_amount' => 1000, // amount in cents
+    //                 ],
+    //                 'quantity' => 1,
+    //             ]],
+    //             'mode' => 'payment',
+    //             'success_url' => 'https://example.com/success', // Set your success URL
+    //             'cancel_url' => 'https://example.com/cancel', // Set your cancel URL
+    //         ])->json();
     
+    //         // Return the payment link URL
+    //         return response()->json(['payment_link' => $session['url'] ?? $session['checkout_url'] ?? null]);
+    //     } catch (ApiErrorException $e) {
+    //         // Handle error
+    //         return response()->json(['error' => $e->getMessage()], 500);
+    //     }
+    // }
 
     public function createPaymentLink(Request $request,$order_id)
     {
@@ -58,8 +88,7 @@ class StripePaymentController extends Controller
                     'payment_method_types' => ['card'],
                     'line_items' => $line_items,
                     'mode' => 'payment',
-                    // 'success_url' => route('pay-stripe.success', ['callback' => $callback, 'transaction_reference' => $tran]),
-                    'success_url' => url('api/v1/pay-stripe/success?callback=' . $callback . '&transaction_reference=' . $tran),
+                    'success_url' => route('pay-stripe.success', ['callback' => $callback, 'transaction_reference' => $tran]),
                     'cancel_url' => url()->previous(),
                 ]);
 
