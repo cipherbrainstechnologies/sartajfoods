@@ -72,7 +72,7 @@ class StripePaymentController extends Controller
 
                     $line_items[] = [
                         'price_data' => [
-                            'currency' => 'usd', // Adjust currency as needed
+                            'currency' => 'jpy', // Adjust currency as needed
                             'unit_amount' => $product['actual_price'], // Convert price to cents
                             'product_data' => [
                                 'name' => $product['translations'][0]['value'], // Use the product name
