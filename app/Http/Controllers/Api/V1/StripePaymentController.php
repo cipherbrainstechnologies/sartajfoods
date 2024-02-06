@@ -16,6 +16,22 @@ use Stripe\Stripe;
 
 class StripePaymentController extends Controller
 {
+    public function createPaymentLink(Request $request){
+        $config = Helpers::get_business_settings('stripe');
+        Stripe::setApiKey($config['api_key']);
+
+        $paymentIntent = PaymentIntent::create([
+            'amount' => 1000,
+            'currency' => 'usd',
+        ]);
+
+        $paymentLink = PaymentIntent::createPaymentLink($paymentIntent->id, [
+            'refresh_url' => 'https://sartaj.vercel.app/', // Set your refresh URL
+        ]);
+
+        return response()->json(['payment_link' => $paymentLink->url]);
+    }
+
     public function payment_process_3d(Request $request)
     {
         $tran = Str::random(6) . '-' . rand(1, 1000);
