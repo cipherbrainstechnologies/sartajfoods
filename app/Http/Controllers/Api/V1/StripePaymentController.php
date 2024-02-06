@@ -25,17 +25,25 @@ class StripePaymentController extends Controller
         
             Stripe::setApiKey($config['api_key']);
 
-            // Stripe::setApiKey(config('services.stripe.secret'));
-
-            // Create a Payment Link
-            $paymentLink = \Stripe\PaymentLink::create([
-                'amount' => 1000, // amount in cents
-                'currency' => 'usd',
-                'refresh_url' => 'https://example.com/refresh', // Set your refresh URL
-            ]);
-
+            $session = Http::post('https://api.stripe.com/v1/checkout/sessions', [
+                'payment_method_types' => ['card'],
+                'line_items' => [[
+                    'price_data' => [
+                        'currency' => 'usd',
+                        'product_data' => [
+                            'name' => 'Your Product Name',
+                        ],
+                        'unit_amount' => 1000, // amount in cents
+                    ],
+                    'quantity' => 1,
+                ]],
+                'mode' => 'payment',
+                'success_url' => 'https://example.com/success', // Set your success URL
+                'cancel_url' => 'https://example.com/cancel', // Set your cancel URL
+            ])->json();
+    
             // Return the payment link URL
-            return response()->json(['payment_link' => $paymentLink->url]);
+            return response()->json(['payment_link' => $session['url']]);
         } catch (ApiErrorException $e) {
             // Handle error
             return response()->json(['error' => $e->getMessage()], 500);
