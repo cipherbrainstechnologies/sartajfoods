@@ -80,8 +80,7 @@ class StripePaymentController extends Controller
             'success_url' => route('pay-stripe.success', ['callback' => $callback, 'transaction_reference' => $tran]),
             'cancel_url' => url()->previous(),
         ]);
-        echo "<pre>";print_r($checkout_session);die;
-        return response()->json(['id' => $checkout_session->id]);
+        return response()->json(['payment_link' => $checkout_session->url]);
     } catch (ApiErrorException $e) {
         // Log the error for debugging
         \Log::error('Stripe API Error: ' . $e->getMessage());
