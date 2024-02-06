@@ -697,12 +697,12 @@ class BusinessSettingsController extends Controller
             $this->business_settings->insert($data);
         }
         $japaneseAboutUs = $this->business_settings->where(['key' => 'japanese_about_us'])->first();
-        if (!$data) {
-            $japaneseAboutUs = [
+        if (!$japaneseAboutUs) {
+            $data1 = [
                 'key' => 'japanese_about_us',
                 'value' => '',
             ];
-            $this->business_settings->insert($japaneseAboutUs);
+            $this->business_settings->insert($data1);
         }
         return view('admin-views.business-settings.about-us', compact('data','japaneseAboutUs'));
     }
