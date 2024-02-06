@@ -63,28 +63,57 @@ class StripePaymentController extends Controller
         header('Content-Type: application/json');
         $currency_code = Helpers::get_business_settings('currency');
         $products = [];
-        $orders = Order::with('details')->where('id',$order_id)->first();
-        echo "<pre>";print_r($orders->toArray());die;
+        if (!empty($orders)) {
+            $line_items = [];
 
+            foreach ($orders['details'] as $key => $detail) {
+                $product = json_decode($detail['product_details'], true);
 
-        $checkout_session = \Stripe\Checkout\Session::create([
-            'payment_method_types' => ['card'],
-            'line_items' => [[
-                'price_data' => [
-                    'currency' => $currency_code ?? 'usd',
-                    'unit_amount' => $order_amount,
-                    'product_data' => [
-                        'name' => BusinessSetting::where(['key' => 'restaurant_name'])->first()->value,
-                        'images' => [asset('storage/app/public/restaurant') . '/' . BusinessSetting::where(['key' => 'logo'])->first()->value],
+                $line_items[] = [
+                    'price_data' => [
+                        'currency' => 'usd', // Adjust currency as needed
+                        'unit_amount' => $product['actual_price'] * 100, // Convert price to cents
+                        'product_data' => [
+                            'name' => $product['translations'][0]['value'], // Use the product name
+                            'images' => [$product['image'][0]], // Use the product image
+                        ],
                     ],
-                ],
-                'quantity' => 1,
-            ]],
-            'mode' => 'payment',
-            'success_url' => route('pay-stripe.success', ['callback' => $callback, 'transaction_reference' => $tran]),
-            'cancel_url' => url()->previous(),
-        ]);
-        return response()->json(['payment_link' => $checkout_session->url]);
+                    'quantity' => $detail['quantity'], // Use the quantity from order details
+                ];
+            }
+
+            // Create a Checkout Session
+            $checkout_session = \Stripe\Checkout\Session::create([
+                'payment_method_types' => ['card'],
+                'line_items' => $line_items,
+                'mode' => 'payment',
+                'success_url' => route('pay-stripe.success', ['callback' => $callback, 'transaction_reference' => $tran]),
+                'cancel_url' => url()->previous(),
+            ]);
+
+            // Return the payment link
+            return response()->json(['payment_link' => $checkout_session->url]);
+        }else{
+            return response()->json(['error' => 'Order details not found'], 404);
+        }
+        // $checkout_session = \Stripe\Checkout\Session::create([
+        //     'payment_method_types' => ['card'],
+        //     'line_items' => [[
+        //         'price_data' => [
+        //             'currency' => $currency_code ?? 'usd',
+        //             'unit_amount' => $order_amount,
+        //             'product_data' => [
+        //                 'name' => BusinessSetting::where(['key' => 'restaurant_name'])->first()->value,
+        //                 'images' => [asset('storage/app/public/restaurant') . '/' . BusinessSetting::where(['key' => 'logo'])->first()->value],
+        //             ],
+        //         ],
+        //         'quantity' => 1,
+        //     ]],
+        //     'mode' => 'payment',
+        //     'success_url' => route('pay-stripe.success', ['callback' => $callback, 'transaction_reference' => $tran]),
+        //     'cancel_url' => url()->previous(),
+        // ]);
+        // return response()->json(['payment_link' => $checkout_session->url]);
     } catch (ApiErrorException $e) {
         // Log the error for debugging
         \Log::error('Stripe API Error: ' . $e->getMessage());
