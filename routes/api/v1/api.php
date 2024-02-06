@@ -236,7 +236,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
 
     // routes/api.php
 
-    Route::post('/inquiry', 'InquiryController@store')->name('inquiry');
+    Route::post('inquiry', 'InquiryController@store')->name('inquiry');
 
     
 
