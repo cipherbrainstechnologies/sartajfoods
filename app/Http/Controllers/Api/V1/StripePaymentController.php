@@ -74,7 +74,7 @@ class StripePaymentController extends Controller
             'success_url' => 'https://example.com/success', // Set your success URL
             'cancel_url' => 'https://example.com/cancel', // Set your cancel URL
         ]);
-
+        echo '<pre>';print_r($session);die;
         // Log the response for debugging
         \Log::info('Stripe API Response: ' . $session->getBody());
 
