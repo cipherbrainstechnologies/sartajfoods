@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\InquiryMail;
-use App\Models\Inquiry; 
+use App\Model\Inquiry; 
 
 class InquiryController extends Controller
 {
@@ -26,7 +26,7 @@ class InquiryController extends Controller
         Inquiry::create($request->all());
 
         // Send an email
-        Mail::to('your@email.com')->send(new InquiryMail($request->all()));
+        Mail::to('mukesh.developer01@gmail.com')->send(new InquiryMail($request->all()));
 
         return response()->json(['message' => 'Inquiry sent successfully']);
     }
