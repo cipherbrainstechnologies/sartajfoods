@@ -73,7 +73,7 @@ class StripePaymentController extends Controller
                 $line_items[] = [
                     'price_data' => [
                         'currency' => 'usd', // Adjust currency as needed
-                        'unit_amount' => $product['actual_price'] * 100, // Convert price to cents
+                        'unit_amount' => $product['actual_price'], // Convert price to cents
                         'product_data' => [
                             'name' => $product['translations'][0]['value'], // Use the product name
                             'images' => [$product['image'][0]], // Use the product image
@@ -82,6 +82,8 @@ class StripePaymentController extends Controller
                     'quantity' => $detail['quantity'], // Use the quantity from order details
                 ];
             }
+
+            echo "<pre>";print_r($line_items);die;
 
             // Create a Checkout Session
             $checkout_session = \Stripe\Checkout\Session::create([
