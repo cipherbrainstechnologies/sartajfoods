@@ -44,7 +44,7 @@ class StripePaymentController extends Controller
             ])->json();
     
             // Return the payment link URL
-            return response()->json(['payment_link' => $session['url'] ?? $session['checkout_url']]);
+            return response()->json(['payment_link' => $session['url'] ?? $session['checkout_url'] ?? null]);
         } catch (ApiErrorException $e) {
             // Handle error
             return response()->json(['error' => $e->getMessage()], 500);

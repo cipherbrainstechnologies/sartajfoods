@@ -10,7 +10,6 @@ use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
-use Stripe\PaymentIntent;
 use Stripe\Charge;
 use Stripe\Stripe;
 
