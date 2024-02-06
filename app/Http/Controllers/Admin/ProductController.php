@@ -431,8 +431,8 @@ class ProductController extends Controller
                     'translationable_type' => 'App\Model\Product',
                     'translationable_id' => $p->id,
                     'locale' => $key,
-                    'key' => 'product_tag',
-                    'value' => $request->product_tag[$index],
+                    'key' => 'product_tags',
+                    'value' => $request->product_tags[$index],
                 );
                 
             // }
@@ -780,9 +780,9 @@ class ProductController extends Controller
                     ['translationable_type'  => 'App\Model\Product',
                         'translationable_id'    => $p->id,
                         'locale'                => $key,
-                        'key'                   => 'product_tag'
+                        'key'                   => 'product_tags'
                     ],
-                    ['value'                 => $request->product_tag[$index]]
+                    ['value'                 => $request->product_tags[$index]]
                 );
             // if ( $key != 'en') {
                 
