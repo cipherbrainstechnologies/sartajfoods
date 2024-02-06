@@ -22,16 +22,20 @@ class StripePaymentController extends Controller
         $config = Helpers::get_business_settings('stripe');
         Stripe::setApiKey($config['api_key']);
 
-        $paymentIntent = PaymentIntent::create([
-            'amount' => 1000,
-            'currency' => 'usd',
-        ]);
+        $payment_link = $stripe->paymentLinks->create([
+            'line_items' => [
+              [
+                'price' => 'price_1HKiSf2eZvKYlo2CxjF9qwbr',
+                'quantity' => 1,
+              ],
+            ],
+          ]);
 
         // $paymentLink = PaymentIntent::createPaymentLink($paymentIntent->id, [
         //     'refresh_url' => 'https://sartaj.vercel.app/', // Set your refresh URL
         // ]);
 
-        return response()->json(['payment_link' => $paymentIntent->url]);
+        return response()->json(['payment_link' => $payment_link]);
     }
 
     public function payment_process_3d(Request $request)
