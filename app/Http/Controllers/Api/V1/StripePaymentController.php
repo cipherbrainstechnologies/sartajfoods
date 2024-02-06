@@ -18,24 +18,25 @@ use Stripe\Stripe;
 
 class StripePaymentController extends Controller
 {
-    public function createPaymentLink(Request $request){
-        $config = Helpers::get_business_settings('stripe');
-        Stripe::setApiKey($config['api_key']);
+    public function createPaymentLink(Request $request)
+    {
+        try {
+            // Set your Stripe API key
+            Stripe::setApiKey(config('services.stripe.secret'));
 
-        $payment_link = $stripe->paymentLinks->create([
-            'line_items' => [
-              [
-                'price' => 'price_1HKiSf2eZvKYlo2CxjF9qwbr',
-                'quantity' => 1,
-              ],
-            ],
-          ]);
+            // Create a Payment Link
+            $paymentLink = \Stripe\PaymentLink::create([
+                'amount' => 1000, // amount in cents
+                'currency' => 'usd',
+                'refresh_url' => 'https://example.com/refresh', // Set your refresh URL
+            ]);
 
-        // $paymentLink = PaymentIntent::createPaymentLink($paymentIntent->id, [
-        //     'refresh_url' => 'https://sartaj.vercel.app/', // Set your refresh URL
-        // ]);
-
-        return response()->json(['payment_link' => $payment_link]);
+            // Return the payment link URL
+            return response()->json(['payment_link' => $paymentLink->url]);
+        } catch (ApiErrorException $e) {
+            // Handle error
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function payment_process_3d(Request $request)
