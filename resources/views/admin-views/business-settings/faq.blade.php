@@ -17,8 +17,13 @@
             <div class="col-sm-12 col-lg-12 mb-3 mb-lg-2">
                 <form action="{{route('admin.business-settings.page-setup.faq')}}" method="post" id="tnc-form">
                     @csrf
+                    <label class="input-label" for="privacy_policy">{{translate('English')}}</label>
                     <div class="form-group">
                         <textarea class="ckeditor form-control" name="faq">{!! $data['value'] !!}</textarea>
+                    </div>
+                    <label class="input-label" for="privacy_policy">{{translate('Japanese')}}</label>
+                    <div class="form-group">
+                        <textarea class="ckeditor form-control" name="japanese_faq">{!! $JapaneseFaq['value'] !!}</textarea>
                     </div>
                     <div class="btn--container justify-content-end">
                         <button type="reset" class="btn btn--reset" id="reset">{{translate('reset')}}</button>

@@ -629,13 +629,23 @@ class BusinessSettingsController extends Controller
                 'value' => '',
             ]);
         }
-        return view('admin-views.business-settings.terms-and-conditions', compact('tnc'));
+        $JapaneseTnc = $this->business_settings->where(['key' => 'japanese_terms_and_conditions'])->first();
+        if (!$JapaneseTnc) {
+            $this->business_settings->insert([
+                'key'   => 'japanese_terms_and_conditions',
+                'value' => '',
+            ]);
+        }
+        return view('admin-views.business-settings.terms-and-conditions', compact('tnc','JapaneseTnc'));
     }
 
     public function terms_and_conditions_update(Request $request): \Illuminate\Http\RedirectResponse
     {
         $this->business_settings->where(['key' => 'terms_and_conditions'])->update([
             'value' => $request->tnc,
+        ]);
+        $this->business_settings->where(['key' => 'japanese_terms_and_conditions'])->update([
+            'value' => $request->japanese_terms_and_conditions,
         ]);
         Toastr::success(translate('Terms and Conditions updated!'));
         return back();
@@ -651,13 +661,25 @@ class BusinessSettingsController extends Controller
             ];
             $this->business_settings->insert($data);
         }
-        return view('admin-views.business-settings.privacy-policy', compact('data'));
+        $JapanesePrivacyPolicy = $this->business_settings->where(['key' => 'japanese_privacy_policy'])->first();
+        if (!$JapanesePrivacyPolicy) {
+            $data1 = [
+                'key' => 'japanese_privacy_policy',
+                'value' => '',
+            ];
+            $this->business_settings->insert($data1);
+        }
+        return view('admin-views.business-settings.privacy-policy', compact('data','JapanesePrivacyPolicy'));
     }
 
     public function privacy_policy_update(Request $request): \Illuminate\Http\RedirectResponse
     {
         $this->business_settings->where(['key' => 'privacy_policy'])->update([
             'value' => $request->privacy_policy,
+        ]);
+
+        $this->business_settings->where(['key' => 'japanese_privacy_policy'])->update([
+            'value' => $request->japanese_privacy_policy,
         ]);
 
         Toastr::success(translate('Privacy policy updated!'));
@@ -674,13 +696,25 @@ class BusinessSettingsController extends Controller
             ];
             $this->business_settings->insert($data);
         }
-        return view('admin-views.business-settings.about-us', compact('data'));
+        $japaneseAboutUs = $this->business_settings->where(['key' => 'japanese_about_us'])->first();
+        if (!$data) {
+            $japaneseAboutUs = [
+                'key' => 'japanese_about_us',
+                'value' => '',
+            ];
+            $this->business_settings->insert($japaneseAboutUs);
+        }
+        return view('admin-views.business-settings.about-us', compact('data','japaneseAboutUs'));
     }
 
     public function about_us_update(Request $request): \Illuminate\Http\RedirectResponse
     {
         $this->business_settings->where(['key' => 'about_us'])->update([
             'value' => $request->about_us,
+        ]);
+
+        $this->business_settings->where(['key' => 'japanese_about_us'])->update([
+            'value' => $request->japanese_about_us,
         ]);
 
         Toastr::success(translate('About us updated!'));
@@ -697,13 +731,24 @@ class BusinessSettingsController extends Controller
             ];
             $this->business_settings->insert($data);
         }
-        return view('admin-views.business-settings.faq', compact('data'));
+        $JapaneseFaq = $this->business_settings->where(['key' => 'japanese_faq'])->first();
+        if (!$JapaneseFaq) {
+            $data1 = [
+                'key' => 'japanese_faq',
+                'value' => '',
+            ];
+            $this->business_settings->insert($data1);
+        }
+        return view('admin-views.business-settings.faq', compact('data','JapaneseFaq'));
     }
 
     public function faq_update(Request $request): \Illuminate\Http\RedirectResponse
     {
         $this->business_settings->where(['key' => 'faq'])->update([
             'value' => $request->faq,
+        ]);
+        $this->business_settings->where(['key' => 'japanese_faq'])->update([
+            'value' => $request->japanese_faq,
         ]);
 
         Toastr::success(translate('FAQ updated!'));
@@ -720,13 +765,25 @@ class BusinessSettingsController extends Controller
             ];
             $this->business_settings->insert($data);
         }
-        return view('admin-views.business-settings.delivery-information', compact('data'));
+        $JapaneseDeliveryInformation = $this->business_settings->where(['key' => 'japanese_delivery_information'])->first();
+        if (!$JapaneseDeliveryInformation) {
+            $data1 = [
+                'key' => 'japanese_delivery_information',
+                'value' => '',
+            ];
+            $this->business_settings->insert($data1);
+        }
+        return view('admin-views.business-settings.delivery-information', compact('data','JapaneseDeliveryInformation'));
     }
 
     public function delivery_information_update(Request $request): \Illuminate\Http\RedirectResponse
     {
         $this->business_settings->where(['key' => 'delivery_information'])->update([
             'value' => $request->delivery_information,
+        ]);
+
+        $this->business_settings->where(['key' => 'japanese_delivery_information'])->update([
+            'value' => $request->japanese_delivery_information,
         ]);
 
         Toastr::success(translate('Delivery information us updated!'));
@@ -751,13 +808,32 @@ class BusinessSettingsController extends Controller
             ];
             $this->business_settings->insert($status);
         }
-        return view('admin-views.business-settings.cancellation-policy', compact('data', 'status'));
+        $JapaneseCancellation = $this->business_settings->where(['key' => 'japanese_cancellation_policy'])->first();
+        if(!$JapaneseCancellation){
+            $data1 = [
+                'key' => 'japanese_cancellation_policy',
+                'value' => '',
+            ];
+            $this->business_settings->insert($data1);
+        }
+        if (!$status) {
+            $status = [
+                'key' => 'japanese_cancellation_policy',
+                'value' => 0,
+            ];
+            $this->business_settings->insert($status);
+        }
+        return view('admin-views.business-settings.cancellation-policy', compact('data', 'status','JapaneseCancellation'));
     }
 
     public function cancellation_policy_update(Request $request): \Illuminate\Http\RedirectResponse
     {
         $this->business_settings->where(['key' => 'cancellation_policy'])->update([
             'value' => $request->cancellation_policy,
+        ]);
+
+        $this->business_settings->where(['key' => 'japanese_cancellation_policy'])->update([
+            'value' => $request->japanese_cancellation_policy,
         ]);
 
         Toastr::success(translate('Cancellation Policy updated!'));
@@ -791,13 +867,33 @@ class BusinessSettingsController extends Controller
             ];
             $this->business_settings->insert($status);
         }
-        return view('admin-views.business-settings.refund-policy', compact('data', 'status'));
+        $japaneseRefundPolicy = $this->business_settings->where(['key' => 'japanese_refund_policy'])->first();
+        if(!$japaneseRefundPolicy){
+            $data1 = [
+                'key' => 'japanese_refund_policy',
+                'value' => '',
+            ];
+            $this->business_settings->insert($data1);
+        }
+        if (!$status) {
+            $status = [
+                'key' => 'japanese_refund_policy_status',
+                'value' => 0,
+            ];
+            $this->business_settings->insert($status);
+        }
+
+        return view('admin-views.business-settings.refund-policy', compact('data', 'status','japaneseRefundPolicy'));
     }
 
     public function refund_policy_update(Request $request): \Illuminate\Http\RedirectResponse
     {
         $this->business_settings->where(['key' => 'refund_policy'])->update([
             'value' => $request->refund_policy,
+        ]);
+
+        $this->business_settings->where(['key' => 'japanese_refund_policy'])->update([
+            'value' => $request->japanese_refund_policy,
         ]);
 
         Toastr::success(translate('Refund Policy updated!'));
@@ -832,7 +928,23 @@ class BusinessSettingsController extends Controller
             ];
             $this->business_settings->insert($status);
         }
-        return view('admin-views.business-settings.return-policy', compact('data', 'status'));
+        $JapaneseReturnPolicy = $this->business_settings->where(['key' => 'japanese_return_policy'])->first();
+        if (!$JapaneseReturnPolicy) {
+            $data1 = [
+                'key' => 'japanese_return_policy',
+                'value' => '',
+            ];
+            $this->business_settings->insert($data1);
+        }
+
+        if (!$status) {
+            $status = [
+                'key' => 'japanese_return_policy_status',
+                'value' => 0,
+            ];
+            $this->business_settings->insert($status);
+        }
+        return view('admin-views.business-settings.return-policy', compact('data', 'status','JapaneseReturnPolicy'));
     }
 
     public function return_policy_update(Request $request): \Illuminate\Http\RedirectResponse
@@ -840,7 +952,9 @@ class BusinessSettingsController extends Controller
         $this->business_settings->where(['key' => 'return_policy'])->update([
             'value' => $request->return_policy,
         ]);
-
+        $this->business_settings->where(['key' => 'japanese_return_policy'])->update([
+            'value' => $request->japanese_return_policy,
+        ]);
         Toastr::success(translate('Return Policy updated!'));
         return back();
     }

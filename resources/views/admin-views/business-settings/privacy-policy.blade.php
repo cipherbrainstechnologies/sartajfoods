@@ -17,8 +17,14 @@
             <div class="col-sm-12 col-lg-12 mb-3 mb-lg-2">
                 <form action="{{route('admin.business-settings.page-setup.privacy-policy')}}" method="post" id="tnc-form">
                     @csrf
+                    <label class="input-label" for="privacy_policy">{{translate('English')}}</label>
                     <div class="form-group">
                         <textarea class="ckeditor form-control" name="privacy_policy">{!! $data['value'] !!}</textarea>
+                    </div>
+
+                    <label class="input-label" for="japanese_privacy_policy">{{translate('Japanese')}}</label>
+                    <div class="form-group">
+                        <textarea class="ckeditor form-control" name="japanese_privacy_policy">{!! $JapanesePrivacyPolicy['value'] !!}</textarea>
                     </div>
 
 

@@ -35,8 +35,13 @@
             <div class="col-sm-12 col-lg-12 mb-3 mb-lg-2">
                 <form action="{{route('admin.business-settings.page-setup.cancellation-policy')}}" method="post" id="tnc-form">
                     @csrf
+                    <label class="input-label" for="cancellation_policy">{{translate('English')}}</label>
                     <div class="form-group">
                         <textarea class="ckeditor form-control" name="cancellation_policy">{!! $data['value'] !!}</textarea>
+                    </div>
+                    <label class="input-label" for="japanese_cancellation_policy">{{translate('Japanese')}}</label>
+                    <div class="form-group">
+                        <textarea class="ckeditor form-control" name="japanese_cancellation_policy">{!! $JapaneseCancellation['value'] !!}</textarea>
                     </div>
 
                     <div class="btn--container justify-content-end">

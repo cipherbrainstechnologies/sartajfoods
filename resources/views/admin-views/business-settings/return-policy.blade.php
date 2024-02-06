@@ -35,8 +35,13 @@
             <div class="col-sm-12 col-lg-12 mb-3 mb-lg-2">
                 <form action="{{route('admin.business-settings.page-setup.return-policy')}}" method="post" id="tnc-form">
                     @csrf
+                    <label class="input-label" for="return_policy">{{translate('English')}}</label>
                     <div class="form-group">
                         <textarea class="ckeditor form-control" name="return_policy">{!! $data['value'] !!}</textarea>
+                    </div>
+                    <label class="input-label" for="japanese_return_policy">{{translate('Japanese')}}</label>    
+                    <div class="form-group">
+                        <textarea class="ckeditor form-control" name="japanese_return_policy">{!! $JapaneseReturnPolicy['value'] !!}</textarea>
                     </div>
 
 
