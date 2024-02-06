@@ -55,7 +55,6 @@ class StripePaymentController extends Controller
 {
     try {
         $config = Helpers::get_business_settings('stripe');
-        echo $config['api_key'];die;
         Stripe::setApiKey($config['api_key']);
 
         $session = Http::post('https://api.stripe.com/v1/checkout/sessions', [
@@ -74,6 +73,7 @@ class StripePaymentController extends Controller
             'success_url' => 'https://example.com/success', // Set your success URL
             'cancel_url' => 'https://example.com/cancel', // Set your cancel URL
         ]);
+        echo "<pre>";print_r($session->getBody());die;
         // Log the response for debugging
         \Log::info('Stripe API Response: ' . $session->getBody());
 
