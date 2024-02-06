@@ -44,7 +44,7 @@ class StripePaymentController extends Controller
             ])->json();
     
             // Return the payment link URL
-            return response()->json(['payment_link' => $session['url']]);
+            return response()->json(['payment_link' => $session['url'] ?? $session['checkout_url']]);
         } catch (ApiErrorException $e) {
             // Handle error
             return response()->json(['error' => $e->getMessage()], 500);
@@ -79,7 +79,7 @@ class StripePaymentController extends Controller
             'success_url' => route('pay-stripe.success', ['callback' => $callback, 'transaction_reference' => $tran]),
             'cancel_url' => url()->previous(),
         ]);
-        return response()->json(['payment_link' => $session['url'] ?? $session['checkout_url']]);
+        return response()->json(['id' => $checkout_session->id]);
     }
 
     public function success(Request $request)
