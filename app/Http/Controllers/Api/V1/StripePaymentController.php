@@ -27,9 +27,9 @@ class StripePaymentController extends Controller
             'currency' => 'usd',
         ]);
 
-        $paymentLink = PaymentIntent::createPaymentLink($paymentIntent->id, [
-            'refresh_url' => 'https://sartaj.vercel.app/', // Set your refresh URL
-        ]);
+        // $paymentLink = PaymentIntent::createPaymentLink($paymentIntent->id, [
+        //     'refresh_url' => 'https://sartaj.vercel.app/', // Set your refresh URL
+        // ]);
 
         return response()->json(['payment_link' => $paymentLink->url]);
     }
