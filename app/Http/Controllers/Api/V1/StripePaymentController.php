@@ -54,34 +54,33 @@ class StripePaymentController extends Controller
     public function createPaymentLink(Request $request)
 {
     try {
+        $tran = Str::random(6) . '-' . rand(1, 1000);
+        $order_amount = $request['order_amount'];
+        $callback = $request['callback'];
         $config = Helpers::get_business_settings('stripe');
+        
         Stripe::setApiKey($config['api_key']);
+        header('Content-Type: application/json');
+        $currency_code = Helpers::get_business_settings('currency');
 
-        $session = Http::post('https://api.stripe.com/v1/checkout/sessions', [
+        $checkout_session = \Stripe\Checkout\Session::create([
             'payment_method_types' => ['card'],
             'line_items' => [[
                 'price_data' => [
-                    'currency' => 'usd',
+                    'currency' => $currency_code ?? 'usd',
+                    'unit_amount' => $order_amount * 100,
                     'product_data' => [
-                        'name' => 'Your Product Name',
+                        'name' => BusinessSetting::where(['key' => 'restaurant_name'])->first()->value,
+                        'images' => [asset('storage/app/public/restaurant') . '/' . BusinessSetting::where(['key' => 'logo'])->first()->value],
                     ],
-                    'unit_amount' => 1000, // amount in cents
                 ],
                 'quantity' => 1,
             ]],
             'mode' => 'payment',
-            'success_url' => 'https://example.com/success', // Set your success URL
-            'cancel_url' => 'https://example.com/cancel', // Set your cancel URL
+            'success_url' => route('pay-stripe.success', ['callback' => $callback, 'transaction_reference' => $tran]),
+            'cancel_url' => url()->previous(),
         ]);
-        echo "<pre>";print_r($session->getBody());die;
-        // Log the response for debugging
-        \Log::info('Stripe API Response: ' . $session->getBody());
-
-        $sessionData = $session->json();
-        echo '<pre>';print_r($sessionData);die;
-
-        // Return the payment link URL
-        return response()->json(['payment_link' => $sessionData['url'] ?? $sessionData['checkout_url'] ?? null]);
+        return response()->json(['id' => $checkout_session->id]);
     } catch (ApiErrorException $e) {
         // Log the error for debugging
         \Log::error('Stripe API Error: ' . $e->getMessage());
