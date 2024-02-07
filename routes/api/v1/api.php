@@ -238,10 +238,6 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
 
     Route::post('inquiry', 'InquiryController@store')->name('inquiry');
 
-    
-
-    Route::get('/payment-mobile', 'PaymentController@payment')->name('payment-mobile');
-
     Route::post('pay', 'PaypalPaymentController@payWithPaypal');
     Route::get('paypal-status', 'PaypalPaymentController@getPaymentStatus')->name('paypal-status');
     Route::get('payment-fail', 'PaypalPaymentController@fail')->name('payment-fail');
