@@ -159,10 +159,9 @@ class PaypalPaymentController extends Controller
         $transaction->setAmount($amount)
             ->setItemList($item_list)
             ->setDescription($tr_ref);
-        echo route('api.V1.paypal-status');die;
         $redirect_urls = new RedirectUrls();
-        $redirect_urls->setReturnUrl(URL::route('api.V1.paypal-status', ['callback' => $callback, 'transaction_reference' => $tr_ref]))
-            ->setCancelUrl(URL::route('api.V1.payment-fail', ['callback' => $callback, 'transaction_reference' => $tr_ref]));
+        $redirect_urls->setReturnUrl(URL::route('api.v1.paypal-status', ['callback' => $callback, 'transaction_reference' => $tr_ref]))
+            ->setCancelUrl(URL::route('api.v1.payment-fail', ['callback' => $callback, 'transaction_reference' => $tr_ref]));
 
         $payment = new Payment();
         $payment->setIntent('Sale')
