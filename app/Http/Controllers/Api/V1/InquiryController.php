@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\InquiryMail;
 use App\Model\Inquiry; 
+use App\Model\BusinessSetting;
 
 class InquiryController extends Controller
 {
@@ -24,9 +25,12 @@ class InquiryController extends Controller
 
         // If using a model, store the inquiry in the database
         Inquiry::create($request->all());
-
-        // Send an email
-        Mail::to('mukesh.developer01@gmail.com')->send(new InquiryMail($request->all()));
+        $adminMail = BusinessSetting::where('key','email_address')->first();
+        if(!empty($adminMail)){
+            // Send an email
+            Mail::to($adminMail['value'])->send(new InquiryMail($request->all()));
+        }
+       
 
         return response()->json(['message' => 'Inquiry sent successfully']);
     }
