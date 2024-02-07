@@ -147,7 +147,6 @@ class PaypalPaymentController extends Controller
             ->setQuantity(1)
             ->setPrice($order_amount);
         array_push($items_array, $item);
-        echo "<pre>";print_r($items_array);die;
         $item_list = new ItemList();
         $item_list->setItems($items_array);
 
