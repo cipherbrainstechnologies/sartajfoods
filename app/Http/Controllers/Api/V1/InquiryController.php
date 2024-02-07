@@ -17,7 +17,7 @@ class InquiryController extends Controller
         // Validate the incoming request
         $request->validate([
             'first_name' => 'required|string',
-            'last_name' => 'required|string',
+            // 'last_name' => 'required|string',
             'email' => 'required|email',
             'mobile_no' => 'required',
             'subject' => 'required|string',
