@@ -399,12 +399,15 @@
                           <tr>
                             <td class="section_wrapper_th" style="mso-line-height-rule: exactly; padding-bottom: 0;">
                               <table border="0" width="100%" cellpadding="0" cellspacing="0" align="center" style="min-width: 100%;" role="presentation">
-                                <tbody>
+                               <?php 
+                                    $config['shop_logo'] = App\CentralLogics\Helpers::get_business_settings('logo');
+                               ?>
+                              <tbody>
                                   <tr>
                                     <th class="column_logo" style="mso-line-height-rule: exactly; padding-top: 11px; padding-bottom: 11px;" align="center">
                                       <!-- Logo : BEGIN -->
-                                      <a href="https://sartajfoods.jp" target="_blank" style="color: #83c7f2; text-decoration: none !important; text-underline: none;">
-                                      <img src="https://sartajfoods.jp/image/catalog/logo/new%20logo%20.png" class="logo " width="224" border="0" style="width: 224px; height: auto !important; display: block; text-align: center; margin: auto;" />
+                                      <a href="{{env('APP_URL')}}" target="_blank" style="color: #83c7f2; text-decoration: none !important; text-underline: none;">
+                                      <img src="{{asset('/storage/restaurant/' . $config['shop_logo'])}}" class="logo " width="224" border="0" style="width: 224px; height: auto !important; display: block; text-align: center; margin: auto;" />
                                       </a>
                                       <!-- Logo : END -->
                                     </th>
