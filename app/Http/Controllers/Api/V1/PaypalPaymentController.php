@@ -180,7 +180,7 @@ class PaypalPaymentController extends Controller
 
             Session::put('paypal_payment_id', $payment->getId());
             if (isset($redirect_url)) {
-                echo "<pre>";print_r()
+                echo "<pre>";print_r($redirect_url);die;
                 return Redirect::away($redirect_url);
             }
 
