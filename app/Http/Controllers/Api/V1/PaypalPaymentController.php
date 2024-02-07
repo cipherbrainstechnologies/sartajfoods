@@ -160,9 +160,8 @@ class PaypalPaymentController extends Controller
             ->setItemList($item_list)
             ->setDescription($tr_ref);
         $redirect_urls = new RedirectUrls();
-        echo route('api');die;
-        $redirect_urls->setReturnUrl(URL::route('api.v1.paypal-status', ['callback' => $callback, 'transaction_reference' => $tr_ref]))
-            ->setCancelUrl(URL::route('api.v1.payment-fail', ['callback' => $callback, 'transaction_reference' => $tr_ref]));
+        $redirect_urls->setReturnUrl(URL::route('paypal-status', ['callback' => $callback, 'transaction_reference' => $tr_ref]))
+            ->setCancelUrl(URL::route('payment-fail', ['callback' => $callback, 'transaction_reference' => $tr_ref]));
 
         $payment = new Payment();
         $payment->setIntent('Sale')
@@ -181,6 +180,7 @@ class PaypalPaymentController extends Controller
 
             Session::put('paypal_payment_id', $payment->getId());
             if (isset($redirect_url)) {
+                echo "<pre>";print_r()
                 return Redirect::away($redirect_url);
             }
 
