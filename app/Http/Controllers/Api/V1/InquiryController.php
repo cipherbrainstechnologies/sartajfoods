@@ -30,8 +30,6 @@ class InquiryController extends Controller
             // Send an email
             Mail::to($adminMail['value'])->send(new InquiryMail($request->all()));
         }
-       
-
         return response()->json(['message' => 'Inquiry sent successfully']);
     }
 }

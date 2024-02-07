@@ -83,11 +83,22 @@ class ConfigController extends Controller
             'cash_on_delivery'            => $cod['status'] == 1 ? 'true' : 'false',
             'digital_payment'             => $dp['status'] == 1 ? 'true' : 'false',
             'branches'                    => Branch::active()->get(['id', 'name', 'email', 'longitude', 'latitude', 'address', 'coverage', 'status']),
+
             'terms_and_conditions' => BusinessSetting::where(['key' => 'terms_and_conditions'])->first()->value,
+            'japanese_terms_and_conditions' => BusinessSetting::where(['key' => 'japanese_terms_and_conditions'])->first()->value,
+
             'privacy_policy' => BusinessSetting::where(['key' => 'privacy_policy'])->first()->value,
+            'japanese_privacy_policy' => BusinessSetting::where(['key' => 'japanese_privacy_policy'])->first()->value,
+
             'about_us' => BusinessSetting::where(['key' => 'about_us'])->first()->value,
+            'japanese_about_us' => BusinessSetting::where(['key' => 'japanese_about_us'])->first()->value,
+
             'delivery_information' => BusinessSetting::where(['key' => 'delivery_information'])->first()->value,
+            'japanese_delivery_information' => BusinessSetting::where(['key' => 'japanese_delivery_information'])->first()->value,
+
             'faq' => BusinessSetting::where(['key' => 'faq'])->first()->value,
+            'japanese_faq' => BusinessSetting::where(['key' => 'japanese_faq'])->first()->value,
+
             'email_verification' => (boolean)Helpers::get_business_settings('email_verification') ?? 0,
             'phone_verification' => (boolean)Helpers::get_business_settings('phone_verification') ?? 0,
             'currency_symbol_position' => Helpers::get_business_settings('currency_symbol_position') ?? 'right',
