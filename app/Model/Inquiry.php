@@ -13,6 +13,7 @@ class Inquiry extends Model
         'first_name',
         'last_name',
         'email',
+        'mobile_no',
         'subject',
         'message',
     ];

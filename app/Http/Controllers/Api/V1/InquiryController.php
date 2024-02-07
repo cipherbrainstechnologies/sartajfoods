@@ -19,8 +19,10 @@ class InquiryController extends Controller
             'first_name' => 'required|string',
             'last_name' => 'required|string',
             'email' => 'required|email',
+            'mobile_no' => 'required',
             'subject' => 'required|string',
             'message' => 'required|string',
+
         ]);
 
         // If using a model, store the inquiry in the database
