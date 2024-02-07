@@ -139,7 +139,6 @@ class PaypalPaymentController extends Controller
             Session::put('error', 'Payment failed');
             return Redirect::back();
         }
-        echo "<pre>";print_r($this->_api_context);die;
         $payment = Payment::get($payment_id, $this->_api_context);
         $execution = new PaymentExecution();
         $execution->setPayerId($request['PayerID']);

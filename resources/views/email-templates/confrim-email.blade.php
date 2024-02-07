@@ -280,7 +280,7 @@
             </table>
 
             <!-- START FOOTER -->
-            <div class="footer">
+            <!-- <div class="footer">
               <table border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td class="content-block">
@@ -290,11 +290,11 @@
                 </tr>
                 <tr>
                   <td class="content-block powered-by">
-                    Powered by <a href="https://fb.me/jalasem">Jalasem</a>.
+                    Powered by <a href="https://fb.me/jalasem">Sartaj</a>.
                   </td>
                 </tr>
               </table>
-            </div>
+            </div> -->
             <!-- END FOOTER -->
             
           <!-- END CENTERED WHITE CONTAINER -->
