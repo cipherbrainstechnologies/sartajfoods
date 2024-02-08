@@ -195,11 +195,23 @@ class PaypalPaymentController extends Controller
 
     public function getPaymentStatus(Request $request)
     {
-        $callback = $request['callback'];
+
+        // Get all query string parameters
+        $queryParams = $request->query();
+
+        // Alternatively, you can get individual parameters
+        $callback = $request->query('callback');
+        $transactionReference = $request->query('transaction_reference');
+        $payment_id = $request->query('paymentId');
+        $token = $request->query('token');
+        $payerId = $request->query('PayerID');
+
+        // $callback = $request['callback'];
         $transaction_reference = $request['transaction_reference'];
 
-        $payment_id = Session::get('paypal_payment_id');
-        if (empty($request['PayerID']) || empty($request['token'])) {
+        // $payment_id = Session::get('paypal_payment_id');
+        // if (empty($request['PayerID']) || empty($request['token'])) {
+        if(empty($payerId) || empty($token)){
             Session::put('error', 'Payment failed');
             return Redirect::back();
         }
