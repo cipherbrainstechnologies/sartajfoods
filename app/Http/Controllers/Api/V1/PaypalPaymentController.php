@@ -142,7 +142,7 @@ class PaypalPaymentController extends Controller
         $payment_id = $request->query('paymentId');
         $token = $request->query('token');
         $payerId = $request->query('PayerID');
-        $orderId = $request->query('order_id')
+        $orderId = $request->query('order_id');
 
         // $callback = $request['callback'];
         // $transaction_reference = $request['transaction_reference'];
