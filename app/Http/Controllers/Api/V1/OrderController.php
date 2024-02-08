@@ -380,7 +380,7 @@ class OrderController extends Controller
             }
 
             if($request->payment_method == "paypal"){
-                $res = $this->paypal->payWithpaypal($request);
+                $res = $this->paypal->payWithpaypal($request,$order_id);
                 return response()->json(['payment_link'=>$res],200);
             }
 
