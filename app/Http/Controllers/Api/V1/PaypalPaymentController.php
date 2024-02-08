@@ -145,7 +145,7 @@ class PaypalPaymentController extends Controller
         $orderId = $request->query('order_id')
 
         // $callback = $request['callback'];
-        $transaction_reference = $request['transaction_reference'];
+        // $transaction_reference = $request['transaction_reference'];
 
         // $payment_id = Session::get('paypal_payment_id');
         // if (empty($request['PayerID']) || empty($request['token'])) {
