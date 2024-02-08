@@ -133,7 +133,7 @@ class PaypalPaymentController extends Controller
 
     public function getPaymentStatus(Request $request)
     {
-
+        echo "<pre>";print_r($request->all());die;
         // Get all query string parameters
         $queryParams = $request->query();
 
@@ -167,22 +167,7 @@ class PaypalPaymentController extends Controller
 
         if ($result->getState() == 'approved') {
             $transactionReference = Session::get('transaction_reference');
-            $orderId = Session::get('order_id');
-            echo $orderId;die;
-
-            // Retrieve the order based on the order ID
-            $order = Order::find($orderId);
-
-            if ($order) {
-                // Update the order with the PayPal transaction reference
-                $order->transaction_reference = $transactionReference;
-                $order->transaction_id = $payment->transactions[0]->related_resources[0]->sale->id;
-                $order->save();
-                Session::forget('transaction_reference');
-                Session::forget('order_id');
-            }else{
-                return response()->json(['error' => 'Order not found']);
-            }
+            
             //success
             if ($callback != null) {
                 return redirect($callback . '/success' . '?token=' . base64_encode($token_string));
