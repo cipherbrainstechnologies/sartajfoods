@@ -98,8 +98,8 @@ class PaypalPaymentController extends Controller
             ->setItemList($item_list)
             ->setDescription($tr_ref);
         $redirect_urls = new RedirectUrls();
-        $redirect_urls->setReturnUrl(URL::route('api.V1.paypal-status', ['callback' => $callback, 'transaction_reference' => $tr_ref]))
-            ->setCancelUrl(URL::route('api.V1.payment-fail', ['callback' => $callback, 'transaction_reference' => $tr_ref]));
+        $redirect_urls->setReturnUrl(URL::route('api.V1.paypal-status', ['callback' => $callback, 'transaction_reference' => $tr_ref,'order_id' => $orderId]))
+            ->setCancelUrl(URL::route('api.V1.payment-fail', ['callback' => $callback, 'transaction_reference' => $tr_ref,'order_id' => $orderId]));
 
         $payment = new Payment();
         $payment->setIntent('Sale')
@@ -133,7 +133,6 @@ class PaypalPaymentController extends Controller
 
     public function getPaymentStatus(Request $request)
     {
-        echo "<pre>";print_r($request->all());die;
         // Get all query string parameters
         $queryParams = $request->query();
 
@@ -143,6 +142,7 @@ class PaypalPaymentController extends Controller
         $payment_id = $request->query('paymentId');
         $token = $request->query('token');
         $payerId = $request->query('PayerID');
+        $orderId = $request->query('order_id')
 
         // $callback = $request['callback'];
         $transaction_reference = $request['transaction_reference'];
@@ -165,9 +165,15 @@ class PaypalPaymentController extends Controller
         $transaction_reference = $payment_id;
         $token_string = 'payment_method=paypal&&transaction_reference=' . $transaction_reference;
 
+        $order = Order::find($orderId);
+
         if ($result->getState() == 'approved') {
             $transactionReference = Session::get('transaction_reference');
-            
+            $order->payment_status = "paid";
+            $order->transaction_reference = $transaction_reference;
+
+            $order->save();
+
             //success
             if ($callback != null) {
                 return redirect($callback . '/success' . '?token=' . base64_encode($token_string));
@@ -178,6 +184,9 @@ class PaypalPaymentController extends Controller
         
         //fail
         if ($callback != null) {
+            $order->transaction_reference = $transaction_reference;
+            $order->payment_status = "fail";
+            $order->save();
             return redirect($callback . '/fail' . '?token=' . base64_encode($token_string));
         } else {
             return \redirect()->route('api.V1.payment-fail', ['token' => base64_encode($token_string)]);
