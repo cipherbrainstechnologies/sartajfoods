@@ -74,6 +74,9 @@ class PaypalPaymentController extends Controller
         $tr_ref = Str::random(6) . '-' . rand(1, 1000);
 
         Session::put('order_id', $orderId);
+        $o_id = Session::get('order_id');
+        echo $o_id;die;
+
 
         $payer = new Payer();
         $payer->setPaymentMethod('paypal');
