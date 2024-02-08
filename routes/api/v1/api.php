@@ -239,8 +239,8 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
     Route::post('inquiry', 'InquiryController@store')->name('inquiry');
 
     Route::post('pay', 'PaypalPaymentController@payWithPaypal');
-    Route::get('paypal-status', 'PaypalPaymentController@getPaymentStatus')->name('paypal-status');
-    Route::get('payment-fail', 'PaypalPaymentController@fail')->name('payment-fail');
+    Route::get('paypal-status', 'PaypalPaymentController@getPaymentStatus')->name('api.V1.paypal-status');
+    Route::get('payment-fail', 'PaypalPaymentController@fail')->name('api.V1.payment-fail');
 
     Route::get('paywithrazorpay', 'RazorPayController@payWithRazorpay')->name('paywithrazorpay');
     Route::post('payment-razor', 'RazorPayController@payment')->name('payment-razor');
