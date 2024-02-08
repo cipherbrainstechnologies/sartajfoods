@@ -229,18 +229,18 @@ class PaypalPaymentController extends Controller
 
         if ($result->getState() == 'approved') {
             //success
-            if ($callback != null) {
-                return redirect($callback . '/success' . '?token=' . base64_encode($token_string));
-            } else {
-                return \redirect()->route('payment-success', ['token' => base64_encode($token_string)]);
-            }
+            // if ($callback != null) {
+            //     return redirect($callback . '/success' . '?token=' . base64_encode($token_string));
+            // } else {
+                return \redirect()->route('api.V1.payment-success', ['token' => base64_encode($token_string)]);
+            // }
         }
         
         //fail
-        if ($callback != null) {
-            return redirect($callback . '/fail' . '?token=' . base64_encode($token_string));
-        } else {
-            return \redirect()->route('payment-fail', ['token' => base64_encode($token_string)]);
-        }
+        // if ($callback != null) {
+        //     return redirect($callback . '/fail' . '?token=' . base64_encode($token_string));
+        // } else {
+            return \redirect()->route('api.V1.payment-fail', ['token' => base64_encode($token_string)]);
+        // }
     }
 }
