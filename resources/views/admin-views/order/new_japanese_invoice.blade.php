@@ -29,7 +29,7 @@
 						<td width="50%" style="padding: 0;">
 							<table width="100%" style="border: 1px solid #000;border-collapse: collapse;">
 								<tr>
-									<td width="35%" style="border: 1px solid;text-align: center;"><img src="https://sartaj.vercel.app/assets/imgs/theme/logo.svg" style="width:100px" alt="logo"></td>
+									<td width="35%" style="border: 1px solid;text-align: center;"><img src="{{asset('/storage/restaurant/' . $config['shop_logo'])}}" style="width:100px" alt="logo"></td>
 									<td width="65%">
 										<table width="100%">
 											<tr>
@@ -159,7 +159,9 @@
 					</tr>
 					@if(!empty($order->details))
                         @foreach($order->details as $key => $detail)
-                            @php $productDetail = json_decode($detail->product_details,true); @endphp
+                            @php $productDetail = json_decode($detail->product_details,true); 
+                            echo "<pre>";print_r($$productDetail);die;
+                            @endphp
                             <tr>
                                 <td>{{$loop->iteration}}</td>
                                 <td width="50%">

@@ -30,7 +30,7 @@
 							<table width="100%" style="border: 1px solid #000;border-collapse: collapse;">
 								<tr>
                                     
-									<td width="35%" style="border: 1px solid;text-align: center;"><img src="https://sartaj.vercel.app/assets/imgs/theme/logo.svg" style="width:100px" alt="logo"></td>
+									<td width="35%" style="border: 1px solid;text-align: center;"><img src="{{asset('/storage/restaurant/' . $config['shop_logo'])}}" style="width:100px" alt="logo"></td>
 									<td width="65%">
 										<table width="100%">
 											<tr>
