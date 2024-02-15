@@ -373,6 +373,7 @@ class OrderController extends Controller
                 $emailServices = Helpers::get_business_settings('mail_config') ;
 
                 if (isset($emailServices['status']) && $emailServices['status'] == 1) {
+                    echo "dsf";die;
                     Mail::to($request->user()->email)->send(new \App\Mail\OrderPlaced($order_id));
                 }
 

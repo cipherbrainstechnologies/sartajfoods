@@ -548,11 +548,13 @@ class OrderController extends Controller
     public function generate_invoice(Request $request,$id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
         $order = $this->order->with('delivery_address','details','customer')->where('id', $id)->first();
+        // echo "<pre>";print_r($order->toArray());die;
         $orderDetails =collect($order->details);
         $EightPercentTax = $orderDetails->sum('eight_percent_tax');
         $TenPercentTax = $orderDetails->sum('ten_percent_tax'); 
         $totalDiscount =   $orderDetails->sum('total_discount');
         $totalTaxPercent = Helpers::calculateTotalTaxAmount($order);
+        $totalWeight = Helpers::calculateTotalWeightOrder($order);
         $subTotal = (Helpers::calculateInvoice($id));
         $totalAmt = (Helpers::calculateInvoice($id) - $order->coupon_discount_amount) + $order->delivery_charge ;
         $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
@@ -562,9 +564,9 @@ class OrderController extends Controller
         $config['address'] = Helpers::get_business_settings('address');
         $order->shop_detail = $config;
         if($request->language=="ja"){
-            return view('admin-views.order.japanese_invoice', compact('order','totalTaxPercent','totalDiscount' ,'footer_text','totalAmt','subTotal','TenPercentTax','EightPercentTax'));
+            return view('admin-views.order.new_japanese_invoice', compact('order','totalWeight','totalTaxPercent','totalDiscount' ,'footer_text','totalAmt','subTotal','TenPercentTax','EightPercentTax'));
         }else{
-            return view('admin-views.order.english_invoice', compact('order','totalTaxPercent','totalDiscount' ,'footer_text','totalAmt','subTotal','TenPercentTax','EightPercentTax'));
+            return view('admin-views.order.new_english_invoice', compact('order','totalWeight','totalTaxPercent','totalDiscount' ,'footer_text','totalAmt','subTotal','TenPercentTax','EightPercentTax'));
         }
         // return view('admin-views.order.invoice', compact('order', 'footer_text'));
         // return view('admin-views.order.latest_invoice', compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'));

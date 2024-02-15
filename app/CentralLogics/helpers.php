@@ -1041,6 +1041,43 @@ class Helpers
        return $totalTaxAmount;
     }
 
+    public static function calculateTotalWeightOrder($order) {
+        $totalWeight = 0;
+    
+        if (!empty($order->details)) {
+            foreach ($order->details as $key => $detail) {
+                $productDetail = json_decode($detail['product_details'], true);
+    
+                switch ($productDetail['weight_class']) {
+                    case "Kilogram":
+                        $totalWeight += $productDetail['weight'];
+                        break;
+    
+                    case "Gram":
+                        $totalWeight += $productDetail['weight'] / 1000; // Convert grams to kilograms
+                        break;
+    
+                    case "Pound":
+                        $totalWeight += $productDetail['weight'] * 0.453592; // Convert pounds to kilograms
+                        break;
+    
+                    case "Ounce":
+                        $totalWeight += $productDetail['weight'] * 0.0283495; // Convert ounces to kilograms
+                        break;
+    
+                    // Add more cases if needed for other weight classes
+    
+                    default:
+                        // Handle unsupported weight classes
+                        break;
+                }
+            }
+        }
+    
+        return round($totalWeight,2);
+    }
+    
+
     public static function addRecentActivity($user,$status,$order_id=null){
         
         $currentDateTime = Carbon::now();
