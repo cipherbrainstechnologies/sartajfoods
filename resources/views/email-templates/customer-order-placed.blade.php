@@ -538,20 +538,20 @@
                                                   <!-- Bold 2 -->
                                                   <!-- end Bold 2 -->
                                                   <tr class="row-border-bottom">
-                                                   
                                                     @if(!empty($order->details))  
                                                       <table cellspacing="0" cellpadding="0" border="0" width="100%" style="min-width: 100%;" role="presentation">
                                                         <tbody>
                                                             @foreach($order->details as $key => $detail)
-                                                            @php $productDetail = json_decode($detail->product_details,true); 
-                                                                  $productImage=json_decode($productDetail['image'],true);
-                                                            @endphp
+                                                            <?php
+                                                                $productDetail = json_decode($detail->product_details,true);
+                                                            ?>
                                                           
                                                                 <tr>
                                                                   <th class="table-stack product-image-wrapper stack-column-center" width="1" style="mso-line-height-rule: exactly; border-bottom-width: 1px; border-bottom-color: #e5e5e5; border-bottom-style: solid; padding: 11px 11px 11px 0;" bgcolor="#ffffff" valign="middle">
                                                                     <a href="#" class="product_link" target="_blank" style="color: #7fbb35; text-decoration: none !important; text-underline: none; word-wrap: break-word;">
-                                                                    <img width="105" class="product-image" src="{{asset(Storage::url('product/'.$productImage[0]))}}" alt="image" style="vertical-align: middle; text-align: center; width: 105px; max-width: 105px; height: auto !important; border-radius: 1px; padding: 0px;" />
+                                                                    <img width="105" class="product-image" src="{{asset(Storage::url('product/'.$productDetail['image'][0] ?? ''))}}" alt="image" style="vertical-align: middle; text-align: center; width: 105px; max-width: 105px; height: auto !important; border-radius: 1px; padding: 0px;" />
                                                                 </a></th>
+                                                                
                                                                     <th class="line-item-description" style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; padding: 11px 5px 11px 0;" align="left" bgcolor="#ffffff" valign="top">
                                                                     <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 0;" align="left">
                                                                         <a href="#" class="product_link" target="_blank" style="color: #000000; text-decoration: none !important; text-underline: none; word-wrap: break-word; text-align: left !important; font-weight: 400;">
