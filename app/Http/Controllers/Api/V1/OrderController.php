@@ -374,6 +374,7 @@ class OrderController extends Controller
 
                 if (isset($emailServices['status']) && $emailServices['status'] == 1) {
                     Mail::to($request->user()->email)->send(new \App\Mail\OrderPlaced($order_id));
+                    \Log::info('Email sent successfully.');
                 }
 
             } catch (\Exception $e) {

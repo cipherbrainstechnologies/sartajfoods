@@ -1047,7 +1047,6 @@ class Helpers
         if (!empty($order->details)) {
             foreach ($order->details as $key => $detail) {
                 $productDetail = json_decode($detail['product_details'], true);
-    
                 switch ($productDetail['weight_class']) {
                     case "Kilogram":
                         $totalWeight += $productDetail['weight'];
