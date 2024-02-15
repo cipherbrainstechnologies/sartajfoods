@@ -425,7 +425,7 @@ class OrderController extends Controller
             $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
 
             
-            $pdf = PDF::loadView('admin-views.order.latest_invoice', compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'));
+            $pdf = PDF::loadView('admin-views.order.new_latest_invoice', compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'));
             $timestamp = $data['created_at']->timestamp;
             $pdfName = 'Invoice_' . ($timestamp+$data['id']) . '.pdf';
             if (!Storage::disk('public')->exists('invoices')) {
