@@ -3,12 +3,14 @@
 <html>
 <head>
     <title>Invoice</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
 </head>
 <body style="-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;">
     <table style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;background-color:#1d2e85;">
         <tr style="margin:0;padding:0;border:none;border-collapse:collapse;">
             <td style="margin:0;padding:0;border:none;border-collapse:collapse;">
-                <h1 style="margin:0;padding:5px 0;font-size:30px;line-height:1.25em;text-align:center;color:#fff;text-transform:uppercase;">Invoice</h1>
+                <h1 style="margin:0;padding:5px 0;font-size:30px;line-height:1.25em;text-align:center;color:#fff;text-transform:uppercase;">{{translate('Invoice')}}</h1>
             </td>
         </tr>
     </table>

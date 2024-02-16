@@ -11,6 +11,7 @@ use PDF;
 use App\CentralLogics\Helpers;
 use App\Model\BusinessSetting;
 use Illuminate\Support\Facades\Log;
+use Mpdf\Mpdf;
 
 class OrderPlaced extends Mailable
 {
@@ -43,12 +44,29 @@ class OrderPlaced extends Mailable
             $TenPercentTax = $orderDetails->sum('ten_percent_tax');
             $totalAmt = (Helpers::calculateInvoice($order->id)) + $order->delivery_charge;
             $footer_text = BusinessSetting::where(['key' => 'footer_text'])->first();
-            $pdf = PDF::loadView('admin-views.order.latest_invoice',  compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'));
-            
+
+            $mpdfConfig = [
+                'mode' => 'utf-8',
+                'format' => 'A4',
+                'orientation' => 'P',
+            ];
+
+            $pdf = new Mpdf($mpdfConfig);
+            $pdf->WriteHTML(view('admin-views.order.latest_invoice', compact('order', 'footer_text', 'totalAmt', 'TenPercentTax', 'EightPercentTax'))->render());
             return $this->view('email-templates.customer-order-placed', compact('order_id'))
-                ->attachData($pdf->output(), 'invoice.pdf', [
-                    'mime' => 'application/pdf',
-                ]);
+            ->attachData($pdf->Output('invoice.pdf', 'S'), 'invoice.pdf', [
+                'mime' => 'application/pdf',
+            ]);
+            // $pdf = PDF::loadView('admin-views.order.latest_invoice',  compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'))->setOptions([
+            //     'isHtml5ParserEnabled' => true,
+            //     'isPhpEnabled' => true,
+            //     'isFontSubsettingEnabled' => true,
+            // ]);
+            
+            // return $this->view('email-templates.customer-order-placed', compact('order_id'))
+            //     ->attachData($pdf->output(), 'invoice.pdf', [
+            //         'mime' => 'application/pdf',
+            //     ]);
             // return $this->view('email-templates.customer-order-placed', ['order_id' => $order_id]);
         }catch(\Exception $e){
             Log::error("Error building email: {$e->getMessage()}");

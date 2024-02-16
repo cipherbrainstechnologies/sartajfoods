@@ -2228,4 +2228,5 @@
   'Sub Categories' => 'Sub Categories',
   'Add new sub sub category' => 'Add new sub sub category',
   'Length' => 'Length',
+  'Invoice' => 'Invoice',
 );
