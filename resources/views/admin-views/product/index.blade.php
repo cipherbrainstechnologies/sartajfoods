@@ -172,6 +172,18 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="input-label"
+                                        for="exampleFormControlSelect1">{{translate('sub_category')}}<span
+                                            class="input-label-secondary"></span></label>
+                                    <select name="sub-sub-categories" id="sub-sub-categories"
+                                            class="form-control js-select2-custom"
+                                           >
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="input-label"
@@ -254,6 +266,15 @@
                                     <label class="">
                                         <input type="date" name="date_available" id="date_available" value="{{ old('date_available') }}" class="js-flatpickr form-control flatpickr-custom" placeholder="{{ \App\CentralLogics\translate('dd/mm/yy') }}" data-hs-flatpickr-options='{ "dateFormat": "Y/m/d", "minDate": "today" }'>
                                     </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label class="input-label"
+                                        for="exampleFormControlInput1">{{translate('Length')}}</label>
+                                    <input type="text" name="length"
+                                        class="form-control"
+                                        placeholder="{{ translate('0.000000') }}" >
                                 </div>
                             </div>
                             <div class="col-sm-6">

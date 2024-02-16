@@ -292,6 +292,16 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
+                                    <label class="input-label"
+                                        for="exampleFormControlInput1">{{translate('Length')}}</label>
+                                    <input type="text" name="length"
+                                        class="form-control"
+                                        value="{{ $product['length'] }}"
+                                        placeholder="{{ translate('0.000000') }}" >
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
                                     <label class="input-label" for="length_class">{{translate('Length Class')}}<span class="input-label-secondary"></span></label>
                                     <select name="length_class" id="length_class" class="form-control js-select2-custom">
                                         <option value="Centimeter" {{ ($product['length_class'] === 'Centimeter') ? 'selected' : '' }}>{{translate('Centimeter')}}</option>

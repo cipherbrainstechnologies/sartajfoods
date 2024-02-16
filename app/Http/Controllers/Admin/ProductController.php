@@ -370,6 +370,7 @@ class ProductController extends Controller
         $p->product_mark = !empty($request->product_mark) ? implode(",", $request->product_mark) : null;
         $p->product_type = !empty($request->product_type) ? $request->product_type : null;
         $p->date_available = !empty($request->date_available) ? $request->date_available : null;
+        $p->length = !empty($request->length) ? $request->length : null;
         $p->length_class = !empty($request->length_class) ? $request->length_class : null;
         $p->requires_shipping = !empty($request->requires_shipping) ? $request->requires_shipping : null;
         $p->weight = !empty($request->weight) ? $request->weight : null;
@@ -716,6 +717,7 @@ class ProductController extends Controller
         $p->product_mark = !empty($request->product_mark) ? implode(",", $request->product_mark) : null;
         $p->product_type = !empty($request->product_type) ? $request->product_type : null;
         $p->date_available = !empty($request->date_available) ? $request->date_available : null;
+        $p->length = !empty($request->length) ? $request->length : null;
         $p->length_class = !empty($request->length_class) ? $request->length_class : null;
         $p->requires_shipping = !empty($request->requires_shipping) ? $request->requires_shipping : null;
         $p->weight = !empty($request->weight) ? $request->weight : null;

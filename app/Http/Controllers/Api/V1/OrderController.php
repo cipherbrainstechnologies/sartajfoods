@@ -410,21 +410,19 @@ class OrderController extends Controller
         $orders = $this->order->with(['customer', 'delivery_man.rating'])
             ->withCount('details')
             ->where(['user_id' => $request->user()->id])->get();
-           
-            // dd($pdf);
 
         $orders->map(function ($data) {
             $data['deliveryman_review_count'] = $this->dm_review->where(['delivery_man_id' => $data['delivery_man_id'], 'order_id' => $data['id']])->count();
 
             $order = $this->order->with('delivery_address','details')->where('id', $data['id'])->first();
             $orderDetails =collect($order->details);
+
             $EightPercentTax = $orderDetails->sum('eight_percent_tax');
             $TenPercentTax = $orderDetails->sum('ten_percent_tax');
                     
             $totalAmt = (Helpers::calculateInvoice($data['id'])) + $order['delivery_charge'];
             $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
 
-            
             $pdf = PDF::loadView('admin-views.order.latest_invoice', compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'));
             $timestamp = $data['created_at']->timestamp;
             $pdfName = 'Invoice_' . ($timestamp+$data['id']) . '.pdf';
