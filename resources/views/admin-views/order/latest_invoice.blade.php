@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -61,6 +62,7 @@
             </td>
         </tr>
     </table>
+
     <table style="width:100%;margin-top:20px;border-collapse:collapse;">
         <thead>
             <tr style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;background-color:rgba(29,46,133,0.2);">
@@ -108,6 +110,7 @@
         @php($sub_total+=$price_after_discount)
         </tbody>
     </table>
+
     <table style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;">
         <tr style="margin:0;padding:0;border:none;border-collapse:collapse;">
             <td style="margin:0;padding:0;border:none;border-collapse:collapse;padding:2px 4px;font-size:16px;line-height:22px;color:#000;font-weight:400;text-align:right;width:100%;min-height:26px;"> &nbsp;   &nbsp; </td>
@@ -162,7 +165,6 @@
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:left;width:5%;min-height:28px;"></td>
                         <td style="border:none;padding:3px 4px;font-size:18px;line-height:22px;color:#000;font-weight:400;text-align:right;width:40%;min-height:28px;">{{ Helpers::set_symbol($order->delivery_charge) }}</td>
                     </tr>
-                    
 
                     
                     <!-- <tr style="width:100%;border:none;border-collapse:collapse;margin:0;padding:0;border-bottom:1px solid #000;">
