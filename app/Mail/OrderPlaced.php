@@ -49,12 +49,23 @@ class OrderPlaced extends Mailable
                 'mode' => 'utf-8',
                 'format' => 'A4',
                 'orientation' => 'P',
+                'fontDir' => public_path('fonts/'), // Change the path to the directory containing your font files
+                // 'fontdata' => [
+                //     'notosans' => [
+                //         'R' => 'NotoSans-Regular.ttf',
+                //         'B' => 'NotoSans-Bold.ttf',
+                //     ],
+                //     'notosanscjk' => [
+                //         'R' => 'NotoSansCJK-Regular.ttc',
+                //         'B' => 'NotoSansCJK-Bold.ttc',
+                //     ],
+                // ],
             ];
 
-            $pdf = new Mpdf($mpdfConfig);
+            $pdf = new \Mpdf\Mpdf($mpdfConfig);
             $pdf->WriteHTML(view('admin-views.order.latest_invoice', compact('order', 'footer_text', 'totalAmt', 'TenPercentTax', 'EightPercentTax'))->render());
             return $this->view('email-templates.customer-order-placed', compact('order_id'))
-            ->attachData($pdf->Output('invoice.pdf', 'S'), 'invoice.pdf', [
+            ->attachData($pdf->Output('invoice.pdf', 'I'), 'invoice.pdf', [
                 'mime' => 'application/pdf',
             ]);
             // $pdf = PDF::loadView('admin-views.order.latest_invoice',  compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'))->setOptions([
