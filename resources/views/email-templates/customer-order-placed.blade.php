@@ -399,7 +399,7 @@
         $config['address'] = App\CentralLogics\Helpers::get_business_settings('address');
         $order->shop_detail = $config;
     ?>
-    <table class="container container_full" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse: collapse; min-width: 100%;" role="presentation" bgcolor="#f5f5f5">
+    <table class="container container_full" cellpadding="0" cellspacing="0" border="0" width="100%" style="border-collapse: collapse; min-width: 100%;" role="presentation" bgcolor="#fff">
       <tbody>
         <tr>
           <th valign="top" style="mso-line-height-rule: exactly;">
@@ -447,7 +447,7 @@
                                         <tbody>
                                           <tr style="color: #203620; border-color: #ffffff;" bgcolor="#ffffff">
                                             <th style="mso-line-height-rule: exactly; color: #203620; border-color: #ffffff;" bgcolor="#ffffff" valign="top">
-                                              <h1 data-key="4664701_heading" style="font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 32px; line-height: 46px; font-weight: 700; color: #203620; text-transform: uppercase; background-color: #ffffff !important; margin: 0; border-color: #ffffff;">
+                                              <h1 data-key="4664701_heading" style="text-align:center;font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 32px; line-height: 46px; font-weight: 700; color: #203620; text-transform: uppercase; background-color: #ffffff !important; margin: 0; border-color: #ffffff;">
                                               @if($order->order_status == "confirmed")
                                                 {{translate('Order Confirmation')}}
                                               @elseif($order->order_status == "pending")
