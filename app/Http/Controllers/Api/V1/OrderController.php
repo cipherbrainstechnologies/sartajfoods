@@ -370,11 +370,15 @@ class OrderController extends Controller
                 }
 
                 //send email
+                $adminEmail = BusinessSetting::where('key','email_address')->first();
                 $emailServices = Helpers::get_business_settings('mail_config') ;
 
                 if (isset($emailServices['status']) && $emailServices['status'] == 1) {
                     Mail::to($request->user()->email)->send(new \App\Mail\OrderPlaced($order_id));
-                    
+                   
+                    if(!empty($adminEmail) && !empty($adminEmail['value'])){
+                        Mail::to($adminEmail['value'])->send(new \App\Mail\OrderPlaced($order_id));
+                    }
                     \Log::info('Place Order Mail sent successfully.');
                 }
 
