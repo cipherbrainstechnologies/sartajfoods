@@ -416,7 +416,7 @@ class OrderController extends Controller
         $orders->map(function ($data) {
             $data['deliveryman_review_count'] = $this->dm_review->where(['delivery_man_id' => $data['delivery_man_id'], 'order_id' => $data['id']])->count();
 
-            $order = $this->order->with('delivery_address','details')->where('id', $data['id'])->first();
+            // $order = $this->order->with('delivery_address','details')->where('id', $data['id'])->first();
             // $orderDetails =collect($order->details);
             // $EightPercentTax = $orderDetails->sum('eight_percent_tax');
             // $TenPercentTax = $orderDetails->sum('ten_percent_tax');
