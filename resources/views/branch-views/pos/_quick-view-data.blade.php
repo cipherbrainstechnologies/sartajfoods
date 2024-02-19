@@ -5,8 +5,8 @@
     <div class="modal--media">
         <!-- Product gallery-->
         <div class="modal--media-avatar">
-            @if (!empty(json_decode($product['image'],true)))
-                <img src="{{asset('storage/product')}}/{{json_decode($product['image'], true)[0]}}"
+            @if (!empty($product['image']))
+                <img src="{{$product['image'][0]}}"
                  onerror="this.src='{{asset('public/assets/admin/img/160x160/2.png')}}'"
                  data-zoom="{{asset('storage/product')}}/{{json_decode($product['image'], true)[0]}}"
                  alt="Product image" width="">

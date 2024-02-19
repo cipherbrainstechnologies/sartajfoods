@@ -29,9 +29,9 @@
                         <div class="row align-items-md-center">
                             <div class="col-lg-4 col-md-6 mb-3 mb-md-0">
                                 <div class="d-flex flex-wrap align-items-center food--media justify-content-center">
-                                @if (!empty(json_decode($product['image'],true)))
+                                @if (!empty($product['image']))
                                     <img class="avatar avatar-xxl avatar-4by3 mr-4"
-                                        src="{{asset('storage/product')}}/{{json_decode($product['image'],true)[0]}}"
+                                        src="{{$product['image'][0]}}"
                                         onerror="this.src='{{asset('public/assets/admin/img/160x160/img2.jpg')}}'"
                                         alt="Image Description">
                                 @else

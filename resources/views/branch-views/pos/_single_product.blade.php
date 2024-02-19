@@ -18,8 +18,8 @@
         }
     ?>
     <div class="card-header inline_product clickable p-0">
-    @if (!empty(json_decode($product['image'],true)))
-        <img src="{{asset('storage/product')}}/{{json_decode($product['image'], true)[0]}}"
+    @if (!empty($product['image']))
+        <img src="{{$product['image'][0]}}"
             onerror="this.src='{{asset('public/assets/admin/img/160x160/2.png')}}'" class="w-100 h-100 object-cover aspect-ratio-80">
     @else
         <img src="{{asset('public/assets/admin/img/160x160/2.png')}}" class="w-100 h-100 object-cover aspect-ratio-80"
