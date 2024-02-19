@@ -56,34 +56,44 @@
 						<td width="50%" style="padding: 0;">
 							<table width="100%" style="border: 1px solid #000;border-collapse: collapse;">
 								<tr>
-									<td width="30%">
-										<p style="margin:0">Order Id: {{$order->id}}</p>
-									</td>
 									<td width="70%">
+										
 										<table width="100%">
+											<tr>
+												<td>Order Id: </td>
+												<td>{{$order->id}}</td>
+											</tr>
                                             @php 
                                                 $dateTime = new DateTime($order->created_at);
                                             @endphp
 											<tr>
-												<td width="50%" style="text-align:right;">Date :</td>
-												<td width="50%">{{$dateTime->format("d/m/Y")}}</td>
+												<td  >Date :</td>
+												<td >{{$dateTime->format("d/m/Y")}}</td>
 											</tr>
 											<tr>
-												<td width="50%" style="text-align:right;">Time :</td>
-												<td width="50%">{{$dateTime->format("h:i a")}}</td>
+												<td  >Time :</td>
+												<td >{{$dateTime->format("h:i a")}}</td>
 											</tr>
+											
+											<tr>
+												<td  >Payment Method :</td>
+												<td >Cash on Delivery</td>
+											</tr>
+											<tr>
+												<td  >Shipping Method :</td>
+												<td >Regular Delivery</td>
+											</tr>
+										</table>
+									</td>
+									
+									<td width="30%">
+										<table width="100%">
+                                            
 											<tr>
 												<td width="50%" style="text-align:right;">Weight :</td>
-												<td width="50%">{{$totalWeight}} kg</td>
+												<td width="50%" style="text-align:center;">{{$totalWeight}} kg</td>
 											</tr>
-											<tr>
-												<td width="50%" style="text-align:right;">Payment Method :</td>
-												<td width="50%">Cash on Delivery</td>
-											</tr>
-											<tr>
-												<td width="50%" style="text-align:right;">Shipping Method :</td>
-												<td width="50%">Regular Delivery</td>
-											</tr>
+											
 										</table>
 									</td>
 								</tr>
@@ -141,8 +151,8 @@
 			<td>
 				<table width="100%" style="border: 1px solid;border-collapse: collapse;">
 					<tr>
-						<td width="50%" style="padding: 0;border: 1px solid;border-collapse: collapse;"><h3 style="margin: 0;">Total Payable Amount</h3></td>
-						<td width="50%" style="padding: 0;border: 1px solid;border-collapse: collapse;"><h3 style="margin: 0;">INVOICE # {{$totalAmt}}</h3></td>
+						<td width="50%" style="padding: 0;border: 1px solid;border-collapse: collapse;text-align:center;"><h3 style="margin: 0;">Total Payable Amount : <span style="text-align:right;">{{$totalAmt}}</span> </h3></td>
+						<td width="50%" style="padding: 0;border: 1px solid;border-collapse: collapse;text-align:center;"><h3 style="margin: 0;">INVOICE NO. {{$order->id}}</h3></td>
 					</tr>
 				</table>
 			</td>

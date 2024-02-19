@@ -90,18 +90,18 @@ class BannerController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'title' => 'required|max:255',
-            'image' => 'required',
-        ],[
-            'title.required'=>translate('Title is required'),
-            'image.required'=>translate('Image is required'),
-        ]);
+        // $request->validate([
+        //     'title' => 'required|max:255',
+        //     'image' => 'required',
+        // ],[
+        //     'title.required'=>translate('Title is required'),
+        //     'image.required'=>translate('Image is required'),
+        // ]);
 
         $isHomeBanner = !empty($request['is_home_banner']) ?  $request['is_home_banner'] : 0;
         $banner = $this->banner;
-        $banner->title = $request->title;
-        $banner->title_ja = $request->title_ja;
+        $banner->title = $request->title ?? null;
+        $banner->title_ja = $request->title_ja ?? null;
         $banner->link = !empty($request->link) ? $request->link : null;
         if(!$isHomeBanner) {
             if ($request['item_type'] == 'product') {
@@ -113,8 +113,8 @@ class BannerController extends Controller
             $banner->type = (!empty($request->banner_type)) ? $request->banner_type : null;
             $banner->banner_order = (!empty($request->order)) ? $request->order : null;
         }  
-        $banner->description = $request->description;
-        $banner->description_ja = $request->description_ja;
+        $banner->description = $request->description ?? null;
+        $banner->description_ja = $request->description_ja ?? null;
         $banner->ad_section = !empty($request->ad_section)  ? $request->ad_section : null;
         $banner->banner_logo = Helpers::upload('banner/logo/', 'png', $request->file('banner_logo'));
         $banner->image = Helpers::upload('banner/', 'png', $request->file('image'));      
@@ -156,17 +156,17 @@ class BannerController extends Controller
      */
     public function update(Request $request, $id): RedirectResponse
     {
-        $request->validate([
-            'title' => 'required|max:255',
-        ], [
-            'title.required' => 'Title is required!',
-        ]);
+        // $request->validate([
+        //     'title' => 'required|max:255',
+        // ], [
+        //     'title.required' => 'Title is required!',
+        // ]);
 
         $isHomeBanner = !empty($request['is_home_banner']) ?  $request['is_home_banner'] : 0;
 
         $banner = $this->banner->find($id);
-        $banner->title = $request->title;
-        $banner->title_ja = $request->title_ja;
+        $banner->title = $request->title ?? null;
+        $banner->title_ja = $request->title_ja ?? null;
         $banner->ad_section = !empty($request->ad_section) ? $request->ad_section : null;
         $banner->link = !empty($request->link) ? $request->link : null;
         if(!$isHomeBanner) { 
@@ -181,8 +181,8 @@ class BannerController extends Controller
             $banner->type = (!empty($request->banner_type)) ? $request->banner_type : null;
             $banner->banner_order = (!empty($request->order)) ? $request->order : null;
         }
-        $banner->description = $request->description;
-        $banner->description_ja = $request->description_ja;
+        $banner->description = $request->description ?? null;
+        $banner->description_ja = $request->description_ja ?? null;
         $banner->image = $request->has('image') ? Helpers::update('banner/', $banner->image, 'png', $request->file('image')) : $banner->image;
         $banner->banner_logo = $request->has('banner_logo') ? Helpers::update('banner/logo/', $banner->banner_logo, 'png', $request->file('banner_logo')) : $banner->banner_logo;
         $banner->save();

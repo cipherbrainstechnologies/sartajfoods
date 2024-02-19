@@ -65,7 +65,8 @@ class OrderPlaced extends Mailable
             $pdf = new \Mpdf\Mpdf($mpdfConfig);
             $pdf->WriteHTML(view('admin-views.order.latest_invoice', compact('order', 'footer_text', 'totalAmt', 'TenPercentTax', 'EightPercentTax'))->render());
             return $this->view('email-templates.customer-order-placed', compact('order_id'))
-            ->attachData($pdf->Output('invoice.pdf', 'I'), 'invoice.pdf', [
+            ->subject('Order Confirmed: Thank You!')
+            ->attachData($pdf->Output('invoice_'.$order->id.'.pdf', 'I'), 'invoice.pdf', [
                 'mime' => 'application/pdf',
             ]);
             // $pdf = PDF::loadView('admin-views.order.latest_invoice',  compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'))->setOptions([

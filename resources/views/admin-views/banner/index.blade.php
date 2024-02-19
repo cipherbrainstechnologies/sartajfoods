@@ -36,13 +36,13 @@
                                 <div class="col-12">
                                     <div class="form-group mb-0">
                                         <label class="input-label" for="exampleFormControlInput1">{{translate('English')}} {{translate('title')}}</label>
-                                        <input type="text" name="title" value="{{old('title')}}" class="form-control" placeholder="{{translate('English')}} {{translate('title')}}" maxlength="255" required>
+                                        <input type="text" name="title" value="{{old('title')}}" class="form-control" placeholder="{{translate('English')}} {{translate('title')}}" maxlength="255" >
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group mb-0">
                                         <label class="input-label" for="exampleFormControlInput1">{{translate('Japanese')}} {{translate('title')}}</label>
-                                        <input type="text" name="title_ja" value="{{old('title_ja')}}" class="form-control" placeholder="{{translate('Japanese')}} {{translate('title')}}" maxlength="255" required>
+                                        <input type="text" name="title_ja" value="{{old('title_ja')}}" class="form-control" placeholder="{{translate('Japanese')}} {{translate('title')}}" maxlength="255" >
                                     </div>
                                 </div>
                                 <div class="col-12">

@@ -55,34 +55,44 @@
 						<td width="50%" style="padding: 0;">
 							<table width="100%" style="border: 1px solid #000;border-collapse: collapse;">
 								<tr>
-									<td width="30%">
-										<p style="margin:0">ご注⽂番号: {{$order->id}}</p>
-									</td>
 									<td width="70%">
 										<table width="100%">
-                                            @php 
-                                                $dateTime = new DateTime($order->created_at);
-                                            @endphp
 											<tr>
-												<td width="50%" style="text-align:right;">ご注⽂⽇ :</td>
-												<td width="50%">{{$dateTime->format("d/m/Y")}}</td>
+												<td>ご注⽂番号:</td>
+												<td>{{$order->id}}</td>
+											</tr>
+											@php 
+												$dateTime = new DateTime($order->created_at);
+											@endphp
+											<tr>
+												<td>ご注⽂⽇ :</td>
+												<td >{{$dateTime->format("d/m/Y")}}</td>
 											</tr>
 											<tr>
-												<td width="50%" style="text-align:right;">時間 :</td>
-												<td width="50%">{{$dateTime->format("h:i a")}}</td>
+												<td>時間 :</td>
+												<td >{{$dateTime->format("h:i a")}}</td>
 											</tr>
+											<tr>
+												<td>⽀払⽅法 :</td>
+												<td > 代引き</td>
+											</tr>
+											<tr>
+												<td>配送⽅法 :</td>
+												<td >普通便 送料</td>
+											</tr>
+										</table>
+									</td>
+									<!-- <td width="70%">
+										<p style="margin:0">ご注⽂番号: {{$order->id}}</p>
+									</td> -->
+									<td width="30%">
+										<table width="100%">
+                                           
 											<tr>
 												<td width="50%" style="text-align:right;">重量 :</td>
-												<td width="50%">{{$totalWeight}} kg</td>
+												<td width="50%" style="text-align:center">{{$totalWeight}} kg</td>
 											</tr>
-											<tr>
-												<td width="50%" style="text-align:right;">⽀払⽅法 :</td>
-												<td width="50%"> 代引き</td>
-											</tr>
-											<tr>
-												<td width="50%" style="text-align:right;">配送⽅法 :</td>
-												<td width="50%">普通便 送料</td>
-											</tr>
+											
 										</table>
 									</td>
 								</tr>
@@ -140,8 +150,8 @@
 			<td>
 				<table width="100%" style="border: 1px solid;border-collapse: collapse;">
 					<tr>
-						<td width="50%" style="padding: 0;border: 1px solid;border-collapse: collapse;"><h3 style="margin: 0;">ご請求金額</h3></td>
-						<td width="50%" style="padding: 0;border: 1px solid;border-collapse: collapse;"><h3 style="margin: 0;">請　求　書 # {{$totalAmt}}</h3></td>
+						<td width="50%" style="padding: 0;border: 1px solid;border-collapse: collapse;text-align:center;"><h3 style="margin: 0;">ご請求金額 : {{$totalAmt}}</h3></td>
+						<td width="50%" style="padding: 0;border: 1px solid;border-collapse: collapse;text-align:center;"><h3 style="margin: 0;">請　求　書 NO. {{$order->id}}</h3></td>
 					</tr>
 				</table>
 			</td>
