@@ -414,7 +414,7 @@ class OrderController extends Controller
     {       
         $orders = $this->order->with(['customer', 'delivery_man.rating'])
             ->withCount('details')
-            ->where(['user_id' => $request->user()->id])->get();
+            ->where(['user_id' => $request->user()->id])->orderBy('id','desc')->get();
            
             // dd($pdf);
 
