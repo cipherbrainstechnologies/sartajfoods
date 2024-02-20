@@ -715,7 +715,7 @@ class CustomerAuthController extends Controller
         $user->email_verification_token = $token;
         $user->save();       
     
-        $url = 'https://sartaj.vercel.app/sign-in';
+        $url = 'https://sartajfoods.jp/sign-in';
         return Redirect::to($url);
     }
 }
