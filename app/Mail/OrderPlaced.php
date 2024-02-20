@@ -37,33 +37,7 @@ class OrderPlaced extends Mailable
      * @return $this
      */
     public function build()
-    {
-        // try{
-        //     $order_id = $this->order_id;
-        //     $order =Order::with('delivery_address','details')->where('id', $order_id)->first();
-        //     $orderDetails =collect($order->details);
-        //     $EightPercentTax = $orderDetails->sum('eight_percent_tax');
-        //     $TenPercentTax = $orderDetails->sum('ten_percent_tax');
-        //     $totalAmt = (Helpers::calculateInvoice($order->id)) + $order->delivery_charge;
-        //     $footer_text = BusinessSetting::where(['key' => 'footer_text'])->first();
-
-        //     $mpdfConfig = [
-        //         'mode' => 'utf-8',
-        //         'format' => 'A4',
-        //         'orientation' => 'P'
-                
-        //     ];
-
-        //     $pdf = new \Mpdf\Mpdf($mpdfConfig);
-        //     $pdf->WriteHTML(view('admin-views.order.latest_invoice', compact('order', 'footer_text', 'totalAmt', 'TenPercentTax', 'EightPercentTax'))->render());
-        //     return $this->view('email-templates.customer-order-placed', compact('order_id'))
-        //     ->attachData($pdf->Output('invoice.pdf', 'I'), 'invoice.pdf', [
-        //         'mime' => 'application/pdf',
-        //     ]);
-        // }catch(\Exception $e){
-        //     Log::error("Error building email: {$e->getMessage()}");
-        // }
-       
+    {  
         try {
             $order_id = $this->order_id;
             $order = Order::with('delivery_address', 'details')->where('id', $order_id)->first();
