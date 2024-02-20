@@ -232,16 +232,16 @@ class PasswordResetController extends Controller
     {
         // $token = $request->query('token');
         // Validate the request data
-        $request->validate([
-            'token' => 'required',
-            'password' => 'required|min:8',
-        ]);
-
+        // $request->validate([
+        //     'token' => 'required',
+        //     'password' => 'required|min:8',
+        // ]);
         // Check if the token exists in the password_resets table
         $resetRecord = DB::table('password_resets')->where('token', $request->token)->first();        
         if (!$resetRecord) {
+            return response()->json(['errors' => [['code' => 'invalid', 'message' => 'Invalid token.']]], 400);
             // Token not found, handle accordingly (e.g., show an error message)
-            return redirect()->back()->with('error', 'Invalid token');
+            // return redirect()->back()->with('error', 'Invalid token');
         }
 
         // Retrieve the email associated with the token
