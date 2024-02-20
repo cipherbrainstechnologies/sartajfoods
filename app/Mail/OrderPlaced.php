@@ -80,6 +80,7 @@ class OrderPlaced extends Mailable
                 'mode' => 'utf-8',
                 'format' => 'A4',
                 'orientation' => 'P',
+                'tempDir'   => base_path('storage/app/mpdf'),
             ];
         
             $pdf = new \Mpdf\Mpdf($mpdfConfig);
