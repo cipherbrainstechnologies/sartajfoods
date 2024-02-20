@@ -27,10 +27,12 @@ class InquiryController extends Controller
 
         // If using a model, store the inquiry in the database
         Inquiry::create($request->all());
-        $adminMail = BusinessSetting::where('key','email_address')->first();
-        if(!empty($adminMail)){
+        // $adminMail = BusinessSetting::where('key','email_address')->first();
+        $CONTACT_MAIL = config('mail.CONTACT_MAIL');
+
+        if(!empty($CONTACT_MAIL)){
             // Send an email
-            Mail::to($adminMail['value'])->send(new InquiryMail($request->all()));
+            Mail::to($CONTACT_MAIL)->send(new InquiryMail($request->all()));
         }
         return response()->json(['message' => 'Inquiry sent successfully']);
     }
