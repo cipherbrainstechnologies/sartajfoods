@@ -222,7 +222,7 @@ class OrderController extends Controller
                 $order_id = time() . random_int(10000, 99999);
             
                 // Check if the generated order ID already exists in the orders table
-                $existingOrder = Order::where('order_id', $order_id)->first();
+                $existingOrder = Order::where('id', $order_id)->first();
             
             } while ($existingOrder);
             $or = [
