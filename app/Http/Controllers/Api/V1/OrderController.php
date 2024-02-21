@@ -213,9 +213,15 @@ class OrderController extends Controller
         $browserHistory = OrderLogic::browserHistory($request->user()->id,$request->ip_address,$request->forwarded_ip,$request->user_agent,$request->accept_language);
         // try {
             //DB::beginTransaction();
-            $order_id = 100000 + Order::all()->count() + 1;
+            // $order_id = 100000 + Order::all()->count() + 1; Old Code.
+            if(Order::count()){
+                $lastOrderId = 100000 + Order::count() + 1;
+            }else{
+                $lastOrderId = Order::latest('id')->value('id');
+            }
+            
             $or = [
-                'id' => $order_id,
+                'id' => $lastOrderId,
                 'user_id' => $request->user()->id,
                 'browser_history_id' => !empty($browserHistory) ? $browserHistory->id : 0,
                 'order_amount' => $request['order_amount'],

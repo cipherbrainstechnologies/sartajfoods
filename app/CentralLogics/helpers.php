@@ -1049,21 +1049,23 @@ class Helpers
                 $productDetail = json_decode($detail['product_details'], true);
                 switch ($productDetail['weight_class']) {
                     case "Kilogram":
-                        $totalWeight += $productDetail['weight'] ;
+                        $totalWeight += $productDetail['weight'] * $productDetail['quantity'];
                         break;
     
                     case "Gram":
-                        $totalWeight += $productDetail['weight'] / 1000; // Convert grams to kilograms
+                        $totalWeight += ($productDetail['weight'] / 1000) * $productDetail['quantity']; // Convert grams to kilograms
                         break;
     
                     case "Pound":
-                        $totalWeight += $productDetail['weight'] * 0.453592; // Convert pounds to kilograms
+                        $totalWeight += ($productDetail['weight'] * 0.453592) * $productDetail['quantity']; // Convert pounds to kilograms
                         break;
     
                     case "Ounce":
-                        $totalWeight += $productDetail['weight'] * 0.0283495; // Convert ounces to kilograms
+                        $totalWeight += ($productDetail['weight'] * 0.0283495) * $productDetail['quantity']; // Convert ounces to kilograms
                         break;
-    
+                    case "MilliLiter":
+                        $totalWeight += ($productDetail['weight'] / 1000) * $productDetail['quantity'];
+                        break;
                     // Add more cases if needed for other weight classes
     
                     default:

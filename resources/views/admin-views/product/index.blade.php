@@ -304,6 +304,7 @@
                                         <option value="Gram">{{translate('Gram')}}</option>
                                         <option value="Pound">{{translate('Pound')}}</option>
                                         <option value="Ounce">{{translate('Ounce')}}</option>
+                                        <option value="MilliLiter">{{translate('MilliLiter')}}</option>
                                     </select>
                                 </div>
                             </div>

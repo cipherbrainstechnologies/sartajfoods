@@ -204,7 +204,7 @@
 				<table width="100%">
 					<tr>
 						<td width="50%" valign="bottom">
-							<p style="height: 90px;"><b>Comment:</b> 7pm to 9pm</p>Note ※ This Mark is for 8%
+							<p style="height: 90px;"><b>Comment:</b> {{$order->order_note}}</p>Note ※ This Mark is for 8%
 						</td>
 						<td width="50%">
 							<table width="100%" class="invoice_table_info">

@@ -328,6 +328,7 @@
                                         <option value="Gram" {{ ($product['weight_class'] === 'Gram') ? 'selected' : '' }}>{{translate('Gram')}}</option>
                                         <option value="Pound" {{ ($product['weight_class'] === 'Pound') ? 'selected' : '' }}>{{translate('Pound')}}</option>
                                         <option value="Ounce" {{ ($product['weight_class'] === 'Ounce') ? 'selected' : '' }}>{{translate('Ounce')}}</option>
+                                        <option value="MilliLiter" {{ ($product['weight_class'] === 'MilliLiter') ? 'selected' : '' }}>{{translate('MilliLiter')}}</option>
                                     </select>
                                 </div>
                             </div>
