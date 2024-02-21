@@ -276,25 +276,59 @@ class CustomerController extends Controller
         return back();
     }
 
-    public function sentMails(){
-        $users = User::whereNotNull('email')->get();
-        if(!empty($users)){
-            foreach ($users as $key => $user) {
-                $token = rand(1000, 9999);
-                DB::table('password_resets')->updateOrInsert(['email_or_phone' => $user->email], [
-                    'email_or_phone' => $user->email,
-                    'token' => $token,
-                    'created_at' => now(),
-                ]);
-                Mail::to($user->email)->send(new ResetPasswordMailable($user,$token));
-                // Log a message
-                Log::info('Email sent '.($key + 1).' successfully for user ' . $user->id);
-            }
-        }
-        // User::whereNotNull('email')->chunk(10, function ($users) {
+    // public function sentMails(){
+    //     $users = User::whereNotNull('email')->get();
+    //     if(!empty($users)){
+    //         foreach ($users as $key => $user) {
+    //             $token = rand(1000, 9999);
+    //             DB::table('password_resets')->updateOrInsert(['email_or_phone' => $user->email], [
+    //                 'email_or_phone' => $user->email,
+    //                 'token' => $token,
+    //                 'created_at' => now(),
+    //             ]);
+    //             Mail::to($user->email)->send(new ResetPasswordMailable($user,$token));
+    //             // Log a message
+    //             Log::info('Email sent '.($key + 1).' successfully for user ' . $user->id);
+    //         }
+    //     }
+    //     // User::whereNotNull('email')->chunk(10, function ($users) {
             
-        // });
-        Log::info('All the mail sent successfully');
+    //     // });
+    //     Log::info('All the mail sent successfully');
+    // }
+
+    public function sentMails()
+{
+    $users = User::whereNotNull('email')->get();
+
+    if ($users->isNotEmpty()) {
+        $users->each(function ($user, $key) {
+            $token = rand(1000, 9999);
+
+            try {
+                DB::table('password_resets')->updateOrInsert(
+                    ['email_or_phone' => $user->email],
+                    [
+                        'email_or_phone' => $user->email,
+                        'token' => $token,
+                        'created_at' => now(),
+                    ]
+                );
+
+                Mail::to($user->email)->send(new ResetPasswordMailable($user, $token));
+
+                // Log a message
+                Log::info('Email sent ' . ($key + 1) . ' successfully for user ' . $user->id);
+            } catch (\Exception $e) {
+                // Log the error
+                Log::error('Error sending email for user ' . $user->id . ': ' . $e->getMessage());
+                // Optionally, you can continue to the next iteration of the loop
+                continue;
+            }
+        });
     }
+
+    Log::info('All the mail sent successfully');
+}
 
 }
