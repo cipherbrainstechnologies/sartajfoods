@@ -31,6 +31,7 @@ use App\Model\OrderHistory;
 use App\CentralLogics\PaypalLogic;
 use App\Http\Controllers\Api\V1\PaypalPaymentController;
 use App\Http\Controllers\Api\V1\StripePaymentController;
+use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
@@ -213,12 +214,8 @@ class OrderController extends Controller
         $browserHistory = OrderLogic::browserHistory($request->user()->id,$request->ip_address,$request->forwarded_ip,$request->user_agent,$request->accept_language);
         // try {
             //DB::beginTransaction();
-            // $order_id = 100000 + Order::all()->count() + 1; Old Code.
-            if(Order::count()== 0){
-                $order_id = 100000 + Order::count() + 1;
-            }else{
-                $order_id = Order::latest('id')->value('id');
-            }
+            // $order_id = 100000 + Order::all()->count() + 1;
+            $order_id = time() . Str::random(5);//100000 + Order::all()->count() + 1;
             
             $or = [
                 'id' => $order_id,
