@@ -24,6 +24,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use App\Mail\ResetPasswordMailable;
 
 class CustomerController extends Controller
 {
@@ -270,6 +274,27 @@ class CustomerController extends Controller
 
         Toastr::success(translate('customer_settings_updated_successfully'));
         return back();
+    }
+
+    public function sentMails(){
+        $users = User::whereNotNull('email')->get();
+        if(!empty($users)){
+            foreach ($users as $key => $user) {
+                $token = rand(1000, 9999);
+                DB::table('password_resets')->updateOrInsert(['email_or_phone' => $user->email], [
+                    'email_or_phone' => $user->email,
+                    'token' => $token,
+                    'created_at' => now(),
+                ]);
+                Mail::to($user->email)->send(new ResetPasswordMailable($user,$token));
+                // Log a message
+                Log::info('Email sent '.($key + 1).' successfully for user ' . $user->id);
+            }
+        }
+        // User::whereNotNull('email')->chunk(10, function ($users) {
+            
+        // });
+        Log::info('All the mail sent successfully');
     }
 
 }
