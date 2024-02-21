@@ -17,14 +17,18 @@
                     {{translate('order details')}}
                 </span>
             </h1>
+            @php 
+                $previousOrderId = \App\CentralLogics\Helpers::getPreviousOrderId($order['id']);
+                $nextOrderId = \App\CentralLogics\Helpers::getNextOrderId($order['id']);
+            @endphp
             <div class="d-flex justify-content-end d-print-none">
                 <a class="btn btn-icon btn-sm btn-soft-info rounded-circle mr-1"
-                    href="{{route('admin.orders.details',[$order['id']-1])}}"
+                    href="{{route('admin.orders.details', $previousOrderId)}}"
                     data-toggle="tooltip" data-placement="top" title="Previous order">
                     <i class="tio-arrow-backward"></i>
                 </a>
                 <a class="btn btn-icon btn-sm btn-soft-info rounded-circle"
-                    href="{{route('admin.orders.details',[$order['id']+1])}}" data-toggle="tooltip"
+                    href="{{route('admin.orders.details',$nextOrderId)}}" data-toggle="tooltip"
                     data-placement="top" title="Next order">
                     <i class="tio-arrow-forward"></i>
                 </a>
@@ -365,7 +369,11 @@
                                         @if($order['order_type']=='self_pickup')
                                             @php($del_c=0)
                                         @else
-                                            @php($del_c=$order['delivery_charge'])
+                                            @if(!empty($order['delivery_charge']))
+                                                @php($del_c=$order['delivery_charge'])
+                                            @else
+                                                @php($del_c=$order['free_delivery_amount'])
+                                            @endif
                                         @endif
                                         {{ Helpers::set_symbol($del_c) }}
                                         <hr>

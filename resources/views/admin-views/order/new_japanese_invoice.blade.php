@@ -113,11 +113,18 @@
 								</tr>
 								<tr>
 									<td width="100%">
-										<p style="margin:0">Name : {{$order->delivery_address['full_name']}}</p>
+										<p style="margin:0">Name : {{!empty($order->delivery_address['full_name']) ? $order->delivery_address['full_name'] : $order->delivery_address['contact_person_name']}}</p>
 										<p style="margin:0">Telephone No.: {{$order->delivery_address['contact_person_number']}}</p>
 										<p style="margin:0">Address Line 1 : {{$order->delivery_address['address']}} </p>
 										<p style="margin:0">Address Line 2 : {{$order->delivery_address['road']}} {{$order->delivery_address['house']}} {{$order->delivery_address['floor']}}</p>
-										<p style="margin:0">Postal Code : {{$order->delivery_address['post_code']}}</p>
+										<?php
+											if(!empty($order->delivery_address['post_code'])){
+												$firstPart = substr($order->delivery_address['post_code'], 0, 3);
+												$restPart = substr($order->delivery_address['post_code'], 3);
+												$Postal_code = $firstPart . '-' . $restPart;
+											}
+										?>
+										<p style="margin:0">Postal Code : {{$Postal_code}}</p>
 										<p style="margin:0">City : {{$order->delivery_address['city']}}</p>
 										<p style="margin:0">Region : {{$order->delivery_address['state']}}</p>
 									</td>
@@ -131,11 +138,11 @@
 								</tr>
 								<tr>
 									<td width="100%">
-										<p style="margin:0">Name : {{$order->delivery_address['full_name']}}</p>
+										<p style="margin:0">Name : {{!empty($order->delivery_address['full_name']) ? $order->delivery_address['full_name'] : $order->delivery_address['contact_person_name']}}</p>
 										<p style="margin:0">Telephone No.: {{$order->delivery_address['contact_person_number']}}</p>
 										<p style="margin:0">Address Line 1 : {{$order->delivery_address['address']}} </p>
 										<p style="margin:0">Address Line 2 : {{$order->delivery_address['road']}} {{$order->delivery_address['house']}} {{$order->delivery_address['floor']}}</p>
-										<p style="margin:0">Postal Code : {{$order->delivery_address['post_code']}}</p>
+										<p style="margin:0">Postal Code : {{$Postal_code}}</p>
 										<p style="margin:0">City : {{$order->delivery_address['city']}}</p>
 										<p style="margin:0">Region : {{$order->delivery_address['state']}}</p>
 									</td>
@@ -251,6 +258,14 @@
 									<td width="55%">普通便 送料</td>
 									<td width="5%">¥</td>
 									<td width="40%" style="text-align:right;">{{$order->delivery_charge}}</td>
+								</tr>
+                                @endif
+
+								@if($order->free_delivery_amount!=0)
+								<tr>
+									<td width="55%">普通便 送料</td>
+									<td width="5%">¥</td>
+									<td width="40%" style="text-align:right;">{{$order->free_delivery_amount}}</td>
 								</tr>
                                 @endif
 								<tr>

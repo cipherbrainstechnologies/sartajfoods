@@ -118,8 +118,8 @@
                                 $ord_total = $price * $detail['quantity'];
 
                                 $product = json_decode($detail->product_details, true);
-                                // $images = $product['image'] != null ? (gettype($product['image'])!='array'?json_decode($product['image'],true):$product['image']) : [];
-                                $images = $product['image'] != null ? $product['image'] : [];
+                                $images = $product['image'] != null ? (gettype($product['image'])!='array'?json_decode($product['image'],true):$product['image']) : [];
+                                // $images = $product['image'] != null ? $product['image'] : [];
                                 $product_image = count($images) > 0 ? $images[0] : null;
 
                             ?>

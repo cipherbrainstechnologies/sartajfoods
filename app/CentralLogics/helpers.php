@@ -1049,7 +1049,7 @@ class Helpers
                 $productDetail = json_decode($detail['product_details'], true);
                 switch ($productDetail['weight_class']) {
                     case "Kilogram":
-                        $totalWeight += $productDetail['weight'];
+                        $totalWeight += $productDetail['weight'] ;
                         break;
     
                     case "Gram":
@@ -1074,6 +1074,22 @@ class Helpers
         }
     
         return round($totalWeight,2);
+    }
+
+    public static function getPreviousOrderId($orderId){
+        $previousOrder = Order::where('id','<',$orderId)->orderBy('id', 'desc')->first();
+        if(!empty($previousOrder)){
+            return $previousOrder->id;
+        }
+        return $orderId;
+    }
+
+    public static function getNextOrderId($orderId){
+        $nextOrder = Order::where('id','>',$orderId)->orderBy('id', 'desc')->first();
+        if(!empty($nextOrder)){
+            return $nextOrder->id;
+        }
+        return $orderId;
     }
     
 

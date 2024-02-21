@@ -548,8 +548,9 @@ class OrderController extends Controller
      */
     public function generate_invoice(Request $request,$id): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
+        $delivery_charge = 0;
+        $delivery_fee =0;
         $order = $this->order->with('delivery_address','details','customer')->where('id', $id)->first();
-        // echo "<pre>";print_r($order->toArray());die;
         $orderDetails =collect($order->details);
         $EightPercentTax = $orderDetails->sum('eight_percent_tax');
         $TenPercentTax = $orderDetails->sum('ten_percent_tax'); 
@@ -557,7 +558,10 @@ class OrderController extends Controller
         $totalTaxPercent = Helpers::calculateTotalTaxAmount($order);
         $totalWeight = Helpers::calculateTotalWeightOrder($order);
         $subTotal = (Helpers::calculateInvoice($id));
-        $totalAmt = (Helpers::calculateInvoice($id) - $order->coupon_discount_amount) + $order->delivery_charge ;
+        $delivery_charge = $order->delivery_charge;
+        $delivery_fee = $order->free_delivery_amount;
+
+        $totalAmt = (Helpers::calculateInvoice($id) - $order->coupon_discount_amount) + $order->delivery_charge +$delivery_fee;
         $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
         $config['shop_logo'] = Helpers::get_business_settings('logo');
         $config['shop_name'] = Helpers::get_business_settings('restaurant_name');
