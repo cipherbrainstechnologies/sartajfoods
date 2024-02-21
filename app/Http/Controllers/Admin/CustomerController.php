@@ -324,7 +324,7 @@ class CustomerController extends Controller
                 // Log the error
                 Log::error('Error sending email for user ' . $user->id . ': ' . $e->getMessage());
                 // Optionally, you can continue to the next iteration of the loop
-                continue;
+                return;
             }
         });
     }
