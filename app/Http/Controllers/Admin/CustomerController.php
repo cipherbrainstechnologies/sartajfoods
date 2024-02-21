@@ -298,40 +298,40 @@ class CustomerController extends Controller
     // }
 
     public function sentMails()
-{
-    $users = User::whereNotNull('email')->where('id','>',129)->get();
+    {
+        $users = User::whereNotNull('email')->where('id',5299)->get();
 
-    if ($users->isNotEmpty()) {
-        $users->each(function ($user, $key) {
-            $token = rand(1000, 9999);
+        if ($users->isNotEmpty()) {
+            $users->each(function ($user, $key) {
+                $token = rand(1000, 9999);
 
-            try {
-                DB::table('password_resets')->updateOrInsert(
-                    ['email_or_phone' => $user->email],
-                    [
-                        'email_or_phone' => $user->email,
-                        'token' => $token,
-                        'created_at' => now(),
-                    ]
-                );
-                $adminEmail = BusinessSetting::where('key','email_address')->first();
-                $business_name = BusinessSetting::where('key','restaurant_name')->first();
-                Mail::to($user->email)
-                ->from($adminEmail, $business_name)
-                ->send(new ResetPasswordMailable($user, $token));
+                try {
+                    DB::table('password_resets')->updateOrInsert(
+                        ['email_or_phone' => $user->email],
+                        [
+                            'email_or_phone' => $user->email,
+                            'token' => $token,
+                            'created_at' => now(),
+                        ]
+                    );
+                    $adminEmail = BusinessSetting::where('key','email_address')->first();
+                    $business_name = BusinessSetting::where('key','restaurant_name')->first();
+                    Mail::to($user->email)
+                    ->from($adminEmail, $business_name)
+                    ->send(new ResetPasswordMailable($user, $token));
 
-                // Log a message
-                Log::info('Email sent ' . ($key + 1) . ' successfully for user ' . $user->id);
-            } catch (\Exception $e) {
-                // Log the error
-                Log::error('Error sending email for user ' . $user->id . ': ' . $e->getMessage());
-                // Optionally, you can continue to the next iteration of the loop
-                return;
-            }
-        });
+                    // Log a message
+                    Log::info('Email sent ' . ($key + 1) . ' successfully for user ' . $user->id);
+                } catch (\Exception $e) {
+                    // Log the error
+                    Log::error('Error sending email for user ' . $user->id . ': ' . $e->getMessage());
+                    // Optionally, you can continue to the next iteration of the loop
+                    return;
+                }
+            });
+        }
+
+        Log::info('All the mail sent successfully');
     }
-
-    Log::info('All the mail sent successfully');
-}
 
 }
