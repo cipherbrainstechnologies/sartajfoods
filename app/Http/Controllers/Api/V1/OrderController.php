@@ -214,7 +214,7 @@ class OrderController extends Controller
         // try {
             //DB::beginTransaction();
             // $order_id = 100000 + Order::all()->count() + 1; Old Code.
-            if(Order::count()){
+            if(Order::count()== 0){
                 $order_id = 100000 + Order::count() + 1;
             }else{
                 $order_id = Order::latest('id')->value('id');
