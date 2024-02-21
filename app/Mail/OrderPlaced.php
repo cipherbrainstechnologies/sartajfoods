@@ -42,14 +42,23 @@ class OrderPlaced extends Mailable
             $order_id = $this->order_id;
             $order = Order::with('delivery_address', 'details')->where('id', $order_id)->first();
             $orderDetails = collect($order->details);
+            $totalDiscount =   $orderDetails->sum('total_discount');
             $EightPercentTax = $orderDetails->sum('eight_percent_tax');
             $TenPercentTax = $orderDetails->sum('ten_percent_tax');
             $totalAmt = (Helpers::calculateInvoice($order->id)) + $order->delivery_charge;
+            $totalWeight = Helpers::calculateTotalWeightOrder($order_id);
+            $totalTaxPercent = Helpers::calculateTotalTaxAmount($order_id);
+            $subTotal = (Helpers::calculateInvoice($order_id));
             $footer_text = BusinessSetting::where(['key' => 'footer_text'])->first();
+            $config['shop_logo'] = Helpers::get_business_settings('logo');
+            $config['shop_name'] = Helpers::get_business_settings('restaurant_name');
+            $config['phone'] = Helpers::get_business_settings('phone');
+            $config['address'] = Helpers::get_business_settings('address');
+            $order->shop_detail = $config;
         
             // Render the view content
             // $viewContent = View::make('admin-views.order.latest_invoice', compact('order', 'footer_text', 'totalAmt', 'TenPercentTax', 'EightPercentTax'))->render();
-            $viewContent = View::make('admin-views.order.new_latest_invoice', compact('order', 'footer_text', 'totalAmt', 'TenPercentTax', 'EightPercentTax'))->render();
+            $viewContent = View::make('admin-views.order.new_latest_invoice', compact('order', 'totalWeight','totalTaxPercent','totalDiscount','footer_text', 'totalAmt','subTotal' ,'TenPercentTax', 'EightPercentTax'))->render();
         
             $mpdfConfig = [
                 'mode' => 'utf-8',

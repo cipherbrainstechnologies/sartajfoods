@@ -20,6 +20,7 @@
 		}
 	</style>
 </head>
+
 <body style="-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;">
 	<table width="100%" class="invoice_table">
 		<tr>
@@ -29,11 +30,11 @@
 						<td width="50%" style="padding: 0;">
 							<table width="100%" style="border: 1px solid #000;border-collapse: collapse;">
 								<tr>
-                                    
 									<td width="35%" style="border: 1px solid;text-align: center;"><img src="{{asset('/storage/restaurant/' . $order->shop_detail['shop_logo'])}}" style="width:100px" alt="logo"></td>
 									<td width="65%">
 										<table width="100%">
 											<tr>
+											
 												<td width="100%">{{$order->shop_detail['shop_name']}}</td>
 											</tr>
 											<tr>
@@ -53,6 +54,7 @@
 								</tr>
 							</table>
 						</td>
+
 						<td width="50%" style="padding: 0;">
 							<table width="100%" style="border: 1px solid #000;border-collapse: collapse;">
 								<tr>
@@ -105,9 +107,9 @@
 								<tr>
 									<td width="100%">
 										<p style="margin:0">Name : {{$order->delivery_address['full_name']}}</p>
-										<p style="margin:0">Telephone No.: 09013318701</p>
+										<p style="margin:0">Telephone No.: {{$order->delivery_address['contact_person_number']}}</p>
 										<p style="margin:0">Address Line 1 : {{$order->delivery_address['address']}} </p>
-										<p style="margin:0">Address Line 2 : {{$order->delivery_address['house']}} {{$order->delivery_address['floor']}}</p>
+										<p style="margin:0">Address Line 2 : {{$order->delivery_address['road']}} {{$order->delivery_address['house']}} {{$order->delivery_address['floor']}}</p>
 										<p style="margin:0">Postal Code : {{$order->delivery_address['post_code']}}</p>
 										<p style="margin:0">City : {{$order->delivery_address['city']}}</p>
 										<p style="margin:0">Region : {{$order->delivery_address['state']}}</p>
@@ -123,9 +125,9 @@
 								<tr>
 									<td width="100%">
 										<p style="margin:0">Name : {{$order->delivery_address['full_name']}}</p>
-										<p style="margin:0">Telephone No.: 09013318701</p>
+										<p style="margin:0">Telephone No.: {{$order->delivery_address['contact_person_number']}}</p>
 										<p style="margin:0">Address Line 1 : {{$order->delivery_address['address']}} </p>
-										<p style="margin:0">Address Line 2 : </p>
+										<p style="margin:0">Address Line 2 : {{$order->delivery_address['road']}} {{$order->delivery_address['house']}} {{$order->delivery_address['floor']}}</p>
 										<p style="margin:0">Postal Code : {{$order->delivery_address['post_code']}}</p>
 										<p style="margin:0">City : {{$order->delivery_address['city']}}</p>
 										<p style="margin:0">Region : {{$order->delivery_address['state']}}</p>
@@ -187,7 +189,7 @@
 				<table width="100%">
 					<tr>
 						<td width="50%" valign="bottom">
-							<p style="height: 90px;"><b>Comment:</b> 7pm to 9pm</p>Note ※ This Mark is for 8%
+							<p style="height: 90px;"><b>Comment: {{$order->order_note}}</b> 7pm to 9pm</p>Note ※ This Mark is for 8%
 						</td>
 						<td width="50%">
 							<table width="100%" class="invoice_table_info">
