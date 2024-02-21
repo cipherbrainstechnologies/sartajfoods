@@ -48,7 +48,8 @@ class OrderPlaced extends Mailable
             $footer_text = BusinessSetting::where(['key' => 'footer_text'])->first();
         
             // Render the view content
-            $viewContent = View::make('admin-views.order.latest_invoice', compact('order', 'footer_text', 'totalAmt', 'TenPercentTax', 'EightPercentTax'))->render();
+            // $viewContent = View::make('admin-views.order.latest_invoice', compact('order', 'footer_text', 'totalAmt', 'TenPercentTax', 'EightPercentTax'))->render();
+            $viewContent = View::make('admin-views.order.new_latest_invoice', compact('order', 'footer_text', 'totalAmt', 'TenPercentTax', 'EightPercentTax'))->render();
         
             $mpdfConfig = [
                 'mode' => 'utf-8',
