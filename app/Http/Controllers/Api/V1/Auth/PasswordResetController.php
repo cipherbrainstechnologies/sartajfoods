@@ -239,7 +239,7 @@ class PasswordResetController extends Controller
         // Check if the token exists in the password_resets table
         $resetRecord = DB::table('password_resets')->where('token', $request->token)->first();        
         if (!$resetRecord) {
-            return response()->json(['errors' => [['code' => 'invalid', 'message' => 'Invalid token.']]], 400);
+            return response()->json(['errors' => [['code' => 'invalid', 'message' => 'The password reset link has expired. Please request a new link to reset your password.']]], 400);
             // Token not found, handle accordingly (e.g., show an error message)
             // return redirect()->back()->with('error', 'Invalid token');
         }
