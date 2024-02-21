@@ -115,9 +115,9 @@
 								<tr>
 									<td width="100%">
 										<p style="margin:0">Name : {{$order->delivery_address['full_name']}}</p>
-										<p style="margin:0">Telephone No.: 09013318701</p>
+										<p style="margin:0">Telephone No.: {{$order->delivery_address['contact_person_number']}}</p>
 										<p style="margin:0">Address Line 1 : {{$order->delivery_address['address']}} </p>
-										<p style="margin:0">Address Line 2 : {{$order->delivery_address['house']}} {{$order->delivery_address['floor']}}</p>
+										<p style="margin:0">Address Line 2 : {{$order->delivery_address['road']}} {{$order->delivery_address['house']}} {{$order->delivery_address['floor']}}</p>
 										<p style="margin:0">Postal Code : {{$order->delivery_address['post_code']}}</p>
 										<p style="margin:0">City : {{$order->delivery_address['city']}}</p>
 										<p style="margin:0">Region : {{$order->delivery_address['state']}}</p>
@@ -133,9 +133,9 @@
 								<tr>
 									<td width="100%">
 										<p style="margin:0">Name : {{$order->delivery_address['full_name']}}</p>
-										<p style="margin:0">Telephone No.: 09013318701</p>
+										<p style="margin:0">Telephone No.: {{$order->delivery_address['contact_person_number']}}</p>
 										<p style="margin:0">Address Line 1 : {{$order->delivery_address['address']}} </p>
-										<p style="margin:0">Address Line 2 : </p>
+										<p style="margin:0">Address Line 2 : {{$order->delivery_address['road']}} {{$order->delivery_address['house']}} {{$order->delivery_address['floor']}}</p>
 										<p style="margin:0">Postal Code : {{$order->delivery_address['post_code']}}</p>
 										<p style="margin:0">City : {{$order->delivery_address['city']}}</p>
 										<p style="margin:0">Region : {{$order->delivery_address['state']}}</p>
