@@ -2229,7 +2229,4 @@
   'Add new sub sub category' => 'Add new sub sub category',
   'Length' => 'Length',
   'Invoice' => 'Invoice',
-  'Team Sartajfoods' => 'Team Sartajfoods',
-  'Warm regards,' => 'Warm regards ',
-  'Thank you for your cooperation and continued support. If you encounter any issues or need further assistance, please don\'t hesitate to contact us.' => 'Thank you for your cooperation and continued support. If you encounter any issues or need further assistance  please don\'t hesitate to contact us.',
 );
