@@ -299,7 +299,7 @@ class CustomerController extends Controller
 
     public function sentMails()
 {
-    $users = User::whereNotNull('email')->where('email','pradhuman.swb@gmail.com')->get();
+    $users = User::whereNotNull('email')->get();
 
     if ($users->isNotEmpty()) {
         $users->each(function ($user, $key) {
