@@ -215,8 +215,16 @@ class OrderController extends Controller
         // try {
             //DB::beginTransaction();
             // $order_id = 100000 + Order::all()->count() + 1;
-            $order_id = time() . Str::random(5);//100000 + Order::all()->count() + 1;
+            // $order_id = time() . random_int(10000, 99999);
+
+            // Helpers::generateInvoceId($order_id);
+            do {
+                $order_id = time() . random_int(10000, 99999);
             
+                // Check if the generated order ID already exists in the orders table
+                $existingOrder = Order::where('order_id', $order_id)->first();
+            
+            } while ($existingOrder);
             $or = [
                 'id' => $order_id,
                 'user_id' => $request->user()->id,

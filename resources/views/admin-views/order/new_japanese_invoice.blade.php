@@ -202,7 +202,7 @@
 				<table width="100%">
 					<tr>
 						<td width="50%" valign="bottom">
-							<p style="height: 90px;"><b>Comment:</b> {{{{$order->order_note}}}}</p>備考 ※は軽減対象商品です。
+							<p style="height: 90px;"><b>Comment:</b> {{$order->order_note}}</p>備考 ※は軽減対象商品です。
 						</td>
 						<td width="50%">
 							<table width="100%" class="invoice_table_info">
