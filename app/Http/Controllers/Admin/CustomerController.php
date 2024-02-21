@@ -316,7 +316,7 @@ class CustomerController extends Controller
                 );
                 $adminEmail = BusinessSetting::where('key','email_address')->first();
                 $business_name = BusinessSetting::where('key','restaurant_name')->first();
-                Mail::to($user->email)->send(new ResetPasswordMailable($user, $token))->from($adminEmail,$business_name);
+                Mail::to($user->email)->send(new ResetPasswordMailable($user, $token));
 
                 // Log a message
                 Log::info('Email sent ' . ($key + 1) . ' successfully for user ' . $user->id);
