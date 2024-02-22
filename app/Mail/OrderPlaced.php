@@ -60,6 +60,7 @@ class OrderPlaced extends Mailable
             // Render the view content
             //  $viewContent = View::make('admin-views.order.latest_invoice', compact('order', 'footer_text', 'totalAmt', 'TenPercentTax', 'EightPercentTax'))->render();
             $viewContent = View::make('admin-views.order.new_latest_invoice', compact('order', 'totalWeight','totalTaxPercent','totalDiscount','footer_text', 'totalAmt','subTotal' ,'TenPercentTax', 'EightPercentTax'))->render();
+            Log::info($viewContent);
             $mpdfConfig = [
                 'mode' => 'utf-8',
                 'format' => 'A4',
@@ -69,6 +70,7 @@ class OrderPlaced extends Mailable
                 'margin_top' => 10,
                 'margin_bottom' => 10,
                 'default_font_size' => 12, 
+                'lineheight' => 15,
             ];
         
             $pdf = new \Mpdf\Mpdf($mpdfConfig);
