@@ -63,7 +63,7 @@ class OrderPlaced extends Mailable
             Log::info($viewContent);
             $mpdfConfig = [
                 'mode' => 'utf-8',
-                'format' => 'auto',
+                'format' => 'A4',
                 'tempDir'   => base_path('storage/app/mpdf'),
                 'margin_left' => 10,
                 'margin_right' => 10,
