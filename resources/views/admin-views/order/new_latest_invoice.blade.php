@@ -22,17 +22,17 @@
 </head>
 
 <body style="-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;">
-	<table width="100%" class="invoice_table">
+	<table width="100%" class="invoice_table" style="width:100%">
 		<tr>
 			<td>
-				<table width="100%" style="border-collapse: collapse;">
+				<table width="100%" style="border-collapse: collapse;width:100%">
 					<tr>
 						<td width="50%" style="padding: 0;">
-							<table width="100%" style="border: 1px solid #000;border-collapse: collapse;">
+							<table width="100%" style="border: 1px solid #000;border-collapse: collapse;width:100%">
 								<tr>
 									<td width="35%" style="border: 1px solid;text-align: center;"><img src="{{asset('/storage/restaurant/' . $order->shop_detail['shop_logo'])}}" style="width:100px" alt="logo"></td>
 									<td width="65%">
-										<table width="100%">
+										<table width="100%" style="width:100%">
 											<tr>
 											
 												<td width="100%">{{$order->shop_detail['shop_name']}}</td>
@@ -56,13 +56,13 @@
 						</td>
 
 						<td width="50%" style="padding: 0;">
-							<table width="100%" style="border: 1px solid #000;border-collapse: collapse;">
+							<table width="100%" style="border: 1px solid #000;border-collapse: collapse; width:100%">
 								<tr>
 									<td width="30%">
 										<p style="margin:0">Order Id: {{$order->id}}</p>
 									</td>
 									<td width="70%">
-										<table width="100%">
+										<table width="100%" style="width:100%">
                                             @php 
                                                 $dateTime = new DateTime($order->created_at);
                                             @endphp
@@ -97,10 +97,10 @@
 		</tr>
 		<tr>
 			<td>
-				<table width="100%" style="border-collapse: collapse;">
+				<table width="100%" style="border-collapse: collapse;width:100%">
 					<tr>
 						<td width="50%" style="padding: 0;">
-							<table width="100%" style="border: 1px solid #000;border-collapse: collapse;">
+							<table width="100%" style="border: 1px solid #000;border-collapse: collapse;width:100%">
 								<tr>
 									<td width="100%" style="border: 1px solid;text-align: center;">Payment Address</td>
 								</tr>
@@ -118,7 +118,7 @@
 							</table>
 						</td>
 						<td width="50%" style="padding: 0;">
-							<table width="100%" style="border: 1px solid #000;border-collapse: collapse;">
+							<table width="100%" style="border: 1px solid #000;border-collapse: collapse;width:100%">
 								<tr>
 									<td width="100%" style="border: 1px solid;text-align: center;">Shipping Address</td>
 								</tr>
@@ -141,7 +141,7 @@
 		</tr>
 		<tr>
 			<td>
-				<table width="100%" style="border: 1px solid;border-collapse: collapse;">
+				<table width="100%" style="border: 1px solid;border-collapse: collapse;width:100%">
 					<tr>
 						<td width="50%" style="padding: 0;border: 1px solid;border-collapse: collapse;"><h3 style="margin: 0;">Total Payable Amount</h3></td>
 						<td width="50%" style="padding: 0;border: 1px solid;border-collapse: collapse;"><h3 style="margin: 0;">INVOICE # {{$totalAmt}}</h3></td>
@@ -152,7 +152,7 @@
 		<tr>
 			<td>
 				
-                <table width="100%" class="invoice_table_product">
+                <table width="100%" class="invoice_table_product" style="width:100%">
 					<tr style="background: #a0a3ca;">
                         <th width="2%" style="text-align: center;">Sr.No.</th>
 						<th width="18%" style="text-align: center;">Product Name</th>
@@ -186,13 +186,13 @@
 		</tr>
 		<tr>
 			<td>
-				<table width="100%">
+				<table width="100%" style="width:100%">
 					<tr>
 						<td width="50%" valign="bottom">
 							<p style="height: 90px;"><b>Comment: {{$order->order_note}}</b> 7pm to 9pm</p>Note ※ This Mark is for 8%
 						</td>
 						<td width="50%">
-							<table width="100%" class="invoice_table_info">
+							<table width="100%" class="invoice_table_info" style="width:100%">
 								<tr>
 									<td width="55%">Sub Total</td>
 									<td width="5%">¥</td>
