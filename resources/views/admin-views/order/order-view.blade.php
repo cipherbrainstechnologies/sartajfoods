@@ -18,17 +18,17 @@
                 </span>
             </h1>
             @php 
-                $previousOrderId = \App\CentralLogics\Helpers::getPreviousOrderId($order['id']);
                 $nextOrderId = \App\CentralLogics\Helpers::getNextOrderId($order['id']);
+                $previousOrderId = \App\CentralLogics\Helpers::getPreviousOrderId($order['id']);
             @endphp
             <div class="d-flex justify-content-end d-print-none">
                 <a class="btn btn-icon btn-sm btn-soft-info rounded-circle mr-1"
-                    href="{{route('admin.orders.details', $previousOrderId)}}"
+                    href="{{route('admin.orders.details', $nextOrderId)}}"
                     data-toggle="tooltip" data-placement="top" title="Previous order">
                     <i class="tio-arrow-backward"></i>
                 </a>
                 <a class="btn btn-icon btn-sm btn-soft-info rounded-circle"
-                    href="{{route('admin.orders.details',$nextOrderId)}}" data-toggle="tooltip"
+                    href="{{route('admin.orders.details',$previousOrderId)}}" data-toggle="tooltip"
                     data-placement="top" title="Next order">
                     <i class="tio-arrow-forward"></i>
                 </a>
@@ -139,7 +139,7 @@
                                 <h6>
                                     <span class="text-body mr-2">{{ translate('payment') }} {{ translate('status') }} : </span>
 
-                                    @if($order['payment_status']=='paid')
+                                    @if($order['payment_status']=='paid' ||  $order['order_status'] == 'delivered')
                                         <span class="badge badge-soft-success ml-sm-3">
                                             {{translate('paid')}}
                                         </span>

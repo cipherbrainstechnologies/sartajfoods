@@ -1083,15 +1083,15 @@ class Helpers
         if(!empty($previousOrder)){
             return $previousOrder->id;
         }
-        return $orderId;
+        return 0;
     }
 
     public static function getNextOrderId($orderId){
-        $nextOrder = Order::where('id','>',$orderId)->orderBy('id', 'desc')->first();
+        $nextOrder = Order::where('id','>',$orderId)->orderBy('id', 'asc')->first();
         if(!empty($nextOrder)){
             return $nextOrder->id;
         }
-        return $orderId;
+        return 0;
     }
     
 

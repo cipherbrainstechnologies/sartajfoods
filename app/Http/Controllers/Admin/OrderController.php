@@ -178,18 +178,22 @@ class OrderController extends Controller
     public function details($id): Factory|View|Application|RedirectResponse
     {   
         $order = $this->order->with('details', 'history','browser_history')->where(['id' => $id])->first();
-        
-        $orderDetails =collect($order->details);
-        $EightPercentTax = $orderDetails->sum('eight_percent_tax');
-        $TenPercentTax = $orderDetails->sum('ten_percent_tax');
-        
-        $delivery_man = $this->delivery_man->where(['is_active'=>1])
+        if(!empty($order)){
+            $orderDetails =collect($order->details);
+            $EightPercentTax = $orderDetails->sum('eight_percent_tax');
+            $TenPercentTax = $orderDetails->sum('ten_percent_tax');
+
+            $delivery_man = $this->delivery_man->where(['is_active'=>1])
             ->where(function($query) use ($order) {
                 $query->where('branch_id', $order->branch_id)
                     ->orWhere('branch_id', 0);
             })
             ->get();
-
+        }
+        // $orderDetails =collect($order->details);
+        // $EightPercentTax = $orderDetails->sum('eight_percent_tax');
+        // $TenPercentTax = $orderDetails->sum('ten_percent_tax');
+        
         if (isset($order)) {
             return view('admin-views.order.order-view', compact('order', 'delivery_man','EightPercentTax','TenPercentTax'));
         } else {
@@ -742,6 +746,9 @@ class OrderController extends Controller
         $history = OrderHistory::create($data)->order();
         $order = Order::find($request->id);
         $order->order_status = $request->order_status;
+        if($request->order_status == 'delivered'){
+            $order->payment_status = 'paid';
+        }
         $order->save();
         $status = !empty($history) ? 1 : 0;
         
