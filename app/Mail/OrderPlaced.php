@@ -81,23 +81,12 @@ class OrderPlaced extends Mailable
 
             $invoiceFileName = 'invoice_' . $order->id . '.pdf';
 
-            $storagePath = 'invoices/' . $invoiceFileName; // You can customize the storage path as needed
-            Storage::put($storagePath, $pdf->output());
-
-            $pdfPath = storage_path('app/invoices');
-
+        
             return $this->view('email-templates.customer-order-placed', compact('order_id'))
                 ->subject('Order Confirmed: Thank You!') 
-                ->attach($pdfPath, [
-                    'as' => $invoiceFileName,
+                ->attachData($pdf->Output($invoiceFileName, 'S'), $invoiceFileName, [
                     'mime' => 'application/pdf',
                 ]);
-        
-            // return $this->view('email-templates.customer-order-placed', compact('order_id'))
-            //     ->subject('Order Confirmed: Thank You!') 
-            //     ->attachData($pdf->Output($invoiceFileName, 'S'), $invoiceFileName, [
-            //         'mime' => 'application/pdf',
-            //     ]);
         } catch (\Exception $e) {
             Log::error("Error building email: {$e->getMessage()}");
         }
