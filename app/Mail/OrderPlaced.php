@@ -74,7 +74,7 @@ class OrderPlaced extends Mailable
             ];
         
             $pdf = new \Mpdf\Mpdf($mpdfConfig);
-            $pdf->AddPage('A4');
+            $pdf->AddPage('', '', '', '', 210, 297);
             $pdf->WriteHTML($viewContent);
 
             $invoiceFileName = 'invoice_' . $order->id . '.pdf';
