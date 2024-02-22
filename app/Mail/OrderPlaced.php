@@ -73,7 +73,7 @@ class OrderPlaced extends Mailable
             $invoiceFileName = 'invoice_' . $order->id . '.pdf';
             return $this->view('email-templates.customer-order-placed', compact('order_id'))
                 ->subject('Order Confirmed: Thank You!') 
-                ->attachData($pdf->Output($invoiceFileName), $invoiceFileName, [ //, 'S'
+                ->attachData($pdf->Output($invoiceFileName, 'S'), $invoiceFileName, [
                     'mime' => 'application/pdf',
                 ]);
         } catch (\Exception $e) {
