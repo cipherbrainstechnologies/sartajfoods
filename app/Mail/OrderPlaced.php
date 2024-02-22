@@ -65,18 +65,24 @@ class OrderPlaced extends Mailable
                 'mode' => 'utf-8',
                 'format' => 'A4',
                 'tempDir'   => base_path('storage/app/mpdf'),
-                
+                'margin_left' => 10,
+                'margin_right' => 10,
+                'margin_top' => 10,
+                'margin_bottom' => 10,
+                'default_font_size' => 12, 
+                'lineheight' => 15,
+                'orientation' => 'P', // Portrait orientation
+                'debug' => true, // Enable debug mode   
             ];
         
             $pdf = new \Mpdf\Mpdf($mpdfConfig);
-            $pdf->AddPage('', '', '', '', 210, 297);
             $pdf->WriteHTML($viewContent);
 
             $invoiceFileName = 'invoice_' . $order->id . '.pdf';
         
             return $this->view('email-templates.customer-order-placed', compact('order_id'))
                 ->subject('Order Confirmed: Thank You!') 
-                ->attachData($pdf->Output($invoiceFileName, 'S'), $invoiceFileName, [
+                ->attachData($pdf->Output($invoiceFileName, 'D'), $invoiceFileName, [
                     'mime' => 'application/pdf',
                 ]);
         } catch (\Exception $e) {
