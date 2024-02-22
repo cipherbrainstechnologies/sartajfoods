@@ -65,13 +65,13 @@ class OrderPlaced extends Mailable
                 'mode' => 'utf-8',
                 'format' => 'A4',
                 'tempDir'   => base_path('storage/app/mpdf'),
-                'margin_left' => 10,
-                'margin_right' => 10,
-                'margin_top' => 10,
-                'margin_bottom' => 10,
-                'default_font_size' => 12, 
-                'lineheight' => 15,
-                'orientation' => 'P', // Portrait orientation
+                // 'margin_left' => 10,
+                // 'margin_right' => 10,
+                // 'margin_top' => 10,
+                // 'margin_bottom' => 10,
+                // 'default_font_size' => 12, 
+                // 'lineheight' => 15,
+                // 'orientation' => 'P', // Portrait orientation
                 'debug' => true, // Enable debug mode   
             ];
         
