@@ -13,6 +13,7 @@ use App\Model\BusinessSetting;
 use Illuminate\Support\Facades\Log;
 use Mpdf\Mpdf;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Storage;
 
 
 class OrderPlaced extends Mailable
