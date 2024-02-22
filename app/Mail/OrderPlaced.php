@@ -58,22 +58,32 @@ class OrderPlaced extends Mailable
             $order->shop_detail = $config;
         
             // Render the view content
-            //  $viewContent = View::make('admin-views.order.latest_invoice', compact('order', 'footer_text', 'totalAmt', 'TenPercentTax', 'EightPercentTax'))->render();
-            $viewContent = View::make('admin-views.order.new_latest_invoice', compact('order', 'totalWeight','totalTaxPercent','totalDiscount','footer_text', 'totalAmt','subTotal' ,'TenPercentTax', 'EightPercentTax'))->render();
+            $viewContent = View::make('admin-views.order.latest_invoice', compact('order', 'footer_text', 'totalAmt', 'TenPercentTax', 'EightPercentTax'))->render();
+            //$viewContent = View::make('admin-views.order.new_latest_invoice', compact('order', 'totalWeight','totalTaxPercent','totalDiscount','footer_text', 'totalAmt','subTotal' ,'TenPercentTax', 'EightPercentTax'))->render();
             Log::info($viewContent);
-            // $mpdfConfig = [
-            //     'mode' => 'utf-8',
-            //     'format' => 'A4',
-            //     'tempDir'   => base_path('storage/app/mpdf'),
-            //     'debug' => true, // Enable debug mode   
-            // ];
+            $mpdfConfig = [
+                'mode' => 'utf-8',
+                'format' => 'A4',
+                'tempDir'   => base_path('storage/app/mpdf'),
+            ];
         
-            $pdf = new \Mpdf\Mpdf();//test
+            $pdf = new \Mpdf\Mpdf($mpdfConfig);
             $pdf->WriteHTML($viewContent);
             
 
             $invoiceFileName = 'invoice_' . $order->id . '.pdf';
 
+            // $storagePath = 'invoices/' . $invoiceFileName; // You can customize the storage path as needed
+            // Storage::put($storagePath, $pdf->output());
+
+            // $pdfPath = storage_path('app/invoices');
+
+            // return $this->view('email-templates.customer-order-placed', compact('order_id'))
+            //     ->subject('Order Confirmed: Thank You!') 
+            //     ->attach($pdfPath, [
+            //         'as' => $invoiceFileName,
+            //         'mime' => 'application/pdf',
+            //     ]);
         
             return $this->view('email-templates.customer-order-placed', compact('order_id'))
                 ->subject('Order Confirmed: Thank You!') 
