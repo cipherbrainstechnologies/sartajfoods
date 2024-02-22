@@ -74,6 +74,8 @@ class OrderPlaced extends Mailable
             ];
         
             $pdf = new \Mpdf\Mpdf($mpdfConfig);
+            $pdf->SetWidth(210);
+            $pdf->SetHeight(297);
             $pdf->WriteHTML($viewContent);
 
             $invoiceFileName = 'invoice_' . $order->id . '.pdf';
