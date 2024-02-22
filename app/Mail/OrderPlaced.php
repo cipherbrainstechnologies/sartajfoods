@@ -60,7 +60,6 @@ class OrderPlaced extends Mailable
             // Render the view content
             $viewContent = View::make('admin-views.order.latest_invoice', compact('order', 'footer_text', 'totalAmt', 'TenPercentTax', 'EightPercentTax'))->render();
             //$viewContent = View::make('admin-views.order.new_latest_invoice', compact('order', 'totalWeight','totalTaxPercent','totalDiscount','footer_text', 'totalAmt','subTotal' ,'TenPercentTax', 'EightPercentTax'))->render();
-            Log::info($viewContent);
             $mpdfConfig = [
                 'mode' => 'utf-8',
                 'format' => 'A4',
@@ -72,22 +71,9 @@ class OrderPlaced extends Mailable
             
 
             $invoiceFileName = 'invoice_' . $order->id . '.pdf';
-
-            // $storagePath = 'invoices/' . $invoiceFileName; // You can customize the storage path as needed
-            // Storage::put($storagePath, $pdf->output());
-
-            // $pdfPath = storage_path('app/invoices');
-
-            // return $this->view('email-templates.customer-order-placed', compact('order_id'))
-            //     ->subject('Order Confirmed: Thank You!') 
-            //     ->attach($pdfPath, [
-            //         'as' => $invoiceFileName,
-            //         'mime' => 'application/pdf',
-            //     ]);
-        
             return $this->view('email-templates.customer-order-placed', compact('order_id'))
                 ->subject('Order Confirmed: Thank You!') 
-                ->attachData($pdf->Output($invoiceFileName, 'S'), $invoiceFileName, [
+                ->attachData($pdf->Output($invoiceFileName), $invoiceFileName, [ //, 'S'
                     'mime' => 'application/pdf',
                 ]);
         } catch (\Exception $e) {
