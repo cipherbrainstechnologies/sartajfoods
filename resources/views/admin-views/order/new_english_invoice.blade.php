@@ -187,7 +187,7 @@
                                             ※ 
                                         @endif
                                     </span>
-                                    {{$productDetail['name']}}
+                                    {{$productDetail['name'] ?? $productDetail['translations'][6]['value']}}
                                 </td>
                                 <td>{{$productDetail['model']}}</td>
                                 <td width="10%" style="text-align:right;">{{$order->details[$key]['quantity']}}</td>
