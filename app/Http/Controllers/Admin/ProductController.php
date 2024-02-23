@@ -139,7 +139,8 @@ class ProductController extends Controller
         }else{
             $query = $this->product->latest();
         }
-        $products = $query->with('order_details.order')->paginate(Helpers::getPagination())->appends($query_param);
+        // $products = $query->with('order_details.order')->paginate(Helpers::getPagination())->appends($query_param);
+        $products = $query->with('order_details.order')->orderBy('id','desc')->paginate(Helpers::getPagination())->appends($query_param);
 
         foreach ($products as $product) {
             $total_sold = 0;
