@@ -279,10 +279,10 @@ class OrderController extends Controller
                 }
                 
                 // $tax_on_product = Helpers::tax_calculate($product, $price);
-
+                
                 $calculateTaxes = Helpers::tax_calculates($product,$price);
                 $discount = Helpers::afterDiscountPrice($product,$price);
-                
+                $weight = self::calculateWeight($product->weight,$c['quantity'],$product->weight_class);
                 
                     //                if (Helpers::get_business_settings('product_vat_tax_status') === 'included'){
                     //                    //$price = $price - $tax_on_product;
@@ -321,6 +321,7 @@ class OrderController extends Controller
                     'discount_on_product' => $discount['discount_amount'],
                     'total_discount' => ($discount['discount_amount'] * $c['quantity']),
                     'discount_type' => $discount['discount_type'],
+                    'weight' => $weight,
                     // 'variant' => json_encode($c['variant']),
                     // 'variation' => json_encode($c['variation']),
                     // 'variation' => json_encode($c['variations']),
@@ -383,7 +384,7 @@ class OrderController extends Controller
                 //send email
                 $adminEmail = BusinessSetting::where('key','email_address')->first();
                 $emailServices = Helpers::get_business_settings('mail_config') ;
-
+                
                 if (isset($emailServices['status']) && $emailServices['status'] == 1) {
                     Mail::to($request->user()->email)->send(new \App\Mail\OrderPlaced($order_id));
                     $orderMail = config('mail.ORDER_MAIL');
@@ -417,6 +418,39 @@ class OrderController extends Controller
         // }
     }
 
+    public function  calculateWeight($weight,$qty,$weight_class){
+        $totalWeight = 0;
+        $kilogramWeight = 0;
+        switch ($weight_class) {
+            case "Kilogram":
+                $totalWeight += ($weight * $qty) * 1000;//kilogram to gram
+                break;
+
+            case "Gram":
+                $totalWeight += ($weight *$qty) ; // Convert grams to kilograms
+                break;
+
+            case "Pound":
+                $totalWeight += (($weight * $qty) * 453.592) ; // Convert pounds to kilograms
+                break;
+
+            case "Ounce":
+                $totalWeight += (($weight * $qty) * 28.3495) ; // Convert ounces to kilograms
+                break;
+            case "Liter":
+                $totalWeight += (($weight * $qty)  * 1000) ; // Convert ounces to kilograms
+                break;
+            case "MilliLiter":
+                $totalWeight += ($weight * $qty);
+                break;
+            // Add more cases if needed for other weight classes
+
+            default:
+                // Handle unsupported weight classes
+                break;
+        }
+        return $totalWeight;
+    }
     /**
      * @param Request $request
      * @return JsonResponse

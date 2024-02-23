@@ -565,12 +565,22 @@ class OrderController extends Controller
         $TenPercentTax = $orderDetails->sum('ten_percent_tax'); 
         $totalDiscount =   $orderDetails->sum('total_discount');
         $totalTaxPercent = Helpers::calculateTotalTaxAmount($order);
-        $totalWeight = Helpers::calculateTotalWeightOrder($order);
+        $totalWeight = round(($orderDetails->sum('weight')/1000),2) ?? 0 ;
         $subTotal = (Helpers::calculateInvoice($id));
         $delivery_charge = $order->delivery_charge;
         $delivery_fee = $order->free_delivery_amount;
 
         $totalAmt = (Helpers::calculateInvoice($id) - $order->coupon_discount_amount) + $order->delivery_charge +$delivery_fee;
+        // Rounded Value Display.
+        // 
+        $roundedFraction = round($totalAmt - floor($totalAmt), 2);
+        if ($roundedFraction > 0.50) {
+            // If yes, add 1
+            $totalAmt = ceil($totalAmt);
+        } elseif ($roundedFraction < 0.50) {
+            // If no, subtract 1
+            $totalAmt = floor($totalAmt);
+        }
         $footer_text = $this->business_setting->where(['key' => 'footer_text'])->first();
         $config['shop_logo'] = Helpers::get_business_settings('logo');
         $config['shop_name'] = Helpers::get_business_settings('restaurant_name');

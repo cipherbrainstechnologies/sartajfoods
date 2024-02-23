@@ -343,7 +343,7 @@ class ProductController extends Controller
         $p->price = $request->price;
         $p->unit = $request->unit;
         $p->image = $image_data;
-        $p->capacity = $request->capacity;
+        $p->capacity = $request->capacity ?? Null;
         $p->maximum_order_quantity = !empty($request->maximum_order_quantity) ? $request->maximum_order_quantity : $request->total_stock;
         // $p->maximum_order_quantity = $request->maximum_order_quantity;
         // $p->set_menu = $request->item_type;
@@ -684,7 +684,7 @@ class ProductController extends Controller
         //combinations end
         $p->variations = json_encode($variations);
         $p->price = $request->price;
-        $p->capacity = $request->capacity;
+        $p->capacity = $request->capacity ?? Null;
         $p->unit = $request->unit;
         $p->maximum_order_quantity = !empty($request->maximum_order_quantity) ? $request->maximum_order_quantity : $request->total_stock;
 

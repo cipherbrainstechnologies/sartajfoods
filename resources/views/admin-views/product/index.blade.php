@@ -202,7 +202,7 @@
                                         for="exampleFormControlInput1">{{translate('capacity')}}</label>
                                     <input type="number" min="0" step="0.01" value="1" name="capacity"
                                         class="form-control"
-                                        placeholder="{{ translate('Ex : 54ml') }}" required>
+                                        placeholder="{{ translate('Ex : 54ml') }}" >
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -216,7 +216,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label class="input-label" for="substrack_stock">{{translate('Substrak Stock')}}<span class="input-label-secondary"></span></label>
+                                    <label class="input-label" for="substrack_stock">{{translate('Substract Stock')}}<span class="input-label-secondary"></span></label>
                                     <select name="substrack_stock" id="substrack_stock" class="form-control js-select2-custom">
                                         <option value="Yes">{{translate('yes')}}</option>
                                         <option value="No">{{translate('no')}}</option>

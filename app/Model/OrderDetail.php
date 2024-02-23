@@ -14,7 +14,8 @@ class OrderDetail extends Model
         'quantity' => 'integer',
         'tax_amount' => 'float',
         'created_at' => 'datetime',
-        'updated_at' => 'datetime'
+        'updated_at' => 'datetime',
+        'weight' => 'float'
     ];
 
     public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo

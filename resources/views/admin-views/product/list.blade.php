@@ -131,7 +131,7 @@
                                         @else
                                             <img src="{{asset('public/assets/admin/img/400x400/img2.jpg')}}">
                                         @endif
-                                        <h6 class="name line--limit-2">
+                                        <h6 class="name line--limit-2" data-bs-toggle="tooltip" data-bs-placement="top" title="{{$product['name']}}">
                                             {{\Illuminate\Support\Str::limit($product['name'], 20, $end='...')}}
                                         </h6>
                                         </a>
