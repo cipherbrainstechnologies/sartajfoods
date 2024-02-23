@@ -143,9 +143,9 @@ class ProductController extends Controller
 
         foreach ($products as $product) {
             $total_sold = 0;
-            if(!empty($product->order_details)){
+            if(!empty($product->order_details) ){
                 foreach ($product->order_details as $detail) {
-                    if ($detail->order->order_status == 'delivered'){
+                    if (!empty($detail->order->order_status) && $detail->order->order_status == 'delivered'){
                         $total_sold += $detail->quantity;
                     }
                 }
