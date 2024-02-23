@@ -97,6 +97,15 @@ class CartController extends Controller
         $subTotalAmt = $cartProducts->sum('sub_total');
         // echo 'subTotal:'.$subTotalAmt . ' '.'deliveryCharge:'.$deliveryCharge.' '.$totalEightPercentTax.' '.'totalTenPercentTax'.$totalTenPercentTax;
         $totalAmt = $subTotalAmt + $deliveryCharge + $totalEightPercentTax + $totalTenPercentTax ;
+        // Round Value
+        $roundedFraction = round($totalAmt - floor($totalAmt), 2);
+        if ($roundedFraction > 0.50) {
+            // If yes, add 1
+            $totalAmt = ceil($totalAmt);
+        } elseif ($roundedFraction < 0.50) {
+            // If no, subtract 1
+            $totalAmt = floor($totalAmt);
+        }
         $min_amount =  Helpers::get_business_settings('minimum_amount_for_cod_order');
         $max_amount =  Helpers::get_business_settings('maximum_amount_for_cod_order');
         return response()->json([
