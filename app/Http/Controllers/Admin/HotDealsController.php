@@ -54,7 +54,7 @@ class HotDealsController extends Controller
         $hotDealsData->image =  Helpers::upload('deals/', 'png', $request->file('image'));
         Toastr::success(translate('Deals added successfully!'));
        }
-
+       dd($request->product);
        $hotDealsData->title = $request->title;
        $hotDealsData->product_id = $request->product;
        $hotDealsData->discount = $request->discount;
@@ -62,6 +62,24 @@ class HotDealsController extends Controller
        $hotDealsData->end_date = $request->end_date;
        $hotDealsData->save();
        return back();
+    }
+
+    public function search_product(Request $request)
+    {
+        $query = $request->input('q');
+        $products = Product::where('id', $query)
+                           ->orWhere('name', 'like', "%$query%")
+                           ->get();
+        $data = [];
+
+        foreach ($products as $product) {
+            $data[] = [
+                'id' => $product->id,
+                'text' => $product->name
+            ];
+        }
+
+        return response()->json($data);                   
     }
      
 }

@@ -37,7 +37,7 @@
                                 <div class="col-6" >
                                     <div class="form-group">
                                         <label class="input-label" for="exampleFormControlInput1">{{translate('Product')}}</label>
-                                        <select name="product" id="product" class="form-control">
+                                        <select name="product" id="product_dropdown" class="form-control">
                                             <option value="" >{{translate('Select Product')}}</option>
                                             @foreach($products as $product)
                                                 <option value="{{ $product->id }}" @if(!empty($hotDeals)) {{ ($hotDeals->product_id === $product->id) ? 'selected' : '' }}  @endif>{{ $product->name }}</option>
@@ -250,6 +250,35 @@
                 }
             });
         }
+
+        $(document).ready(function() {
+            $('#product_dropdown').select2({
+                minimumInputLength: 1,
+                language: {
+                    inputTooShort: function () {
+                        return "Search by ID or Name";
+                    }
+                },
+                ajax: {
+                    type: 'POST',
+                    url: '{{route('admin.search-product')}}',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            _token: '{{ csrf_token() }}',
+                            q: params.term // search term
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: data
+                        };
+                    },
+                    cache: true
+                }
+            });
+        });
 
     </script>
 

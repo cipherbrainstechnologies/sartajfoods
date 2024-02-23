@@ -20,12 +20,14 @@
     <link rel="stylesheet" href="{{asset('assets/admin')}}/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{asset('assets/admin')}}/css/theme.minc619.css?v=1.0">
     <link rel="stylesheet" href="{{asset('assets/admin')}}/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     @stack('css_or_js')
 
     <script
         src="{{asset('assets/admin')}}/vendor/hs-navbar-vertical-aside/hs-navbar-vertical-aside-mini-cache.js"></script>
     <link rel="stylesheet" href="{{asset('assets/admin')}}/css/toastr.css">
     <link rel="stylesheet" href="{{asset('assets/admin')}}/css/custom-helper.css">
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 
 <body class="footer-offset">
