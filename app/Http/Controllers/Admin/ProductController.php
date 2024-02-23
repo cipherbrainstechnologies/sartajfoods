@@ -131,8 +131,7 @@ class ProductController extends Controller
             $query = $this->product->where(function ($q) use ($key) {
                 foreach ($key as $value) {
                     $q->orWhere('id', 'like', "%{$value}%")
-                        ->orWhere('name',"$value")
-                        ->orWhere('name', 'like', "%{$value}%")
+                        ->orWhere('name', 'like', "{$value}%")
                         ->orWhere('model','like',"%{$value}%");
                 }
             })->latest();
