@@ -371,10 +371,10 @@
                                     <div class="btn--container justify-content-center">
                                         <a class="action-btn btn--primary btn-outline-primary" href="{{route('admin.orders.details',['id'=>$order['id']])}}"><i class="tio-invisible"></i></a>
                                         <a class="action-btn btn-outline-primary-2" href="javascript:void(0);" onclick="openPrintPreview('{{ route('admin.orders.generate-invoice', ['id' => $order['id'], 'language' => 'en']) }}')">
-                                            <i class="tio-print"></i>
+                                            <i >En</i>
                                         </a>
                                         <a class="action-btn btn-outline-primary-2" href="javascript:void(0);" onclick="openPrintPreview('{{ route('admin.orders.generate-invoice', ['id' => $order['id'], 'language' => 'ja']) }}')">
-                                            <i class="tio-print"></i>
+                                            <i>JP</i>
                                         </a>
                                     </div>
                                 </td>
