@@ -183,7 +183,7 @@
                             <tr>
                                 <td>
                                     <div class="max-300">
-                                        {!! $product['description'] !!}
+                                        {!! strip_tags(htmlspecialchars_decode($product['description'])) !!}
                                     </div>
                                 </td>
                                 <td>
