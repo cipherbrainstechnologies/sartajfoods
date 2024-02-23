@@ -94,7 +94,12 @@ class OrderController extends Controller
                 foreach ($key as $value) {
                     $q->orWhere('id', 'like', "%{$value}%")
                         ->orWhere('order_status', 'like', "%{$value}%")
-                        ->orWhere('payment_status', 'like', "{$value}%");
+                        ->orWhere('payment_status', 'like', "{$value}%")
+                        ->orWhereHas('customer', function ($q) use ($value) {
+                            $q->where('f_name', 'like', "%{$value}%")
+                            ->orWhere('l_name', 'like', "%{$value}%")
+                            ->orWhere('phone', 'like', "%{$value}%");
+                        });
                 }
             });
             $query_param = ['search' => $request['search'], 'branch_id' => $request['branch_id'], 'start_date' => $request['start_date'],'end_date' => $request['end_date'] ];
@@ -653,7 +658,6 @@ class OrderController extends Controller
         $branch_id = $request['branch_id'];
         $start_date = $request['start_date'];
         $end_date = $request['end_date'];
-
         if ($status != 'all') {
             $query = $this->order->with(['customer', 'branch'])
                 ->when((!is_null($branch_id) && $branch_id != 'all'), function ($query) use ($branch_id) {
@@ -671,7 +675,7 @@ class OrderController extends Controller
                         ->whereDate('created_at', '<=', $end_date);
                 });
         }
-
+       
         if ($request->has('search')) {
             $key = explode(' ', $request['search']);
             $query = $query->where(function ($q) use ($key) {
@@ -679,6 +683,7 @@ class OrderController extends Controller
                     $q->orWhere('id', 'like', "%{$value}%")
                         ->orWhere('order_status', 'like', "%{$value}%")
                         ->orWhere('payment_status', 'like', "%{$value}%");
+                        
                 }
             });
             $query_param = ['search' => $request['search']];
