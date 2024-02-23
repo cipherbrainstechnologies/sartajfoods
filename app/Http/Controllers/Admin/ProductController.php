@@ -131,7 +131,8 @@ class ProductController extends Controller
             $query = $this->product->where(function ($q) use ($key) {
                 foreach ($key as $value) {
                     $q->orWhere('id', 'like', "%{$value}%")
-                        ->orWhere('name', 'like', "%{$value}%");
+                        ->orWhere('name', 'like', "%{$value}%")
+                        ->orWhere('model','like',"%{$value}%");
                 }
             })->latest();
             $query_param = ['search' => $request['search']];
@@ -142,12 +143,14 @@ class ProductController extends Controller
 
         foreach ($products as $product) {
             $total_sold = 0;
-            foreach ($product->order_details as $detail) {
-                if ($detail->order->order_status == 'delivered'){
-                    $total_sold += $detail->quantity;
+            if(!empty($product->order_details)){
+                foreach ($product->order_details as $detail) {
+                    if ($detail->order->order_status == 'delivered'){
+                        $total_sold += $detail->quantity;
+                    }
                 }
             }
-             $product->total_sold = $total_sold;
+            $product->total_sold = $total_sold;
         }
         return view('admin-views.product.list', compact('products','search'));
     }
