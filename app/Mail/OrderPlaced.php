@@ -46,8 +46,20 @@ class OrderPlaced extends Mailable
             $totalDiscount =   $orderDetails->sum('total_discount');
             $EightPercentTax = $orderDetails->sum('eight_percent_tax');
             $TenPercentTax = $orderDetails->sum('ten_percent_tax');
-            $totalAmt = (Helpers::calculateInvoice($order->id)) + $order->delivery_charge;
-            $totalWeight = Helpers::calculateTotalWeightOrder($order_id);
+            // $totalWeight = Helpers::calculateTotalWeightOrder($order_id);
+            $totalWeight = ($orderDetails->sum('weight')/1000) ?? 0 ;
+            $delivery_fee = $order->free_delivery_amount;
+            $totalAmt = (Helpers::calculateInvoice($order->id)) + $order->delivery_charge + $delivery_fee;
+
+            $roundedFraction = round($totalAmt - floor($totalAmt), 2);
+            if ($roundedFraction > 0.50) {
+                // If yes, add 1
+                $totalAmt = ceil($totalAmt);
+            } elseif ($roundedFraction < 0.50) {
+                // If no, subtract 1
+                $totalAmt = floor($totalAmt);
+            }
+            
             $totalTaxPercent = Helpers::calculateTotalTaxAmount($order_id);
             $subTotal = (Helpers::calculateInvoice($order_id));
             $footer_text = BusinessSetting::where(['key' => 'footer_text'])->first();
