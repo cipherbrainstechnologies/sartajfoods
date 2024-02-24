@@ -293,7 +293,7 @@
                                         for="exampleFormControlInput1">{{translate('weight')}}</label>
                                     <input type="text" name="weight"
                                         class="form-control"
-                                        placeholder="{{ translate('0.000000') }}" >
+                                        placeholder="{{ translate('0.000000') }}" required>
                                 </div>
                             </div>
                             <div class="col-sm-6">

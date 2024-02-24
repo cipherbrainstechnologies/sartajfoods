@@ -565,7 +565,7 @@ class OrderController extends Controller
         $TenPercentTax = $orderDetails->sum('ten_percent_tax'); 
         $totalDiscount =   $orderDetails->sum('total_discount');
         $totalTaxPercent = Helpers::calculateTotalTaxAmount($order);
-        $totalWeight = round(($orderDetails->sum('weight')/1000),2) ?? 0 ;
+        $totalWeight = ($orderDetails->sum('weight')/1000) ?? 0 ;
         $subTotal = (Helpers::calculateInvoice($id));
         $delivery_charge = $order->delivery_charge;
         $delivery_fee = $order->free_delivery_amount;

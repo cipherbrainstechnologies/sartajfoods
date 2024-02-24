@@ -317,7 +317,7 @@
                                     <input type="text" name="weight"
                                         class="form-control"
                                         value="{{ $product['weight'] }}"
-                                        placeholder="{{ translate('0.000000') }}" >
+                                        placeholder="{{ translate('0.000000') }}" required>
                                 </div>
                             </div>
                             <div class="col-sm-6">

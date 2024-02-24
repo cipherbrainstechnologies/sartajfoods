@@ -247,6 +247,14 @@
                                         <td width="40%" style="text-align:right;">{{$order->delivery_charge}}</td>
                                     </tr>
                                 @endif
+
+								@if($order->free_delivery_amount!=0)
+                                    <tr>
+                                        <td width="55%">Shipping Charges</td>
+                                        <td width="5%">¥</td>
+                                        <td width="40%" style="text-align:right;">{{$order->free_delivery_amount}}</td>
+                                    </tr>
+                                @endif
                                
 								
 								<tr>
