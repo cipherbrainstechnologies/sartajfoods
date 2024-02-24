@@ -46,6 +46,7 @@ class OrderPlaced extends Mailable
             $totalDiscount =   $orderDetails->sum('total_discount');
             $EightPercentTax = $orderDetails->sum('eight_percent_tax');
             $TenPercentTax = $orderDetails->sum('ten_percent_tax');
+            
             // $totalWeight = Helpers::calculateTotalWeightOrder($order_id);
             $totalWeight = ($orderDetails->sum('weight')/1000) ?? 0 ;
             $delivery_fee = $order->free_delivery_amount;
