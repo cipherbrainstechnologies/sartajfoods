@@ -69,26 +69,10 @@ class OrderPlaced extends Mailable
             $config['phone'] = Helpers::get_business_settings('phone');
             $config['address'] = Helpers::get_business_settings('address');
             $order->shop_detail = $config;
-        
-            // Render the view content
-            $viewContent = View::make('admin-views.order.latest_invoice', compact('order', 'footer_text', 'totalAmt', 'TenPercentTax', 'EightPercentTax'))->render();
-            //$viewContent = View::make('admin-views.order.new_latest_invoice', compact('order', 'totalWeight','totalTaxPercent','totalDiscount','footer_text', 'totalAmt','subTotal' ,'TenPercentTax', 'EightPercentTax'))->render();
-            $mpdfConfig = [
-                'mode' => 'utf-8',
-                'format' => 'A4',
-                'tempDir'   => base_path('storage/app/mpdf'),
-            ];
-        
-            $pdf = new \Mpdf\Mpdf($mpdfConfig);
-            $pdf->WriteHTML($viewContent);
             
-
-            $invoiceFileName = 'invoice_' . $order->id . '.pdf';
             return $this->view('email-templates.customer-order-placed', compact('order_id'))
-                ->subject('Order Confirmed: Thank You!') 
-                ->attachData($pdf->Output($invoiceFileName, 'S'), $invoiceFileName, [
-                    'mime' => 'application/pdf',
-                ]);
+                ->subject('Order Confirmed: Thank You!');
+               
         } catch (\Exception $e) {
             Log::error("Error building email: {$e->getMessage()}");
         }
