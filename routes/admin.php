@@ -480,9 +480,21 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::post('flash/delete-product', 'OfferController@delete_flash_product')->name('flash.delete.product');
         });
 
+        Route::group(['prefix' => 'regions', 'as' => 'regions.'], function () {
+            Route::get('add-new', 'RegionsController@index')->name('add-new');
+            Route::post('store', 'RegionsController@store')->name('store');
+            Route::get('edit/{id}', 'RegionsController@edit')->name('edit');
+            Route::post('update/{id}', 'RegionsController@update')->name('update');
+            Route::get('list', 'RegionsController@list')->name('list');
+            Route::get('status/{id}/{status}', 'RegionsController@status')->name('status');
+            Route::delete('delete/{id}', 'RegionsController@delete')->name('delete');
+        });
+
+
         Route::get('hot-deals', [HotDealsController::class, 'index'])->name('hot-deals');
         Route::post('hot-deals', [HotDealsController::class, 'store'])->name('hot-deals.store');
         Route::post('search-product', [HotDealsController::class, 'search_product'])->name('search-product');
+        
     // });
          Route::get('rm-image/{id}/{name}', [ProductController::class, 'remove_image'])->where(['name' => '.*'])->name('rm-image');
 });

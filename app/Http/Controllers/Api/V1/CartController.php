@@ -8,22 +8,45 @@ use Illuminate\Http\Request;
 use App\Model\Cart;
 use App\Model\Product;
 use App\CentralLogics\Helpers;
+use App\Model\Regions;
 use DateTime;
 
 
 class CartController extends Controller
 {
-    public function listCarts()
+    public function listCarts(Request $request)
     {
         // Retrieve the authenticated user
+        $region_id = $request->region_id;
         $user = auth()->user();
         $eight_percent = 0;
         $ten_percent = 0;
+        $FrozenWeight = 0;
+        $DryProductAmount = 0;
+        $deliveryCharge= 0;
+
+        $regionDetails = Regions::find($region_id);
+
+        if(empty($regionDetails)){
+            return response()->json(['errors' => 'no any regions found'], 403);
+        }
+
         // Fetch cart products for the authenticated user
         $cartProducts = Cart::with('product.rating')->where('user_id', $user->id)->get();
-        $cartProducts->each(function ($cartProduct) use($eight_percent,$ten_percent){
+        
+        $cartProducts->map(function ($cartProduct) use($eight_percent,$ten_percent,$FrozenWeight,$DryProductAmount){
+            $cartData = $cartProduct;
             $product = $cartProduct->product;
             
+            if($cartProduct->product['product_type'] == 1){
+                $FrozenWeight = Helpers::calculateWeight($cartProduct->product['weight'],$cartProduct->quantity,$cartProduct->product['weight_class']);
+            }
+
+            if($cartProduct->product['product_type'] != 1){
+                $DryProductAmount = $cartProduct->product['actual_price'];
+            }
+
+
             if($cartProduct->product['tax'] == 8){
                 if(!empty($product->sale_price) && $product->sale_start_date <= now() && $product->sale_end_date >= now()){
                     $eight_percent += ((($product->actual_price * $cartProduct->product['tax']) / 100) * $cartProduct->quantity); 
@@ -85,16 +108,35 @@ class CartController extends Controller
                     }, $imageArray);
                 }
             }
+            cart::where('id',$cartProduct->id)->update([
+                "dry_product_amount" => $DryProductAmount,
+                "frozen_weight"     =>$FrozenWeight
+            ]);
+            $cartData->dry_product_amount = $DryProductAmount;
+            $cartData->frozen_weight = $FrozenWeight;
             $product->tax_eight_percent= $eight_percent;
             $product->tax_ten_percent = $ten_percent;
+            
             return $cartProduct;
         });
         
-        $deliveryCharge = Helpers::get_business_settings('delivery_charge', 0);
+        $totalFrozenWeight = ($cartProducts->sum('frozen_weight')/1000) ?? 0;
+        $totalDryProductAmount = $cartProducts->sum('dry_product_amount');
         $totalDiscountAmount = $cartProducts->sum('total_discount');
         $totalEightPercentTax = $cartProducts->sum('eight_percent');
         $totalTenPercentTax = $cartProducts->sum('ten_percent');
         $subTotalAmt = $cartProducts->sum('sub_total');
+        
+        if($totalDryProductAmount > 0 && $totalDryProductAmount < $regionDetails->maximum_order_amt){
+            $deliveryCharge += $regionDetails->dry_delivery_charge;
+        }
+        
+        if($totalFrozenWeight > 0 && $totalFrozenWeight < $regionDetails->frozen_weight){
+            
+            $deliveryCharge += $regionDetails->frozen_delivery_charge;
+        }
+        
+        // $deliveryCharge = Helpers::get_business_settings('delivery_charge', 0);
         // echo 'subTotal:'.$subTotalAmt . ' '.'deliveryCharge:'.$deliveryCharge.' '.$totalEightPercentTax.' '.'totalTenPercentTax'.$totalTenPercentTax;
         $totalAmt = $subTotalAmt + $deliveryCharge + $totalEightPercentTax + $totalTenPercentTax ;
         // Round Value
@@ -163,7 +205,6 @@ class CartController extends Controller
             return response()->json(['error' => 'Product not found'], 404);
         }
         $discount_price = Helpers::afterDiscountPrice($product,$product->actual_price);
-        // echo $discount_price['discount_amount'];die;
         // $productPrice = $product->price - $discount_price['discount_amount'];
         
         $discountPrice = $discount_price['discount_amount'];

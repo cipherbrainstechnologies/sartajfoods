@@ -4,6 +4,8 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Model\Regions;
+use App\User;
 
 class Cart extends Model
 {
@@ -20,6 +22,10 @@ class Cart extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function region(){
+        return $this->belongTo(Regions::class);
     }
 
     public function getTotalEightPercentAttribute()

@@ -843,6 +843,40 @@ class Helpers
         }
     }
 
+    public static function calculateWeight($weight,$qty,$weight_class){
+        $totalWeight = 0;
+        $kilogramWeight = 0;
+        switch ($weight_class) {
+            case "Kilogram":
+                $totalWeight += ($weight * $qty) * 1000;//kilogram to gram
+                break;
+
+            case "Gram":
+                $totalWeight += ($weight *$qty) ; // Convert grams to kilograms
+                break;
+
+            case "Pound":
+                $totalWeight += (($weight * $qty) * 453.592) ; // Convert pounds to kilograms
+                break;
+
+            case "Ounce":
+                $totalWeight += (($weight * $qty) * 28.3495) ; // Convert ounces to kilograms
+                break;
+            case "Liter":
+                $totalWeight += (($weight * $qty)  * 1000) ; // Convert ounces to kilograms
+                break;
+            case "MilliLiter":
+                $totalWeight += ($weight * $qty);
+                break;
+            // Add more cases if needed for other weight classes
+
+            default:
+                // Handle unsupported weight classes
+                break;
+        }
+        return $totalWeight;
+    }   
+
     public static function getPagination()
     {
         $pagination_limit = BusinessSetting::where('key', 'pagination_limit')->first();

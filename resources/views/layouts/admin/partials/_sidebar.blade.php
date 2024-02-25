@@ -417,6 +417,22 @@
                                 </a>
                             </li>
 
+                            <li class="nav-item">
+                                <small
+                                    class="nav-subtitle">{{translate('regions_management')}}</small>
+                                <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                            </li>
+
+                            <li class="navbar-vertical-aside-has-menu {{Request::is('admin/regions*') ?'show active':''}}">
+                                <a class="js-navbar-vertical-aside-menu-link nav-link"
+                                   href="{{route('admin.regions.add-new')}}" title="{{translate('Regions')}}">
+                                    <i class="tio-shopping-basket nav-icon"></i>
+                                    <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
+                                    {{translate('Regions')}}
+                                </span>
+                                </a>
+                            </li>
+
                             <!-- <li class="navbar-vertical-aside-has-menu {{Request::is('admin/notification*')?'active':''}}">
                                 <a class="js-navbar-vertical-aside-menu-link nav-link"
                                    href="{{route('admin.notification.add-new')}}"
