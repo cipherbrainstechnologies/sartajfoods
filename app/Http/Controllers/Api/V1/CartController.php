@@ -17,7 +17,7 @@ class CartController extends Controller
     public function listCarts(Request $request)
     {
         // Retrieve the authenticated user
-        $region_id = $request->region_id;
+        $region_id = !empty($request->region_id) ? $request->region_id : 1;
         $user = auth()->user();
         $eight_percent = 0;
         $ten_percent = 0;
@@ -27,9 +27,9 @@ class CartController extends Controller
 
         $regionDetails = Regions::find($region_id);
 
-        if(empty($regionDetails)){
-            return response()->json(['errors' => 'no any regions found'], 403);
-        }
+        // if(empty($regionDetails)){
+        //     return response()->json(['errors' => 'no any regions found'], 403);
+        // }
 
         // Fetch cart products for the authenticated user
         $cartProducts = Cart::with('product.rating')->where('user_id', $user->id)->get();
