@@ -750,7 +750,7 @@ class OrderController extends Controller
     public function order_history(Request $request)
     {
         $status = 0;
-        $orderHistoryData = OrderHistory::with('order')->where('order_id', $request->id)->first();
+        $orderHistoryData = OrderHistory::with('order','user')->where('order_id', $request->id)->first();
         $data = [
             'order_id' => $request->id,
             'status' => $request->order_status,
@@ -766,6 +766,8 @@ class OrderController extends Controller
         }
         $order->save();
         $status = !empty($history) ? 1 : 0;
+
+        // Mail::to($request->user()->email)->send(new \App\Mail\OrderPlaced($order_id));
         
         return response()->json($status);
     }

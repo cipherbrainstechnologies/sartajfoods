@@ -246,7 +246,8 @@ class OrderController extends Controller
                 'delivery_date' => $request->delivery_date,
                 'delivery_address' => json_encode(CustomerAddress::find($request->delivery_address_id) ?? null),
                 'date' => date('Y-m-d'),
-                'delivery_charge' => $delivery_charge,
+                // 'delivery_charge' => $delivery_charge,
+                'delivery_charge' => $request->delivery_charge,
                 'payment_by' => $request['payment_method'] == 'offline_payment' ? $request['payment_by'] : null,
                 'payment_note' => $request['payment_method'] == 'offline_payment' ? $request['payment_note'] : null,
                 'free_delivery_amount' => $free_delivery_amount,
@@ -385,16 +386,19 @@ class OrderController extends Controller
                 $adminEmail = BusinessSetting::where('key','email_address')->first();
                 $emailServices = Helpers::get_business_settings('mail_config') ;
                 
+            
                 if (isset($emailServices['status']) && $emailServices['status'] == 1) {
                     Mail::to($request->user()->email)->send(new \App\Mail\OrderPlaced($order_id));
                     $orderMail = config('mail.ORDER_MAIL');
                     if(!empty($orderMail) && !empty($orderMail)){
                         Mail::to($orderMail)->send(new \App\Mail\OrderPlaced($order_id));
+                        \Log::info('Place Order Mail sent to admin successfully.');
                     }
                     \Log::info('Place Order Mail sent successfully.');
                 }
 
             } catch (\Exception $e) {
+                Log::error("Error building email: {$e->getMessage()}");
             }
 
             if($request->payment_method == "paypal"){
@@ -609,7 +613,11 @@ class OrderController extends Controller
         $ten_percent = 0;
         $total_sub_amt = 0;
         $discount = 0;
+        $FrozenWeight = 0;
+        $DryProductAmount = 0;
+
         $order = $this->order->with('details.product','details')->where('id', $order_id)->first();
+        
         if(!empty($order)){
             $order->delivery_address = (array)$order->delivery_address;
             $order_detail = $this->order_detail->where('order_id', $order_id)->get()->toArray();
@@ -662,10 +670,10 @@ class OrderController extends Controller
                 }
                 
             }
-            
+
                 $order->couponPrice = round($order->coupon_discount_amount ,2);
                 $order->total_sub_amt = round($total_sub_amt,2);
-                $order->total_amt = round(($total_sub_amt + $eight_percent +  $ten_percent + Helpers::get_business_settings('delivery_charge') - round($order->coupon_discount_amount ,2) ),2);
+                $order->total_amt = round(($total_sub_amt + $eight_percent +  $ten_percent + $order->delivery_charge - round($order->coupon_discount_amount ,2) ),2);
                 $order->eight_percent =  round($eight_percent,2);
                 $order->ten_percent =  round($ten_percent,2);
                 

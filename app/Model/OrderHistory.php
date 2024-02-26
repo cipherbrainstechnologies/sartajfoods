@@ -18,4 +18,9 @@ class OrderHistory extends Model
     {
         return $this->belongsTo(Order::class, 'order_id');
     }
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class, 'order_id');
+    }
 }

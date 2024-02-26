@@ -1156,8 +1156,7 @@
                 },
 
                 success: function (data) {
-                    console.log(data);
-                    toastr.success('{{ translate("Oreder history saved successfully") }}');
+                    toastr.success('{{ translate("Order history saved successfully") }}');
                     location.reload();
                 }
             });     

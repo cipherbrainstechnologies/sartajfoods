@@ -125,8 +125,8 @@
 											}
 										?>
 										<p style="margin:0">Postal Code : {{$Postal_code}}</p>
-										<p style="margin:0">City : {{$order->delivery_address['city']}}</p>
-										<p style="margin:0">Region : {{$order->delivery_address['state']}}</p>
+										<p style="margin:0">City : {{$order->delivery_address['city_name'] ?? ''}}</p>
+										<p style="margin:0">Region : {{$order->delivery_address['state_name'] ?? ''}}</p>
 									</td>
 								</tr>
 							</table>
@@ -143,8 +143,8 @@
 										<p style="margin:0">Address Line 1 : {{$order->delivery_address['address']}} </p>
 										<p style="margin:0">Address Line 2 : {{$order->delivery_address['road']}} {{$order->delivery_address['house']}} {{$order->delivery_address['floor']}}</p>
 										<p style="margin:0">Postal Code : {{$Postal_code}}</p>
-										<p style="margin:0">City : {{$order->delivery_address['city']}}</p>
-										<p style="margin:0">Region : {{$order->delivery_address['state']}}</p>
+										<p style="margin:0">City : {{$order->delivery_address['city_name'] ?? ''}}</p>
+										<p style="margin:0">Region : {{$order->delivery_address['state_name'] ?? ''}}</p>
 									</td>
 								</tr>
 							</table>
