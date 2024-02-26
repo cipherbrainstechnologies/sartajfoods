@@ -63,7 +63,8 @@ class CustomerController extends Controller
             return response()->json(['errors' => Helpers::error_processor($validator)], 403);
         }
         $regionDetail = $this->regions->find($request->region_id);
-        $cityDetail  = $this->cities->find($request->city);
+        $cityDetail  = (!empty($request->city)) ? $this->cities->find($request->city) : null;
+       
         $address = [
             'user_id' => $request->user()->id,
             'full_name' => !empty($request->full_name) ? $request->full_name : null,
@@ -80,7 +81,7 @@ class CustomerController extends Controller
             'region_id' => !empty($request->region_id) ? $request->region_id : null,
             'post_code' => $request->post_code,
             'city' => !empty($request->city) ? $request->city : null, 
-            'city_name' => $cityDetail->name,
+            'city_name' => !empty($request->city) ? $cityDetail->name : null,
             'state_name' => $regionDetail->name,
             'created_at' => now(),
             'updated_at' => now()
@@ -127,7 +128,7 @@ class CustomerController extends Controller
         //     'updated_at' => now()
         // ];
         $regionDetail = $this->regions->find($request->region_id);
-        $cityDetail  = $this->cities->find($request->city);
+        $cityDetail  = (!empty($request->city)) ?$this->cities->find($request->city) : null;
 
         $address = [
             'user_id' => $request->user()->id,
@@ -145,7 +146,7 @@ class CustomerController extends Controller
             'region_id' => !empty($request->region_id) ? $request->region_id : null,
             'post_code' => $request->post_code,
             'city' => !empty($request->city) ? $request->city : null, 
-            'city_name' => $cityDetail->name,
+            'city_name' => !empty($request->city) ? $cityDetail->name : null,
             'state_name' => $regionDetail->name,
             'created_at' => now(),
             'updated_at' => now()
