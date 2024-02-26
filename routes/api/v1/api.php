@@ -252,4 +252,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
     Route::get('payment-fail', 'PaymentController@fail')->name('api.V1.payment-fail');
 
     Route::post('create-checkout-session', 'StripePaymentController@createCheckoutSession');
+
+    Route::get('regions','RegionsController@get_all_regions');
+    Route::get('city/{region_id}','CitiesController@get_all_cities');
 });
