@@ -57,7 +57,6 @@ class CustomerController extends Controller
             // 'address_type' => 'required',
             'contact_person_number' => 'required',
             'address' => 'required',
-            'city' => 'required'
         ]);
 
         if ($validator->fails()) {
