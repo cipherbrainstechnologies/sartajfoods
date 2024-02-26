@@ -28,4 +28,9 @@ class Regions extends Model
         return $this->hasMany(Regions::class);
     }
 
+    public function cities():\Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Cities::class);
+    }
+
 }

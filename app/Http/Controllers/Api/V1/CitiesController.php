@@ -11,7 +11,7 @@ class CitiesController extends Controller
 {
     //
     public function get_all_cities($region_id){
-        $cityDetail = Cities::where('region_id',$region_id)->get();
+        $cityDetail = Cities::with('regions')->where('region_id',$region_id)->get();
         if(!empty($cityDetail)){
             return response()->json(['city' => $cityDetail->toArray()], 200);
         }

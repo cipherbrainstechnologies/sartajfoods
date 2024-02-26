@@ -12,4 +12,11 @@ class Cities extends Model
 
     protected  $table = 'cities';
     protected $fillable = ['name','status'];
+
+    public function regions():\Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->HasMany(Regions::class,'id','region_id');
+    }
+
+
 }
