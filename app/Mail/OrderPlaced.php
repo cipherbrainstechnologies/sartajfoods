@@ -40,6 +40,7 @@ class OrderPlaced extends Mailable
     public function build()
     {  
         try {
+            $subject = '';
             $order_id = $this->order_id;
             $order = Order::with('delivery_address', 'details')->where('id', $order_id)->first();
             $orderDetails = collect($order->details);
@@ -69,9 +70,21 @@ class OrderPlaced extends Mailable
             $config['phone'] = Helpers::get_business_settings('phone');
             $config['address'] = Helpers::get_business_settings('address');
             $order->shop_detail = $config;
-            
+            if($order->order_status == "confirmed"){
+                $subject = 'Order Confirmation: '.$order->id;
+            }elseif($order->order_status == "processing"){
+                $subject = 'Order Update: Your Order is Being Processed!';
+            }elseif($order->order_status == "canceled"){
+                $subject = 'Order Cancellation Confirmation';
+            }elseif($order->order_status == "failed"){
+                $subject = 'Order Processing Failure Notification';
+            }elseif($order->order_status == "returned"){
+                $subject = 'Order Return Notification';
+            }else{
+                $subject = 'Order Confirmation: Your Order is Successfully Placed!';
+            }
             return $this->view('email-templates.customer-order-placed', compact('order_id'))
-                ->subject('Order Confirmation: Your Order is Successfully Placed!');
+                ->subject();
                
         } catch (\Exception $e) {
             Log::error("Error building email: {$e->getMessage()}");
