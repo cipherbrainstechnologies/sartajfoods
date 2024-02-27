@@ -84,7 +84,7 @@ class OrderPlaced extends Mailable
                 $subject = 'Order Confirmation: Your Order is Successfully Placed!';
             }
             return $this->view('email-templates.customer-order-placed', compact('order_id'))
-                ->subject();
+                ->subject($subject);
                
         } catch (\Exception $e) {
             Log::error("Error building email: {$e->getMessage()}");
