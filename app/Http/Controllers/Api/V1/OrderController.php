@@ -616,7 +616,7 @@ class OrderController extends Controller
         $FrozenWeight = 0;
         $DryProductAmount = 0;
 
-        $order = $this->order->with('details.product','details')->where('id', $order_id)->first();
+        $order = $this->order->with('details.product','details','customer.addresses')->where('id', $order_id)->first();
         
         if(!empty($order)){
             $order->delivery_address = (array)$order->delivery_address;
