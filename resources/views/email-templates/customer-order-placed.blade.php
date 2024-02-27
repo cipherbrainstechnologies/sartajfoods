@@ -493,7 +493,7 @@
                                         </span>
                                         {{$order->delivery_address['contact_person_name']}},
                                       </p>
-                                      <span data-key="4664702_introduction_text" class="text" style="text-align: center; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000;">
+                                      <span data-key="4664702_introduction_text" class="text" style="text-align: left; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000;">
                                         <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;text-align=left" ></p>
                                         @if($order->order_status == "pending")
                                           <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;text-align=left">
