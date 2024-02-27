@@ -57,7 +57,7 @@ class RegionsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {        
+    {
         $request->validate([
             'name' => 'required|unique:regions',
             'minimum_order_value' => 'numeric',
@@ -72,35 +72,34 @@ class RegionsController extends Controller
             'minimum_weight_delivery_charge.numeric' => 'The frozen product delivery charge must be a numeric value.',
         ]);
 
-        // foreach ($request->name as $name) {
-            if (strlen($request->name) > 255) {
+        foreach ($request->name as $name) {
+            if (strlen($name) > 255) {
                 toastr::error(translate('Name is too long!'));
                 return back();
             }
-        // }
+        }
         $ct = $this->regions;
-        // $ct->name = $request->name[array_search('en', $request->lang)];
-        $ct->name = $request->name;
+        $ct->name = $request->name[array_search('en', $request->lang)];
         $ct->maximum_order_amt = $request->minimum_order_value;
         $ct->dry_delivery_charge = $request->minimum_amt_delivery_charge;
         $ct->frozen_weight = $request->minimum_weight;
         $ct->frozen_delivery_charge	 = $request->minimum_weight_delivery_charge;
         $ct->status = 1;//$request->status;
         $ct->save();
-        // foreach($request->lang as $index=>$key)
-        // {
-        //     // if($request->name[$index] && $key != 'en')
-        //     // {
-        //         $data[] = array(
-        //             'translationable_type' => 'App\Model\Regions',
-        //             'translationable_id' => $ct->id,
-        //             'locale' => $key,
-        //             'key' => 'name',
-        //             'value' => $request->name[$index],
-        //         );
+        foreach($request->lang as $index=>$key)
+        {
+            // if($request->name[$index] && $key != 'en')
+            // {
+                $data[] = array(
+                    'translationable_type' => 'App\Model\Regions',
+                    'translationable_id' => $ct->id,
+                    'locale' => $key,
+                    'key' => 'name',
+                    'value' => $request->name[$index],
+                );
             
-        // }
-        // $this->translation->insert($data);        
+        }
+        $this->translation->insert($data);        
         Toastr::success(translate('Regions created successfully'));
         return back();
     }
@@ -154,32 +153,31 @@ class RegionsController extends Controller
             'minimum_weight.numeric' => 'The frozen weigh must be a numeric value.',
             'minimum_weight_delivery_charge.numeric' => 'The frozen product delivery charge must be a numeric value.',
         ]);
-        // foreach ($request->name as $name) {
-            if (strlen($request->name) > 255) {
+        foreach ($request->name as $name) {
+            if (strlen($name) > 255) {
                 toastr::error(translate('Name is too long!'));
                 return back();
             }
-        // }
+        }
         $ct = $this->regions->find($id);
-        // $ct->name = $request->name[array_search('en', $request->lang)];
-        $ct->name = $request->name;
+        $ct->name = $request->name[array_search('en', $request->lang)];
         $ct->maximum_order_amt = $request->minimum_order_value;
         $ct->dry_delivery_charge = $request->minimum_amt_delivery_charge;
         $ct->frozen_weight = $request->minimum_weight;
         $ct->frozen_delivery_charge	 = $request->minimum_weight_delivery_charge;
         $ct->status = 1;//$request->status;
         $ct->save();
-        // foreach($request->lang as $index=>$key)
-        // {
-        //     Translation::updateOrInsert(
-        //         ['translationable_type'  => 'App\Model\Regions',
-        //             'translationable_id'    => $ct->id,
-        //             'locale'                => $key,
-        //             'key'                   => 'name'
-        //         ],
-        //         ['value'                 => $request->name[$index]]
-        //     );
-        // }
+        foreach($request->lang as $index=>$key)
+        {
+            Translation::updateOrInsert(
+                ['translationable_type'  => 'App\Model\Regions',
+                    'translationable_id'    => $ct->id,
+                    'locale'                => $key,
+                    'key'                   => 'name'
+                ],
+                ['value'                 => $request->name[$index]]
+            );
+        }
         Toastr::success(translate('Region updated successfully'));
         return back();
     }

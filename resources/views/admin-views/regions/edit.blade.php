@@ -31,18 +31,18 @@
                             @php($data = Helpers::get_business_settings('language'))
                             @php($default_lang = Helpers::get_default_language())
                             {{-- @php($default_lang = 'en') --}}
-                            <!-- @if ($data && array_key_exists('code', $data[0])) -->
+                            @if ($data && array_key_exists('code', $data[0]))
                                 {{-- @php($default_lang = json_decode($language)[0]) --}}
-                                <!-- <ul class="nav nav-tabs d-inline-flex mb-5">
+                                <ul class="nav nav-tabs d-inline-flex mb-5">
                                     @foreach ($data as $lang)
                                     <li class="nav-item">
                                         <a class="nav-link lang_link {{ $lang['default'] == true ? 'active' : '' }}" href="#"
                                         id="{{ $lang['code'] }}-link">{{ \App\CentralLogics\Helpers::get_language_name($lang['code']) . '(' . strtoupper($lang['code']) . ')' }}</a>
                                     </li>
                                     @endforeach
-                                </ul> -->
+                                </ul>
                                 <div class="row  g-4">
-                                    <!-- @foreach ($data as $lang)
+                                    @foreach ($data as $lang)
                                         <div class="col-sm-6 {{ $lang['default'] == false ? 'd-none' : '' }} lang_form"
                                                 id="{{ $lang['code'] }}-form">
                                             <div class="col-lg-12">
@@ -72,22 +72,14 @@
                                         </div>
                                         <input type="hidden" name="lang[]" value="{{ $default_lang }}">
                                     @endif
-                                    <input name="position" value="0" hidden> -->
-                                            <div class="col-sm-6">
-                                                 <label class="form-label"
-                                                    for="exampleFormControlInput1">{{translate('region')}} {{ translate('name') }}
-                                                </label>
-                                                <input type="text" name="name" class="form-control" placeholder="{{translate('region')}} {{ translate('name') }}"  value="{{$regions['name']}}" required
-                                                    {{$lang['status'] == true ? 'required':''}}
-                                                    @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
-                                            </div>
-                                            <div class="col-sm-6">
+                                    <input name="position" value="0" hidden>
+                                    <div class="col-sm-6">
                                                  
                                             </div>
                                             <div class="col-sm-6">
                                                  <label class="form-label"
                                                     for="exampleFormControlInput1">{{ translate('Dry Product Minimum Order Value') }}
-                                                </label>
+                                                ({{ strtoupper($lang['code']) }})</label>
                                                 <input type="text" name="minimum_order_value" class="form-control" placeholder="{{ translate('Dry Product Minimum Order Value') }}" maxlength="255"  value="{{$regions['maximum_order_amt']}}" required
                                                     {{$lang['status'] == true ? 'required':''}}
                                                     @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
@@ -96,7 +88,7 @@
                                             <div class="col-sm-6">
                                                  <label class="form-label"
                                                     for="exampleFormControlInput1">{{ translate('Dry Product Delivery Charge Less Than Minimum Order Value ') }}
-                                                </label>
+                                                ({{ strtoupper($lang['code']) }})</label>
                                                 <input type="text" name="minimum_amt_delivery_charge" class="form-control" placeholder="{{ translate('Dry Product Delivery Charge Less Than Minimum Order Value ') }}" maxlength="255" value="{{$regions['dry_delivery_charge']}}" required
                                                     {{$lang['status'] == true ? 'required':''}}
                                                     @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
@@ -105,7 +97,7 @@
                                             <div class="col-sm-6">
                                                  <label class="form-label"
                                                     for="exampleFormControlInput1">{{ translate('Frozen Product Minimum Weight in KG') }}
-                                                </label>
+                                                ({{ strtoupper($lang['code']) }})</label>
                                                 <input type="text" name="minimum_weight" class="form-control" placeholder="{{ translate('Frozen Product Minimum Weight in KG') }}" maxlength="255" value="{{$regions['frozen_weight']}}" required
                                                     {{$lang['status'] == true ? 'required':''}}
                                                     @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
@@ -114,7 +106,7 @@
                                             <div class="col-sm-6">
                                                  <label class="form-label"
                                                     for="exampleFormControlInput1">{{ translate('Frozen Product Delivery Charge Less Than Minimum Weight') }}
-                                                </label>
+                                                ({{ strtoupper($lang['code']) }})</label>
                                                 <input type="text" name="minimum_weight_delivery_charge" class="form-control" placeholder="{{ translate('Frozen Product Delivery Charge Less Than Minimum Weight') }}" maxlength="255" value="{{$regions['frozen_delivery_charge']}}" required
                                                     {{$lang['status'] == true ? 'required':''}}
                                                     @if($lang['status'] == true) oninvalid="document.getElementById('{{$lang['code']}}-link').click()" @endif>
