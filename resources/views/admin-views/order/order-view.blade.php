@@ -610,23 +610,25 @@
                                 </div>
                                 <div class="d-flex">
                                     <span class="name">{{translate('road')}}</span>
-                                    <span class="info">#{{ $address['road']}}</span>
+                                    <span class="info">{{ $address['road'] ?? null}}</span>
                                 </div>
+                                @if(!empty($address['city_name']))
                                 <div class="d-flex">
                                     <span class="name">{{translate('city')}}</span>
-                                    <span class="info">#{{ $address['city_name']}}</span>
+                                    <span class="info">{{ $address['city_name'] ?? null}}</span>
                                 </div>
+                                @endif
                                 <div class="d-flex">
                                     <span class="name">{{translate('state')}}</span>
-                                    <span class="info">#{{ $address['state_name']}}</span>
+                                    <span class="info">{{ $address['state_name'] ?? null}}</span>
                                 </div>
                                 <!-- <div class="d-flex">
                                     <span class="name">{{translate('house')}}</span>
-                                    <span class="info">#{{ $address['house']}}</span>
+                                    <span class="info">{{ $address['house'] ?? null}}</span>
                                 </div>
                                 <div class="d-flex">
                                     <span class="name">{{translate('floor')}}</span>
-                                    <span class="info">#{{ $address['floor']}}</span>
+                                    <span class="info">{{ $address['floor'] ?? null}}</span>
                                 </div> -->
                                 <hr class="w-100">
                                 <div>
