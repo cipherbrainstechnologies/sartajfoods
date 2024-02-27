@@ -2231,7 +2231,6 @@
   'Invoice' => 'Invoice',
   'MilliLiter' => 'MilliLiter',
   'Substract Stock' => 'Substract Stock',
-<<<<<<< Updated upstream
   'Shipping Charges' => 'Shipping Charges',
   '8% Taxable Amount' => '8% Taxable Amount',
   'Regions' => 'Regions',
@@ -2266,6 +2265,4 @@
   'Product Added!' => 'Product Added!',
   'Quantity Updated!' => 'Quantity Updated!',
   'Order deleted!' => 'Order deleted!',
-=======
->>>>>>> Stashed changes
 );
