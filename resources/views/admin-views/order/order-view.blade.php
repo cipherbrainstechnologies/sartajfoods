@@ -89,6 +89,9 @@
                                  <a class="btn btn--info print--btn" target="_blank" href="{{route('admin.orders.shpping_list',[$order['id']])}}">
                                     <i class="tio-invisible mr-1"></i> {{translate('shipping_list')}}
                                 </a>
+                                <button class="btn btn--info print--btn" data-toggle="modal" data-target="#product_model_{{ $order['id'] }}">
+                                    <i class="tio-add"></i> {{translate('add New Product')}}
+                                </button>
                             </div>
                             <div class="text-right mt-3 order-invoice-right-contents text-capitalize">
                                 <h6>
@@ -195,7 +198,8 @@
                                     <th class="border-0 text-right">{{translate('Price Per pcs')}}</th>
                                     <th class="border-0 text-right">{{translate('Quantity')}}</th>
                                     <th class="border-0 text-right">{{translate('Discount Per pcs')}}</th>
-                                    <th class="text-right border-0">{{translate('Total Price')}}</th>
+                                    <th class="border-0 text-right">{{translate('Total Price')}}</th>
+                                    <th class="text-right border-0">{{translate('action')}}</th>
                                 </tr>
                             </thead>
                             @foreach($order->details as $detail)
@@ -272,7 +276,41 @@
                                             <!-- <h5>{{ Helpers::set_symbol(($detail['price'] * $detail['quantity']) - ($detail['discount_on_product'] * $detail['quantity'])) }}</h5> -->
                                             <h5>{{ Helpers::set_symbol(($detail['price'] * $detail['quantity'])) }}</h5>
                                         </td>
+                                        <td>
+                                            <div class="btn--container justify-content-center">
+                                                <button class="action-btn" data-toggle="modal" data-target="#model_{{ $detail['product_id'] }}" >
+                                                <i class="tio-edit"></i></button>
+                                            </div>    
+                                        </td>
                                     </tr>
+                                     <div class="modal fade" id="model_{{ $detail['product_id'] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">{{translate('add New Product')}}</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <form action="{{route('admin.orders.update_quantity')}}" method="post" id="update_order_product">
+                                                    @csrf
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label for="recipient-name" class="col-form-label">{{translate('Quantity')}}</label>
+                                                            <input type="number" min="1" value="{{ $detail['quantity'] }}" class="form-control" id="quantity_update" name="quantity_update">
+                                                            <label id="quantity_update_error" class="error d-none" for="quantity_update"></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <input type="hidden" value="{{ $detail['id'] }}" class="form-control" id="order_detail_id" name="order_detail_id">
+                                                        <input type="hidden" value="{{ $detail['product_id'] }}" class="form-control" id="product" name="product">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{translate('close')}}</button>
+                                                     <button type="submit" class="btn btn-primary">{{translate('save')}}</button>
+                                                </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                     @endif
                                     @endforeach
                                     <tr>
@@ -722,12 +760,12 @@
                                 <div class="hs-unfold w-0 flex-grow w-100">
                                     <select class="custom-select custom-select" name="order_status" id="order_status" data-id="{{$order['id']}}">
                                         <option value="pending" {{ ($order->order_status === 'pending') ? 'selected' : '' }}>{{translate('pending')}}</option>
-                                        <option value="confirmed" {{ ($order->order_status === 'confirmed') ? 'selected' : '' }}>{{translate('confirmed')}}</option>
+                                        <!--<option value="confirmed" {{ ($order->order_status === 'confirmed') ? 'selected' : '' }}>{{translate('confirmed')}}</option> --!>
                                         <option value="processing" {{ ($order->order_status === 'processing') ? 'selected' : '' }}>{{translate('processing')}}</option>
-                                        <option value="out_for_delivery" {{ ($order->order_status === 'out_for_delivery') ? 'selected' : '' }}>{{translate('out_for_delivery')}}</option>
+                                        <!--<option value="out_for_delivery" {{ ($order->order_status === 'out_for_delivery') ? 'selected' : '' }}>{{translate('out_for_delivery')}}</option> --!>
                                         <option value="delivered" {{ ($order->order_status === 'delivered') ? 'selected' : '' }}>{{translate('delivered')}}</option>
-                                        <option value="returned" {{ ($order->order_status === 'returned') ? 'selected' : '' }}>{{translate('returned')}}</option>
-                                        <option value="failed" {{ ($order->order_status === 'failed') ? 'selected' : '' }}>{{translate('failed')}}</option>
+                                        <!-- <option value="returned" {{ ($order->order_status === 'returned') ? 'selected' : '' }}>{{translate('returned')}}</option> --!>
+                                        <!-- <option value="failed" {{ ($order->order_status === 'failed') ? 'selected' : '' }}>{{translate('failed')}}</option> --!>
                                         <option value="canceled" {{ ($order->order_status === 'canceled') ? 'selected' : '' }}>{{translate('canceled')}}</option>
                                     </select>
                                 </div>    
@@ -999,6 +1037,43 @@
         </div>
     </div>
     <!-- End Modal -->
+    
+    <div class="modal fade" id="product_model_{{ $order['id'] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">{{translate('add New Product')}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="{{route('admin.orders.product_add')}}" method="post" id="add_order_product">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="col-form-label" for="product_dropdown">{{translate('Product')}}</label>
+                            <select name="product" id="product_dropdown" class="form-control">
+                                <option value="" >{{translate('Select Product')}}</option>
+                                    @foreach($products as $product)
+                                        <option value="{{ $product->id }}" @if(!empty($hotDeals)) {{ ($hotDeals->product_id === $product->id) ? 'selected' : '' }}  @endif>{{ $product->name }}</option>
+                                    @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">{{translate('Quantity')}}</label>
+                            <input type="number" min="1" value="1" class="form-control" id="quantity" name="quantity">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" value="{{ $order['id'] }}" class="form-control" id="order_id" name="order_id">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{{translate('close')}}</button>
+                        <button type="submit" class="btn btn-primary">{{translate('save')}}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @push('script_2')
@@ -1169,6 +1244,152 @@
                 }
             });     
         });
+
+        $(document).ready(function() {
+            $('#product_dropdown').select2({
+                minimumInputLength: 1,
+                language: {
+                    inputTooShort: function () {
+                        return "Search by ID or Name";
+                    }
+                },
+                ajax: {
+                    type: 'POST',
+                    url: '{{route('admin.search-product')}}',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            _token: '{{ csrf_token() }}',
+                            q: params.term // search term
+                        };
+                    },
+                    processResults: function(data) {
+                        return {
+                            results: data
+                        };
+                    },
+                    cache: true
+                }
+            });
+
+            $("#add_order_product").validate({
+                rules: {
+                    product: "required",
+                    quantity: {
+                        required: true,
+                        min: 1, // Ensures quantity is not zero
+                        checkQuantity: true // Custom method to check against database quantity
+                    }
+                },
+                messages: {
+                    product: "Please select product",
+                    quantity: {
+                        required: "Please enter a quantity",
+                        min: "Quantity must be greater than zero",
+                        checkQuantity: "Quantity exceeds available stock"
+                    }
+                },
+                // Define where to display error messages
+                errorPlacement: function(error, element) {
+                error.appendTo(element.parent());
+                }
+            });
+
+            $.validator.addMethod("checkQuantity", function(value, element) {
+                var productId = $("#product_dropdown").val();
+                var enteredQuantity = parseInt(value);
+                var isValid = false;
+
+                if (!productId) {
+                    return true;
+                }
+
+                $.ajax({
+                    url: "{{route('admin.orders.check_quantity')}}", // Replace this with your server endpoint
+                    type: "POST",
+                    data: { 
+                        _token: '{{ csrf_token() }}',
+                        product_id: productId,
+                    },
+                    async: false, // Ensure synchronous call to handle validation result properly
+                    success: function(response) {
+                        var databaseQuantity = parseInt(response);
+                        isValid = enteredQuantity <= databaseQuantity;
+                     }
+                });
+
+                return isValid;
+
+            }, "Quantity exceeds available stock");
+
+            $.validator.addMethod("checkQuantityForUpdate", function(value, element) {
+                var orderId = $('#order_detail_id').val();
+                var enteredQuantity = parseInt(value);
+                var isValid = false;
+
+                $.ajax({
+                    url: "{{route('admin.orders.check_quantity')}}", // Replace this with your server endpoint
+                    type: "POST",
+                    data: { 
+                        _token: '{{ csrf_token() }}',
+                        order_id: orderId,
+
+                    },
+                    async: false, // Ensure synchronous call to handle validation result properly
+                    success: function(response) {
+                        var databaseQuantity = parseInt(response);
+                        isValid = enteredQuantity <= databaseQuantity;
+                     }
+                });
+
+                return isValid;
+
+            }, "Quantity exceeds available stock");
+
+
+            $('#update_order_product').on('submit', function(e) {
+                var orderId = $('#order_detail_id').val();
+                var enteredQuantity = $('#quantity_update').val();
+
+                $.ajax({
+                    url: "{{route('admin.orders.check_quantity')}}", // Replace this with your server endpoint
+                    type: "POST",
+                    data: { 
+                        _token: '{{ csrf_token() }}',
+                        order_id: orderId,
+                    },
+                    async: false, // Ensure synchronous call to handle validation result properly
+                    success: function(response) {
+                        var databaseQuantity = parseInt(response);
+                        if(enteredQuantity <= databaseQuantity) {
+                            $('#quantity_update_error').text('');
+                            $('#quantity_update_error').addClass('d-none');
+                        } else {
+                            $('#quantity_update_error').text('Quantity exceeds available stock');
+                            $('#quantity_update_error').removeClass('d-none');
+                            e.preventDefault();
+                        }
+                     }
+                });
+
+            });
+        });
+
+        $('#quantity_update').keyup(function(){
+           if($(this).val() === '') {
+             $('#quantity_update_error').text('Please enter quantity');
+             $('#quantity_update_error').removeClass('d-none');
+           } else if($(this).val() <= 0) {
+             $('#quantity_update_error').text('Quantity must be greater than zero');
+             $('#quantity_update_error').removeClass('d-none'); 
+           } else {
+                 $('#quantity_update_error').text('');
+                 $('#quantity_update_error').addClass('d-none');
+           }
+        });
+
+
     </script>
 
 @endpush

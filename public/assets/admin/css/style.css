@@ -4069,7 +4069,7 @@ body *::-webkit-scrollbar-thumb {
 
 .order-invoice-left,
 .order-invoice-right {
-  max-width: 50%;
+  max-width: 53%;
 }
 
 @media screen and (max-width: 575px) {
@@ -5541,3 +5541,12 @@ aside .navbar-vertical-content {
 .mh-80px{
     max-height: 80px;
 }
+
+.error { 
+  color: #ff0000;
+  font-weight: normal;
+ }
+
+ .select2 {
+  width: 100% !important;
+ }

@@ -200,7 +200,8 @@ class OrderController extends Controller
         // $TenPercentTax = $orderDetails->sum('ten_percent_tax');
         
         if (isset($order)) {
-            return view('admin-views.order.order-view', compact('order', 'delivery_man','EightPercentTax','TenPercentTax'));
+            $products =  $this->product->all();
+            return view('admin-views.order.order-view', compact('order', 'delivery_man','EightPercentTax','TenPercentTax', 'products'));
         } else {
             Toastr::info(translate('No more orders!'));
             return back();
@@ -771,5 +772,110 @@ class OrderController extends Controller
         \Log::info('Place Order Mail sent to admin successfully.');
         
         return response()->json($status);
+    }
+
+     /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function delete(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        $order = $this->order->find($request->id);
+        $order_details = $this->order_detail->where('order_id', $request->id)->get();
+        foreach($order_details as $order_detail) {
+            if(!empty($order_detail)) {
+                $order_detail_obj = $this->order_detail->find($order_detail->id);
+                $product_obj = $this->product->find($order_detail->product_id);
+                $product_obj->total_stock = $product_obj->total_stock + $order_detail->quantity;
+                $product_obj->save();
+                $order_detail_obj->delete();
+            }
+        }
+        $order->delete();
+        Toastr::success(translate('Order deleted!'));
+        return back();
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function productAdd(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        // dd($request);
+        $product_detail = $this->product->find($request->product);
+        
+        $order_detail = $this->order_detail;
+        $order_detail->product_id = $product_detail->id;
+        $order_detail->order_id = $request->order_id;
+        $order_detail->price = $product_detail->price;
+        $order_detail->product_details = json_encode($product_detail);
+        $order_detail->quantity = $request->quantity;
+        $tax = !empty($product_detail->tax) ? $product_detail->price * ($product_detail->tax/100) : 0;
+        $order_detail->tax_amount = $tax;
+        $order_detail->eight_percent_tax = ($product_detail->tax === 8.00) ? $tax : 0;
+        $order_detail->ten_percent_tax = ($product_detail->tax === 10.00) ? $tax : 0;
+        $order_detail->created_at = now();
+        $order_detail->updated_at = now();
+        $order_detail->unit = $product_detail->unit;
+        
+        $order_detail->save();
+
+        $product_detail->total_stock = $product_detail->total_stock - $request->quantity;
+        $product_detail->save();
+        
+        Toastr::success(translate('Product Added!'));
+        return back();
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function check_quantity(Request $request)
+    {
+        // dd(1);
+        $product_id_by_order = '';
+        if(!empty($request->order_id)) {
+            $product_id_by_order = $this->order_detail->find($request->order_id);
+        }
+        $id = !empty($request->product_id) ? $request->product_id : $product_id_by_order->product_id;
+        $product_data = $this->product->find($id);
+        $quantity = !empty($product_data->total_stock) ? $product_data->total_stock : 0;
+        return response()->json($quantity);
+    }
+
+     /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function update_quantity(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        // dd($request);
+        $order_detail = $this->order_detail->find($request->order_detail_id);
+        $product_data = $this->product->find($request->product);
+        $quantity_data = $order_detail->quantity;
+        // dd($request->quantity_update, $order_detail->quantity);
+        if($request->quantity_update === $order_detail->quantity) {
+            $quantity_data = $order_detail->quantity;
+        }
+        if($request->quantity_update <= $order_detail->quantity) {
+            $quantity_data = $product_data->total_stock + abs(($request->quantity_update - $order_detail->quantity));
+        }
+        if($request->quantity_update >= $order_detail->quantity) {
+            $quantity_data = $product_data->total_stock - abs(($request->quantity_update - $order_detail->quantity));
+        }
+        
+        $order_detail->quantity = $request->quantity_update;
+        $order_detail->updated_at = now();
+
+        $product_data->total_stock = $quantity_data;
+
+        $product_data->save();
+
+        $order_detail->save();
+
+        Toastr::success(translate('Quantity Updated!'));
+        return back();
     }
 }

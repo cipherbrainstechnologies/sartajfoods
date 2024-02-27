@@ -268,6 +268,8 @@
                                     {{translate('action')}}
                                 </div>
                             </th>
+                             <th>
+                            </th>
                         </tr>
                         </thead>
 
@@ -377,6 +379,18 @@
                                             <i>JP</i>
                                         </a>
                                     </div>
+                                </td>
+                                <td>
+                                    <div class="btn--container justify-content-center">
+                                        <a class="action-btn btn--danger btn-outline-danger" href="javascript:"
+                                            onclick="form_alert('product-{{$order['id']}}','{{ translate("Want to delete this") }}')">
+                                            <i class="tio-delete-outlined"></i>
+                                        </a>
+                                    </div>
+                                    <form action="{{route('admin.orders.delete',[$order['id']])}}"
+                                        method="post" id="product-{{$order['id']}}">
+                                        @csrf @method('delete')
+                                    </form>
                                 </td>
                             </tr>
 
