@@ -4,6 +4,7 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\User;
 
 class OrderHistory extends Model
 {
@@ -19,8 +20,8 @@ class OrderHistory extends Model
         return $this->belongsTo(Order::class, 'order_id');
     }
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function customer(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(User::class, 'order_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

@@ -575,13 +575,21 @@
                                     <span class="info">#{{ $address['road']}}</span>
                                 </div>
                                 <div class="d-flex">
+                                    <span class="name">{{translate('city')}}</span>
+                                    <span class="info">#{{ $address['city_name']}}</span>
+                                </div>
+                                <div class="d-flex">
+                                    <span class="name">{{translate('state')}}</span>
+                                    <span class="info">#{{ $address['state_name']}}</span>
+                                </div>
+                                <!-- <div class="d-flex">
                                     <span class="name">{{translate('house')}}</span>
                                     <span class="info">#{{ $address['house']}}</span>
                                 </div>
                                 <div class="d-flex">
                                     <span class="name">{{translate('floor')}}</span>
                                     <span class="info">#{{ $address['floor']}}</span>
-                                </div>
+                                </div> -->
                                 <hr class="w-100">
                                 <div>
                                     <a target="_blank"
