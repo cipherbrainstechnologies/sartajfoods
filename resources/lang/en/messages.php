@@ -2262,4 +2262,5 @@
   'Dear' => 'Dear',
   'Order history saved successfully' => 'Order history saved successfully',
   'state' => 'State',
+  'New Region' => 'New Region',
 );
