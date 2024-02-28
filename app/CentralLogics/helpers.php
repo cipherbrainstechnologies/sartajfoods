@@ -871,7 +871,8 @@ class Helpers
             // Add more cases if needed for other weight classes
 
             default:
-                // Handle unsupported weight classes
+            // Handle unsupported weight classes
+                $totalWeight +=0;
                 break;
         }
         return $totalWeight;

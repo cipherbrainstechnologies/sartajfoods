@@ -43,7 +43,7 @@ class CartController extends Controller
             }
 
             if($cartProduct->product['product_type'] != 1){
-                $DryProductAmount = $cartProduct->product['actual_price'];
+                $DryProductAmount = $cartProduct->product['actual_price'] * $cartProduct->quantity;
             }
 
 
@@ -154,11 +154,11 @@ class CartController extends Controller
             'user' => $user,
             'cartProducts' => $cartProducts,
             'delivery_charge' => $deliveryCharge,
-            'total_sub_amt' => round($subTotalAmt,2),
-            'total_amt' => round($totalAmt,2),
-            'eight_percent' => round($totalEightPercentTax,2),
-            'ten_percent' => round($totalTenPercentTax,2),
-            'totalDiscountAmount' => round($totalDiscountAmount,2),
+            'total_sub_amt' => round($subTotalAmt),
+            'total_amt' => round($totalAmt),
+            'eight_percent' => round($totalEightPercentTax),
+            'ten_percent' => round($totalTenPercentTax),
+            'totalDiscountAmount' => round($totalDiscountAmount),
             'minOrderAmount' => (Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ( $totalAmt < $min_amount)) ? $min_amount : null,
             'maxOrderAmount' => (Helpers::get_business_settings('maximum_amount_for_cod_order_status') == 1 && ( $totalAmt < $max_amount)) ? $max_amount : null,
         ]);
@@ -375,8 +375,8 @@ class CartController extends Controller
             }
        
         }
-        $totalDiscount = round(($cart->discount *  $quantity),2);
-        $subtotal = round(($cart->price * $quantity),2);
+        $totalDiscount = round(($cart->discount *  $quantity));
+        $subtotal = round(($cart->price * $quantity));
 
         // Update the quantity
         $cart->update([
@@ -500,13 +500,13 @@ class CartController extends Controller
                     ],
                     [
                         'quantity'      => $data['qty'],
-                        'eight_percent' => round($eight_percent,2),
-                        'ten_percent'   => round($ten_percent,2),
-                        'price'         => round($product->actual_price,2),
+                        'eight_percent' => round($eight_percent),
+                        'ten_percent'   => round($ten_percent),
+                        'price'         => round($product->actual_price),
                         // 'special_price' => (!empty($specialPrice)) ? $specialPrice : 0,
                         'discount_type' => $discount_type,
-                        'discount'      => round($discount,2),
-                        'sub_total'     => round($subTotal,2)
+                        'discount'      => round($discount),
+                        'sub_total'     => round($subTotal)
                     ]
                 );
               
