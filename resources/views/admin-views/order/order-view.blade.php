@@ -331,7 +331,7 @@
                                     </dt>
                                     <dd class="col-6 col-xl-5 pr-5">
                                             {{--{{ Helpers::set_symbol($sub_total) }}--}}
-                                            {{ Helpers::set_symbol($amount) }}
+                                            {{ Helpers::set_symbol(round($amount)) }}
                                     </dd>
                                     <dt class="col-6 text-left">
                                         <div class="ml-auto max-w-130px">
@@ -365,7 +365,7 @@
                                         </div>
                                     </dt>
                                     <dd class="col-6 col-xl-5 pr-5">
-                                        {{ Helpers::set_symbol($EightPercentTax) }}
+                                        {{ Helpers::set_symbol(round($EightPercentTax)) }}
                                     </dd>
                                     @endif
                                     @if(!empty($TenPercentTax))           
@@ -375,7 +375,7 @@
                                         </div>
                                     </dt>
                                     <dd class="col-6 col-xl-5 pr-5">
-                                        {{ Helpers::set_symbol($TenPercentTax) }}
+                                        {{ Helpers::set_symbol(round($TenPercentTax)) }}
                                     </dd>
                                     @endif
                                     @if($order['order_type'] != 'pos')
@@ -423,7 +423,7 @@
                                         </div>
                                         </dt>
                                     
-                                    <dd class="col-6 col-xl-5 pr-5">{{ Helpers::set_symbol($total+$del_c+$TenPercentTax+$EightPercentTax-$order['coupon_discount_amount']-$order['extra_discount']) }}</dd>
+                                    <dd class="col-6 col-xl-5 pr-5">{{ Helpers::set_symbol(round($total+$del_c+$TenPercentTax+$EightPercentTax-$order['coupon_discount_amount']-$order['extra_discount'])) }}</dd>
                                 </dl>
                                 <!-- End Row -->
                             </div>

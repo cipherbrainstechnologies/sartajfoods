@@ -229,14 +229,14 @@
 								<tr>
 									<td width="55%">消費税８％</td>
 									<td width="5%">¥</td>
-									<td width="40%" style="text-align:right;">{{$EightPercentTax}}</td>
+									<td width="40%" style="text-align:right;">{{round($EightPercentTax)}}</td>
 								</tr>
                                 @endif
                                 @if($TenPercentTax != 0)
 								<tr>
 									<td width="55%">消費税10％</td>
 									<td width="5%">¥</td>
-									<td width="40%" style="text-align:right;">{{$TenPercentTax}}</td>
+									<td width="40%" style="text-align:right;">{{round($TenPercentTax)}}</td>
 								</tr>
                                 @endif
                                 @if($totalDiscount != 0)
