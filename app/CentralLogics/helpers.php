@@ -845,7 +845,7 @@ class Helpers
 
     public static function calculateWeight($weight,$qty,$weight_class){
         $totalWeight = 0;
-        $kilogramWeight = 0;
+        $kilogramWeight = 0; 
         switch ($weight_class) {
             case "Kilogram":
                 $totalWeight += ($weight * $qty) * 1000;//kilogram to gram

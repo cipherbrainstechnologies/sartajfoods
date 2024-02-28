@@ -36,7 +36,7 @@ class CartController extends Controller
         
         $cartProducts->map(function ($cartProduct) use($eight_percent,$ten_percent,$FrozenWeight,$DryProductAmount){
             $cartData = $cartProduct;
-            $product = $cartProduct->product;
+            $product = $cartProduct->product; 
             
             if($cartProduct->product['product_type'] == 1){
                 $FrozenWeight = Helpers::calculateWeight($cartProduct->product['weight'],$cartProduct->quantity,$cartProduct->product['weight_class']);
