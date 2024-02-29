@@ -771,10 +771,10 @@ class OrderController extends Controller
         $order->save();
         // $status = !empty($history) ? 1 : 0;
        
-        if($request->notify_customer === "true"){
+        // if($request->notify_customer === "true"){
             Mail::to($orderHistoryData->order->customer->email)->send(new \App\Mail\OrderPlaced($request->id));
             \Log::info('Place Order Mail sent to user successfully.');
-        }
+        // }
         
         
         return response()->json($status);
