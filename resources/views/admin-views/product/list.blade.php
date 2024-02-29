@@ -100,7 +100,9 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div class="table-responsive datatable-custom">
+                        
                         <table class="table table-borderless table-thead-bordered table-nowrap table-align-middle card-table">
                             <thead class="thead-light">
                             <tr>
@@ -210,14 +212,33 @@
                             @endforeach
                             </tbody>
                         </table>
-
-                        <div class="page-area">
+                        
+                        <div class="row mb-3">
+                            <div class="col-lg-2 col-md-2 col-sm-2 col-12">
+                                <select class="form-select form-control prod-pagination" id="perPageDropdown" onchange="changePerPage(this.value)">
+                                    <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
+                                    <option value="50" {{ request('perPage') == 50 ? 'selected' : '' }}>50</option>
+                                    <option value="100" {{ request('perPage') == 100 ? 'selected' : '' }}>100</option>
+                                    <option value="500" {{ request('perPage') == 500 ? 'selected' : '' }}>500</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-10 col-md-10 col-sm-10 col-12">
+                                <div class="page-area product-pagination">
+                                    <table>
+                                        <tfoot class="border-top">
+                                        {!! $products->links() !!}
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="page-area">
                             <table>
                                 <tfoot class="border-top">
                                 {!! $products->links() !!}
                                 </tfoot>
                             </table>
-                        </div>
+                        </div> -->
                         @if(count($products)==0)
                             <div class="text-center p-4">
                                 <img class="w-120px mb-3" src="{{asset('/public/assets/admin/svg/illustrations/sorry.svg')}}" alt="Image Description">
@@ -302,6 +323,12 @@
                 },
             });
         });
+    </script>
+    <script>
+    function changePerPage(value) {
+        // Redirect to the current page with the selected number of data per page
+        window.location.href = '{{ url()->current() }}?perPage=' + value;
+    }
     </script>
 
     <script>

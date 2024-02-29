@@ -126,6 +126,8 @@ class ProductController extends Controller
     {
         $query_param = [];
         $search = $request['search'];
+        $perPage = $request->input('perPage', Helpers::getPagination());
+
         if ($request->has('search')) {
             $key = explode(' ', $request['search']);
             $query = $this->product->where(function ($q) use ($key) {
@@ -140,7 +142,7 @@ class ProductController extends Controller
             $query = $this->product->latest();
         }
         // $products = $query->with('order_details.order')->paginate(Helpers::getPagination())->appends($query_param);
-        $products = $query->with('order_details.order')->orderBy('id','desc')->paginate(Helpers::getPagination())->appends($query_param);
+        $products = $query->with('order_details.order')->orderBy('id','desc')->paginate($perPage)->appends($query_param);
 
         foreach ($products as $product) {
             $total_sold = 0;

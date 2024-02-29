@@ -757,17 +757,21 @@ class OrderController extends Controller
             'status' => $request->order_status,
             'comment' => !empty($request->comment) ? $request->comment : null,
             'is_customer_notify' => ($request->notify_customer === "true") ? 1 :0, 
-        ];
-
+        ];        
         $history = OrderHistory::create($data)->order();
+
         $order = Order::find($request->id);
         $order->order_status = $request->order_status;
         if($request->order_status == 'delivered'){
             $order->payment_status = 'paid';
         }
+        if($request->order_status == 'delivered'){
+            $order->payment_status = 'unpaid';
+        }
         $order->save();
-        $status = !empty($history) ? 1 : 0;
-        if($history->is_customer_notify){
+        // $status = !empty($history) ? 1 : 0;
+       
+        if($request->notify_customer === "true"){
             Mail::to($orderHistoryData->order->customer->email)->send(new \App\Mail\OrderPlaced($request->id));
             \Log::info('Place Order Mail sent to user successfully.');
         }

@@ -5550,3 +5550,8 @@ aside .navbar-vertical-content {
  .select2 {
   width: 100% !important;
  }
+ .prod-pagination{
+    width: 70px;
+    text-align: center;
+    margin-left: 20px;
+ }
