@@ -14,6 +14,7 @@ use App\Model\Order;
 use App\Model\OrderDetail;
 use App\Model\Cart;
 use App\Model\Product;
+use App\Model\TimeSlot;
 use App\Model\Review;
 use App\User;
 use Illuminate\Http\JsonResponse;
@@ -615,10 +616,16 @@ class OrderController extends Controller
         $discount = 0;
         $FrozenWeight = 0;
         $DryProductAmount = 0;
+        $timeSlotDetail = 'All Day';
 
-        $order = $this->order->with('details.product','details','customer.addresses')->where('id', $order_id)->first();
-        
+        $order = $this->order->with('details.product','details','customer.addresses')->where('id', $order_id)->first();        
+        if(!empty($order->time_slot_id)){
+            $timeSlot = TimeSlot::where('id',$order->time_slot_id)->first();
+            $timeSlotDetail = Helpers::TimeSlot($timeSlot);
+        }
+        // 
         if(!empty($order)){
+            $order->time_slot = $timeSlotDetail;
             $order->delivery_address = (array)$order->delivery_address;
             $order_detail = $this->order_detail->where('order_id', $order_id)->get()->toArray();
             $ids = [];

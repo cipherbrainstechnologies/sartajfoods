@@ -216,10 +216,10 @@
                         <div class="row mb-3">
                             <div class="col-lg-2 col-md-2 col-sm-2 col-12">
                                 <select class="form-select form-control prod-pagination" id="perPageDropdown" onchange="changePerPage(this.value)">
-                                    <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option>
+                                    <!-- <option value="10" {{ request('perPage') == 10 ? 'selected' : '' }}>10</option> -->
                                     <option value="50" {{ request('perPage') == 50 ? 'selected' : '' }}>50</option>
-                                    <option value="100" {{ request('perPage') == 100 ? 'selected' : '' }}>100</option>
-                                    <option value="500" {{ request('perPage') == 500 ? 'selected' : '' }}>500</option>
+                                    <!-- <option value="100" {{ request('perPage') == 100 ? 'selected' : '' }}>100</option>
+                                    <option value="500" {{ request('perPage') == 500 ? 'selected' : '' }}>500</option> -->
                                 </select>
                             </div>
                             <div class="col-lg-10 col-md-10 col-sm-10 col-12">

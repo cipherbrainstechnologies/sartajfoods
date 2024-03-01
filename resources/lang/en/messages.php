@@ -2265,4 +2265,5 @@
   'Product Added!' => 'Product Added!',
   'Quantity Updated!' => 'Quantity Updated!',
   'Order deleted!' => 'Order deleted!',
+  'completed' => 'Completed',
 );

@@ -19,6 +19,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
+use DateTime;
 
 class Helpers
 {
@@ -877,6 +878,16 @@ class Helpers
         }
         return $totalWeight;
     }   
+
+    public static function TimeSlot($timeSlot){
+        $startDateTime = DateTime::createFromFormat('H:i:s', $timeSlot->start_time);
+        $endDateTime = DateTime::createFromFormat('H:i:s', $timeSlot->end_time);
+
+        $startTime12Hrs = $startDateTime->format('h:i A');
+        $endTime12Hrs = $endDateTime->format('h:i A');
+
+        return  $startTime12Hrs .' - '.$endTime12Hrs;
+    }
 
     public static function getPagination()
     {
