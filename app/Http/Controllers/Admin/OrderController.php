@@ -13,6 +13,7 @@ use App\Model\Order;
 use App\Model\OrderDetail;
 use App\Model\Product;
 use App\User;
+use App\Model\TimeSlot;
 use Box\Spout\Common\Exception\InvalidArgumentException;
 use Box\Spout\Common\Exception\IOException;
 use Box\Spout\Common\Exception\UnsupportedTypeException;
@@ -560,7 +561,12 @@ class OrderController extends Controller
     {
         $delivery_charge = 0;
         $delivery_fee =0;
+        $timeSlotDetail = translate('All Day');
         $order = $this->order->with('delivery_address','details','customer')->where('id', $id)->first();
+        if(!empty($order->time_slot_id)){
+            $timeSlot = TimeSlot::where('id',$order->time_slot_id)->first();
+            $timeSlotDetail = Helpers::TimeSlot($timeSlot);
+        }
         $orderDetails =collect($order->details);
         $EightPercentTax = $orderDetails->sum('eight_percent_tax');
         $TenPercentTax = $orderDetails->sum('ten_percent_tax'); 
@@ -589,9 +595,10 @@ class OrderController extends Controller
         $config['address'] = Helpers::get_business_settings('address');
         $order->shop_detail = $config;
         if($request->language=="ja"){
-            return view('admin-views.order.new_japanese_invoice', compact('order','totalWeight','totalTaxPercent','totalDiscount' ,'footer_text','totalAmt','subTotal','TenPercentTax','EightPercentTax'));
+            $timeSlotDetail = ($timeSlotDetail==="All Day") ? '一日中' : $timeSlotDetail;
+            return view('admin-views.order.new_japanese_invoice', compact('timeSlotDetail','order','totalWeight','totalTaxPercent','totalDiscount' ,'footer_text','totalAmt','subTotal','TenPercentTax','EightPercentTax'));
         }else{
-            return view('admin-views.order.new_english_invoice', compact('order','totalWeight','totalTaxPercent','totalDiscount' ,'footer_text','totalAmt','subTotal','TenPercentTax','EightPercentTax'));
+            return view('admin-views.order.new_english_invoice', compact('timeSlotDetail','order','totalWeight','totalTaxPercent','totalDiscount' ,'footer_text','totalAmt','subTotal','TenPercentTax','EightPercentTax'));
         }
         // return view('admin-views.order.invoice', compact('order', 'footer_text'));
         // return view('admin-views.order.latest_invoice', compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'));
