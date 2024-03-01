@@ -195,7 +195,8 @@
                                         </span>
                                     @elseif($order['order_status']=='delivered')
                                         <span class="badge badge-soft-success">
-                                        {{translate('delivered')}}
+                                        {{-- {{translate('delivered')}}--}} 
+                                            {{translate('completed')}}
                                         </span>
                                     @else
                                         <span class="badge badge-soft-danger">

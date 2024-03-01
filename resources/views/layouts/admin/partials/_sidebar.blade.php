@@ -177,7 +177,8 @@
                                            title="{{translate('delivered_orders')}}">
                                             <span class="tio-circle nav-indicator-icon"></span>
                                             <span class="text-truncate  sidebar--badge-container">
-                                                <span>{{translate('delivered')}}</span>
+                                               {{-- <span>{{translate('delivered')}}</span> --}}
+                                               <span>{{translate('completed')}}</span>
                                                     <span class="badge badge-soft-success badge-pill ml-1">
                                                     {{\App\Model\Order::notPos()->where(['order_status'=>'delivered'])->count()}}
                                                 </span>

@@ -173,7 +173,8 @@
                                         <span class="tio-circle nav-indicator-icon"></span>
                                             <span class="text-truncate sidebar--badge-container">
                                                 <span>
-                                                    {{translate('delivered')}}
+                                                {{-- {{translate('delivered')}}--}} 
+                                                {{translate('completed')}}
                                                 </span>
                                                 <span class="badge badge-soft-success badge-pill ml-1">
                                                 {{\App\Model\Order::notPos()->where(['order_status'=>'delivered','branch_id'=>auth('branch')->id()])->count()}}

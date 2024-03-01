@@ -375,7 +375,10 @@
                                         href="javascript:">{{translate('out_for_delivery')}}</a>
                                     <a class="dropdown-item"
                                         onclick="route_alert('{{route('branch.orders.status',['id'=>$order['id'],'order_status'=>'delivered'])}}','{{ translate("Change status to delivered ?") }}')"
-                                        href="javascript:">{{translate('delivered')}}</a>
+                                        href="javascript:">
+                                        {{-- {{translate('delivered')}}--}} 
+                                            {{translate('completed')}}
+                                    </a>
                                     <a class="dropdown-item"
                                         onclick="route_alert('{{route('branch.orders.status',['id'=>$order['id'],'order_status'=>'returned'])}}','{{ translate("Change status to returned ?") }}')"
                                         href="javascript:">{{translate('returned')}}</a>

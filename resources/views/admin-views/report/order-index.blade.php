@@ -111,7 +111,10 @@ ini_set('memory_limit', '-1');
                                             <i class="tio-shopping-cart nav-icon"></i>
 
                                             <div class="media-body">
-                                                <h4 class="mb-1">{{translate('delivered')}}</h4>
+                                                <h4 class="mb-1">
+                                                {{-- {{translate('delivered')}}--}} 
+                                                {{translate('completed')}}
+                                                </h4>
                                                 <span class="text-success">
                                                 <i class="tio-trending-up"></i> {{$delivered}}
                                                 </span>

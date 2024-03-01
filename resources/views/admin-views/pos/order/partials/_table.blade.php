@@ -47,7 +47,9 @@
                 </span>
             @elseif($order['order_status']=='delivered')
                 <span class="badge badge-soft-success ml-2 ml-sm-3">
-                    <span class="legend-indicator bg-success"></span>{{translate('delivered')}}
+                    <span class="legend-indicator bg-success"></span>
+                    {{-- {{translate('delivered')}}--}} 
+                    {{translate('completed')}}
                 </span>
             @else
                 <span class="badge badge-soft-danger ml-2 ml-sm-3">

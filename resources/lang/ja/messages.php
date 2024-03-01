@@ -2263,5 +2263,7 @@
   'Product Added!' => '商品追加しました！',
   'Quantity Updated!' => '数量更新されました！',
   'Order deleted!' => '注文が削除されました!',
+  'completed' => '完了',
+  'All Day' => '一日中',
     
 );

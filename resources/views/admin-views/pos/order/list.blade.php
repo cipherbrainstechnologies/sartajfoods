@@ -200,9 +200,10 @@
                                         {{translate('out_for_delivery')}}
                                         </span>
                                     @elseif($order['order_status']=='delivered')
-                                        <span class="badge badge-soft-success">
+                                        {{-- <span class="badge badge-soft-success">
                                         {{translate('delivered')}}
-                                        </span>
+                                        </span> --}}
+                                        <span class="badge badge-soft-success">{{translate('completed')}}</span>
                                     @else
                                         <span class="badge badge-soft-danger">
                                         {{ translate(str_replace('_',' ',$order['order_status'])) }}

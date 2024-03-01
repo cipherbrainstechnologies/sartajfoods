@@ -114,7 +114,8 @@
                                         </span>
                                     @elseif($order['order_status']=='delivered')
                                         <span class="badge badge-soft-success ml-2 ml-sm-3 text-capitalize">
-                                        {{translate('delivered')}}
+                                        {{-- {{translate('delivered')}}--}} 
+                                            {{translate('completed')}}
                                         </span>
                                     @else
                                         <span class="badge badge-soft-danger ml-2 ml-sm-3 text-capitalize">
@@ -762,12 +763,13 @@
                                 <div class="hs-unfold w-0 flex-grow w-100">
                                     <select class="custom-select custom-select" name="order_status" id="order_status" data-id="{{$order['id']}}">
                                         <option value="pending" {{ ($order->order_status === 'pending') ? 'selected' : '' }}>{{translate('pending')}}</option>
-                                        <!--<option value="confirmed" {{ ($order->order_status === 'confirmed') ? 'selected' : '' }}>{{translate('confirmed')}}</option> --!>
+                                        {{--<option value="confirmed" {{ ($order->order_status === 'confirmed') ? 'selected' : '' }}>{{translate('confirmed')}}</option> --}}
                                         <option value="processing" {{ ($order->order_status === 'processing') ? 'selected' : '' }}>{{translate('processing')}}</option>
-                                        <!--<option value="out_for_delivery" {{ ($order->order_status === 'out_for_delivery') ? 'selected' : '' }}>{{translate('out_for_delivery')}}</option> --!>
-                                        <option value="delivered" {{ ($order->order_status === 'delivered') ? 'selected' : '' }}>{{translate('delivered')}}</option>
-                                        <!-- <option value="returned" {{ ($order->order_status === 'returned') ? 'selected' : '' }}>{{translate('returned')}}</option> --!>
-                                        <!-- <option value="failed" {{ ($order->order_status === 'failed') ? 'selected' : '' }}>{{translate('failed')}}</option> --!>
+                                        {{--<option value="out_for_delivery" {{ ($order->order_status === 'out_for_delivery') ? 'selected' : '' }}>{{translate('out_for_delivery')}}</option> --}}
+                                        <option value="delivered" {{ ($order->order_status === 'delivered') ? 'selected' : '' }}>
+                                        {{--{{translate('delivered')}}</option> --}} {{translate('completed')}}
+                                        {{-- <option value="returned" {{ ($order->order_status === 'returned') ? 'selected' : '' }}>{{translate('returned')}}</option> --}}
+                                        {{-- <option value="failed" {{ ($order->order_status === 'failed') ? 'selected' : '' }}>{{translate('failed')}}</option> --}}
                                         <option value="canceled" {{ ($order->order_status === 'canceled') ? 'selected' : '' }}>{{translate('canceled')}}</option>
                                     </select>
                                 </div>    

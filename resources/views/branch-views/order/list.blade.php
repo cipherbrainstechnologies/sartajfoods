@@ -128,7 +128,8 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h6 class="card-subtitle d-flex justify-content-between m-0 align-items-center">
                                         <img src="{{asset('public/assets/admin/img/delivery/1.png')}}" alt="dashboard" class="oder--card-icon">
-                                        <span>{{translate('delivered')}}</span>
+                                        {{--<span>{{translate('delivered')}}</span> --}}
+                                        <span>{{translate('completed')}}</span>
                                     </h6>
                                     <span class="card-title text-success">
                                     {{ $count_data['delivered'] }}
@@ -316,7 +317,8 @@
                                             </span>
                                         @elseif($order['order_status']=='delivered')
                                             <span class="badge badge-soft-success ml-2 ml-sm-3">
-                                                {{translate('delivered')}}
+                                            {{-- {{translate('delivered')}}--}} 
+                                            {{translate('completed')}}
                                             </span>
                                         @else
                                             <span class="badge badge-soft-danger ml-2 ml-sm-3">
