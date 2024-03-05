@@ -467,7 +467,7 @@
                                               @elseif($order->order_status == "out_for_delivery")
                                                 {{translate('Order Out For Delivery')}}
                                               @elseif($order->order_status == "delivered")
-                                                {{translate('Order Delivered')}}
+                                                {{translate('Order Completed')}}
                                               @elseif($order->order_status == "canceled")
                                                 {{translate('Order Canceled')}}
                                               @elseif($order->order_status == "returned")
