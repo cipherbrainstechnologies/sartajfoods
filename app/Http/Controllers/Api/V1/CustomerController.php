@@ -147,7 +147,7 @@ class CustomerController extends Controller
             'post_code' => $request->post_code,
             'city' => !empty($request->city) ? $request->city : null, 
             'city_name' => !empty($request->city) ? $cityDetail->name : null,
-            'state_name' => $regionDetail->name,
+            'state_name' => !empty($regionDetail->name) ? $regionDetail->name : null,
             'created_at' => now(),
             'updated_at' => now()
         ];
