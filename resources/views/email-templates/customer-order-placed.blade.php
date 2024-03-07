@@ -497,27 +497,27 @@
                                         <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;text-align=left" ></p>
                                         @if($order->order_status == "pending")
                                           <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;text-align=left">
-                                              {{ 'Order confirmation : Your order is successfully placed!' }}
+                                              {{ 'Congratulations! Your order at Sartaj Foods has been successfully placed.' }}
                                           </p>
                                         @elseif($order->order_status == "confirmed")
                                           <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;text-align=left">
-                                              {{ 'we\'re delighted to inform you that your recent order with sartaj foods has been successfully confirmed!'}}
+                                              {{ 'We\'re delighted to inform you that your recent order with sartaj foods has been successfully confirmed!'}}
                                           </p>
                                         @elseif($order->order_status == "processing")
                                           <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;text-align=left">
-                                              {{ 'we\'re excited inform you that your order at sartaj foods is now being process and packaged with care!'}}
+                                              {{ 'We\'re excited inform you that your order at sartaj foods is now being process and packaged with care!'}}
                                           </p>
                                         @elseif($order->order_status == "canceled")
                                           <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;text-align=left">
-                                              {{ 'we regret inform you that your order with sartaj foods has been canceled. We apologize for any inconvenience this may have caused!'}}
+                                              {{ 'We regret inform you that your order with sartaj foods has been canceled. We apologize for any inconvenience this may have caused!'}}
                                           </p>
                                         @elseif($order->order_status == "failed")
                                           <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;text-align=left">
-                                              {{ 'we regret inform you that we encountered an issue processing your order with sartaj foods. we apologize for any inconvenience this may have caused.'}}
+                                              {{ 'We regret inform you that we encountered an issue processing your order with sartaj foods. We apologize for any inconvenience this may have caused.'}}
                                           </p>
                                         @elseif($order->order_status == "returned")
                                           <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;text-align=left">
-                                              {{ 'we regret inform you that your recent order with sartaj foods has been returned to us. We apologize for any inconvenience this may have caused'}}
+                                              {{ 'We regret inform you that your recent order with sartaj foods has been returned to us. We apologize for any inconvenience this may have caused'}}
                                           </p>
                                        
                                         @endif
@@ -767,7 +767,7 @@
                                       
                                       @if($order->order_status == "pending")
                                           <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;" text-align="left">
-                                              {{ 'we\'re now processing your order and will notify you once it\'s ready for dispatch if you have any questions or 
+                                              {{ 'We\'re now processing your order and will notify you once it\'s ready for dispatch if you have any questions or 
                                               need assistance, feel free to reach out to us 0727511975' }}<br><br>
                                               {{'Thank you for choosing sartaj foods. We appreciate your business'}}<br><br>
                                               {{'Best regards,'}}<br> 
@@ -792,29 +792,29 @@
                                           </p>
                                         @elseif($order->order_status == "canceled")
                                           <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;" text-align="left">
-                                          {{ 'If you have any questions or concerns regarding the cancellation, please don\'t hesitate to contact us at: 0727511975. We\'re here to assist you in any way we can.'}}<br>
+                                          {{ 'If you have any questions or concerns regarding the cancellation, Please don\'t hesitate to contact us at: 0727511975. We\'re here to assist you in any way we can.'}}<br>
                                           {{'Thank you for your understanding.'}}<br><br>
                                           {{'Best regards,'}}<br> 
                                           {{'Sartaj Foods Team'}}
                                           </p>
                                         @elseif($order->order_status == "failed")
                                           <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;" text-align="left">
-                                              {{ 'If you have any questions or need further assistance, please feel free to reach out to us at: 0727511975'}}<br>
+                                              {{ 'If you have any questions or need further assistance, Please feel free to reach out to us at: 0727511975'}}<br>
                                               {{'Thank you for your understanding.'}}<br><br>
                                               {{'Best regards,'}}<br> 
                                               {{'Sartaj Foods Team'}}
                                           </p>
                                         @elseif($order->order_status == "returned")
                                           <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;" text-align="left">
-                                              {{ 'Our team is currently reviewing the returned order, and we will be in touch with you shortly to address any concerns or provide further assistance.'}}<br><br/>
-                                              {{'If you have any questions or need immediate assistance, please don\'t hesitate to contact us.'}}<br><br>
+                                              {{ 'Our team is currently reviewing the returned order, And we will be in touch with you shortly to address any concerns or provide further assistance.'}}<br><br/>
+                                              {{'If you have any questions or need immediate assistance, Please don\'t hesitate to contact us.'}}<br><br>
                                               {{'Thank you for your understanding.'}}<br><br>
                                               {{'Best regards,'}}<br> 
                                               {{'Sartaj Foods Team'}}
                                           </p>
                                         @else 
                                           <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;" text-align="left">
-                                              {{ 'You can track the status of your order using the tracking number provided. If you have any questions or need assistance, feel free to reach out to us at 0727511975'}}<br><br/>
+                                              {{ 'You can track the status of your order using the tracking number provided. If you have any questions or need assistance, Feel free to reach out to us at 0727511975'}}<br><br/>
                                               {{'Thank you for choosing Sartaj Foods. We hope you enjoy your products!'}}<br><br>
                                               {{'Best regards,'}}<br> 
                                               {{'Sartaj Foods Team'}}
