@@ -491,7 +491,7 @@
                                         <span data-key="4664702_greeting_text" style="text-align: left; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000;">
                                         {{translate('Dear')}}
                                         </span>
-                                        {{$order->delivery_address['contact_person_name']}},
+                                        {{ucfirst($order->delivery_address['contact_person_name'])}},
                                       </p>
                                       <span data-key="4664702_introduction_text" class="text" style="text-align: left; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000;">
                                         <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;text-align=left" ></p>
@@ -519,11 +519,13 @@
                                           <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;text-align=left">
                                               {{ 'We regret inform you that your recent order with sartaj foods has been returned to us. We apologize for any inconvenience this may have caused'}}
                                           </p>
+                                        @else
+                                          <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;text-align=left">
+                                            {{'We\'re thrilled to inform you that your order from Sartaj Foods has been dispatched and is on its way to you!'}}
+                                          </p>
                                        
                                         @endif
-                                        <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;text-align=left">
-                                          {{'We\'re thrilled to inform you that your order from Sartaj Foods has been dispatched and is on its way to you!'}}
-                                        </p>
+                                        
                                       </span>
                                     </th>
                                   </tr>
