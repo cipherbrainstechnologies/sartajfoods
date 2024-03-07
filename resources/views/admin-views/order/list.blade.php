@@ -317,7 +317,7 @@
                                         <div>
                                             {{ Helpers::set_symbol($order['order_amount']) }}
                                         </div>
-                                        @if($order->payment_status=='paid')
+                                        @if($order->payment_status=='paid' || ($order->order_status =="delivered")
                                             <span class="text-success">
                                                 {{translate('paid')}}
                                             </span>
