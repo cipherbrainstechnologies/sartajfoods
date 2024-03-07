@@ -793,7 +793,28 @@
                                 </div>
                             </div>
                         </div>
-                    </div>    
+                    </div>
+                    
+                    <div class="card mt-3">
+
+                        <div class="card-header border-0 pb-0 justify-content-center">
+                            <h4 class="card-title">{{translate('Order Tracking')}}</h4>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="hs-unfold w-100">
+                                <div class="mt-3"> 
+                                    <span class="d-block form-label font-bold mb-2">{{translate('Tracking Id')}}</span>
+                                    <input type="text" name="tracking_id" id="tracking_id" class="form-control w-100" value="{{$order['tracking_id']}}">
+                                </div>
+                                <div class="mt-3">
+                                    <button class="btn btn--primary w-100" id="save_tracking_id" name="save_tracking_id" type="button" data-id="{{ $order['id'] }}">{{ translate('Save') }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                    
+                    
 
                 <!-- End Card -->
 
@@ -1248,6 +1269,28 @@
                 }
             });     
         });
+        $("#save_tracking_id").on('click',function(){
+            var id = $(this).attr("data-id");
+            var trackingId = $('#tracking_id').val();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.post({
+                url: "{{route('admin.order.order_tracking')}}",
+                
+                data: {
+                    "id": id,
+                    "trackingId": trackingId
+                },
+
+                success: function (data) {
+                    toastr.success('{{ translate("Order tracking saved successfully") }}');
+                    location.reload();
+                }
+            });  
+        })
 
         $(document).ready(function() {
             $('#product_dropdown').select2({
@@ -1395,5 +1438,6 @@
 
 
     </script>
+    
 
 @endpush

@@ -787,6 +787,14 @@ class OrderController extends Controller
         return response()->json($status);
     }
 
+    public function order_tracking(Request $request){
+        $trackingOrderStatus = Order::where('id',$request->id)->update(['tracking_id'=>$request->trackingId]);
+        if($trackingOrderStatus){
+            return response()->json($trackingOrderStatus);
+        }
+        return response()->json($trackingOrderStatus);
+    }
+
      /**
      * @param Request $request
      * @return RedirectResponse

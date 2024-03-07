@@ -233,6 +233,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::post('update-deliveryDate', 'OrderController@update_deliveryDate')->name('update-deliveryDate');
             Route::delete('delete/{id}', 'OrderController@delete')->name('delete');
             Route::post('order_history', 'OrderController@order_history')->name('order_history');
+            Route::post('order-tracking','OrderController@order_tracking')->name('order_tracking');
         });
 
         Route::group(['prefix' => 'category', 'as' => 'category.','middleware'=>['module:product_management']], function () {
