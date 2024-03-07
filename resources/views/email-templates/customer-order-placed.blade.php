@@ -519,7 +519,10 @@
                                           <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;text-align=left">
                                               {{ 'We regret inform you that your recent order with Sartaj Foods has been returned to us. We apologize for any inconvenience this may have caused'}}
                                           </p>
-                                       
+                                        @else
+                                          <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;text-align=left">
+                                            {{'We\'re thrilled to inform you that your order from Sartaj Foods has been dispatched and is on its way to you!'}}
+                                          </p>
                                         @endif
                                         <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;text-align=left"><br/>
                                         </p>
@@ -812,7 +815,7 @@
                                               {{'Sartaj Foods Team'}}
                                           </p>
                                         @else
-                                        <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;" text-align="left">
+                                          <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;" text-align="left">
                                               {{ 'You can track the status of your order using the provided tracking number. If you have any questions or need assistance, feel free to reach out to us at 0727511975.'}}<br><br/>
                                               {{'Thank you for choosing Sartaj Foods. We hope you enjoy your products!'}}<br><br>
                                               {{'Best Regards,'}}<br> 
