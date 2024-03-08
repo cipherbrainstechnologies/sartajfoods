@@ -521,7 +521,7 @@
                                           </p>
                                         @else
                                           <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;text-align=left">
-                                            {{'We\'re thrilled to inform you that your order from Sartaj Foods has been dispatched and is on its way to you! You can track the status of your order using the provided tracking ID ({{ $order->tracking_id }}) in your account profile. Simply log in to your account and navigate to the "Track Your Order" section in the account section to stay updated on the delivery status.'}}
+                                          {{'We\'re thrilled to inform you that your order from Sartaj Foods has been dispatched and is on its way to you!. You can track the status of your order using the provided  tracking ID in your account profile. Simply log in to your account and navigate to the \" Track Your Order \" section in the account section to stay updated on the delivery status.'}}
                                           </p>
                                         @endif
                                         <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;text-align=left"><br/>
