@@ -81,7 +81,7 @@ class OrderPlaced extends Mailable
             }elseif($order->order_status == "returned"){
                 $subject = 'Order Return Notification';
             }else{
-                $subject = 'Order Confirmation: Your Order is Successfully Placed!';
+                $subject = 'Order Completed! '.$order->tracking_id;
             }
             return $this->view('email-templates.customer-order-placed', compact('order_id'))
                 ->subject($subject);
