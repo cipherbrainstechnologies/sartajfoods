@@ -1005,8 +1005,8 @@ class ProductController extends Controller
         foreach($products as $item){
             $category_id = 0;
             $sub_category_id = 0;
-
-            foreach(json_decode($item->category_ids, true) as $category)
+            // foreach(json_decode($item->category_ids, true) as $category)
+            foreach($item->category_ids as $category)
             {
                 if($category['position']==1)
                 {
