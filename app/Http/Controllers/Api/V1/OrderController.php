@@ -33,6 +33,7 @@ use App\CentralLogics\PaypalLogic;
 use App\Http\Controllers\Api\V1\PaypalPaymentController;
 use App\Http\Controllers\Api\V1\StripePaymentController;
 use Illuminate\Support\Str;
+use App\Jobs\SendOrderPlacedEmail;
 
 class OrderController extends Controller
 {
@@ -389,10 +390,12 @@ class OrderController extends Controller
                 
             
                 if (isset($emailServices['status']) && $emailServices['status'] == 1) {
-                    Mail::to($request->user()->email)->send(new \App\Mail\OrderPlaced($order_id));
+                    // Mail::to($request->user()->email)->send(new \App\Mail\OrderPlaced($order_id));
+                    SendOrderPlacedEmail::dispatch($order_id, $request->user()->email);
                     $orderMail = config('mail.ORDER_MAIL');
                     if(!empty($orderMail) && !empty($orderMail)){
-                        Mail::to($orderMail)->send(new \App\Mail\OrderPlaced($order_id));
+                        // Mail::to($orderMail)->send(new \App\Mail\OrderPlaced($order_id));
+                        SendOrderPlacedEmail::dispatch($order_id, $orderMail);
                         \Log::info('Place Order Mail sent to admin successfully.');
                     }
                     \Log::info('Place Order Mail sent successfully.');
