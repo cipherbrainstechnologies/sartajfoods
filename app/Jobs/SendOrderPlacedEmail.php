@@ -20,7 +20,6 @@ class SendOrderPlacedEmail implements ShouldQueue
 
     public function __construct($orderId, $customerEmail)
     {
-        
         $this->orderId = $orderId;
         $this->customerEmail = $customerEmail;
     }
@@ -28,8 +27,16 @@ class SendOrderPlacedEmail implements ShouldQueue
     public function handle()
     {
         \Log::info('Job Call Start');
-        Mail::to($this->customerEmail)->send(new OrderPlaced($this->orderId));
+        
+        try {
+            // Attempt to send the email
+            Mail::to($this->customerEmail)->send(new OrderPlaced($this->orderId));
+            \Log::info('Email sent successfully');
+        } catch (\Exception $e) {
+            // Log any exceptions that occur during email sending
+            \Log::error('Error sending email: ' . $e->getMessage());
+        }
+        
         \Log::info('Job Call End');
     }
 }
-
