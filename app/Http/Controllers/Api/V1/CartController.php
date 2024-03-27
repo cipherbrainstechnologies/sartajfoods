@@ -138,7 +138,7 @@ class CartController extends Controller
         
         // $deliveryCharge = Helpers::get_business_settings('delivery_charge', 0);
         // echo 'subTotal:'.$subTotalAmt . ' '.'deliveryCharge:'.$deliveryCharge.' '.$totalEightPercentTax.' '.'totalTenPercentTax'.$totalTenPercentTax;
-        $totalAmt = $subTotalAmt + $deliveryCharge + $totalEightPercentTax + $totalTenPercentTax ;
+        $totalAmt = $subTotalAmt + $deliveryCharge + round($totalEightPercentTax) + round($totalTenPercentTax) ;
         // Round Value
         $roundedFraction = round($totalAmt - floor($totalAmt), 2);
         if ($roundedFraction > 0.50) {

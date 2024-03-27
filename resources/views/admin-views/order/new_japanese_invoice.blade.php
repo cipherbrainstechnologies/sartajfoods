@@ -210,7 +210,7 @@
 								<tr>
 									<td width="55%">小計</td>
 									<td width="5%">¥</td>
-									<td width="40%" style="text-align:right;">{{$subTotal - $EightPercentTax - $TenPercentTax}}</td>
+									<td width="40%" style="text-align:right;">{{$subTotal }}</td>
 								</tr>
                                 @if($totalTaxPercent['TotalEightPercentTax']!=0)
 								<tr>
@@ -272,7 +272,7 @@
 								<tr>
 									<td width="55%"><h3 style="margin: 0;">合計金額</h3></td>
 									<td width="5%"><h3 style="margin: 0;">¥</h3></td>
-									<td width="40%" style="text-align:right;"><h3 style="margin: 0;">{{$totalAmt}}</h3></td>
+									<td width="40%" style="text-align:right;"><h3 style="margin: 0;">{{$totalAmt + round($EightPercentTax) +round($TenPercentTax)}}</h3></td>
 								</tr>
 							</table>
 						</td>

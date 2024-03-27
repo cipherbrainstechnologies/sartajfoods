@@ -1054,14 +1054,14 @@ class Helpers
         if(!empty($orderDetail)){
             foreach ($orderDetail as $product) {
                 $itemPrice = $product['price'];
+
                 $discount = $product['discount_on_product'];
-            
                 // Calculate total cost after discount
                 $itemTotal = ($itemPrice - $discount) * $product['quantity'];
             
                 // Add tax amount
                 $itemTotal += $product['tax_amount'];
-            
+                
                 // Accumulate to the total cost
                 $totalCost += $itemTotal;
             }
@@ -1077,10 +1077,10 @@ class Helpers
         foreach($order->details as $key => $detail){
             $productDetail = json_decode($detail['product_details'],true);
             if($productDetail['tax'] == 8){
-                $totalTaxAmount['TotalEightPercentTax'] += $detail['price'] * $detail['quantity'];
+                $totalTaxAmount['TotalEightPercentTax'] += round($detail['price'] * $detail['quantity']);
             }
             else{
-                $totalTaxAmount['TotalTenPercentTax'] += $detail['price'] * $detail['quantity'];
+                $totalTaxAmount['TotalTenPercentTax'] += round($detail['price'] * $detail['quantity']);
             }
         }
        }
