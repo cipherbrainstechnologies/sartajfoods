@@ -803,6 +803,7 @@ class ProductController extends Controller
                 $q->where('seo_en',$seo)->orWhere('seo_ja',$seo);
             })->where('status',1)->first();
             if(!empty($categoryData)){
+                $categoryData->sub_category = Category::with('translations')->where(['status'=>1, 'parent_id' => $categoryData->id])->get();
                 $data['categories'] = $categoryData;
                 $productData =Product::active()
                 ->withCount(['wishlist','order_details','relatedProducts'])
