@@ -194,7 +194,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                           <!-- <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="input-label"
                                             for="exampleFormControlSelect1">{{translate('sub_category')}}<span
@@ -205,7 +205,7 @@
 
                                     </select>
                                 </div>
-                            </div>
+                            </div> --!> 
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label class="input-label"

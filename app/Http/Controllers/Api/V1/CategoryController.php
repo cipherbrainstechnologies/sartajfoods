@@ -23,6 +23,11 @@ class CategoryController extends Controller
             foreach($Categories as $key => $category) {
                 // $Categories[$key]['total_produts'] = CategoryLogic::getProductCount($category["id"]);
                 $Categories[$key]['total_produts'] =  Product::active()->whereJsonContains('category_ids', ['id' => "{$category->id}"])->count();
+                $sub_categories = $this->category->where(['status'=>1, 'parent_id' => $category->id])->orderBy('name')->get();
+                foreach($sub_categories as $s_key => $sub_categorie) {
+                    $sub_categories[$s_key]['total_produts'] = Product::active()->whereJsonContains('category_ids', ['id' => "{$sub_categorie->id}"])->count();
+                }
+                $Categories[$key]['sub_categories'] = $sub_categories;
             }
             return response()->json($Categories, 200);
         } catch (\Exception $e) {

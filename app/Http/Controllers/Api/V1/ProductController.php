@@ -76,7 +76,7 @@ class ProductController extends Controller
                     $orderBySort = 'DESC';
                 }
                 if(!empty($request['search'])){
-                    $Query->Where('name', 'like', "%{$request['search']}%");
+                    $Query->Where('name', 'like', "%{$request['search']}%")->orWhere('product_tag', 'like', "%{$request['search']}%");
                 }
             $products = $Query->orderBy($orderByColumn,$orderBySort)->paginate($request->limit, ['*'], 'page', $request->offset);
         // $products = !empty($request->manufacturer_id) ? ProductLogic::get_all_products($request['limit'], $request['offset'], $request->manufacturer_id) : ProductLogic::get_all_products($request['limit'], $request['offset']);
