@@ -103,7 +103,7 @@
 								<tr>
 									<td width="55%">Total Without Tax.</td>
 									<td width="5%">¥</td>
-									<td width="40%" style="text-align:right;">{{$subTotal - $EightPercentTax - $TenPercentTax}}</td>
+									<td width="40%" style="text-align:right;">{{$subTotal}}</td>
 								</tr>
                                 @if($totalTaxPercent['TotalEightPercentTax']!=0)
                                     <tr>
