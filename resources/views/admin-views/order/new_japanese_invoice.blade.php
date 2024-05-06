@@ -157,7 +157,7 @@
 			<td>
 				<table width="100%" style="border: 1px solid;border-collapse: collapse;">
 					<tr>
-						<td width="50%" style="padding: 0;border: 1px solid;border-collapse: collapse;text-align:center;"><h3 style="margin: 0;">ご請求金額 : {{$totalAmt}}</h3></td>
+						<td width="50%" style="padding: 0;border: 1px solid;border-collapse: collapse;text-align:center;"><h3 style="margin: 0;">ご請求金額 : {{$totalAmt+ round($EightPercentTax) +round($TenPercentTax)}}</h3></td>
 						<td width="50%" style="padding: 0;border: 1px solid;border-collapse: collapse;text-align:center;"><h3 style="margin: 0;">請　求　書 NO. {{$order->id}}</h3></td>
 					</tr>
 				</table>
