@@ -158,7 +158,7 @@
 			<td>
 				<table width="100%" style="border: 1px solid;border-collapse: collapse;">
 					<tr>
-						<td width="50%" style="padding: 0;border: 1px solid;border-collapse: collapse;text-align:center;"><h3 style="margin: 0;">Total Payable Amount : <span style="text-align:right;">{{$totalAmt}}</span> </h3></td>
+						<td width="50%" style="padding: 0;border: 1px solid;border-collapse: collapse;text-align:center;"><h3 style="margin: 0;">Total Payable Amount : <span style="text-align:right;">{{$totalAmt + round($EightPercentTax) +round($TenPercentTax)}}</span> </h3></td>
 						<td width="50%" style="padding: 0;border: 1px solid;border-collapse: collapse;text-align:center;"><h3 style="margin: 0;">INVOICE NO. {{$order->id}}</h3></td>
 					</tr>
 				</table>
