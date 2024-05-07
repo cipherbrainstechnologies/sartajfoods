@@ -238,6 +238,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
 
         Route::group(['prefix' => 'category', 'as' => 'category.','middleware'=>['module:product_management']], function () {
             Route::get('add', 'CategoryController@index')->name('add');
+            // Route::get('addnew', 'CategoryController@indexnew')->name('addnew');
             Route::get('add-sub-category', 'CategoryController@sub_index')->name('add-sub-category');
             Route::get('add-sub-sub-category', 'CategoryController@sub_sub_index')->name('add-sub-sub-category');
             Route::post('store', 'CategoryController@store')->name('store');

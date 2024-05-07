@@ -135,14 +135,14 @@
                                             for="exampleFormControlSelect1">{{translate('main')}} {{translate('category')}}
                                             <span class="input-label-secondary">*</span></label>
                                         <select id="exampleFormControlSelect1" name="parent_id" class="form-control js-select2-custom" required>
-                                            @foreach(\App\Model\Category::where(['position'=>1])->get() as $category)
+                                            @foreach(\App\Model\Category::where(['position'=>0])->get() as $category)
                                                 <option value="{{$category['id']}}">{!! strip_tags(htmlspecialchars_decode($category['name'])) !!}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     
                                     <div class="col-lg-12">
-                                    <input name="position" value="2" hidden>
+                                    <input name="position" value="1" hidden>
                                         <label class="form-label text-capitalize">{{ translate('sub category image') }}</label><small class="text-danger">* ( {{ translate('ratio') }}
                                             3:1 )</small>
                                         <div class="custom-file mb-3">

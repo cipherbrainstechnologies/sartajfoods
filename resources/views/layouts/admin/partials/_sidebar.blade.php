@@ -253,14 +253,14 @@
                                             <span class="text-truncate">{{translate('categories')}}</span>
                                         </a>
                                     </li>
-
-                                    <li class="nav-item {{Request::is('admin/category/add-sub-category')?'active':''}}">
+                                  
+                                    <!-- <li class="nav-item {{Request::is('admin/category/add-sub-category')?'active':''}}">
                                         <a class="nav-link " href="{{route('admin.category.add-sub-category')}}"
                                            title="{{translate('sub_categories')}}">
                                             <span class="tio-circle nav-indicator-icon"></span>
                                             <span class="text-truncate">{{translate('sub_categories')}}</span>
                                         </a>
-                                    </li>
+                                    </li> -->
 
                                     <li class="nav-item {{Request::is('admin/category/add-sub-sub-category')?'active':''}}">
                                         <a class="nav-link " href="{{route('admin.category.add-sub-sub-category')}}"
@@ -536,7 +536,7 @@
                             </li>
 
                             <!-- Analytics -->
-                            <li class="navbar-vertical-aside-has-menu {{Request::is('admin/analytics*')?'active':''}}">
+                            <!-- <li class="navbar-vertical-aside-has-menu {{Request::is('admin/analytics*')?'active':''}}">
                                 <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle"
                                    href="javascript:" title="{{translate('Analytics')}}">
                                     <i class="tio-chart-donut-2 nav-icon"></i>
@@ -559,7 +559,7 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </li>
+                            </li> -->
 
                             <!-- End Pages -->
                         @endif
@@ -597,7 +597,7 @@
                                 </a>
                             </li>
                             <!-- Pages -->
-                            <li class="navbar-vertical-aside-has-menu {{Request::is('admin/customer/wallet/*')?'active':''}}">
+                            <!-- <li class="navbar-vertical-aside-has-menu {{Request::is('admin/customer/wallet/*')?'active':''}}">
                                 <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle"
                                    href="javascript:" title="{{translate('Customer Wallet')}}">
                                     <i class="tio-wallet-outlined nav-icon"></i>
@@ -633,9 +633,9 @@
                                     </li>
 
                                 </ul>
-                            </li>
+                            </li> -->
 
-                            <li class="navbar-vertical-aside-has-menu {{Request::is('admin/customer/loyalty-point*')?'active':''}}">
+                            <!-- <li class="navbar-vertical-aside-has-menu {{Request::is('admin/customer/loyalty-point*')?'active':''}}">
                                 <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle"
                                    href="javascript:" title="{{translate('Customer Loyalty Point')}}">
                                     <i class="tio-medal nav-icon"></i>
@@ -659,7 +659,7 @@
                                     </li>
 
                                 </ul>
-                            </li>
+                            </li> -->
 
                             <li class="navbar-vertical-aside-has-menu {{Request::is('admin/reviews*')?'active':''}}">
                                 <a class="js-navbar-vertical-aside-menu-link nav-link"
