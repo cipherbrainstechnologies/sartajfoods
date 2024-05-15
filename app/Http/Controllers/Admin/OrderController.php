@@ -842,6 +842,7 @@ class OrderController extends Controller
         $order_detail->unit = $product_detail->unit;
         
         $order_detail->save();
+        $this->updateOrderAmount($request->order_id);
 
         $product_detail->total_stock = $product_detail->total_stock - $request->quantity;
         $product_detail->save();
@@ -896,8 +897,52 @@ class OrderController extends Controller
         $product_data->save();
 
         $order_detail->save();
+        $this->updateOrderAmount($order_detail->order_id);
 
         Toastr::success(translate('Quantity Updated!'));
         return back();
     }
+    public function updateOrderAmount($orderId)
+    {
+    // Get all order details for the given order_id
+    $orderDetails = OrderDetail::where('order_id', $orderId)->get();
+    //$order = Order::where('id', $orderId)->get();
+    $order = Order::findOrFail($orderId);
+    // Initialize total order amount
+    $totalOrderAmount = 0;
+    $totalEightPercentTax = 0;
+    $totalTenPercentTax = 0;
+
+    // Iterate over each order detail
+    foreach ($orderDetails as $orderDetail) {
+        // Calculate subtotal for each order detail considering quantity, price, and taxes
+        $subtotal = ($orderDetail->price * $orderDetail->quantity) 
+                    -($orderDetail->discount_on_product * $orderDetail->quantity);
+        
+        // Add subtotal to the total order amount
+        $totalOrderAmount += $subtotal;
+        $totalEightPercentTax += $orderDetail->eight_percent_tax;
+        $totalTenPercentTax += $orderDetail->ten_percent_tax;
+    }
+    
+    $totalEightPercentTax = round($totalEightPercentTax);
+    $totalTenPercentTax = round($totalTenPercentTax);
+    if ($order->coupon_discount_amount) {
+        $totalOrderAmount -= $order->coupon_discount_amount;
+    }
+    if ($order->extra_discount) {
+        $totalOrderAmount -= $order->extra_discount;
+    }
+    if ($order->order_type == 'delivery') {
+        // Check if delivery charge is set, otherwise use free delivery amount
+        $deliveryCharge = $order->delivery_charge ?? $order->free_delivery_amount;
+        
+        // Add delivery charge to the total order amount
+        $totalOrderAmount += $deliveryCharge;
+    }
+    // Add rounded total tax amounts to the total order amount
+    $totalOrderAmount += $totalEightPercentTax + $totalTenPercentTax;
+    // Update the order amount in the orders table
+    Order::where('id', $orderId)->update(['order_amount' => $totalOrderAmount]);
+  }
 }
