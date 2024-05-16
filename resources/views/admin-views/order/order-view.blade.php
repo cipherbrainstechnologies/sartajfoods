@@ -609,17 +609,29 @@
                                     <span class="info">{{ $address['contact_person_number']}}</span>
                                 </div>
                                 <div class="d-flex">
-                                    <span class="name">{{translate('road')}}</span>
-                                    <span class="info">{{ $address['road'] ?? null}}</span>
+                                    <span class="name">{{translate('address')}}</span>
+                                    <span class="info"> {{ $address['address'] }},{{ $address['road'] ?? '' }}{{ $address['house'] ? ', ' . $address['house'] : '' }}{{ $address['floor'] ? ', ' . $address['floor'] : '' }}</span>
                                 </div>
+                                @if(!empty($address['post_code']))
+                                <div class="d-flex">
+                                <?php
+                                $firstPart = substr($address['post_code'], 0, 3);
+                                  $restPart = substr($address['post_code'], 3);
+                                  $Postal_code = $firstPart . '-' . $restPart;
+                                  ?>
+                                    <span class="name">{{translate('postalcode')}}</span>
+                                    <span class="info">{{ $Postal_code}}</span>
+                                </div>
+                                @endif
                                 @if(!empty($address['city_name']))
                                 <div class="d-flex">
+                               
                                     <span class="name">{{translate('city')}}</span>
                                     <span class="info">{{ $address['city_name'] ?? null}}</span>
                                 </div>
                                 @endif
                                 <div class="d-flex">
-                                    <span class="name">{{translate('state')}}</span>
+                                    <span class="name">{{translate('region')}}</span>
                                     <span class="info">{{ $address['state_name'] ?? null}}</span>
                                 </div>
                                 <!-- <div class="d-flex">
