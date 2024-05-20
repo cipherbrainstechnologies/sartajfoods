@@ -927,22 +927,24 @@ class OrderController extends Controller
     
     $totalEightPercentTax = round($totalEightPercentTax);
     $totalTenPercentTax = round($totalTenPercentTax);
-    if ($order->coupon_discount_amount) {
-        $totalOrderAmount -= $order->coupon_discount_amount;
-    }
-    if ($order->extra_discount) {
-        $totalOrderAmount -= $order->extra_discount;
-    }
+    $finalTotalAmount = $totalOrderAmount + $totalEightPercentTax + $totalTenPercentTax;
     if ($order->order_type == 'delivery') {
         // Check if delivery charge is set, otherwise use free delivery amount
         $deliveryCharge = $order->delivery_charge ?? $order->free_delivery_amount;
         
         // Add delivery charge to the total order amount
-        $totalOrderAmount += $deliveryCharge;
+        $finalTotalAmount += $deliveryCharge;
     }
+    if ($order->coupon_discount_amount) {
+        $finalTotalAmount -= $order->coupon_discount_amount;
+    }
+    if ($order->extra_discount) {
+        $finalTotalAmount -= $order->extra_discount;
+    }
+    
     // Add rounded total tax amounts to the total order amount
-    $totalOrderAmount += $totalEightPercentTax + $totalTenPercentTax;
+    //$totalOrderAmount += $totalEightPercentTax + $totalTenPercentTax;
     // Update the order amount in the orders table
-    Order::where('id', $orderId)->update(['order_amount' => $totalOrderAmount]);
+    Order::where('id', $orderId)->update(['order_amount' => $finalTotalAmount]);
   }
 }
