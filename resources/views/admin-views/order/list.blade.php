@@ -315,7 +315,7 @@
                                 <td>
                                     <div class="mw-90">
                                         <div>
-                                            {{ Helpers::set_symbol($order['order_amount']) }}
+                                            {{ Helpers::set_symbol($order->calculated_order_amount) }}
                                         </div>
                                         @if($order->payment_status=='paid' || $order->order_status =="delivered")
                                             <span class="text-success">

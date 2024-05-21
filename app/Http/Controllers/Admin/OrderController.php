@@ -107,6 +107,38 @@ class OrderController extends Controller
         }
 
         $orders = $query->notPos()->orderBy('id', 'desc')->paginate(Helpers::getPagination())->appends($query_param);
+        foreach ($orders as $order) {
+            $orderDetails = collect($order->details);
+            $totalOrderAmount = 0;
+            $EightPercentTax = 0;
+            $TenPercentTax = 0;
+    
+            foreach ($orderDetails as $orderDetail) {
+                $subtotal = ($orderDetail->price * $orderDetail->quantity) - ($orderDetail->discount_on_product * $orderDetail->quantity);
+                $totalOrderAmount += $subtotal;
+                $EightPercentTax += $orderDetail->eight_percent_tax;
+                $TenPercentTax += $orderDetail->ten_percent_tax;
+            }
+    
+            $EightPercentTax = round($EightPercentTax);
+            $TenPercentTax = round($TenPercentTax);
+    
+            if ($order->coupon_discount_amount) {
+                $totalOrderAmount -= $order->coupon_discount_amount;
+            }
+    
+            if ($order->extra_discount) {
+                $totalOrderAmount -= $order->extra_discount;
+            }
+    
+            if ($order->order_type == 'delivery') {
+                $deliveryCharge = $order->delivery_charge ?? $order->free_delivery_amount;
+                $totalOrderAmount += $deliveryCharge;
+            }
+    
+            $totalOrderAmount += $EightPercentTax + $TenPercentTax;
+            $order->calculated_order_amount = $totalOrderAmount;
+        }
 
         $count_data = [
             'pending' => $this->order->notPos()->where(['order_status'=>'pending'])
