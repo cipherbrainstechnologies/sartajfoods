@@ -941,6 +941,7 @@ class OrderController extends Controller
     //$order = Order::where('id', $orderId)->get();
     $order = Order::findOrFail($orderId);
     // Initialize total order amount
+    $deliveryAddress = \App\Model\CustomerAddress::find($order->delivery_address_id);
     $totalOrderAmount = 0;
     $totalEightPercentTax = 0;
     $totalTenPercentTax = 0;
@@ -960,13 +961,12 @@ class OrderController extends Controller
     $totalEightPercentTax = round($totalEightPercentTax);
     $totalTenPercentTax = round($totalTenPercentTax);
     $finalTotalAmount = $totalOrderAmount + $totalEightPercentTax + $totalTenPercentTax;
-    if ($order->order_type == 'delivery') {
-        // Check if delivery charge is set, otherwise use free delivery amount
-        $deliveryCharge = $order->delivery_charge ?? $order->free_delivery_amount;
-        
-        // Add delivery charge to the total order amount
-        $finalTotalAmount += $deliveryCharge;
-    }
+    // Calculate the delivery charge based on region
+    $deliveryCharge = $this->calculateDeliveryCharge($deliveryAddress->state_name,$order->id, $totalOrderAmount);
+     // Update the delivery charge in the orders table
+     Order::where('id', $orderId)->update(['delivery_charge' => $deliveryCharge]);
+    // Add delivery charge to the total order amount
+    $finalTotalAmount += $deliveryCharge;
     if ($order->coupon_discount_amount) {
         $finalTotalAmount -= $order->coupon_discount_amount;
     }
@@ -979,4 +979,88 @@ class OrderController extends Controller
     // Update the order amount in the orders table
     Order::where('id', $orderId)->update(['order_amount' => $finalTotalAmount]);
   }
+  private function calculateDeliveryCharge($stateName, $orderId, $totalOrderAmount)
+  {
+      $frozenDeliveryCharge = 0;
+      $regularDeliveryCharge = 600; // Default delivery charge
+  
+      $frozenProductDetails = OrderDetail::where('order_id',$orderId)
+          ->whereHas('product', function ($query) {
+              $query->where('product_type', 1);
+          })->get();
+  
+    
+        $totalFrozenWeight = 0;
+        $totalFrozenQuantity = 0;
+        foreach ($frozenProductDetails as $detail) {
+        $product = $detail->product;
+        $weight = $product->weight;
+        $weightClass = $product->weight_class; // 'g' for grams, 'kg' for kilograms
+
+        // Convert weight to kilograms if necessary
+        if ($weightClass == 'Gram') {
+            $weight /= 1000; // Convert grams to kilograms
+        }
+        $totalFrozenWeight += $weight * $detail->quantity;
+        //$totalFrozenQuantity += $detail->quantity;
+        }
+        if ($totalFrozenWeight >= 5) {
+            if (!in_array($stateName, ['Kagoshima', 'Okinawa', 'Hokkaido'])) {
+                $frozenDeliveryCharge = 2500 ;
+            } else {
+                // If the state is Kagoshima, Okinawa, or Hokkaido, use the regular frozen delivery charge
+                $frozenDeliveryCharge = 0;
+            }
+        } else {
+            // If the total weight is less than 5kg, use the regular frozen delivery charge
+            $frozenDeliveryCharge = $this->getFrozenDeliveryCharge($stateName) ;
+        }
+        if ($totalOrderAmount > 6500) {
+          // Free delivery for regions except Kagoshima, Okinawa, and Hokkaido, if total amount is greater than 6500
+          if (!in_array($stateName, ['Kagoshima', 'Okinawa', 'Hokkaido'])) {
+              $regularDeliveryCharge = 2000;
+          } 
+        } else {
+          // Apply regular delivery charges based on region
+          switch ($stateName) {
+              case 'Kanto':
+              case 'Chubu':
+              case 'Hokuriku':
+              case 'Shinetsu':
+              case 'Tohoku':
+              case 'Kansai':
+              case 'Chugoku':
+              case 'Shikoku':
+              case 'Kyushu':
+                  $regularDeliveryCharge = 600;
+                  break;
+              default:
+                  $regularDeliveryCharge = 600; // Default delivery charge for other regions
+                  break;
+          }
+      }
+  
+      // If total order amount is greater than 6500, only add the frozen delivery charge
+      return $totalOrderAmount > 6500 ? $frozenDeliveryCharge : $regularDeliveryCharge + $frozenDeliveryCharge;
+  
+}
+private function getFrozenDeliveryCharge($region)
+{
+    $frozenCharges = [
+        'Kanto' => 1500,
+        'Chubu' => 1500,
+        'Hokuriku' => 1500,
+        'Shinetsu' => 1500,
+        'Tohoku' => 1500,
+        'Kansai' => 1500,
+        'Chugoku' => 1500,
+        'Shikoku' => 1500,
+        'Kyushu' => 1500,
+        'Hokkaido' => 2500,
+        'Kagoshima' => 2500,
+        'Okinawa' => 2500,
+    ];
+
+    return $frozenCharges[$region] ?? 1500; // Default frozen delivery charge if region is not listed
+}
 }
