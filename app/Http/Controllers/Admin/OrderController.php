@@ -989,9 +989,9 @@ class OrderController extends Controller
               $query->where('product_type', 1);
           })->get();
   
-    
+        if ($frozenProductDetails->isNotEmpty()) {
         $totalFrozenWeight = 0;
-        $totalFrozenQuantity = 0;
+        //$totalFrozenQuantity = 0;
         foreach ($frozenProductDetails as $detail) {
         $product = $detail->product;
         $weight = $product->weight;
@@ -1014,6 +1014,7 @@ class OrderController extends Controller
         } else {
             // If the total weight is less than 5kg, use the regular frozen delivery charge
             $frozenDeliveryCharge = $this->getFrozenDeliveryCharge($stateName) ;
+        }
         }
         if ($totalOrderAmount > 6500) {
           // Free delivery for regions except Kagoshima, Okinawa, and Hokkaido, if total amount is greater than 6500
@@ -1061,6 +1062,6 @@ private function getFrozenDeliveryCharge($region)
         'Okinawa' => 2500,
     ];
 
-    return $frozenCharges[$region] ?? 1500; // Default frozen delivery charge if region is not listed
+    return $frozenCharges[$region]; // Default frozen delivery charge if region is not listed
 }
 }
