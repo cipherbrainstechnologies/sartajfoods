@@ -600,11 +600,27 @@ class OrderController extends Controller
             $timeSlotDetail = Helpers::TimeSlot($timeSlot);
         }
         $orderDetails =collect($order->details);
+        $frozenProductDetails = $orderDetails->filter(function ($detail) {
+            return $detail->product->product_type == 1; 
+        });
         $EightPercentTax = $orderDetails->sum('eight_percent_tax');
         $TenPercentTax = $orderDetails->sum('ten_percent_tax'); 
         $totalDiscount =   $orderDetails->sum('total_discount');
         $totalTaxPercent = Helpers::calculateTotalTaxAmount($order);
         $totalWeight = ($orderDetails->sum('weight')/1000) ?? 0 ;
+        $totalFrozenWeight = $frozenProductDetails->sum(function ($detail) {
+        $weight = $detail->product->weight;
+        $weightClass = $detail->product->weight_class;
+
+       // Convert weight to kilograms if necessary
+        if ($weightClass == 'Gram') {
+         $weight /= 1000; // Convert grams to kilograms
+       }
+
+        return $weight * $detail->quantity;
+        });
+
+        $totalFrozenWeight = $totalFrozenWeight ?? 0;
         $subTotal = (Helpers::calculateInvoice($id) - $EightPercentTax - $TenPercentTax);
         $delivery_charge = $order->delivery_charge;
         $delivery_fee = $order->free_delivery_amount;
@@ -629,9 +645,9 @@ class OrderController extends Controller
         $order->shop_detail = $config;
         if($request->language=="ja"){
             $timeSlotDetail = ($timeSlotDetail==="All Day") ? '一日中' : $timeSlotDetail;
-            return view('admin-views.order.new_japanese_invoice', compact('timeSlotDetail','order','totalWeight','totalTaxPercent','totalDiscount' ,'footer_text','totalAmt','subTotal','TenPercentTax','EightPercentTax'));
+            return view('admin-views.order.new_japanese_invoice', compact('timeSlotDetail','order','totalFrozenWeight','totalWeight','totalTaxPercent','totalDiscount' ,'footer_text','totalAmt','subTotal','TenPercentTax','EightPercentTax'));
         }else{
-            return view('admin-views.order.new_english_invoice', compact('timeSlotDetail','order','totalWeight','totalTaxPercent','totalDiscount' ,'footer_text','totalAmt','subTotal','TenPercentTax','EightPercentTax'));
+            return view('admin-views.order.new_english_invoice', compact('timeSlotDetail','order','totalFrozenWeight','totalWeight','totalTaxPercent','totalDiscount' ,'footer_text','totalAmt','subTotal','TenPercentTax','EightPercentTax'));
         }
         // return view('admin-views.order.invoice', compact('order', 'footer_text'));
         // return view('admin-views.order.latest_invoice', compact('order', 'footer_text','totalAmt','TenPercentTax','EightPercentTax'));

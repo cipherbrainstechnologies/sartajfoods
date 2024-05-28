@@ -93,6 +93,10 @@
 												<td width="50%" style="text-align:right;">Weight :</td>
 												<td width="50%" style="text-align:center;">{{$totalWeight}} kg</td>
 											</tr>
+											<tr>
+												<td width="50%" style="text-align:right;">Frozen Weight :</td>
+												<td width="50%" style="text-align:center;">{{$totalFrozenWeight}} kg</td>
+											</tr>
 											
 										</table>
 									</td>

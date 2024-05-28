@@ -92,6 +92,10 @@
 												<td width="50%" style="text-align:right;">重量 :</td>
 												<td width="50%" style="text-align:center">{{$totalWeight}} kg</td>
 											</tr>
+											<tr>
+												<td width="50%" style="text-align:right;"> 冷凍重量 :</td>
+												<td width="50%" style="text-align:center;">{{$totalFrozenWeight}} kg</td>
+											</tr>
 											
 										</table>
 									</td>
