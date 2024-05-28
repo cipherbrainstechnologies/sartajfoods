@@ -1005,7 +1005,7 @@ class OrderController extends Controller
         //$totalFrozenQuantity += $detail->quantity;
         }
         if ($totalFrozenWeight >= 5) {
-            if (!in_array($stateName, ['Kagoshima', 'Okinawa', 'Hokkaido'])) {
+            if (in_array($stateName, ['Kagoshima', 'Okinawa', 'Hokkaido'])) {
                 $frozenDeliveryCharge = 2500 ;
             } else {
                 // If the state is Kagoshima, Okinawa, or Hokkaido, use the regular frozen delivery charge
@@ -1018,7 +1018,7 @@ class OrderController extends Controller
         }
         if ($totalOrderAmount > 6500) {
           // Free delivery for regions except Kagoshima, Okinawa, and Hokkaido, if total amount is greater than 6500
-          if (!in_array($stateName, ['Kagoshima', 'Okinawa', 'Hokkaido'])) {
+          if (in_array($stateName, ['Kagoshima', 'Okinawa', 'Hokkaido'])) {
               $regularDeliveryCharge = 2000;
           } 
         } else {
