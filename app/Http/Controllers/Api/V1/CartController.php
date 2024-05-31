@@ -133,13 +133,12 @@ class CartController extends Controller
             
         //     $deliveryCharge += $regionDetails->frozen_delivery_charge;
         // }
-        if ($subTotalAmt > 0 && $subTotalAmt < $regionDetails->maximum_order_amt && $totalFrozenWeight > 0 && $totalFrozenWeight < $regionDetails->frozen_weight) {
+        if ($subTotalAmt >$regionDetails->maximum_order_amt && $totalFrozenWeight > 0 && $totalFrozenWeight < $regionDetails->frozen_weight) {
             $deliveryCharge += $regionDetails->frozen_delivery_charge;
             if($totalDryProductAmount>0){
                  $deliveryCharge += $regionDetails->dry_delivery_charge;
             }
         }elseif($totalFrozenWeight > 0 && $totalFrozenWeight < $regionDetails->frozen_weight){
-            
             $deliveryCharge += $regionDetails->frozen_delivery_charge;
         }elseif($subTotalAmt > 0 && $subTotalAmt < $regionDetails->maximum_order_amt){
             $deliveryCharge += $regionDetails->dry_delivery_charge;
