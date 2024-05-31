@@ -1045,7 +1045,10 @@ class OrderController extends Controller
           // Free delivery for regions except Kagoshima, Okinawa, and Hokkaido, if total amount is greater than 6500
           if (in_array($stateName, ['Kagoshima', 'Okinawa', 'Hokkaido'])) {
               $regularDeliveryCharge = 2000;
-          } 
+          }
+          else {
+           $regularDeliveryCharge = 0;
+          }
         } else {
            if (in_array($stateName,['Kagoshima', 'Okinawa', 'Hokkaido'])) {
               $fixcharge = 2000;
@@ -1061,10 +1064,10 @@ class OrderController extends Controller
               case 'Chugoku':
               case 'Shikoku':
               case 'Kyushu':
-                  $regularDeliveryCharge = 600;
+                  $fixcharge = 600;
                   break;
               default:
-                  $regularDeliveryCharge = 600; // Default delivery charge for other regions
+                  $fixcharge = 600; // Default delivery charge for other regions
                   break;
           }
       }
