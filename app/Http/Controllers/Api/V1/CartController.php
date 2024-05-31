@@ -127,7 +127,7 @@ class CartController extends Controller
         $totalTenPercentTax = $cartProducts->sum('ten_percent');
         $subTotalAmt = $cartProducts->sum('sub_total');
         
-        if($subTotal > 0 && $subTotal < $regionDetails->maximum_order_amt){
+        if($subTotalAmt > 0 && $subTotalAmt < $regionDetails->maximum_order_amt){
             $deliveryCharge += $regionDetails->dry_delivery_charge;
         }
         
