@@ -149,7 +149,10 @@ class CartController extends Controller
                     
                     $deliveryCharge =1500; //sub total less than 6500 but has no dry product and only frozen product with less than 5 kg weight
                 }
-
+                elseif($totalFrozenWeight ==0 && $subTotalAmt < 6500)
+                {
+                    $deliveryCharge =600;
+                }
                 elseif ($subTotalAmt < 6500 && $totalFrozenWeight < 5) {
                     $deliveryCharge = 600 + 1500; // Dry + Frozen
                 } elseif ($subTotalAmt >= 6500 && $totalFrozenWeight < 5) {
