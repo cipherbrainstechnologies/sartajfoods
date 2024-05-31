@@ -126,24 +126,67 @@ class CartController extends Controller
         $totalEightPercentTax = $cartProducts->sum('eight_percent');
         $totalTenPercentTax = $cartProducts->sum('ten_percent');
         $subTotalAmt = $cartProducts->sum('sub_total');
+        
+
+///////////////////////////////////////////////////////////////
+
+        // Assuming request contains the necessary data
+        // $region = $request->input('region');
+        // $cartSubtotal = $request->input('cartSubtotal');
+        // $frozenWeight = $request->input('frozenWeight');
+        // $hasDryProduct = $request->input('hasDryProduct');
+        // $hasFrozenProduct = $request->input('hasFrozenProduct');
+
+        // $shippingCharges = 0;
+        $regionDetails1= in_array($region_id,['6', '8', '9']);
+        $regionDetails2= in_array($region_id,['1', '2', '3','4','5','7']);
+
+
+
+        if ($regionDetails==$regionDetails2) {
+                if ($subTotalAmt < 6500 && $totalFrozenWeight < 5) {
+                    $deliveryCharge = 600 + 1500; // Dry + Frozen
+                } elseif ($subTotalAmt >= 6500 && $totalFrozenWeight < 5) {
+                    $deliveryCharge = 1500; // Only Frozen
+                } elseif ($totalFrozenWeight > 5 && $subTotalAmt < 6500) {
+                    $deliveryCharge = 600; // Only Dry
+                }
+            
+        } elseif ($regionDetails == $regionDetails1) {
+            if ($totalDryProductAmount && $totalFrozenWeight) {
+                $deliveryCharge = 2000 + 2500; // Dry + Frozen
+            } elseif ($totalDryProductAmount) {
+                $deliveryCharge = 2000; // Only Dry
+            } elseif ($totalFrozenWeight) {
+                $deliveryCharge = 2500; // Only Frozen
+            }
+        }
+
+        // return response()->json([
+        //     'shippingCharges' => $shippingCharges,
+        // ]);
+//     }
+// }
+
+//Till here code from Love ///////////////////////////
         // if($subTotalAmt > 0 && $subTotalAmt < $regionDetails->maximum_order_amt){
         //     $deliveryCharge += $regionDetails->dry_delivery_charge;
         // }
         // if($totalFrozenWeight > 0 && $totalFrozenWeight < $regionDetails->frozen_weight){
             
         //     $deliveryCharge += $regionDetails->frozen_delivery_charge;
-        // }
-        if ($subTotalAmt > $regionDetails->maximum_order_amt && $totalFrozenWeight > 0 && $totalFrozenWeight < $regionDetails->frozen_weight) {
+        // // }
+        // if ($subTotalAmt > $regionDetails->maximum_order_amt && $totalFrozenWeight > 0 && $totalFrozenWeight < $regionDetails->frozen_weight) {
              
-             $deliveryCharge += $regionDetails->frozen_delivery_charge;
-            if($totalDryProductAmount>0){
-                 $deliveryCharge += $regionDetails->dry_delivery_charge;
-            }
-        }elseif($totalFrozenWeight > 0 && $totalFrozenWeight < $regionDetails->frozen_weight){
-            $deliveryCharge += $regionDetails->frozen_delivery_charge;
-        }elseif($subTotalAmt > 0 && $subTotalAmt < $regionDetails->maximum_order_amt){
-            $deliveryCharge += $regionDetails->dry_delivery_charge;
-        }
+        //      $deliveryCharge += $regionDetails->frozen_delivery_charge;
+        //     if($totalDryProductAmount>0){
+        //          $deliveryCharge += $regionDetails->dry_delivery_charge;
+        //     }
+        // }elseif($totalFrozenWeight > 0 && $totalFrozenWeight < $regionDetails->frozen_weight){
+        //     $deliveryCharge += $regionDetails->frozen_delivery_charge;
+        // }elseif($subTotalAmt > 0 && $subTotalAmt < $regionDetails->maximum_order_amt){
+        //     $deliveryCharge += $regionDetails->dry_delivery_charge;
+        // }
         
         // $deliveryCharge = Helpers::get_business_settings('delivery_charge', 0);
         // echo 'subTotal:'.$subTotalAmt . ' '.'deliveryCharge:'.$deliveryCharge.' '.$totalEightPercentTax.' '.'totalTenPercentTax'.$totalTenPercentTax;
