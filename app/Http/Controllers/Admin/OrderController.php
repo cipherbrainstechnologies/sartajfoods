@@ -998,7 +998,7 @@ class OrderController extends Controller
   private function calculateDeliveryCharge($stateName, $orderId, $totalOrderAmount)
   {
       $frozenDeliveryCharge = 0;
-      $regularDeliveryCharge = 600; // Default delivery charge
+      $regularDeliveryCharge = 0; // Default delivery charge
   
       $frozenProductDetails = OrderDetail::where('order_id',$orderId)
           ->whereHas('product', function ($query) {
@@ -1031,6 +1031,11 @@ class OrderController extends Controller
             // If the total weight is less than 5kg, use the regular frozen delivery charge
             $frozenDeliveryCharge = $this->getFrozenDeliveryCharge($stateName) ;
         }
+        }
+        if($totalOrderAmount < 6500){
+        if (in_array($stateName,['Kagoshima', 'Okinawa', 'Hokkaido'])) {
+              $regularDeliveryCharge = 2000;
+          } 
         }
         if ($totalOrderAmount > 6500) {
           // Free delivery for regions except Kagoshima, Okinawa, and Hokkaido, if total amount is greater than 6500
