@@ -1033,17 +1033,23 @@ class OrderController extends Controller
             $frozenDeliveryCharge = $this->getFrozenDeliveryCharge($stateName) ;
         }
         }
-        if($totalOrderAmount < 6500){
-        if (in_array($stateName,['Kagoshima', 'Okinawa', 'Hokkaido'])) {
-              $fixcharge = 2000;
-          } 
-        }
+        // if($totalOrderAmount < 6500){
+        // if (in_array($stateName,['Kagoshima', 'Okinawa', 'Hokkaido'])) {
+        //       $fixcharge = 2000;
+        //   }
+        //   else{
+        //      $fixcharge = 600;
+        //   } 
+        // }
         if ($totalOrderAmount > 6500) {
           // Free delivery for regions except Kagoshima, Okinawa, and Hokkaido, if total amount is greater than 6500
           if (in_array($stateName, ['Kagoshima', 'Okinawa', 'Hokkaido'])) {
               $regularDeliveryCharge = 2000;
           } 
         } else {
+           if (in_array($stateName,['Kagoshima', 'Okinawa', 'Hokkaido'])) {
+              $fixcharge = 2000;
+            }
           // Apply regular delivery charges based on region
           switch ($stateName) {
               case 'Kanto':
@@ -1062,7 +1068,7 @@ class OrderController extends Controller
                   break;
           }
       }
-  
+      
       // If total order amount is greater than 6500, only add the frozen delivery charge
       return $totalOrderAmount > 6500 ? $frozenDeliveryCharge + $regularDeliveryCharge : $fixcharge + $frozenDeliveryCharge;
   
