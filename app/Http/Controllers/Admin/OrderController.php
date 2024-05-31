@@ -1050,9 +1050,9 @@ class OrderController extends Controller
            $regularDeliveryCharge = 0;
           }
         } else {
-           if (in_array($stateName,['Kagoshima', 'Okinawa', 'Hokkaido'])) {
-              $fixcharge = 2000;
-            }
+           // if (in_array($stateName,['Kagoshima', 'Okinawa', 'Hokkaido'])) {
+           //    $fixcharge = 2000;
+           //  }
           // Apply regular delivery charges based on region
           switch ($stateName) {
               case 'Kanto':
@@ -1066,9 +1066,14 @@ class OrderController extends Controller
               case 'Kyushu':
                   $fixcharge = 600;
                   break;
-              default:
-                  $fixcharge = 600; // Default delivery charge for other regions
+              case 'Kagoshima':
+              case 'Okinawa':
+              case 'Hokkaido':
+                 $fixcharge = 2000;
                   break;
+              // default:
+              //     $fixcharge = 600; // Default delivery charge for other regions
+              //     break;
           }
       }
       
