@@ -126,13 +126,14 @@ class CartController extends Controller
         $totalEightPercentTax = $cartProducts->sum('eight_percent');
         $totalTenPercentTax = $cartProducts->sum('ten_percent');
         $subTotalAmt = $cartProducts->sum('sub_total');
-        
         if($subTotalAmt > 0 && $subTotalAmt < $regionDetails->maximum_order_amt){
             $deliveryCharge += $regionDetails->dry_delivery_charge;
         }
-        
         if($totalFrozenWeight > 0 && $totalFrozenWeight < $regionDetails->frozen_weight){
             
+            $deliveryCharge += $regionDetails->frozen_delivery_charge;
+        }
+        if ($totalFrozenWeight > 0 && $totalFrozenWeight < $regionDetails->frozen_weight && $subTotalAmt > $regionDetails->maximum_order_amt) {
             $deliveryCharge += $regionDetails->frozen_delivery_charge;
         }
         
