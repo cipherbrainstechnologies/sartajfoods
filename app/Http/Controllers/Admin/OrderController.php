@@ -1068,7 +1068,7 @@ class OrderController extends Controller
           // Apply regular delivery charges based on region
           switch ($stateName) {
               case 'Kanto':
-              case 'Chubu':
+              case 'Chubu  Hokuriku':
               case 'Hokuriku':
               case 'Shinetsu':
               case 'Tohoku':
@@ -1076,12 +1076,16 @@ class OrderController extends Controller
               case 'Chugoku':
               case 'Shikoku':
               case 'Kyushu':
+              case 'Chugoku Shikoku':
                   $fixcharge = 600;
                   break;
               case 'Kagoshima':
               case 'Okinawa':
               case 'Hokkaido':
                  $fixcharge = 2000;
+                 default:
+                 $fixcharg= 600;
+
           }
       }
       //dd($product_price);
@@ -1093,7 +1097,8 @@ private function getFrozenDeliveryCharge($region)
 {
     $frozenCharges = [
         'Kanto' => 1500,
-        'Chubu' => 1500,
+        'Chubu  Hokuriku' => 1500,
+        'Chugoku Shikoku'=>1500,
         'Hokuriku' => 1500,
         'Shinetsu' => 1500,
         'Tohoku' => 1500,
