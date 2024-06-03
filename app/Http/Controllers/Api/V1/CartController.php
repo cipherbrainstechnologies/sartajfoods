@@ -144,7 +144,7 @@ class CartController extends Controller
 
 
         if ($regionDetails==$regionDetails2) {
-                if($totalFrozenWeight >0 && $totalFrozenWeight < 5  && $subTotalAmt < 6500)
+                if($totalFrozenWeight >0 && $totalFrozenWeight < 5  && $totalDryProductAmount < 6500)
                 {   
                     if($totalDryProductAmount){
                        $deliveryCharge =1500+600;  
@@ -154,15 +154,15 @@ class CartController extends Controller
                     } //sub total less than 6500 but has no dry product and only frozen product with less than 5 kg weight
                 
                 }
-                elseif($totalFrozenWeight ==0 && $subTotalAmt < 6500)
+                elseif($totalFrozenWeight ==0 && $totalDryProductAmount < 6500)
                 {
                     $deliveryCharge =600;
                 }
-                elseif ($subTotalAmt < 6500 && $totalFrozenWeight < 5) {
+                elseif ($totalDryProductAmount < 6500 && $totalFrozenWeight < 5) {
                     $deliveryCharge = 600 + 1500; // Dry + Frozen
-                } elseif ($subTotalAmt >= 6500 && $totalFrozenWeight < 5) {
+                } elseif ($totalDryProductAmount >= 6500 && $totalFrozenWeight < 5) {
                     $deliveryCharge = 1500; // Only Frozen
-                } elseif ($totalFrozenWeight > 5 && $subTotalAmt < 6500) {
+                } elseif ($totalFrozenWeight > 5 && $totalDryProductAmount < 6500) {
                     $deliveryCharge = 600; // Only Dry
                 } 
             
