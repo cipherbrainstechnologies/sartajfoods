@@ -1077,6 +1077,7 @@ class OrderController extends Controller
               case 'Shikoku':
               case 'Kyushu':
               case 'Chugoku Shikoku':
+              case 'Shinetsu  Tohoku':
                   $fixcharge = 600;
                   break;
               case 'Kagoshima':
