@@ -961,14 +961,19 @@ class OrderController extends Controller
     $totalOrderAmount = 0;
     $totalEightPercentTax = 0;
     $totalTenPercentTax = 0;
-
+    $totaldryamount= 0;
     // Iterate over each order detail
     foreach ($orderDetails as $orderDetail) {
         // Calculate subtotal for each order detail considering quantity, price, and taxes
         $subtotal = ($orderDetail->price * $orderDetail->quantity) 
                     -($orderDetail->discount_on_product * $orderDetail->quantity);
         
-        // Add subtotal to the total order amount
+        // Add subtotal to the total order amount\
+       if($orderDetail->product_type != 1){
+          $totaldryamount  = ($orderDetail->price * $orderDetail->quantity)
+                            -($orderDetail->discount_on_product * $orderDetail->quantity);
+       }
+        $totaldryamount  += $totaldryamount;
         $totalOrderAmount += $subtotal;
         $totalEightPercentTax += $orderDetail->eight_percent_tax;
         $totalTenPercentTax += $orderDetail->ten_percent_tax;
@@ -978,7 +983,7 @@ class OrderController extends Controller
     $totalTenPercentTax = round($totalTenPercentTax);
     $finalTotalAmount = $totalOrderAmount + $totalEightPercentTax + $totalTenPercentTax;
     // Calculate the delivery charge based on region
-    $deliveryCharge = $this->calculateDeliveryCharge($deliveryAddress->state_name,$order->id, $totalOrderAmount);
+    $deliveryCharge = $this->calculateDeliveryCharge($deliveryAddress->state_name,$order->id, $totaldryamount);
      // Update the delivery charge in the orders table
      Order::where('id', $orderId)->update(['delivery_charge' => $deliveryCharge]);
     // Add delivery charge to the total order amount
@@ -995,7 +1000,7 @@ class OrderController extends Controller
     // Update the order amount in the orders table
     Order::where('id', $orderId)->update(['order_amount' => $finalTotalAmount]);
   }
-  private function calculateDeliveryCharge($stateName, $orderId, $totalOrderAmount)
+  private function calculateDeliveryCharge($stateName, $orderId, $totaldryamount)
   {
       $frozenDeliveryCharge = 0;
       $regularDeliveryCharge = 0;
@@ -1041,7 +1046,7 @@ class OrderController extends Controller
         //      $fixcharge = 600;
         //   } 
         // }
-        if ($totalOrderAmount > 6500) {
+        if ($totaldryamount > 6500) {
           // Free delivery for regions except Kagoshima, Okinawa, and Hokkaido, if total amount is greater than 6500
           if (in_array($stateName, ['Kagoshima', 'Okinawa', 'Hokkaido'])) {
               $regularDeliveryCharge = 2000;
@@ -1078,7 +1083,7 @@ class OrderController extends Controller
       }
       
       // If total order amount is greater than 6500, only add the frozen delivery charge
-      return $totalOrderAmount > 6500 ? $frozenDeliveryCharge + $regularDeliveryCharge : $fixcharge + $frozenDeliveryCharge;
+      return $totaldryamount > 6500 ? $frozenDeliveryCharge + $regularDeliveryCharge : $fixcharge + $frozenDeliveryCharge;
   
 }
 private function getFrozenDeliveryCharge($region)
