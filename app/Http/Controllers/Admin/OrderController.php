@@ -1101,6 +1101,7 @@ private function getFrozenDeliveryCharge($region)
         'Kanto' => 1500,
         'Chubu  Hokuriku' => 1500,
         'Chugoku Shikoku'=>1500,
+        'Shinetsu  Tohoku'=>1500,
         'Hokuriku' => 1500,
         'Shinetsu' => 1500,
         'Tohoku' => 1500,
