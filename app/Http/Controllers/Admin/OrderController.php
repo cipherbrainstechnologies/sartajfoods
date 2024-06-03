@@ -1083,6 +1083,7 @@ class OrderController extends Controller
               case 'Okinawa':
               case 'Hokkaido':
                  $fixcharge = 2000;
+                 break;
                  default:
                  $fixcharg= 600;
 
