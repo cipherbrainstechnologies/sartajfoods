@@ -165,6 +165,9 @@ class CartController extends Controller
                 } elseif ($totalFrozenWeight > 5 && $totalDryProductAmount < 6500) {
                     $deliveryCharge = 600; // Only Dry
                 } 
+                elseif ($totalFrozenWeight == 0 && $totalDryProductAmount < 6500) {
+                    $deliveryCharge = 600; // Only Dry
+                } 
             
         } elseif ($regionDetails == $regionDetails1) {
             if ($totalDryProductAmount && $totalFrozenWeight) {
