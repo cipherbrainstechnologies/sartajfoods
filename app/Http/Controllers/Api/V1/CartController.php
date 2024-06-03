@@ -179,7 +179,7 @@ class CartController extends Controller
         //         }
         if ($regionDetails==$regionDetails2){
 
-                if($totalFrozenWeight >= 5){
+                if($totalFrozenWeight >= 5 || $totalFrozenWeight == 0){
                     $deliveryCharge += 0;
                 }                
                 else{
