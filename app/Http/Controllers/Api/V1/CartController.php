@@ -185,7 +185,7 @@ class CartController extends Controller
                 else{
                     $deliveryCharge += 1500;
                 }
-                if($totalDryProductAmount >= 6500){
+                if($totalDryProductAmount >= 6500 && $totalDryProductAmount == 0){
                     $deliveryCharge += 0;
                 }
                 else{
