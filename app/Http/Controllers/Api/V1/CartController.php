@@ -191,19 +191,19 @@ class CartController extends Controller
                     $deliveryCharge = 600;  // code...
                 }
                 elseif ($totalDryProductAmount >= 6500 && $frozen_weight >= 5) // conditons Dry >= 6500 and frozen >= 5 delivery charge 00
-                 {
+                {
                     $deliveryCharge = 0;  // code...
                 }
                 elseif ($totalDryProductAmount < 6500 && $frozen_weight >= 5) // conditons Dry < 6500 and frozen => 5 delivery charge 600
                  {
-                    $deliveryCharge = 600;  // code...
-                }
+                 $deliveryCharge = 600;  // code...
+                 }
 
                 elseif ($totalDryProductAmount < 6500 && $frozen_weight >= 5) // conditons Dry < 6500 and frozen => 5 delivery charge 600
                  {
                     $deliveryCharge = 600;  // code...
                 }
-                  elseif($totalDryProductAmount == 0 && $frozen_weight < 5) // conditons Dry < 5  and frozen delivery charge 1500
+                elseif($totalDryProductAmount == 0 && $frozen_weight < 5) // conditons Dry < 5  and frozen delivery charge 1500
                  
                 {
                     $deliveryCharge = 1500;
