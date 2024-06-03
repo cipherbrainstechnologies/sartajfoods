@@ -160,9 +160,9 @@ class CartController extends Controller
                 }
                 elseif ($totalDryProductAmount < 6500 && $totalFrozenWeight < 5) {
                     $deliveryCharge = 600 + 1500; // Dry + Frozen
-                } elseif ($totalDryProductAmount >= 6500 && $totalFrozenWeight > 0 && $totalFrozenWeight< 5) {
+                } elseif ($totalDryProductAmount >= 6500 && $totalFrozenWeight > 0 && $totalFrozenWeight < 5) {
                     $deliveryCharge = 1500; // Only Frozen
-                } elseif ($totalFrozenWeight > 5 && $totalDryProductAmount < 6500) {
+                } elseif ($totalFrozenWeight >= 5 && $totalDryProductAmount < 6500) {
                     $deliveryCharge = 600; // Only Dry
                 } 
                 elseif ($totalFrozenWeight == 0 && $totalDryProductAmount < 6500) {
@@ -178,28 +178,27 @@ class CartController extends Controller
                 // {
                 //     $deliveryCharge = 0;
                 // }
-                // else if ($totalDryProductAmount < 6500 && $totalFrozenWeight > 0 && $totalFrozenWeight <5) // conditons Dry < 6500 and frozen = 0 to 5  delivery charge 2100
+                // else if ($totalDryProductAmount < 6500 && $totalFrozenWeight > 0 && $totalFrozenWeight < 5) // conditons Dry < 6500 and frozen = 0 to 5  delivery charge 2100
                 // {
                 //     $deliveryCharge = 600+1500;
                 // }
-                // else if ($totalDryProductAmount >= 6500 && $totalFrozenWeight > 0 && $totalFrozenWeight <5) // conditons Dry =6500 and frozen = 0 to 5 delivery charge 1500
+                // else if ($totalDryProductAmount >= 6500 && $totalFrozenWeight > 0 && $totalFrozenWeight < 5) // conditons Dry =6500 and frozen = 0 to 5 delivery charge 1500
                 // {
                 //     $deliveryCharge = 1500;
                 // }
                 // elseif ($totalDryProductAmount < 6500 && $frozen_weight == 0) // conditons Dry < 6500 and frozen = 0 delivery charge 600
-                //  {
+                // {
                 //     $deliveryCharge = 600;  // code...
-                // }
+                //  }
                 // elseif ($totalDryProductAmount >= 6500 && $frozen_weight >= 5) // conditons Dry >= 6500 and frozen >= 5 delivery charge 00
-                //  {
+                // {
                 //     $deliveryCharge = 0;  // code...
-                // }
+                //  }
                 // elseif ($totalDryProductAmount < 6500 && $frozen_weight >= 5) // conditons Dry < 6500 and frozen => 5 delivery charge 600
                 //  {
                 //   $deliveryCharge = 600;  // code...
                 //  }
-
-                //   elseif ($totalDryProductAmount < 6500 && $frozen_weight >= 5) // conditons Dry < 6500 and frozen => 5 delivery charge 600
+                // elseif ($totalDryProductAmount < 6500 && $frozen_weight >= 5) // conditons Dry < 6500 and frozen => 5 delivery charge 600
                 //  {
                 //     $deliveryCharge = 600;  // code...
                 // }
