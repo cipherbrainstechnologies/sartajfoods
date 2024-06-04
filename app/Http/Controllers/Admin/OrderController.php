@@ -1077,6 +1077,7 @@ class OrderController extends Controller
               case 'Shikoku':
               case 'Kyushu':
               case 'Chugoku Shikoku':
+              case 'Chugoku  Shikoku':
               case 'Shinetsu  Tohoku':
                   $fixcharge = 600;
                   break;
@@ -1101,6 +1102,7 @@ private function getFrozenDeliveryCharge($region)
         'Kanto' => 1500,
         'Chubu  Hokuriku' => 1500,
         'Chugoku Shikoku'=>1500,
+        'Chugoku  Shikoku'=>1500,
         'Shinetsu  Tohoku'=>1500,
         'Hokuriku' => 1500,
         'Shinetsu' => 1500,
