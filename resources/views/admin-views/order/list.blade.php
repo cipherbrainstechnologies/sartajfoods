@@ -357,20 +357,35 @@
                                     @endif
                                 </td>
                                 <td class="text-capitalize text-center">
-                                    @if($order['order_type']=='take_away')
-                                        <span class="badge badge-soft-info">
-                                            {{translate('take_away')}}
-                                        </span>
-                                    @elseif($order['order_type']=='pos')
-                                        <span class="badge badge-soft-info">
-                                        {{translate('POS')}}
-                                    </span>
-                                    @else
-                                        <span class="badge badge-soft-success">
-                                        {{translate($order['order_type'])}}
-                                        </span>
-                                    @endif
-                                </td>
+    @if($order['order_type'] == 'take_away')
+        <span class="badge badge-soft-info">
+            {{ translate('take_away') }}
+        </span>
+    @elseif($order['order_type'] == 'pos')
+        <span class="badge badge-soft-info">
+            {{ translate('POS') }}
+        </span>
+    @else
+        <span class="badge badge-soft-success">
+            {{ translate($order['order_type']) }}
+        </span>
+        <div class="mt-1">
+            <span class="badge"
+                @if($order['payment_method'] == 'cash_on_delivery')
+                    style="background-color: #FFF7CE; color: #DCA61A;"
+                @elseif($order['payment_method'] == 'paypal')
+                    style="background-color: #DBDDFF; color: #3E4493;"
+                @else
+                    class="badge-soft-success"
+                @endif
+            >
+                {{ translate($order['payment_method'] == 'cash_on_delivery' ? 'COD' : $order['payment_method']) }}
+            </span>
+        </div>
+    @endif
+</td>
+
+                              
                                 <td>
                                     <div class="btn--container justify-content-center">
                                         <a class="action-btn btn--primary btn-outline-primary" href="{{route('admin.orders.details',['id'=>$order['id']])}}"><i class="tio-invisible"></i></a>
