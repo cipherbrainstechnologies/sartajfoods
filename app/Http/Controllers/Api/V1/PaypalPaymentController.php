@@ -39,10 +39,10 @@ class PaypalPaymentController extends Controller
                 $paypal_mode="sandbox";
             }
             $config = array(
-                'client_id' => 'AbqwpMz0y23LtU6DChLadDR905VbjGux2cv52hxDRJ7lw4OsgFO0P_qJvoFXUKIWYTrhByj5CCM9Kjui', // values : (local | production)
-                'secret' => 'EItaaSmeXcd8bvsBJw6aHZaH-igNO2xis5_hEW2LIF6oQoUI5cYTWYztQDGl9zdMQq2dL_R-GWPBAnLS',
+                'client_id' => 'AQCHSkAmd5uEbcfgvpM7m30RZzSkbyG3kolxV6b3CHLWAntmEagMfJN9dQqSFuXNEnWV5YcIhHfNrWJg', // values : (local | production)
+                'secret' => 'EHZGq2rOLEzDbFuBQKomIKvp3XGHjFSGJnAOTTq3EssYVnoE8Pb8NDjP74XxjQDAxj09GT6zoOnnb-nM',
                 'settings' => array(
-                    'mode' => env('PAYPAL_MODE', 'sandbox'), //live||sandbox
+                    'mode' => env('PAYPAL_MODE', 'live'), //live||sandbox
                     'http.ConnectionTimeOut' => 30,
                     'log.LogEnabled' => true,
                     'log.FileName' => storage_path() . '/logs/paypal.log',
@@ -66,9 +66,9 @@ class PaypalPaymentController extends Controller
         $userId =  $request->user()->id;
         $customer = User::find($userId);
         if($local == 'eng'){
-        $callback ="http://localhost:3000/eng";
+        $callback ="https://www.sartajfoods.jp/eng";
         }else{
-            $callback ="http://localhost:3000/jp";
+            $callback ="https://www.sartajfoods.jp/jp";
         }
         $addresses = $request['delivery_address_id'] ?? null;
         $tr_ref = Str::random(6) . '-' . rand(1, 1000);
@@ -177,7 +177,7 @@ class PaypalPaymentController extends Controller
             if ($callback != null) {
                 return redirect($callback . '/OrderReceived' . '?order_id='. $orderId);
             } else {
-                return \redirect()->route("http://localhost:3000".'/OrderReceived' . '?order_id='. $orderId);
+                return \redirect()->route("https://www.sartajfoods.jp".'/OrderReceived' . '?order_id='. $orderId);
             }
         }
            if ($callback != null) {
