@@ -236,7 +236,7 @@ class OrderController extends Controller
                 //'coupon_discount_amount' => $coupon_discount_amount,
                 'coupon_discount_amount' => $request->coupon_discount_amount,
                 'coupon_discount_title' => $request->coupon_discount_title == 0 ? null : 'coupon_discount_title',
-                'payment_status' => ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'unpaid':'paid',
+                'payment_status' => ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment'|| $request->payment_method=='paypal')?'unpaid':'paid',
                 'order_status' => ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'pending':'confirmed',
                 'payment_method' => $request->payment_method,
                 'transaction_reference' => $request->transaction_reference ?? null,
@@ -372,41 +372,43 @@ class OrderController extends Controller
             $fcm_token = $request->user()->cm_firebase_token;
             $order_status_message = $request->payment_method=='cash_on_delivery'?'pending':'confirmed';
             $value = Helpers::order_status_update_message($order_status_message);
-            try {
-                if ($value) {
-                    $data = [
-                        'title' => 'Order',
-                        'description' => $value,
-                        'order_id' => $order_id,
-                        'image' => '',
-                        'type' => 'order'
-                    ];
-                    Helpers::send_push_notif_to_device($fcm_token, $data);
-                }
+            // try {
+            //     if ($value) {
+            //         $data = [
+            //             'title' => 'Order',
+            //             'description' => $value,
+            //             'order_id' => $order_id,
+            //             'image' => '',
+            //             'type' => 'order'
+            //         ];
+            //         Helpers::send_push_notif_to_device($fcm_token, $data);
+            //     }
 
-                //send email
-                $adminEmail = BusinessSetting::where('key','email_address')->first();
-                $emailServices = Helpers::get_business_settings('mail_config') ;
+            //     //send email
+            //     $adminEmail = BusinessSetting::where('key','email_address')->first();
+            //     $emailServices = Helpers::get_business_settings('mail_config') ;
                 
             
-                if (isset($emailServices['status']) && $emailServices['status'] == 1) {
-                    // Mail::to($request->user()->email)->send(new \App\Mail\OrderPlaced($order_id));
-                    SendOrderPlacedEmail::dispatch($order_id, $request->user()->email);
-                    $orderMail = config('mail.ORDER_MAIL');
-                    if(!empty($orderMail) && !empty($orderMail)){
-                        // Mail::to($orderMail)->send(new \App\Mail\OrderPlaced($order_id));
-                        SendOrderPlacedEmail::dispatch($order_id, $orderMail);
-                        \Log::info('Place Order Mail sent to admin successfully.');
-                    }
-                    \Log::info('Place Order Mail sent successfully.');
-                }
+            //     if (isset($emailServices['status']) && $emailServices['status'] == 1) {
+            //         // Mail::to($request->user()->email)->send(new \App\Mail\OrderPlaced($order_id));
+            //         SendOrderPlacedEmail::dispatch($order_id, $request->user()->email);
+            //         $orderMail = config('mail.ORDER_MAIL');
+            //         if(!empty($orderMail) && !empty($orderMail)){
+            //             // Mail::to($orderMail)->send(new \App\Mail\OrderPlaced($order_id));
+            //             SendOrderPlacedEmail::dispatch($order_id, $orderMail);
+            //             \Log::info('Place Order Mail sent to admin successfully.');
+            //         }
+            //         \Log::info('Place Order Mail sent successfully.');
+            //     }
 
-            } catch (\Exception $e) {
-                \Log::error("Error building email: {$e->getMessage()}");
-            }
+            // } catch (\Exception $e) {
+            //     \Log::error("Error building email: {$e->getMessage()}");
+            // }
 
             if($request->payment_method == "paypal"){
-                $res = $this->paypal->payWithpaypal($request,$order_id);
+                \Log::info('orderid: ' . $order_id);
+                 $res = $this->paypal->payWithpaypal($request,$order_id);
+                
                 return response()->json(['payment_link'=>$res],200);
             }
 
@@ -415,7 +417,7 @@ class OrderController extends Controller
             }
             
             return response()->json([
-                'message' => 'Order placed successfully!',
+                'message' => 'Order placed successfully cash on delivery!',
                 'order_id' => $order_id,
             ], 200);
 
@@ -732,4 +734,31 @@ class OrderController extends Controller
             return response()->json(['purchased' => false,'reviewed' => false], 200);
         }
     }
+    public function changes_status($order_id): \Illuminate\Http\JsonResponse
+         {
+          $order = $this->order->with('details.product','details','customer.addresses')->where('id', $order_id)->first();
+          if(!empty($order)){
+          $order->payment_method = 'cash_on_delivery';
+          $order->order_status = 'confirmed';
+          $order->payment_by = 'offline_payment';
+          $order->save();
+          return response()->json(['message' => 'Order status  is changed'], 200);
+          }
+          else{
+            return response()->json(['message' => 'Order status  is not found'], 200);
+          }
+     }
+    public function cancel_order_cus($order_id): \Illuminate\Http\JsonResponse
+    {
+        $order = $this->order->with('details.product','details','customer.addresses')->where('id', $order_id)->first();
+        if(!empty($order)){
+        $order->order_status = 'canceled';
+        $order->save();
+        return response()->json(['message' => 'Order status  is canceled'], 200);
+        }
+        else{
+        return response()->json(['message' => 'Order status  is not found'], 200);
+        }
+    }
+    
 }

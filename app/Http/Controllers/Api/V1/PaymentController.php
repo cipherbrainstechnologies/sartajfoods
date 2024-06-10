@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Model\Order;
 
 class PaymentController extends Controller
 {
@@ -58,11 +59,27 @@ class PaymentController extends Controller
         return response()->json(['message' => 'Payment succeeded'], 200);
     }
 
-    public function fail()
+    public function fail(Request $request)
     {
-        if (session()->has('callback')) {
-            return redirect(session('callback') . '/fail');
-        }
-        return response()->json(['message' => 'Payment failed'], 403);
+        $queryParams = $request->query();
+        // Alternatively, you can get individual parameters
+        $callback = $request->query('callback');
+        $transactionReference = $request->query('transaction_reference');
+        // $payment_id = $request->query('paymentId');
+        // $token = $request->query('token');
+        // $payerId = $request->query('PayerID');
+        $orderId = $request->query('order_id');
+        $customer = $request->query('customer');
+
+        $order = Order::find($orderId);
+        $order->transaction_reference = $transactionReference;
+        $order->order_status= "canceled";
+        $order->payment_status = "fail";
+        $order->save();
+        return redirect($callback . '/fail'.'?order_id=' .$orderId .'&name='.$customer);
+
+
+
+
     }
 }
