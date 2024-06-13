@@ -77,7 +77,8 @@
 											
 											<tr>
 												<td  >Payment Method :</td>
-												<td >Cash on Delivery</td>
+												<td >{{ $order->payment_method== 'paypal' ? 'ADVANCE/PAYPAL' : ucwords(str_replace('_', ' ', $order->payment_method))}}</td>
+
 											</tr>
 											<tr>
 												<td  >Shipping Method :</td>

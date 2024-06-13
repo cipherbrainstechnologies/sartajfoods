@@ -74,7 +74,7 @@
 											</tr>
 											<tr>
 												<td>⽀払⽅法 :</td>
-												<td > 代引き</td>
+												<td >{{ $order->payment_method== 'paypal' ? 'アドバンス/ペイパル' : '代金引換'}}</td>
 											</tr>
 											<tr>
 												<td>配送⽅法 :</td>
