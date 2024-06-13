@@ -169,7 +169,7 @@ class PaypalPaymentController extends Controller
         if ($result->getState() == 'approved') {
             $transactionReference = Session::get('transaction_reference');
             $order->payment_status = "paid";
-            $order->order_status= "pending";
+            $order->order_status = "pending";
             $order->transaction_reference = $transaction_reference;
 
             $order->save();
