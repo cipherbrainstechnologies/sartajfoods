@@ -739,7 +739,7 @@ class OrderController extends Controller
           $order = $this->order->with('details.product','details','customer.addresses')->where('id', $order_id)->first();
           if(!empty($order)){
           $order->payment_method = 'cash_on_delivery';
-          $order->order_status = 'confirmed';
+          $order->order_status = "pending";
           $order->payment_by = 'offline_payment';
           $order->save();
           return response()->json(['message' => 'Order status  is changed'], 200);
