@@ -28,6 +28,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             $this->sendEmails();
         })->daily();
+        $schedule->command('orders:cancel-unpaid')->everyFiveMinutes()->appendOutputTo(storage_path('logs/scheduler.log'));
     }
 
     /**

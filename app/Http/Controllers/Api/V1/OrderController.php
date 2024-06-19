@@ -237,7 +237,7 @@ class OrderController extends Controller
                 'coupon_discount_amount' => $request->coupon_discount_amount,
                 'coupon_discount_title' => $request->coupon_discount_title == 0 ? null : 'coupon_discount_title',
                 'payment_status' => ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment'|| $request->payment_method=='paypal')?'unpaid':'paid',
-                'order_status' => ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'pending':'confirmed',
+                'order_status' => ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment' ||  $request->payment_method=='paypal')?'pending':'confirmed',
                 'payment_method' => $request->payment_method,
                 'transaction_reference' => $request->transaction_reference ?? null,
                 'order_note' => !empty($request['order_note']) ? $request['order_note'] : null,
