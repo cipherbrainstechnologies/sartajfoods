@@ -32,7 +32,7 @@ class CancelUnpaidOrders extends Command
 
     public function handle()
     {
-        
+
        Log::info('CancelUnpaidOrders command is running.');
 
        $twentyMinutesAgo = Carbon::now()->subMinutes(20);
@@ -65,7 +65,7 @@ class CancelUnpaidOrders extends Command
         }
     }
 
-    $this->info('Unpaid PayPal orders older than 5 minutes have been cancelled.');
+    $this->info('Unpaid PayPal orders older than 10 minutes have been cancelled.');
     $this->info($twentyMinutesAgo);
     $this->info($tenMinutesAgo);
     
