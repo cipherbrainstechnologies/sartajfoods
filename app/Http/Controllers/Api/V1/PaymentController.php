@@ -74,7 +74,7 @@ class PaymentController extends Controller
         $order = Order::find($orderId);
         $order->transaction_reference = $transactionReference;
         $order->order_status= "pending";
-        $order->payment_status = "fail";
+        $order->payment_status = "unpaid";
         $order->save();
         return redirect($callback . '/fail'.'?order_id=' .$orderId .'&name='.$customer);
 
