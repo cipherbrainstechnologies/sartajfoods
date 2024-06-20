@@ -183,7 +183,7 @@ class PaypalPaymentController extends Controller
         }
            if ($callback != null) {
             $order->transaction_reference = $transaction_reference;
-            $order->payment_status = "fail";
+            $order->payment_status = "unpaid";
              $order->order_status = "pending";
             $order->save();
             return redirect($callback . '/fail'.'?order_id=' .$orderId .'&name='.$customer['f_name']);
