@@ -1043,6 +1043,10 @@ class OrderController extends Controller
         $totalFrozenWeight += $weight * $detail->quantity;
         //$totalFrozenQuantity += $detail->quantity;
         }
+        if($totalFrozenWeight == 0){
+            $frozenDeliveryCharge=0;
+        }
+        else{
         if ($totalFrozenWeight >= 5) {
             if (in_array($stateName, ['Kagoshima', 'Okinawa', 'Hokkaido'])) {
                 $frozenDeliveryCharge = 2500 ;
@@ -1055,7 +1059,13 @@ class OrderController extends Controller
             $frozenDeliveryCharge = $this->getFrozenDeliveryCharge($stateName) ;
         }
         }
+        }
         $totaldryamount= $totalOrderAmount - $product_price;
+        
+        if($totalDryProductAmount == 0){
+           $regularDeliveryCharge = 0;
+        }
+        else{
         if ($totaldryamount >= 6500) {
           // Free delivery for regions except Kagoshima, Okinawa, and Hokkaido, if total amount is greater than 6500
           if (in_array($stateName, ['Kagoshima', 'Okinawa', 'Hokkaido'])) {
@@ -1079,21 +1089,22 @@ class OrderController extends Controller
               case 'Chugoku Shikoku':
               case 'Chugoku  Shikoku':
               case 'Shinetsu  Tohoku':
-                  $fixcharge = 600;
+                  $regularDeliveryCharge = 600;
                   break;
               case 'Kagoshima':
               case 'Okinawa':
               case 'Hokkaido':
-                 $fixcharge = 2000;
+                 $regularDeliveryCharge = 2000;
                  break;
                  default:
-                 $fixcharg= 600;
+                 $regularDeliveryCharge= 600;
 
           }
       }
+      }
       //dd($product_price);
       // If total order amount is greater than 6500, only add the frozen delivery charge
-      return $totaldryamount >= 6500 ? $frozenDeliveryCharge + $regularDeliveryCharge : $fixcharge + $frozenDeliveryCharge;
+      return $totaldryamount >= 6500 ? $frozenDeliveryCharge + $regularDeliveryCharge : $regularDeliveryCharge + $frozenDeliveryCharge;
   
 }
 private function getFrozenDeliveryCharge($region)
