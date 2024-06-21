@@ -1005,7 +1005,7 @@ class OrderController extends Controller
   private function calculateDeliveryCharge($stateName, $orderId, $totalOrderAmount)
   {
       $frozenDeliveryCharge = 0;
-      $regularDeliveryCharge = 600; // Default delivery charge
+      $regularDeliveryCharge = 0; // Default delivery charge
       $fixcharge=0;
       $product_price=0;
   
@@ -1062,7 +1062,7 @@ class OrderController extends Controller
         }
         $totaldryamount= $totalOrderAmount - $product_price;
         
-        if($totalDryProductAmount == 0){
+        if($totaldryamount == 0){
            $regularDeliveryCharge = 0;
         }
         else{
