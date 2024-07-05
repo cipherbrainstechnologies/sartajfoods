@@ -218,8 +218,25 @@ class OrderController extends Controller
         $order = $this->order->with('details', 'history','browser_history')->where(['id' => $id])->first();
         if(!empty($order)){
             $orderDetails =collect($order->details);
-            $EightPercentTax = $orderDetails->sum('eight_percent_tax');
-            $TenPercentTax = $orderDetails->sum('ten_percent_tax');
+            // $EightPercentTax = $orderDetails->sum('eight_percent_tax');
+            // $TenPercentTax = $orderDetails->sum('ten_percent_tax');
+            $totalTaxAmount['TotalEightPercentTax'] = 0;
+            $totalTaxAmount['TotalTenPercentTax'] = 0;
+
+             // Calculate the total eight percent and ten percent taxes, including quantity
+            foreach ($order->details as $detail) {
+                $productDetail = json_decode($detail['product_details'], true);
+
+                if (isset($productDetail['tax'])) {
+                    if ($productDetail['tax'] == 8) {
+                        $totalTaxAmount['TotalEightPercentTax'] += round($detail['price'] * $detail['quantity']);
+                    } else {
+                        $totalTaxAmount['TotalTenPercentTax'] += round($detail['price'] * $detail['quantity']);
+                    }
+                }
+            }
+            $EightPercentTax = round($totalTaxAmount['TotalEightPercentTax']*0.08,2);
+            $TenPercentTax = round($totalTaxAmount['TotalTenPercentTax']*0.10,2);
 
             $delivery_man = $this->delivery_man->where(['is_active'=>1])
             ->where(function($query) use ($order) {
@@ -603,10 +620,12 @@ class OrderController extends Controller
         $frozenProductDetails = $orderDetails->filter(function ($detail) {
             return $detail->product->product_type == 1; 
         });
-        $EightPercentTax = $orderDetails->sum('eight_percent_tax');
-        $TenPercentTax = $orderDetails->sum('ten_percent_tax'); 
+        // $EightPercentTax = $orderDetails->sum('eight_percent_tax');
+        // $TenPercentTax = $orderDetails->sum('ten_percent_tax'); 
         $totalDiscount =   $orderDetails->sum('total_discount');
         $totalTaxPercent = Helpers::calculateTotalTaxAmount($order);
+        $EightPercentTax = round($totalTaxPercent['TotalEightPercentTax']*0.08,2);
+        $TenPercentTax = round($totalTaxPercent['TotalTenPercentTax']*0.10,2);
         $totalWeight = ($orderDetails->sum('weight')/1000) ?? 0 ;
         $totalFrozenWeight = $frozenProductDetails->sum(function ($detail) {
         $weight = $detail->product->weight;
@@ -977,12 +996,12 @@ class OrderController extends Controller
         // Add subtotal to the total order amount
         //$totaldryamount += $dryamont;
         $totalOrderAmount += $subtotal;
-        $totalEightPercentTax += $orderDetail->eight_percent_tax;
-        $totalTenPercentTax += $orderDetail->ten_percent_tax;
+        $totalEightPercentTax += $orderDetail->eight_percent_tax * $orderDetail->quantity;
+        $totalTenPercentTax += $orderDetail->ten_percent_tax * $orderDetail->quantity;
     }
     
-    $totalEightPercentTax = round($totalEightPercentTax);
-    $totalTenPercentTax = round($totalTenPercentTax);
+    $totalEightPercentTax = round($totalEightPercentTax,2);
+    $totalTenPercentTax = round($totalTenPercentTax,2);
     $finalTotalAmount = $totalOrderAmount + $totalEightPercentTax + $totalTenPercentTax;
     // Calculate the delivery charge based on region
     $deliveryCharge = $this->calculateDeliveryCharge($deliveryAddress->state_name,$order->id, $totalOrderAmount);
