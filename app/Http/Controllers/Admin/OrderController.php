@@ -990,8 +990,9 @@ class OrderController extends Controller
     $totalOrderAmount = 0;
     $totalEightPercentTax = 0;
     $totalTenPercentTax = 0;
-//$totaldryamount=0;
-
+    //$totaldryamount=0;
+    $totalTaxAmount['TotalEightPercentTax']=0;
+    $totalTaxAmount['TotalTenPercentTax']=0;
     // Iterate over each order detail
     foreach ($orderDetails as $orderDetail) {
         // Calculate subtotal for each order detail considering quantity, price, and taxes
@@ -1008,17 +1009,19 @@ class OrderController extends Controller
         $totalOrderAmount += $subtotal;
         // $totalEightPercentTax += $orderDetail->eight_percent_tax * $orderDetail->quantity;
         // $totalTenPercentTax += $orderDetail->ten_percent_tax * $orderDetail->quantity;
-        if($orderDetail->tax == 8){
-           $totalEightPercentTax += round($orderDetail->price *$orderDetail->quantity);  
-        }
-        if($orderDetail->tax == 10){
-           $totalTenPercentTax += round($orderDetail->price * $orderDetail->quantity);  
+        $productDetail = json_decode($orderDetail['product_details'], true);
+        if (isset($productDetail['tax'])) {
+         if ($productDetail['tax'] == 8) {
+             $totalTaxAmount['TotalEightPercentTax'] += round($orderDetail['price'] * $orderDetail['quantity']);
+         } else {
+            $totalTaxAmount['TotalTenPercentTax'] += round($orderDetail['price'] * $orderDetail['quantity']);
+         }
         }
     }
     
-    $totalEightPercentTax = $totalEightPercentTax * 0.08;
-    $totalTenPercentTax = $totalTenPercentTax * 0.10;
-    $finalTotalAmount = $totalOrderAmount + $totalEightPercentTax + $totalTenPercentTax;
+    $totalEightPercentTax = $totalTaxAmount['TotalEightPercentTax'] * 0.08;
+    $totalTenPercentTax = $totalTaxAmount['TotalTenPercentTax'] * 0.10;
+    $finalTotalAmount = $totalOrderAmount + round($totalEightPercentTax) + round($totalTenPercentTax);
     // Calculate the delivery charge based on region
     $deliveryCharge = $this->calculateDeliveryCharge($deliveryAddress->state_name,$order->id, $totalOrderAmount);
      // Update the delivery charge in the orders table
