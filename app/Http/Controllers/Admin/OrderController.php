@@ -996,12 +996,18 @@ class OrderController extends Controller
         // Add subtotal to the total order amount
         //$totaldryamount += $dryamont;
         $totalOrderAmount += $subtotal;
-        $totalEightPercentTax += $orderDetail->eight_percent_tax * $orderDetail->quantity;
-        $totalTenPercentTax += $orderDetail->ten_percent_tax * $orderDetail->quantity;
+        // $totalEightPercentTax += $orderDetail->eight_percent_tax * $orderDetail->quantity;
+        // $totalTenPercentTax += $orderDetail->ten_percent_tax * $orderDetail->quantity;
+        if($orderDetail->tax == 8){
+           $totalEightPercentTax += round($orderDetail->price *$orderDetail->quantity);  
+        }
+        if($orderDetail->tax == 10){
+           $totalTenPercentTax += round($orderDetail->price * $orderDetail->quantity);  
+        }
     }
     
-    $totalEightPercentTax = round($totalEightPercentTax,2);
-    $totalTenPercentTax = round($totalTenPercentTax,2);
+    $totalEightPercentTax = $totalEightPercentTax * 0.08;
+    $totalTenPercentTax = $totalTenPercentTax * 0.10;
     $finalTotalAmount = $totalOrderAmount + $totalEightPercentTax + $totalTenPercentTax;
     // Calculate the delivery charge based on region
     $deliveryCharge = $this->calculateDeliveryCharge($deliveryAddress->state_name,$order->id, $totalOrderAmount);
