@@ -110,19 +110,29 @@ class OrderController extends Controller
         foreach ($orders as $order) {
             $orderDetails = collect($order->details);
             $totalOrderAmount = 0;
-            $EightPercentTax = 0;
-            $TenPercentTax = 0;
-    
-            foreach ($orderDetails as $orderDetail) {
+            // $EightPercentTax = 0;
+            // $TenPercentTax = 0;
+            $totalTaxAmount['TotalEightPercentTax'] = 0;
+            $totalTaxAmount['TotalTenPercentTax'] = 0;
+            foreach ($orderDetails as $key=>$orderDetail) {
                 $subtotal = ($orderDetail->price * $orderDetail->quantity) - ($orderDetail->discount_on_product * $orderDetail->quantity);
                 $totalOrderAmount += $subtotal;
-                $EightPercentTax += $orderDetail->eight_percent_tax;
-                $TenPercentTax += $orderDetail->ten_percent_tax;
+                     
+                // $EightPercentTax += $orderDetail->eight_percent_tax;
+                // $TenPercentTax += $orderDetail->ten_percent_tax;
+                $productDetail = json_decode($orderDetail['product_details'], true);
+                if (isset($productDetail['tax'])) {
+                    if ($productDetail['tax'] == 8) {
+                        $totalTaxAmount['TotalEightPercentTax'] += round($orderDetail['price'] * $orderDetail['quantity']);
+                    } else {
+                        $totalTaxAmount['TotalTenPercentTax'] += round($orderDetail['price'] * $orderDetail['quantity']);
+                    }
+                }
+       
             }
     
-            $EightPercentTax = round($EightPercentTax);
-            $TenPercentTax = round($TenPercentTax);
-    
+            $EightPercentTax = $totalTaxAmount['TotalEightPercentTax']*0.08;
+            $TenPercentTax = $totalTaxAmount['TotalTenPercentTax']*0.10;
             if ($order->coupon_discount_amount) {
                 $totalOrderAmount -= $order->coupon_discount_amount;
             }
@@ -136,7 +146,7 @@ class OrderController extends Controller
                 $totalOrderAmount += $deliveryCharge;
             }
     
-            $totalOrderAmount += $EightPercentTax + $TenPercentTax;
+            $totalOrderAmount += round($EightPercentTax) + round($TenPercentTax);
             $order->calculated_order_amount = $totalOrderAmount;
         }
 
@@ -624,8 +634,8 @@ class OrderController extends Controller
         // $TenPercentTax = $orderDetails->sum('ten_percent_tax'); 
         $totalDiscount =   $orderDetails->sum('total_discount');
         $totalTaxPercent = Helpers::calculateTotalTaxAmount($order);
-        $EightPercentTax = round($totalTaxPercent['TotalEightPercentTax']*0.08,2);
-        $TenPercentTax = round($totalTaxPercent['TotalTenPercentTax']*0.10,2);
+        $EightPercentTax = $totalTaxPercent['TotalEightPercentTax']*0.08;
+        $TenPercentTax = $totalTaxPercent['TotalTenPercentTax']*0.10;
         $totalWeight = ($orderDetails->sum('weight')/1000) ?? 0 ;
         $totalFrozenWeight = $frozenProductDetails->sum(function ($detail) {
         $weight = $detail->product->weight;
@@ -640,11 +650,11 @@ class OrderController extends Controller
         });
 
         $totalFrozenWeight = $totalFrozenWeight ?? 0;
-        $subTotal = (Helpers::calculateInvoice($id) - $EightPercentTax - $TenPercentTax);
+        $subTotal = (Helpers::calculateInvoice($id));
         $delivery_charge = $order->delivery_charge;
         $delivery_fee = $order->free_delivery_amount;
 
-        $totalAmt = ( $subTotal - $order->coupon_discount_amount) + $order->delivery_charge +$delivery_fee;
+        $totalAmt = ( $subTotal - $order->coupon_discount_amount) + $order->delivery_charge +$delivery_fee ;
         
         // Rounded Value Display.
         // 

@@ -1060,7 +1060,7 @@ class Helpers
                 $itemTotal = ($itemPrice - $discount) * $product['quantity'];
             
                 // Add tax amount
-                $itemTotal += $product['tax_amount'];
+                //$itemTotal += $product['tax_amount'];
                 
                 // Accumulate to the total cost
                 $totalCost += $itemTotal;
