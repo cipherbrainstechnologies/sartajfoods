@@ -372,38 +372,38 @@ class OrderController extends Controller
             $fcm_token = $request->user()->cm_firebase_token;
             $order_status_message = $request->payment_method=='cash_on_delivery'?'pending':'confirmed';
             $value = Helpers::order_status_update_message($order_status_message);
-            // try {
-            //     if ($value) {
-            //         $data = [
-            //             'title' => 'Order',
-            //             'description' => $value,
-            //             'order_id' => $order_id,
-            //             'image' => '',
-            //             'type' => 'order'
-            //         ];
-            //         Helpers::send_push_notif_to_device($fcm_token, $data);
-            //     }
+            try {
+                if ($value) {
+                    $data = [
+                        'title' => 'Order',
+                        'description' => $value,
+                        'order_id' => $order_id,
+                        'image' => '',
+                        'type' => 'order'
+                    ];
+                    Helpers::send_push_notif_to_device($fcm_token, $data);
+                }
 
-            //     //send email
-            //     $adminEmail = BusinessSetting::where('key','email_address')->first();
-            //     $emailServices = Helpers::get_business_settings('mail_config') ;
+                //send email
+                $adminEmail = BusinessSetting::where('key','email_address')->first();
+                $emailServices = Helpers::get_business_settings('mail_config') ;
                 
             
-            //     if (isset($emailServices['status']) && $emailServices['status'] == 1) {
-            //         // Mail::to($request->user()->email)->send(new \App\Mail\OrderPlaced($order_id));
-            //         SendOrderPlacedEmail::dispatch($order_id, $request->user()->email);
-            //         $orderMail = config('mail.ORDER_MAIL');
-            //         if(!empty($orderMail) && !empty($orderMail)){
-            //             // Mail::to($orderMail)->send(new \App\Mail\OrderPlaced($order_id));
-            //             SendOrderPlacedEmail::dispatch($order_id, $orderMail);
-            //             \Log::info('Place Order Mail sent to admin successfully.');
-            //         }
-            //         \Log::info('Place Order Mail sent successfully.');
-            //     }
+                if (isset($emailServices['status']) && $emailServices['status'] == 1) {
+                    // Mail::to($request->user()->email)->send(new \App\Mail\OrderPlaced($order_id));
+                    SendOrderPlacedEmail::dispatch($order_id, $request->user()->email);
+                    $orderMail = config('mail.ORDER_MAIL');
+                    if(!empty($orderMail) && !empty($orderMail)){
+                        // Mail::to($orderMail)->send(new \App\Mail\OrderPlaced($order_id));
+                        SendOrderPlacedEmail::dispatch($order_id, $orderMail);
+                        \Log::info('Place Order Mail sent to admin successfully.');
+                    }
+                    \Log::info('Place Order Mail sent successfully.');
+                }
 
-            // } catch (\Exception $e) {
-            //     \Log::error("Error building email: {$e->getMessage()}");
-            // }
+            } catch (\Exception $e) {
+                \Log::error("Error building email: {$e->getMessage()}");
+            }
 
             if($request->payment_method == "paypal"){
                 \Log::info('orderid: ' . $order_id);
