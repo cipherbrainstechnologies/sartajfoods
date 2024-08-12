@@ -228,7 +228,6 @@ class ReportController extends Controller
             ->whereDate('created_at', '<=', $end_date);
         })->pluck('id')->toArray();
     }
-
     $query_param = [
         'branch_id' => $branch_id,
         'start_date' => $start_date,
