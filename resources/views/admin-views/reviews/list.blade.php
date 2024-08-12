@@ -62,10 +62,10 @@
                             <td>
                                 <span class="d-block font-size-sm text-body">
                                     @if($review->product)
-                                        @if (!empty(json_decode($review->product['image'],true)))
+                                        @if (!empty($review->product['image']))
                                         <a href="{{route('admin.product.view',[$review['product_id']])}}" class="short-media">
                                             <img onerror="this.src='{{asset('public/assets/admin/img/160x160/1.png')}}'"
-                                                 src="{{asset('storage/product')}}//{{json_decode($review->product['image'],true)[0]}}">
+                                                 src="{{asset('storage/product')}}//{{$review->product['image'][0]}}">
                                             <div class="text-cont line--limit-2 max-150px">
                                                 {{$review->product['name']}}
                                             </div>
