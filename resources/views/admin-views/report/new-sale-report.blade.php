@@ -99,7 +99,29 @@
                     </div>
                 </div>
                 <div id="set-rows"> 
-               
+                <div class="hs-unfold  d-flex justify-content-end align-items-center"style="padding: 10px 15px;">
+                     <a class="js-hs-unfold-invoker btn btn-sm btn-outline-primary-2 dropdown-toggle min-height-40"
+                                href="javascript:;"
+                                data-hs-unfold-options='{
+                                        "target": "#usersExportDropdown",
+                                        "type": "css-animation"
+                                    }'>
+                                <i class="tio-download-to mr-1"></i> {{ translate('export') }}
+                            </a>
+
+                            <div id="usersExportDropdown"
+                                class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-sm-right">
+                                <span class="dropdown-header">{{ translate('download') }}
+                                    {{ translate('options') }}</span>
+                                <a id="export-excel" class="dropdown-item"
+                                    href="{{ route('admin.report.sale.excel', ['branch_id' => Request::get('branch_id'), 'start_date' => Request::get('start_date'), 'end_date' => Request::get('end_date')]) }}" >
+                                    <img class="avatar avatar-xss avatar-4by3 mr-2"
+                                        src="{{ asset('public/assets/admin') }}/svg/components/excel.svg"
+                                        alt="Image Description">
+                                    {{ translate('excel') }}</a>
+                            </div>
+                </div>
+                </div>
                 <!-- Table -->
                 <div class="table-responsive">
                     <table class="table table-borderless table-align-middle">
