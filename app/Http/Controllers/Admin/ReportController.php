@@ -613,7 +613,8 @@ class ReportController extends Controller
      * @param Request $request
      * @return void
      */
-    public function expense_summary_pdf(Request $request): void
+    
+     public function expense_summary_pdf(Request $request): void
     {
         $company_phone = $this->business_setting->where('key', 'phone')->first()->value ?? '';
         $company_email = $this->business_setting->where('key', 'email_address')->first()->value ?? '';
