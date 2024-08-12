@@ -229,7 +229,7 @@ class ReportController extends Controller
         })->pluck('id')->toArray();
     }
 
-    $query_param = [
+  $query_param = [
         'branch_id' => $branch_id,
         'start_date' => $start_date,
         'end_date' => $end_date,
