@@ -229,7 +229,7 @@ class ReportController extends Controller
         })->pluck('id')->toArray();
     }
 
-  $query_param = [
+    $query_param = [
         'branch_id' => $branch_id,
         'start_date' => $start_date,
         'end_date' => $end_date,
@@ -238,8 +238,7 @@ class ReportController extends Controller
     $exportData = [];
     $total_sold = 0;
     $total_qty = 0;
-     
-    // To track unique product IDs
+     // To track unique product IDs
 
     foreach ($this->order_detail->whereIn('order_id', $orders)->get() as $detail) {
         $price = $detail['price'] - $detail['discount_on_product'];
@@ -614,8 +613,7 @@ class ReportController extends Controller
      * @param Request $request
      * @return void
      */
-    
-     public function expense_summary_pdf(Request $request): void
+    public function expense_summary_pdf(Request $request): void
     {
         $company_phone = $this->business_setting->where('key', 'phone')->first()->value ?? '';
         $company_email = $this->business_setting->where('key', 'email_address')->first()->value ?? '';
