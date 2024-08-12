@@ -238,7 +238,8 @@ class ReportController extends Controller
     $exportData = [];
     $total_sold = 0;
     $total_qty = 0;
-     // To track unique product IDs
+     
+    // To track unique product IDs
 
     foreach ($this->order_detail->whereIn('order_id', $orders)->get() as $detail) {
         $price = $detail['price'] - $detail['discount_on_product'];
