@@ -774,7 +774,7 @@
                                       
                                       @if($order->order_status == "pending")
                                           <p style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; margin: 11px 0 0;" text-align="left">
-                                              {{'If you have any questions or need further assistance,please don\'t hesitate to contact us at 0727511975. We are here to help and will do our best to address any concerns you may have.}}<br><br>
+                                              {{'If you have any questions or need further assistance,please don\'t hesitate to contact us at 0727511975. We are here to help and will do our best to address any concerns you may have.'}}<br><br>
                                               {{'We appreciate your business and look forward to serving you!'}}<br><br>
                                               <b>{{'Best Regards,'}}<br> </b>
                                               <b>{{'The Sartaj Foods Team'}}</b>
