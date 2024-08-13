@@ -73,15 +73,18 @@ class OrderPlaced extends Mailable
             if($order->order_status == "confirmed"){
                 $subject = 'Order Confirmation: '.$order->id;
             }elseif($order->order_status == "processing"){
-                $subject = 'Order Update: Your Order is Being Processed!';
+                $subject = 'ORDER PROCESSING';
             }elseif($order->order_status == "canceled"){
-                $subject = 'Order Cancellation Confirmation';
+                $subject = 'ORDER CANCELLED';
             }elseif($order->order_status == "failed"){
                 $subject = 'Order Processing Failure Notification';
             }elseif($order->order_status == "returned"){
                 $subject = 'Order Return Notification';
-            }else{
-                $subject = 'Order Completed! '.$order->tracking_id;
+            }elseif($order->order_status == "delivered"){
+                $subject = 'ORDER DISPATCHED'; 
+            }
+            else{
+                $subject = 'ORDER PLACED! '.$order->tracking_id;
             }
             return $this->view('email-templates.customer-order-placed', compact('order_id'))
                 ->subject($subject);
