@@ -54,6 +54,10 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::get('list', 'UserActivityController@list')->name('list');
         });
 
+        Route::group(['prefix' => 'top-seller', 'as' => 'top-seller.'], function () {
+            Route::get('top-list', 'TopsellerController@list')->name('top-list');
+        });
+
         Route::group(['prefix' => 'pos', 'as' => 'pos.','middleware'=>['module:pos_management']], function () {
             Route::get('/', 'POSController@index')->name('index');
             Route::get('quick-view', 'POSController@quick_view')->name('quick-view');
