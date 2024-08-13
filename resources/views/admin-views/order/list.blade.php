@@ -296,7 +296,14 @@
                                                href="{{route('admin.customer.view',[$order['user_id']])}}">{{$order->customer['f_name'].' '.$order->customer['l_name']}}</a>
                                         </div>
                                         <div class="text-sm">
-                                            <a href="Tel:{{$order->customer['phone']}}">{{$order->customer['phone']}}</a>
+                                            <?php
+                                            $phone = $order->customer['phone'];
+                                           // Remove the country code if it starts with +81
+                                            if (strpos($phone, '+81') === 0) {
+                                           $phone = substr($phone, 3); // Remove the +81 prefix
+                                            } 
+                                            ?>
+                                       <a href="Tel:{{$phone}}">{{$phone}}</a>
                                         </div>
                                     @elseif($order->user_id != null && !isset($order->customer))
                                         <label

@@ -701,7 +701,14 @@
                                     <span>{{\App\Model\Order::where('user_id',$order['user_id'])->count()}} {{translate("orders")}}</span>
                                     <span class="text--title font-semibold d-block">
                                 <i class="tio-call-talking-quiet mr-2"></i>
-                                <a href="Tel:{{$order->customer['phone']}}">{{$order->customer['phone']}}</a>
+                                <?php
+                                $phone = $order->customer['phone'];
+                                // Remove the country code if it starts with +81
+                                if (strpos($phone, '+81') === 0) {
+                                 $phone = substr($phone, 3); // Remove the +81 prefix
+                                } 
+                               ?>
+                               <a href="Tel:{{$phone}}">{{$phone}}</a>
                             </span>
                                     <span class="text--title">
                                 <i class="tio-email mr-2"></i>
