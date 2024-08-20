@@ -711,7 +711,7 @@
                                                   @endif
                                                   <tr class="pricing-table-total-row">
                                                     <th class="table-title" data-key="4664705_total" style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 700; text-transform: uppercase; color: #203620; width: 65%; padding: 5px 0;" align="left" bgcolor="#ffffff" valign="top">Total</th>
-                                                    <th class="table-text" style="text-align:right;mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 700; text-transform: uppercase; color: #203620; width: 35%; padding: 5px 0;" align="right" bgcolor="#ffffff" valign="middle">¥{{$totalAmt}}</th>
+                                                    <th class="table-text" style="text-align:right;mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 700; text-transform: uppercase; color: #203620; width: 35%; padding: 5px 0;" align="right" bgcolor="#ffffff" valign="middle">¥{{$totalAmt + round($EightPercentTax) +round($TenPercentTax)}}</th>
                                                   </tr>
                                                 </tbody>
                                               </table>
