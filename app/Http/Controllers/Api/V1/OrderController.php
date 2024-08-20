@@ -694,8 +694,8 @@ class OrderController extends Controller
                     // If no, subtract 1
                     $order->total_amt = floor($order->total_amt);
                 }
-                $order->eight_percent =  round($eight_percent,2);
-                $order->ten_percent =  round($ten_percent,2);
+                $order->eight_percent =  round($eight_percent);
+                $order->ten_percent =  round($ten_percent);
                 
             if(!empty($ids)){
                 $productData  = $this->product->whereIn('id',$ids)->get();
