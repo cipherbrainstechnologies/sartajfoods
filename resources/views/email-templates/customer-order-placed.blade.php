@@ -386,14 +386,40 @@
     <?php
         $order = App\Model\Order::with('delivery_address','details')->where('id', $order_id)->first();
         $orderDetails =collect($order->details);
-        $EightPercentTax = $orderDetails->sum('eight_percent_tax');
-        $TenPercentTax = $orderDetails->sum('ten_percent_tax'); 
-        $totalWeight = ($orderDetails->sum('weight')/1000) ?? 0 ;
+        $frozenProductDetails = $orderDetails->filter(function ($detail) {
+            return $detail->product->product_type == 1; 
+        });
+        // // $EightPercentTax = $orderDetails->sum('eight_percent_tax');
+        // // $TenPercentTax = $orderDetails->sum('ten_percent_tax'); 
+        // $totalWeight = ($orderDetails->sum('weight')/1000) ?? 0 ;
+        // $totalDiscount =   $orderDetails->sum('total_discount');
+        // $totalTaxPercent = App\CentralLogics\Helpers::calculateTotalTaxAmount($order);
+        // $delivery_fee = $order->free_delivery_amount;
+        // $subTotal = (App\CentralLogics\Helpers::calculateInvoice($order_id));
+        // $totalAmt = (App\CentralLogics\Helpers::calculateInvoice($order_id) - $order->coupon_discount_amount) + $order->delivery_charge + $delivery_fee;
         $totalDiscount =   $orderDetails->sum('total_discount');
-        $totalTaxPercent = App\CentralLogics\Helpers::calculateTotalTaxAmount($order);
+        $totalTaxPercent = Helpers::calculateTotalTaxAmount($order);
+        $EightPercentTax = $totalTaxPercent['TotalEightPercentTax']*0.08;
+        $TenPercentTax = $totalTaxPercent['TotalTenPercentTax']*0.10;
+        $totalWeight = ($orderDetails->sum('weight')/1000) ?? 0 ;
+        $totalFrozenWeight = $frozenProductDetails->sum(function ($detail) {
+        $weight = $detail->product->weight;
+        $weightClass = $detail->product->weight_class;
+
+       // Convert weight to kilograms if necessary
+        if ($weightClass == 'Gram') {
+         $weight /= 1000; // Convert grams to kilograms
+       }
+
+        return $weight * $detail->quantity;
+        });
+
+        $totalFrozenWeight = $totalFrozenWeight ?? 0;
+        $subTotal = (Helpers::calculateInvoice($order_id));
+        $delivery_charge = $order->delivery_charge;
         $delivery_fee = $order->free_delivery_amount;
-        $subTotal = (App\CentralLogics\Helpers::calculateInvoice($order_id));
-        $totalAmt = (App\CentralLogics\Helpers::calculateInvoice($order_id) - $order->coupon_discount_amount) + $order->delivery_charge + $delivery_fee;
+
+        $totalAmt = ( $subTotal - $order->coupon_discount_amount) + $order->delivery_charge +$delivery_fee ;
         $roundedFraction = round($totalAmt - floor($totalAmt), 2);
         if ($roundedFraction > 0.50) {
             // If yes, add 1
