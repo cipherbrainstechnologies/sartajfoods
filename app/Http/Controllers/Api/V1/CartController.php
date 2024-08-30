@@ -649,4 +649,54 @@ class CartController extends Controller
         }
         
     }
+    public function statusOfCart(Request $request)
+    {
+        $user = auth()->user();
+
+        // Fetch the user's cart
+        $cartItems = Cart::where('user_id', $user->id)->get();
+
+       // Check if the cart is empty
+        if ($cartItems->isEmpty()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Your cart is empty.',
+            ]);
+        }
+
+        $outOfStockItems = [];
+        $allItemsAvailable = true;
+
+        foreach ($cartItems as $item) {
+            $product = Product::find($item->product_id);
+
+        // Check if product exists and its stock quantity
+            if (!$product || $product->total_stock < $item->quantity) {
+                $allItemsAvailable = false;
+                $availableQuantity = $product ? $product->total_stock : 0;
+
+            // Add to out-of-stock array with available quantity
+                $outOfStockItems[] = [
+                    'product_id' => $item->product_id,
+                    'product_name' => $product->name,
+                    'requested_quantity' => $item->quantity,
+                    'available_quantity' => $availableQuantity,
+                ];
+            }
+        }
+
+        if ($allItemsAvailable) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'All products are available for checkout.',
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Some products are out of stock or have limited quantity.',
+            'out_of_stock_items' => $outOfStockItems,
+        ]);
+    }
+
 }
