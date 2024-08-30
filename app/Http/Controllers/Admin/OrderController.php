@@ -836,6 +836,7 @@ class OrderController extends Controller
     public function order_history(Request $request)
     {
         $status = 0;
+        $totalOrderAmount =0;
         $orderHistoryData = OrderHistory::with('order','order.customer')->where('order_id', $request->id)->first();
         $data = [
             'order_id' => $request->id,
