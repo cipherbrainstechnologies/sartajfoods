@@ -68,5 +68,35 @@ class ManufacturerController extends Controller
         $type = Helpers::seo_type_test($request->seo);
         return response()->json(["type" =>$type], 200);
     }
+    public function get_manufacturer():\Illuminate\Http\JsonResponse
+    {
+       try {
+        // Fetch all manufacturers with related products
+        $manufacturers = $this->manufacturer->orderBy('name')->get();
+        // Debug the manufacturer data
+        if ($manufacturers->isEmpty()) {
+            return response()->json(['message' => 'No manufacturers found'], 404);
+        }
+
+        foreach ($manufacturers as $key => $manufacturer) {
+            // Count total products for each manufacturer
+            $manufacturers[$key]['total_products'] = Product::where('manufacturer_id', $manufacturer->id)->count();
+            
+            // You can include other information like translations if needed
+            if ($manufacturer->translations) {
+                $manufacturers[$key]['translated_name'] = $manufacturer->translations[0]->value ?? $manufacturer->name;
+            }
+        }
+
+        // Return the manufacturers as JSON
+        return response()->json($manufacturers, 200);
+        } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+    public function get_products($id): \Illuminate\Http\JsonResponse
+    {
+        return response()->json(Helpers::product_data_formatting(CategoryLogic::getProductsByManufacturer($id), true), 200);
+    } 
 
 }

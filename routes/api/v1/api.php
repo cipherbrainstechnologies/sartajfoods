@@ -220,6 +220,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
     Route::group(['prefix' => 'manufacturer'], function () {
         Route::get('/', 'ManufacturerController@list');
         Route::get('/{id}', 'ManufacturerController@search');
+        Route::get('/products/{manufacturer_id}','ManufacturerController@get_products');
     });
 
     Route::group(['prefix' => 'browser-history'], function () {

@@ -43,7 +43,23 @@ class CategoryLogic
             return $product_data->get();
         }
     }
+    public static function getProductsByManufacturer($manufacturer_id, $limit = 0, $offset = 1)
+    {
+       // Fetch all active products with the manufacturer ID
+        $product_data = Product::active()
+        ->withCount(['wishlist', 'active_reviews'])
+        ->with(['rating', 'active_reviews', 'manufacturer', 'soldProduct'])
+        ->whereHas('manufacturer', function ($query) use ($manufacturer_id) {
+            $query->where('id', $manufacturer_id);
+        });
 
+         // Handle pagination if a limit is provided
+        if ($limit !== 0) {
+            return $product_data->paginate($limit, ['*'], 'page', $offset);
+        } else {
+            return $product_data->get();
+        }
+    }
     public static function all_products($id)
     {
         $cate_ids=[];
