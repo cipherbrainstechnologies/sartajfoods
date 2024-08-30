@@ -846,9 +846,17 @@ class OrderController extends Controller
         $history = OrderHistory::create($data)->order();
 
         $order = Order::find($request->id);
+        $orderDetails= collect($order->details);
         $order->order_status = $request->order_status;
         if($request->order_status == 'delivered'){
-            $order->payment_status = 'paid';
+        $order->payment_status = 'paid';
+        foreach ($orderDetails as $key=>$orderDetail) {
+        $subtotal = ($orderDetail->price * $orderDetail->quantity) - ($orderDetail->discount_on_product * $orderDetail->quantity);
+        $totalOrderAmount += $subtotal;
+        }
+        if($order->user_id) {
+        CustomerLogic::create_wallet_transaction($order->user_id, $totalOrderAmount,'loyalty_point',$order->id);
+        }
         }
         if($request->order_status == 'delivered'){
             $order->payment_status = 'unpaid';

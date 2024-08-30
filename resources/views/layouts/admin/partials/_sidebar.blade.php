@@ -597,7 +597,7 @@
                                 </a>
                             </li>
                             <!-- Pages -->
-                            <!-- <li class="navbar-vertical-aside-has-menu {{Request::is('admin/customer/wallet/*')?'active':''}}">
+                            <li class="navbar-vertical-aside-has-menu {{Request::is('admin/customer/wallet/*')?'active':''}}">
                                 <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle"
                                    href="javascript:" title="{{translate('Customer Wallet')}}">
                                     <i class="tio-wallet-outlined nav-icon"></i>
@@ -633,7 +633,7 @@
                                     </li>
 
                                 </ul>
-                            </li> -->
+                            </li>
 
                             <!-- <li class="navbar-vertical-aside-has-menu {{Request::is('admin/customer/loyalty-point*')?'active':''}}">
                                 <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle"

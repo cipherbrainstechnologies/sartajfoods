@@ -52,7 +52,7 @@
         <div class="row mb-2 g-2">
 
 
-            <div class="col-lg-6 col-md-6 col-sm-6">
+           <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="resturant-card bg--2">
                     <img class="resturant-icon" src="{{asset('/public/assets/admin/img/dashboard/1.png')}}" alt="dashboard">
                     <div class="for-card-text font-weight-bold  text-uppercase mb-1">{{translate('wallet')}} {{translate('balance')}}</div>
@@ -61,13 +61,14 @@
             </div>
 
 
-            <div class="col-lg-6 col-md-6 col-sm-6">
+
+            <!-- <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="resturant-card bg--3">
                     <img class="resturant-icon" src="{{asset('/public/assets/admin/img/dashboard/3.png')}}" alt="dashboard">
                     <div class="for-card-text font-weight-bold  text-uppercase mb-1">{{translate('loyalty_point')}} {{translate('balance')}}</div>
                     <div class="for-card-count">{{$customer->loyalty_point??0}}</div>
                 </div>
-            </div>
+            </div> -->
         </div>
 
 

@@ -1691,5 +1691,52 @@ class BusinessSettingsController extends Controller
         Toastr::success(translate('Settings updated!'));
         return back();
     }
+    public function customer_setup(): Factory|View|Application
+    {
+        $data = $this->business_settings->where('key','like','wallet_%')
+            ->orWhere('key','like','loyalty_%')
+            ->orWhere('key','like','ref_earning_%')
+            ->orWhere('key','like','add_fund_to_wallet%')
+            ->orWhere('key','like','ref_earning_%')->get();
+        $data = array_column($data->toArray(), 'value','key');
 
+        return view('admin-views.business-settings.customer-setup', compact('data'));
+    }
+    public function customer_setup_update(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'loyalty_point_exchange_rate'=>'nullable|numeric',
+            'ref_earning_exchange_rate'=>'nullable|numeric',
+            'loyalty_point_minimum_point'=>'numeric|min:0|not_in:0',
+        ]);
+
+        $this->business_settings->updateOrInsert(['key' => 'wallet_status'], [
+            'value' => $request['customer_wallet']??0
+        ]);
+        $this->business_settings->updateOrInsert(['key' => 'loyalty_point_status'], [
+            'value' => $request['customer_loyalty_point']??0
+        ]);
+        $this->business_settings->updateOrInsert(['key' => 'ref_earning_status'], [
+            'value' => $request['ref_earning_status'] ?? 0
+        ]);
+        $this->business_settings->updateOrInsert(['key' => 'loyalty_point_exchange_rate'], [
+            'value' => $request['loyalty_point_exchange_rate'] ?? 0
+        ]);
+        $this->business_settings->updateOrInsert(['key' => 'ref_earning_exchange_rate'], [
+            'value' => $request['ref_earning_exchange_rate'] ?? 0
+        ]);
+        $this->business_settings->updateOrInsert(['key' => 'loyalty_point_percent_on_item_purchase'], [
+            'value' => $request['loyalty_point_percent_on_item_purchase']??0
+        ]);
+        $this->business_settings->updateOrInsert(['key' => 'loyalty_point_minimum_point'], [
+            'value' => $request['minimun_transfer_point']??1
+        ]);
+
+        $this->business_settings->updateOrInsert(['key' => 'add_fund_to_wallet'], [
+            'value' => $request['add_fund_to_wallet']??0
+        ]);
+
+        Toastr::success(translate('customer_settings_updated_successfully'));
+        return back();
+    }
 }

@@ -33,7 +33,7 @@ class CustomerLogic{
 
             if($transaction_type == 'loyalty_point')
             {
-                $credit = (int)($amount / BusinessSetting::where('key','loyalty_point_exchange_rate')->first()->value);
+                $credit = (int)($amount / BusinessSetting::where('key','loyalty_point_percent_on_item_purchase')->first()->value);
             }
         }
         else if($transaction_type == 'order_place')

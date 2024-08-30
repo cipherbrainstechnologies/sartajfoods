@@ -307,6 +307,8 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
                 Route::get('min-amount-status/{status}', 'BusinessSettingsController@min_amount_status')->name('min-amount-status');
                 Route::get('free-delivery-status/{status}', 'BusinessSettingsController@free_delivery_status')->name('free-delivery-status');
                 Route::get('dm-self-registration/{status}', 'BusinessSettingsController@dm_self_registration_status')->name('dm-self-registration');
+                Route::get('customer-setup', 'BusinessSettingsController@customer_setup')->name('customer-setup');
+                Route::post('customer-setup-update', 'BusinessSettingsController@customer_setup_update')->name('customer-setup-update');
                 Route::get('otp-setup', 'BusinessSettingsController@otp_setup')->name('otp-setup');
                 Route::post('otp-setup-update', 'BusinessSettingsController@otp_setup_update')->name('otp-setup-update');
 

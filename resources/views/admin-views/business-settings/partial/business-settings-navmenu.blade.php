@@ -50,5 +50,10 @@
                 {{translate('OTP and Login Setup')}}
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link {{Request::is('admin/business-settings/store/customer-setup')?'active':''}}" href="{{route('admin.business-settings.store.customer-setup')}}">
+                {{translate('customers')}}
+            </a>
+        </li>
     </ul>
 </div>
