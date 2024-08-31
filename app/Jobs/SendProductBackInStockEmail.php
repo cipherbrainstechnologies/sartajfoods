@@ -10,6 +10,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Model\product;
 use App\Mail\ProductBackInStock;
+use Illuminate\Support\Facades\Mail;
+
 class SendProductBackInStockEmail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
