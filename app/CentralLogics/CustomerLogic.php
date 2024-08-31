@@ -8,6 +8,7 @@ use App\User;
 use App\Model\WalletTransaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Jobs\SendRewardEmail;
 
 class CustomerLogic{
     public static function create_wallet_transaction($user_id, float $amount, $transaction_type, $referance)
@@ -35,6 +36,7 @@ class CustomerLogic{
             {
                 $credit = (int)($amount / BusinessSetting::where('key','loyalty_point_percent_on_item_purchase')->first()->value);
             }
+            //SendRewardEmail::dispatch($user_id,$user->email,$credit);
         }
         else if($transaction_type == 'order_place')
         {
