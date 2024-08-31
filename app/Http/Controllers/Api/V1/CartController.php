@@ -24,7 +24,7 @@ class CartController extends Controller
         $FrozenWeight = 0;
         $DryProductAmount = 0;
         $deliveryCharge= 0;
-
+        $new_balance =0;
         $regionDetails = Regions::find($region_id);
 
         // if(empty($regionDetails)){
@@ -33,6 +33,7 @@ class CartController extends Controller
 
         // Fetch cart products for the authenticated user
         $cartProducts = Cart::with('product.rating')->where('user_id', $user->id)->get();
+        $current_balance = $user->wallet_balance;
         
         $cartProducts->map(function ($cartProduct) use($eight_percent,$ten_percent,$FrozenWeight,$DryProductAmount){
             $cartData = $cartProduct;
@@ -280,6 +281,31 @@ class CartController extends Controller
             // If no, subtract 1
             $totalAmt = floor($totalAmt);
         }
+        if($request->use_wallet == 'true')
+        {  
+            if(empty($current_balance)){
+            return response()->json([
+                'errors' => [
+                    ['code' => 'payment_method', 'message' => translate('you_do_not_have_sufficient_balance_in_wallet')]
+                ]
+            ], 203);
+            }
+            else{
+               if($current_balance < $totalAmt){
+                  $totalAmt = $totalAmt-$current_balance;
+                  $new_balance = 0;
+               }
+               if($current_balance == $totalAmt){
+                 $totalAmt =$totalAmt-$current_balance;
+                 $new_balance= 0;
+               }
+               if($current_balance  > $totalAmt){
+                 $new_balance = $current_balance - $totalAmt;
+                 $totalAmt = 0; 
+               }
+            }
+        }
+
         $min_amount =  Helpers::get_business_settings('minimum_amount_for_cod_order');
         $max_amount =  Helpers::get_business_settings('maximum_amount_for_cod_order');
         return response()->json([
@@ -288,6 +314,8 @@ class CartController extends Controller
             'delivery_charge' => $deliveryCharge,
             'total_sub_amt' => round($subTotalAmt),
             'total_amt' => round($totalAmt),
+            'after_reedem_wallet_balance'=>$new_balance ,
+            'current_wallet_balance' =>$current_balance,
             'eight_percent' => round($totalEightPercentTax),
             'ten_percent' => round($totalTenPercentTax),
             'totalDiscountAmount' => round($totalDiscountAmount),
