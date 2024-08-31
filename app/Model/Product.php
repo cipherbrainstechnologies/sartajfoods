@@ -11,6 +11,8 @@ use App\Model\HotDeals;
 use App\NotifyMe;
 use App\Model\RelatedProducts;
 use Illuminate\Support\Facades\Date;
+use App\Jobs\SendProductBackInStockEmail;
+
 
 class Product extends Model
 {
