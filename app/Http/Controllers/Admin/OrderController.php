@@ -863,18 +863,18 @@ class OrderController extends Controller
         if($request->order_status == 'delivered'){
             $order->payment_status = 'unpaid';
         }
-        // if($order->order_status == 'canceled'){
-        //     $wallet =  WalletTransaction::where('reference',$order->id)->first();
-        //     if($wallet){
-        //     $user_id =$wallet->user_id;
-        //     $credit = $wallet->credit;
-        //     $user = User::find($user_id);
-        //     $current_balnce = $user->wallet_balance;
-        //     $user->wallet_balance = $current_balnce - $credit;
-        //     $user->save();
-        //     $wallet->delete();
-        //     }
-        // }
+        if($order->order_status == 'canceled'){
+            $wallet =  WalletTransaction::where('reference',$order->id)->first();
+            if($wallet){
+            $user_id =$wallet->user_id;
+            $credit = $wallet->credit;
+            $user = User::find($user_id);
+            $current_balnce = $user->wallet_balance;
+            $user->wallet_balance = $current_balnce - $credit;
+            $user->save();
+            $wallet->delete();
+            }
+        }
         $order->save();
         // $status = !empty($history) ? 1 : 0;
        
