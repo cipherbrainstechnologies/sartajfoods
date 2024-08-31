@@ -872,7 +872,7 @@ class OrderController extends Controller
             $current_balnce = $user->wallet_balance;
             $user->wallet_balance = $current_balnce - $credit;
             $user->save();
-            $wallet->delete();
+            // $wallet->delete();
             }
         }
         $order->save();
