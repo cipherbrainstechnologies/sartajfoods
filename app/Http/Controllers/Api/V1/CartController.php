@@ -25,6 +25,7 @@ class CartController extends Controller
         $DryProductAmount = 0;
         $deliveryCharge= 0;
         $new_balance =0;
+        $redeem_points = 0;
         $regionDetails = Regions::find($region_id);
 
         // if(empty($regionDetails)){
@@ -303,6 +304,7 @@ class CartController extends Controller
                  $new_balance = $current_balance - $totalAmt;
                  $totalAmt = 0; 
                }
+               $redeem_points = $current_balance- $new_balance;
             }
         }
 
@@ -314,6 +316,7 @@ class CartController extends Controller
             'delivery_charge' => $deliveryCharge,
             'total_sub_amt' => round($subTotalAmt),
             'total_amt' => round($totalAmt),
+            'redeem_points' => $redeem_points,
             'after_reedem_wallet_balance'=>$new_balance ,
             'current_wallet_balance' =>$current_balance,
             'eight_percent' => round($totalEightPercentTax),

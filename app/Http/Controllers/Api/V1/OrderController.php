@@ -253,6 +253,7 @@ class OrderController extends Controller
                 'payment_by' => $request['payment_method'] == 'offline_payment' ? $request['payment_by'] : null,
                 'payment_note' => $request['payment_method'] == 'offline_payment' ? $request['payment_note'] : null,
                 'free_delivery_amount' => $free_delivery_amount,
+                'redeem_points'=> $request->redeem_points ?? null,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
@@ -362,11 +363,10 @@ class OrderController extends Controller
             $latestOrder =DB::table('orders')->insertGetId($or);
             $o_status = ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'pending':'confirmed';
             OrderLogic::orderHistory($order_id, $o_status,$request->order_note);
-            if($request->payment_method == 'wallet_payment'){
-                $amount = $or['order_amount'];
-                CustomerLogic::create_wallet_transaction($or['user_id'], $amount, 'order_place', $or['id']);
+            if(!empty($request->redeem_points)){
+                $redeem_points = $request->redeem_points;
+                CustomerLogic::create_wallet_transaction($or['user_id'], $redeem_points, 'order_place', $or['id']);
             }
-
             //push notification
             
             $fcm_token = $request->user()->cm_firebase_token;
