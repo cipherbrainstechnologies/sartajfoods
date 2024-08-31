@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use App\Model\FlashDeal;
 use App\Model\HotDeals;
+use App\NotifyMe;
 use App\Model\RelatedProducts;
 use Illuminate\Support\Facades\Date;
 
@@ -97,6 +98,35 @@ class Product extends Model
         static::addGlobalScope('translate', function (Builder $builder) {
             $builder->with(['translations']);
         });
+       //  static::updated(function ($product) {
+       //  // Log the changes to check what's being updated
+       //  \Log::info("Product updated: {$product->id}, Changes: ", $product->getDirty());
+
+       //  if ($product->isDirty('total_stock')) {
+       //      $oldStock = $product->getOriginal('total_stock');
+       //      $newStock = $product->total_stock;
+
+       //      \Log::info("Total Stock Changed: Old Value: $oldStock, New Value: $newStock");
+
+       //      if ($newStock > 0) {
+       //          $notifyMeEntries = NotifyMe::where('product_id', $product->id)
+       //              ->where('notified', false)
+       //              ->get();
+
+       //          foreach ($notifyMeEntries as $entry) {
+       //              $user = User::find($entry->user_id);
+
+       //              if ($user) {
+       //                  // Dispatch the job to send an email to the user
+       //                  SendProductBackInStockEmail::dispatch($user->id, $user->email, $product->name);
+
+       //                  // Mark as notified
+       //                  $entry->update(['notified' => true]);
+       //              }
+       //          }
+       //      }
+       //  }
+       // });
     }
 
     public function order_details(): \Illuminate\Database\Eloquent\Relations\HasMany
