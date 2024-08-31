@@ -97,6 +97,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         Route::delete('unsubscribe-topic', 'CustomerController@unsubscribe_topic');
 
         Route::delete('remove-account', 'CustomerController@remove_account');
+        Route::post('notifyme', 'NotifymeController@subscribe');
 
         Route::group(['prefix' => 'address'], function () {
             Route::get('list', 'CustomerController@address_list');
