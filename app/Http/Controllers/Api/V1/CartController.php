@@ -312,7 +312,7 @@ class CartController extends Controller
              }
         }
         if ($current_balance < $totalAmt) {
-         $new_balance = 0;
+        $new_balance = 0;
         $redeem_points = $current_balance - $new_balance; 
         } 
         if ($current_balance = $totalAmt) {
@@ -335,7 +335,7 @@ class CartController extends Controller
             'redeem_points' =>$current_balance,
             'eligible_redeem_points' => $redeem_points,  // Points eligible for redemption
             'expected_remaining_points' => $new_balance, // Remaining points after transaction
-            // 'current_wallet_balance' =>$current_balance,
+            'current_wallet_balance' =>$current_balance,
             'eight_percent' => round($totalEightPercentTax),
             'ten_percent' => round($totalTenPercentTax),
             'totalDiscountAmount' => round($totalDiscountAmount),
