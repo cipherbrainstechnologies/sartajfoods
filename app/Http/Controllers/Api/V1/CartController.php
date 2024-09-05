@@ -35,7 +35,7 @@ class CartController extends Controller
 
         // Fetch cart products for the authenticated user
         $cartProducts = Cart::with('product.rating')->where('user_id', $user->id)->get();
-        $current_balance = $user->wallet_balance ?? 0;
+        $current_balance = $user->wallet_balance;
         
         $cartProducts->map(function ($cartProduct) use($eight_percent,$ten_percent,$FrozenWeight,$DryProductAmount){
             $cartData = $cartProduct;
@@ -323,6 +323,7 @@ class CartController extends Controller
             'redeem_points' =>$current_balance,
             'eligible_redeem_points' => $redeem_points,  // Points eligible for redemption
             'expected_remaining_points' => $new_balance, // Remaining points after transaction
+            // 'current_wallet_balance' =>$current_balance,
             'eight_percent' => round($totalEightPercentTax),
             'ten_percent' => round($totalTenPercentTax),
             'totalDiscountAmount' => round($totalDiscountAmount),
