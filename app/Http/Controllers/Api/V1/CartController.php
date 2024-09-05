@@ -310,20 +310,19 @@ class CartController extends Controller
                }
                $redeem_points = $current_balance - $new_balance;
              }
-        }
-        if ($current_balance < $totalAmt) {
-        $new_balance = 0;
-        $redeem_points = $current_balance - $new_balance; 
-        } 
-        if ($current_balance = $totalAmt) {
-        $new_balance = 0;
-        // Case: Wallet balance is equal to or more than the total amount
-        $redeem_points = $current_balance - $new_balance; // Eligible points are up to the total amount
-        }
-        if($current_balance  > $totalAmt){
-        $new_balance = $current_balance - $totalAmt;
-        $redeem_points = $current_balance - $new_balance;
-        }
+        } else {
+           if ($current_balance < $totalAmt) {
+            $new_balance = 0;
+            $redeem_points = $current_balance; 
+           }elseif ($current_balance == $totalAmt) {
+           $new_balance = 0;
+           $redeem_points = $current_balance;
+          } elseif ($current_balance > $totalAmt) {
+          $new_balance = $current_balance - $totalAmt;
+          $redeem_points = $totalAmt;
+          }
+       }
+         
         $min_amount =  Helpers::get_business_settings('minimum_amount_for_cod_order');
         $max_amount =  Helpers::get_business_settings('maximum_amount_for_cod_order');
         return response()->json([
