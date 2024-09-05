@@ -25,6 +25,7 @@ class CartController extends Controller
         $DryProductAmount = 0;
         $deliveryCharge= 0;
         $new_balance =0;
+        $eliable_redeem_points =0;
         $redeem_points = 0;
         $regionDetails = Regions::find($region_id);
 
@@ -34,7 +35,7 @@ class CartController extends Controller
 
         // Fetch cart products for the authenticated user
         $cartProducts = Cart::with('product.rating')->where('user_id', $user->id)->get();
-        $current_balance = $user->wallet_balance;
+        $current_balance = $user->wallet_balance ?? 0;
         
         $cartProducts->map(function ($cartProduct) use($eight_percent,$ten_percent,$FrozenWeight,$DryProductAmount){
             $cartData = $cartProduct;
@@ -293,16 +294,19 @@ class CartController extends Controller
             }
             else{
                if($current_balance < $totalAmt){
-                  $totalAmt = $totalAmt-$current_balance;
-                  $new_balance = 0;
+                 $totalAmt = $totalAmt - $current_balance;
+                 $eliable_redeem_points = $current_balance;
+                 $new_balance = 0;
                }
                if($current_balance == $totalAmt){
-                 $totalAmt =$totalAmt-$current_balance;
-                 $new_balance= 0;
+                  $totalAmt = $totalAmt - $current_balance;
+                  $eliable_redeem_points = $current_balance;
+                  $new_balance = 0;
                }
                if($current_balance  > $totalAmt){
-                 $new_balance = $current_balance - $totalAmt;
-                 $totalAmt = 0; 
+                $new_balance = $current_balance - $totalAmt;
+                $eliable_redeem_points = $current_balance - $totalAmt;
+                $totalAmt = 0;
                }
                $redeem_points = $current_balance- $new_balance;
             }
@@ -316,9 +320,9 @@ class CartController extends Controller
             'delivery_charge' => $deliveryCharge,
             'total_sub_amt' => round($subTotalAmt),
             'total_amt' => round($totalAmt),
-            'redeem_points' => $redeem_points,
-            'after_reedem_wallet_balance'=>$new_balance ,
-            'current_wallet_balance' =>$current_balance,
+            'redeem_points' =>$current_balance,
+            'eligible_redeem_points' => $redeem_points,  // Points eligible for redemption
+            'expected_remaining_points' => $new_balance, // Remaining points after transaction
             'eight_percent' => round($totalEightPercentTax),
             'ten_percent' => round($totalTenPercentTax),
             'totalDiscountAmount' => round($totalDiscountAmount),
