@@ -16,6 +16,7 @@ use App\Model\Cart;
 use App\Model\Product;
 use App\Model\TimeSlot;
 use App\Model\Review;
+use App\Model\WalletTransaction;
 use App\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -748,17 +749,53 @@ class OrderController extends Controller
             return response()->json(['message' => 'Order status  is not found'], 200);
           }
      }
-    public function cancel_order_cus($order_id): \Illuminate\Http\JsonResponse
-    {
-        $order = $this->order->with('details.product','details','customer.addresses')->where('id', $order_id)->first();
-        if(!empty($order)){
+     public function cancel_order_cus($order_id): \Illuminate\Http\JsonResponse
+     {
+     // Fetch the order with related data
+    $order = $this->order->with('details.product', 'details', 'customer.addresses')->where('id', $order_id)->first();
+    
+    if (!empty($order)) {
+        // Set order status to 'canceled'
         $order->order_status = 'canceled';
-        $order->save();
-        return response()->json(['message' => 'Order status  is canceled'], 200);
+
+        if ($order->redeem_points) {
+            // Redeem points were used, so we need to credit them back
+            $user_id = $order->user_id;
+            $redeem_points = $order->redeem_points;
+            $user = User::find($user_id);
+
+            if ($user) {
+                // Update user's wallet balance by adding the redeem points
+                $wallet_balance = $user->wallet_balance;
+                $user->wallet_balance = $wallet_balance + $redeem_points;
+
+                // Create a new wallet transaction for the credit
+                $wallet_transaction = new WalletTransaction();
+                $wallet_transaction->user_id = $user->id;
+                $wallet_transaction->transaction_id = Str::random(30);
+                $wallet_transaction->reference = $order->id;
+                $wallet_transaction->transaction_type = 'credit';
+                $wallet_transaction->credit = $redeem_points;
+                $wallet_transaction->debit = 0;
+                $wallet_transaction->balance = $user->wallet_balance;
+                $wallet_transaction->created_at = now();
+                $wallet_transaction->updated_at = now();
+
+                // Save all changes in a transaction block
+                $user->save(); // Update user's wallet balance
+                $wallet_transaction->save(); // Save the new credit transaction
+                $order->save(); // Save the updated order status
+               
+            }
+        } else {
+            // Just save the order status change
+            $order->save();
         }
-        else{
-        return response()->json(['message' => 'Order status  is not found'], 200);
-        }
+
+        return response()->json(['message' => 'Order status is canceled'], 200);
+    } else {
+        return response()->json(['message' => 'Order not found'], 404);
+    }
     }
     
 }

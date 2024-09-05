@@ -12,6 +12,7 @@ use App\Model\DeliveryMan;
 use App\Model\Order;
 use App\Model\OrderDetail;
 use App\Model\Product;
+use Illuminate\Support\Str;
 use App\User;
 use App\Model\TimeSlot;
 use Box\Spout\Common\Exception\InvalidArgumentException;
@@ -838,10 +839,12 @@ class OrderController extends Controller
     {
         $status = 0;
         $totalOrderAmount =0;
-        $orderHistoryData = OrderHistory::with('order','order.customer')->where('order_id', $request->id)->first();
+        $orderHistoryData = OrderHistory::with('order','order.customer')->where('order_id', $request->id)->orderBy('created_at', 'desc')->first();
+        $previousStatus = $orderHistoryData->status;
+        $newStatus = $request->order_status;
         $data = [
             'order_id' => $request->id,
-            'status' => $request->order_status,
+            'status' => $newStatus,
             'comment' => !empty($request->comment) ? $request->comment : null,
             'is_customer_notify' => ($request->notify_customer === "true") ? 1 :0, 
         ];        
@@ -850,7 +853,8 @@ class OrderController extends Controller
         $order = Order::find($request->id);
         $orderDetails= collect($order->details);
         $order->order_status = $request->order_status;
-        if($request->order_status == 'delivered'){
+        $order->order_status = $newStatus;
+        if($newStatus == 'delivered' && $previousStatus !== 'delivered'){
         $order->payment_status = 'paid';
         foreach ($orderDetails as $key=>$orderDetail) {
         $subtotal = ($orderDetail->price * $orderDetail->quantity) - ($orderDetail->discount_on_product * $orderDetail->quantity);
@@ -860,22 +864,150 @@ class OrderController extends Controller
         CustomerLogic::create_wallet_transaction($order->user_id, $totalOrderAmount,'loyalty_point',$order->id);
         }
         }
-        if($request->order_status == 'delivered'){
+        if($newStatus == 'delivered'){
             $order->payment_status = 'unpaid';
         }
-        // if($order->order_status == 'canceled'){
-        //     $wallet =  WalletTransaction::where('reference',$order->id)->first();
-        //     if($wallet){
-        //     $user_id =$wallet->user_id;
-        //     $credit = $wallet->credit;
-        //     $user = User::find($user_id);
-        //     $current_balnce = $user->wallet_balance;
-        //     $user->wallet_balance = $current_balnce - $credit;
-        //     $user->save();
-        //     $wallet->delete();
-        //     }
-        // }
+        if($newStatus == 'canceled' && $previousStatus == 'delivered'){
+            $wallet =  WalletTransaction::where('reference',$order->id)->first();
+            if($wallet){
+            $user_id =$wallet->user_id;
+            $credit = $wallet->credit;
+            $user = User::find($user_id);
+            if($user){
+            $current_balance = $user->wallet_balance;
+            $user->wallet_balance = $current_balance - $credit;
+            $new_wallet_transaction = new WalletTransaction();
+            $new_wallet_transaction->user_id = $user->id;
+            $new_wallet_transaction->transaction_id = Str::random(30);
+            $new_wallet_transaction->reference = $order->id;
+            $new_wallet_transaction->transaction_type = 'debit';
+            $new_wallet_transaction->credit = 0;
+            $new_wallet_transaction->debit = $credit;
+            $new_wallet_transaction->balance =  $user->wallet_balance;
+            $new_wallet_transaction->created_at = now();
+            $new_wallet_transaction->updated_at = now();
+
+            // Save all changes in a transaction block
+           
+            $user->save(); // Update user's balance
+            $new_wallet_transaction->save(); // Save the new debit transaction
+            }
+            }
+        }elseif ($newStatus == 'processing' && $previousStatus == 'delivered') {
+        $wallet =  WalletTransaction::where('reference',$order->id)->first();     
+        if ($wallet) {
+            $user_id = $wallet->user_id;
+            $credit = $wallet->credit;
+            $user = User::find($user_id);
+
+            if ($user) {
+                   \Log::info('Order processing: Creating debit transaction.');
+                    $current_balance = $user->wallet_balance;
+                    $user->wallet_balance = $current_balance - $credit;
+                    // Create a new wallet transaction for the debit
+                    $new_wallet_transaction = new WalletTransaction();
+                    $new_wallet_transaction->user_id = $user->id;
+                    $new_wallet_transaction->transaction_id = Str::random(30);
+                    $new_wallet_transaction->reference = $order->id;
+                    $new_wallet_transaction->transaction_type = 'debit';
+                    $new_wallet_transaction->credit = 0;
+                    $new_wallet_transaction->debit = $credit;
+                    $new_wallet_transaction->balance = $user->wallet_balance;
+                    $new_wallet_transaction->created_at = now();
+                    $new_wallet_transaction->updated_at = now();
+
+                    // Save all changes in a transaction block
+                    try {
+                        $user->save(); // Update user's balance
+                        $new_wallet_transaction->save(); // Save the new debit transaction
+                    } catch (\Exception $ex) {
+                        info($ex);
+                        return response()->json(['message' => 'Error occurred while processing wallet transaction'], 500);
+                    }
+                
+            }
+        }
+        }elseif ($newStatus == 'pending' && $previousStatus == 'delivered') {
+        $wallet =  WalletTransaction::where('reference',$order->id)->first();
+        if ($wallet) {
+            $user_id = $wallet->user_id;
+            $credit = $wallet->credit;
+            $user = User::find($user_id);
+
+            if ($user) {
+                    \Log::info('Order processing: Creating debit transaction.');
+
+                    $current_balance = $user->wallet_balance;
+                    $user->wallet_balance = $current_balance - $credit;
+
+                    // Create a new wallet transaction for the debit
+                    $new_wallet_transaction = new WalletTransaction();
+                    $new_wallet_transaction->user_id = $user->id;
+                    $new_wallet_transaction->transaction_id = Str::random(30);
+                    $new_wallet_transaction->reference = $order->id;
+                    $new_wallet_transaction->transaction_type = 'debit';
+                    $new_wallet_transaction->credit = 0;
+                    $new_wallet_transaction->debit = $credit;
+                    $new_wallet_transaction->balance = $user->wallet_balance;
+                    $new_wallet_transaction->created_at = now();
+                    $new_wallet_transaction->updated_at = now();
+
+                    // Save all changes in a transaction block
+                    try {
+                        $user->save(); // Update user's balance
+                        $new_wallet_transaction->save(); // Save the new debit transaction
+                    } catch (\Exception $ex) {
+                        info($ex);
+                        return response()->json(['message' => 'Error occurred while processing wallet transaction'], 500);
+                    }
+            
+            }
+        }
+        }
+        elseif ($newStatus == 'canceled' && $previousStatus == 'pending') {
+        // Handle transition from completed to processing
+        $wallet =  WalletTransaction::where('reference',$order->id)->first();
+        if ($wallet) {
+            $user_id = $wallet->user_id;
+            $credit = $wallet->credit;
+            $user = User::find($user_id);
+            $redeem_point = $order->redeem_points;
+            if($redeem_point){
+
+            if ($user) {
+                  \Log::info('Order processing: Creating debit transaction.');
+
+                    $current_balance = $user->wallet_balance;
+                    $user->wallet_balance = $current_balance + $redeem_point;
+
+                    // Create a new wallet transaction for the debit
+                    $new_wallet_transaction = new WalletTransaction();
+                    $new_wallet_transaction->user_id = $user->id;
+                    $new_wallet_transaction->transaction_id = Str::random(30);
+                    $new_wallet_transaction->reference = $order->id;
+                    $new_wallet_transaction->transaction_type = 'credit';
+                    $new_wallet_transaction->credit = $redeem_point;
+                    $new_wallet_transaction->debit = 0;
+                    $new_wallet_transaction->balance = $user->wallet_balance;
+                    $new_wallet_transaction->created_at = now();
+                    $new_wallet_transaction->updated_at = now();
+
+                    // Save all changes in a transaction block
+                    try {
+                        $user->save(); // Update user's balance
+                        $new_wallet_transaction->save(); // Save the new debit transaction
+                    } catch (\Exception $ex) {
+                        info($ex);
+                        return response()->json(['message' => 'Error occurred while processing wallet transaction'], 500);
+                    }
+                
+            }
+            }
+        }
+        }
+
         $order->save();
+
         // $status = !empty($history) ? 1 : 0;
        
         // if($request->notify_customer === "true"){

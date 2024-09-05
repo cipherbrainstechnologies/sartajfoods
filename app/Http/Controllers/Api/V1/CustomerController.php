@@ -298,7 +298,12 @@ class CustomerController extends Controller
 
         return response()->json(['message' => 'successfully updated!'], 200);
     }
-
+    public function wallet_balance(Request $request){
+         $id = auth()->user()->id;
+         $user =User::find($id);
+         $wallet_balance = $user->wallet_balance;
+         return response()->json(['wallet_balance ' => $wallet_balance], 200);
+    }
     /**
      * @param Request $request
      * @return JsonResponse

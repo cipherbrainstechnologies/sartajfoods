@@ -98,6 +98,8 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
 
         Route::delete('remove-account', 'CustomerController@remove_account');
         Route::post('notifyme', 'NotifymeController@subscribe');
+        Route::get('wallet-balance','CustomerController@wallet_balance');
+
 
         Route::group(['prefix' => 'address'], function () {
             Route::get('list', 'CustomerController@address_list');
