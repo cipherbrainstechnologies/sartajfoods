@@ -114,7 +114,7 @@ class OrderController extends Controller
                 ]
             ], 203);
         }
-
+        if (!($request->isreedom == 'true' && $request->order_amount == 0) ) {
         $max_amount = Helpers::get_business_settings('maximum_amount_for_cod_order');
 
         if ($request->payment_method == 'cash_on_delivery' && Helpers::get_business_settings('maximum_amount_for_cod_order_status') == 1 && ($max_amount < $request['order_amount'])){
@@ -134,7 +134,7 @@ class OrderController extends Controller
                 'errors' => $errors
             ], 401);
         }
-
+        }
         foreach ($request['cart'] as $c) {
             
             // $product = $this->product->find($c['product_id']);
@@ -228,6 +228,8 @@ class OrderController extends Controller
                 $existingOrder = Order::where('id', $order_id)->first();
             
             } while ($existingOrder);
+            $payment_status = ($request->order_amount == 0 && $request->isreedom == 'true') ? 'paid' : (($request->payment_method == 'cash_on_delivery' || $request->payment_method == 'offline_payment' || $request->payment_method == 'paypal') ? 'unpaid' : 'paid');
+
             $or = [
                 'id' => $order_id,
                 'user_id' => $request->user()->id,
@@ -237,7 +239,7 @@ class OrderController extends Controller
                 //'coupon_discount_amount' => $coupon_discount_amount,
                 'coupon_discount_amount' => $request->coupon_discount_amount,
                 'coupon_discount_title' => $request->coupon_discount_title == 0 ? null : 'coupon_discount_title',
-                'payment_status' => ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment'|| $request->payment_method=='paypal')?'unpaid':'paid',
+                'payment_status' => $payment_status,
                 'order_status' => ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment' ||  $request->payment_method=='paypal')?'pending':'confirmed',
                 'payment_method' => $request->payment_method,
                 'transaction_reference' => $request->transaction_reference ?? null,
@@ -364,7 +366,7 @@ class OrderController extends Controller
             $latestOrder =DB::table('orders')->insertGetId($or);
             $o_status = ($request->payment_method=='cash_on_delivery' || $request->payment_method=='offline_payment')?'pending':'confirmed';
             OrderLogic::orderHistory($order_id, $o_status,$request->order_note);
-            if(!empty($request->redeem_points)){
+            if(!empty($request->redeem_points) && $request->isredeem == 'true'){
                 $redeem_points = $request->redeem_points;
                 CustomerLogic::create_wallet_transaction($or['user_id'], $redeem_points, 'order_place', $or['id']);
             }
