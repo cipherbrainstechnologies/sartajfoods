@@ -689,14 +689,17 @@ class OrderController extends Controller
 
                 $order->couponPrice = round($order->coupon_discount_amount ,2);
                 $order->total_sub_amt = round($total_sub_amt,2);
-                $order->total_amt = ($total_sub_amt + $eight_percent +  $ten_percent + $order->delivery_charge - round($order->coupon_discount_amount ,2) );
+                $order->total_amt = ($total_sub_amt + $eight_percent +  $ten_percent + $order->delivery_charge - round($order->coupon_discount_amount ,2) - ($order->redeem_points ?? 0));
                 $roundedFraction = round($order->total_amt - floor($order->total_amt), 2);
                 if ($roundedFraction > 0.50) {
                     // If yes, add 1
-                    $order->total_amt = ceil($order->total_amt) - ($order->redeem_points ?? 0);
+                    $order->total_amt = ceil($order->total_amt);
                 } elseif ($roundedFraction < 0.50) {
                     // If no, subtract 1
-                    $order->total_amt = floor($order->total_amt)- ($order->redeem_points ?? 0);
+                    $order->total_amt = floor($order->total_amt);
+                }
+                if (!empty($order->redeem_points) && $order->redeem_points > 0) {
+                $order->total_amt -= 1;
                 }
                 $order->eight_percent =  round($eight_percent);
                 $order->ten_percent =  round($ten_percent);
