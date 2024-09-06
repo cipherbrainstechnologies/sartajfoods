@@ -283,6 +283,7 @@ class CartController extends Controller
             // If no, subtract 1
             $totalAmt = floor($totalAmt);
         }
+        $befortotal = $totalAmt;
         if($request->use_wallet == 'true')
         {  
             if(empty($current_balance)){
@@ -293,6 +294,7 @@ class CartController extends Controller
             ], 203);
             }
             else{
+                
                if($current_balance < $totalAmt){
                  $totalAmt = $totalAmt - $current_balance;
                  $eliable_redeem_points = $current_balance;
@@ -309,6 +311,7 @@ class CartController extends Controller
                 $totalAmt = 0;
                }
                $redeem_points = $current_balance - $new_balance;
+
              }
         } else {
            if ($current_balance < $totalAmt) {
@@ -330,6 +333,7 @@ class CartController extends Controller
             'cartProducts' => $cartProducts,
             'delivery_charge' => $deliveryCharge,
             'total_sub_amt' => round($subTotalAmt),
+            'befor_total' => round($befortotal),
             'total_amt' => round($totalAmt),
             'redeem_points' =>$current_balance,
             'eligible_redeem_points' => $redeem_points,  // Points eligible for redemption
