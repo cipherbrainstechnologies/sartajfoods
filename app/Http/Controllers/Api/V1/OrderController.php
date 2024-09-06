@@ -624,6 +624,7 @@ class OrderController extends Controller
         $discount = 0;
         $FrozenWeight = 0;
         $DryProductAmount = 0;
+        $redeem_points= 0;
         $timeSlotDetail = 'All Day';
 
         $order = $this->order->with('details.product','details','customer.addresses')->where('id', $order_id)->first();        
@@ -688,7 +689,7 @@ class OrderController extends Controller
 
                 $order->couponPrice = round($order->coupon_discount_amount ,2);
                 $order->total_sub_amt = round($total_sub_amt,2);
-                $order->total_amt = ($total_sub_amt + $eight_percent +  $ten_percent + $order->delivery_charge - round($order->coupon_discount_amount ,2));
+                $order->total_amt = ($total_sub_amt + $eight_percent +  $ten_percent + $order->delivery_charge - round($order->coupon_discount_amount ,2) - $order->redeem_points);
                 $roundedFraction = round($order->total_amt - floor($order->total_amt), 2);
                 if ($roundedFraction > 0.50) {
                     // If yes, add 1
@@ -699,6 +700,9 @@ class OrderController extends Controller
                 }
                 $order->eight_percent =  round($eight_percent);
                 $order->ten_percent =  round($ten_percent);
+                if($order->redeem_points){
+                $order->redeem_points = $order->redeem_points;
+                }
                 
             if(!empty($ids)){
                 $productData  = $this->product->whereIn('id',$ids)->get();
