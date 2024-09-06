@@ -696,6 +696,13 @@
                                                     <th class="table-text" style="text-align:right;mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; width: 35%; padding: 5px 0;" align="right" bgcolor="#ffffff" valign="middle">¥{{$order->delivery_charge}}</th>
                                                   </tr>
                                                   @endif
+                                                  @if(!empty($redeem_points))
+                                                  <tr>
+                                                    <th class="table-title" style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; width: 65%; padding: 5px 0;" align="left" bgcolor="#ffffff" valign="top">{{translate('Redeem Points')}}</th>
+                                                    <th class="table-text" style="text-align:right;mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; width: 35%; padding: 5px 0;" align="right" bgcolor="#ffffff" valign="middle">-¥{{$redeem_points}}</th>
+                                                  </tr>
+                                                  @endif
+
                                                   @if($order->free_delivery_amount!=0)
                                                       <tr>
                                                       <th class="table-title" style="mso-line-height-rule: exactly; direction: ltr; font-family: &#39;Poppins&#39;,-apple-system,BlinkMacSystemFont,&#39;Segoe UI&#39;,Poppins,sans-serif; font-size: 15px; line-height: 22px; font-weight: 400; text-transform: none; color: #000000; width: 65%; padding: 5px 0;" align="left" bgcolor="#ffffff" valign="top">{{translate('Shipping Charges')}}</th>
