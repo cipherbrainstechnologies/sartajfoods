@@ -433,7 +433,7 @@
                                             {{translate('total')}}:
                                         </div>
                                         </dt>
-                                    <dd class="col-6 col-xl-5 pr-5">{{ Helpers::set_symbol($total+$del_c+round($TenPercentTax)+round($EightPercentTax)-$order['coupon_discount_amount']-$order['extra_discount']) - $order['redeem_points'])}}</dd>
+                                    <dd class="col-6 col-xl-5 pr-5">{{ Helpers::set_symbol($total+$del_c+round($TenPercentTax)+round($EightPercentTax)-$order['coupon_discount_amount']-$order['extra_discount']) - $order['redeem_points']}}</dd>
                                 </dl>
                                 <!-- End Row -->
                             </div>
