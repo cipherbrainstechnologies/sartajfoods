@@ -112,6 +112,8 @@ class OrderController extends Controller
         foreach ($orders as $order) {
             $orderDetails = collect($order->details);
             $totalOrderAmount = 0;
+            $redeemPoints=0;
+
             // $EightPercentTax = 0;
             // $TenPercentTax = 0;
             $totalTaxAmount['TotalEightPercentTax'] = 0;
@@ -147,9 +149,14 @@ class OrderController extends Controller
                 $deliveryCharge = $order->delivery_charge ?? $order->free_delivery_amount;
                 $totalOrderAmount += $deliveryCharge;
             }
+            if($order->redeem_points)
+            {
+             $redeemPoints = isset($order->redeem_points) ? $order->redeem_points : 0;
+            }
     
+
             $totalOrderAmount += round($EightPercentTax) + round($TenPercentTax);
-            $order->calculated_order_amount = $totalOrderAmount;
+            $order->calculated_order_amount = $totalOrderAmount  - $redeemPoints;
         }
 
         $count_data = [
@@ -965,16 +972,16 @@ class OrderController extends Controller
         }
         }
         elseif ($newStatus == 'canceled' && $previousStatus == 'pending') {
-        // Handle transition from completed to processing
-        $wallet =  WalletTransaction::where('reference',$order->id)->first();
-        if ($wallet) {
-            $user_id = $wallet->user_id;
-            $credit = $wallet->credit;
+            // Handle transition from completed to processing
+            $user_id = $order->user_id;
             $user = User::find($user_id);
             $redeem_point = $order->redeem_points;
-            if($redeem_point){
-
-            if ($user) {
+            $existing_credit_transaction = WalletTransaction::where('reference', $order->id)
+                                                               ->where('transaction_type', 'credit')
+                                                               ->where('user_id', $user_id)
+                                                                ->first();
+            
+            if(!$existing_credit_transaction && $redeem_point){
                   \Log::info('Order processing: Creating debit transaction.');
 
                     $current_balance = $user->wallet_balance;
@@ -1002,8 +1009,6 @@ class OrderController extends Controller
                     }
                 
             }
-            }
-        }
         }
 
         $order->save();

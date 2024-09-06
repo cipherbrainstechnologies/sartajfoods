@@ -417,13 +417,23 @@
                                         {{ Helpers::set_symbol($del_c) }}
                                         <hr>
                                     </dd>
+                                    @if($order['redeem_points'])
+                                    <dt class="col-6 text-left">
+                                            <div class="ml-auto max-w-130px">
+                                                {{translate('Reedem Points')}} :
+                                            </div>
+                                        </dt>
+                                        <dd class="col-6 col-xl-5 pr-5">
+                                         -{{ Helpers::set_symbol($order['redeem_points']) }}
+                                        </dd>
+                                    @endif
 
                                     <dt class="col-6 text-left">
                                         <div class="ml-auto max-w-130px">
                                             {{translate('total')}}:
                                         </div>
                                         </dt>
-                                    <dd class="col-6 col-xl-5 pr-5">{{ Helpers::set_symbol($total+$del_c+round($TenPercentTax)+round($EightPercentTax)-$order['coupon_discount_amount']-$order['extra_discount']) }}</dd>
+                                    <dd class="col-6 col-xl-5 pr-5">{{ Helpers::set_symbol($total+$del_c+round($TenPercentTax)+round($EightPercentTax)-$order['coupon_discount_amount']-$order['extra_discount']) - $order['redeem_points'])}}</dd>
                                 </dl>
                                 <!-- End Row -->
                             </div>
