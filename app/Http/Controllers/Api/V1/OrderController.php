@@ -406,7 +406,7 @@ class OrderController extends Controller
                 \Log::error("Error building email: {$e->getMessage()}");
             }
 
-            if($request->payment_method == "paypal"){
+            if($request->payment_method == "paypal" && $request->order_amount != 0){
                 \Log::info('orderid: ' . $order_id);
                  $res = $this->paypal->payWithpaypal($request,$order_id);
                 
