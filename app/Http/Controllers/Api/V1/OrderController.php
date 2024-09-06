@@ -114,7 +114,7 @@ class OrderController extends Controller
                 ]
             ], 203);
         }
-        if (!($request->isreedom == 'true' && $request->order_amount == 0) ) {
+        if (!($request->isredeem == 'true' && $request->order_amount == 0) ) {
         $max_amount = Helpers::get_business_settings('maximum_amount_for_cod_order');
 
         if ($request->payment_method == 'cash_on_delivery' && Helpers::get_business_settings('maximum_amount_for_cod_order_status') == 1 && ($max_amount < $request['order_amount'])){
@@ -228,7 +228,7 @@ class OrderController extends Controller
                 $existingOrder = Order::where('id', $order_id)->first();
             
             } while ($existingOrder);
-            $payment_status = ($request->order_amount == 0 && $request->isreedom == 'true') ? 'paid' : (($request->payment_method == 'cash_on_delivery' || $request->payment_method == 'offline_payment' || $request->payment_method == 'paypal') ? 'unpaid' : 'paid');
+            $payment_status = ($request->order_amount == 0 && $request->isredeem == 'true') ? 'paid' : (($request->payment_method == 'cash_on_delivery' || $request->payment_method == 'offline_payment' || $request->payment_method == 'paypal') ? 'unpaid' : 'paid');
 
             $or = [
                 'id' => $order_id,
