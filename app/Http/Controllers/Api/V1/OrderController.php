@@ -699,7 +699,7 @@ class OrderController extends Controller
                     $order->total_amt = floor($order->total_amt);
                 }
                 if (!empty($order->redeem_points) && $order->redeem_points > 0) {
-                $order->total_amt -= 1;
+                $order->total_amt += 1;
                 }
                 $order->eight_percent =  round($eight_percent);
                 $order->ten_percent =  round($ten_percent);
