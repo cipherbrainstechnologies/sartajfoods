@@ -161,7 +161,7 @@
 			<td>
 				<table width="100%" style="border: 1px solid;border-collapse: collapse;">
 					<tr>
-						<td width="50%" style="padding: 0;border: 1px solid;border-collapse: collapse;text-align:center;"><h3 style="margin: 0;">ご請求金額 : {{$totalAmt + round($EightPercentTax) + round($TenPercentTax)) - (float) (isset($order->redeem_points) ? $order->redeem_points : 0)}}</h3></td>
+						<td width="50%" style="padding: 0;border: 1px solid;border-collapse: collapse;text-align:center;"><h3 style="margin: 0;">ご請求金額 : {{$totalAmt+ round($EightPercentTax) +round($TenPercentTax)}}</h3></td>
 						<td width="50%" style="padding: 0;border: 1px solid;border-collapse: collapse;text-align:center;"><h3 style="margin: 0;">請　求　書 NO. {{$order->id}}</h3></td>
 					</tr>
 				</table>
@@ -265,13 +265,6 @@
 									<td width="40%" style="text-align:right;">{{$order->delivery_charge}}</td>
 								</tr>
                                 @endif
-                                @if($order->redeem_points!=0)
-                                    <tr>
-                                        <td width="55%">ポイントを引き換える</td>
-                                        <td width="5%">¥</td>
-                                        <td width="40%" style="text-align:right;">-{{$order->redeem_points}}</td>
-                                    </tr>
-                                @endif
 
 								@if($order->free_delivery_amount!=0)
 								<tr>
@@ -283,7 +276,7 @@
 								<tr>
 									<td width="55%"><h3 style="margin: 0;">合計金額</h3></td>
 									<td width="5%"><h3 style="margin: 0;">¥</h3></td>
-									<td width="40%" style="text-align:right;"><h3 style="margin: 0;">{{$totalAmt + round($EightPercentTax) + round($TenPercentTax)) - (float) (isset($order->redeem_points) ? $order->redeem_points : 0)}}</h3></td>
+									<td width="40%" style="text-align:right;"><h3 style="margin: 0;">{{$totalAmt + round($EightPercentTax) +round($TenPercentTax)}}</h3></td>
 								</tr>
 							</table>
 						</td>
