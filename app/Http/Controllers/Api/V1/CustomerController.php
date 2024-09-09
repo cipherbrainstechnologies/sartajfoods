@@ -302,7 +302,7 @@ class CustomerController extends Controller
          $id = auth()->user()->id;
          $user =User::find($id);
          $wallet_balance = $user->wallet_balance;
-         return response()->json(['wallet_balance ' => $wallet_balance], 200);
+         return response()->json(['wallet_balance' => $wallet_balance], 200);
     }
     /**
      * @param Request $request
