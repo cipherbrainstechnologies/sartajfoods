@@ -284,7 +284,7 @@ class CartController extends Controller
             $totalAmt = floor($totalAmt);
         }
         $befortotal = $subTotalAmt + $deliveryCharge + round($totalEightPercentTax) + round($totalTenPercentTax) ;
- 
+        session(['befortotal' => $befortotal]);
 
    //Changed code by Love
 

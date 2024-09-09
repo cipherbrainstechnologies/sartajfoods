@@ -105,7 +105,8 @@ class OrderController extends Controller
         $customer = $this->user->find($request->user()->id);
         $coupon_discount = 0;
         $discountPrice = 0;
-
+        $befortotal = session('befortotal'); //Storing the value of Order before Wallet amount applied 
+        
         if($request->payment_method == 'wallet_payment' && $customer->wallet_balance < $request['order_amount'])
         {
             return response()->json([
@@ -126,8 +127,8 @@ class OrderController extends Controller
         }
         
         $min_amount = Helpers::get_business_settings('minimum_amount_for_cod_order');
-        
-        if ($request->payment_method == 'cash_on_delivery' && Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ($request['order_amount'] < $min_amount)){
+        //Changes here in 131 for Request Order Amount to beforetotal amount
+        if ($request->payment_method == 'cash_on_delivery' && Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ($befortotal < $min_amount)){
             $errors = [];
             $errors[] = ['code' => 'auth-001', 'message' => 'For Cash on Delivery, order amount must be equal or greater than '. $min_amount];
             return response()->json([
