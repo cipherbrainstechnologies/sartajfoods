@@ -300,7 +300,7 @@ class CartController extends Controller
             //      $eliable_redeem_points = $current_balance;
             //      $new_balance = 0;
             //    }
-               if($current_balance == $totalAmt){
+               if($current_balance < $totalAmt){
                   $totalAmt = $totalAmt - $current_balance;
                   $eliable_redeem_points = $current_balance;
                   $new_balance = 0;
