@@ -114,22 +114,25 @@ class OrderController extends Controller
                 ]
             ], 203);
         }
+
+        //add by dv
+        $full_amount = $request['order_amount'] + $request->redeem_points;
+        
         if (!($request->isredeem == 'true' && $request->order_amount == 0) ) {
         $max_amount = Helpers::get_business_settings('maximum_amount_for_cod_order');
 
-        if ($request->payment_method == 'cash_on_delivery' && Helpers::get_business_settings('maximum_amount_for_cod_order_status') == 1 && ($max_amount < $request['order_amount'])){
+        if ($request->payment_method == 'cash_on_delivery' && Helpers::get_business_settings('maximum_amount_for_cod_order_status') == 1 && ($max_amount < $full_amount)){
             $errors = [];
             $errors[] = ['code' => 'auth-001', 'message' => 'For Cash on Delivery, order amount must be equal or less than '. $max_amount];
             return response()->json([
                 'errors' => $errors
             ], 401);
         }
-
-        $dvdv = $request['order_amount'] + $request->redeem_points;
+        
         
         $min_amount = Helpers::get_business_settings('minimum_amount_for_cod_order');
         
-        if ($request->payment_method == 'cash_on_delivery' && Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ($dvdv < $min_amount)){
+        if ($request->payment_method == 'cash_on_delivery' && Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ($full_amount < $min_amount)){
             $errors = [];
             $errors[] = ['code' => 'auth-001', 'message' => 'For Cash on Delivery, order amount must be equal or greater than '. $min_amount];
             return response()->json([
