@@ -380,11 +380,11 @@ if ($request->use_wallet == 'true') {
             'totalDiscountAmount' => round($totalDiscountAmount),
 
             // Use $befortotal for COD eligibility instead of $totalAmt
-            // 'minOrderAmount' => (Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ($befortotal < $min_amount)) ? $min_amount : null,
-            // 'maxOrderAmount' => (Helpers::get_business_settings('maximum_amount_for_cod_order_status') == 1 && ($befortotal > $max_amount)) ? $max_amount : null,
+            'minOrderAmount' => (Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ($befortotal < $min_amount)) ? $min_amount : null,
+            'maxOrderAmount' => (Helpers::get_business_settings('maximum_amount_for_cod_order_status') == 1 && ($befortotal > $max_amount)) ? $max_amount : null,
 
-            'minOrderAmount' => (Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ( $totalAmt < $min_amount)) ? $min_amount : null,
-            'maxOrderAmount' => (Helpers::get_business_settings('maximum_amount_for_cod_order_status') == 1 && ( $totalAmt < $max_amount)) ? $max_amount : null,
+            // 'minOrderAmount' => (Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ( $totalAmt < $min_amount)) ? $min_amount : null,
+            // 'maxOrderAmount' => (Helpers::get_business_settings('maximum_amount_for_cod_order_status') == 1 && ( $totalAmt < $max_amount)) ? $max_amount : null,
         ]);
     }
     
