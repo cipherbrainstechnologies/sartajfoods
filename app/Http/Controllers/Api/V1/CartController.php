@@ -284,82 +284,82 @@ class CartController extends Controller
             $totalAmt = floor($totalAmt);
         }
         $befortotal = $totalAmt;
-    //     if($request->use_wallet == 'true')
-    //     {  
-    //         if(empty($current_balance)){
-    //         return response()->json([
-    //             'errors' => [
-    //                 ['code' => 'payment_method', 'message' => translate('you_do_not_have_sufficient_balance_in_wallet')]
-    //             ]
-    //         ], 203);
-    //         }
-    //         else{
+        if($request->use_wallet == 'true')
+        {  
+            if(empty($current_balance)){
+            return response()->json([
+                'errors' => [
+                    ['code' => 'payment_method', 'message' => translate('you_do_not_have_sufficient_balance_in_wallet')]
+                ]
+            ], 203);
+            }
+            else{
                 
-    //            if($current_balance < $totalAmt){
-    //              $totalAmt = $totalAmt - $current_balance;
-    //              $eliable_redeem_points = $current_balance;
-    //              $new_balance = 0;
-    //            }
-    //            if($current_balance == $totalAmt){
-    //               $totalAmt = $totalAmt - $current_balance;
-    //               $eliable_redeem_points = $current_balance;
-    //               $new_balance = 0;
-    //            }
-    //            if($current_balance  > $totalAmt){
-    //             $new_balance = $current_balance - $totalAmt;
-    //             $eliable_redeem_points = $current_balance - $totalAmt;
-    //             $totalAmt = 0;
-    //            }
-    //            $redeem_points = $current_balance - $new_balance;
+               if($current_balance < $totalAmt){
+                 $totalAmt = $totalAmt - $current_balance;
+                 $eliable_redeem_points = $current_balance;
+                 $new_balance = 0;
+               }
+               if($current_balance == $totalAmt){
+                  $totalAmt = $totalAmt - $current_balance;
+                  $eliable_redeem_points = $current_balance;
+                  $new_balance = 0;
+               }
+               if($current_balance  > $totalAmt){
+                $new_balance = $current_balance - $totalAmt;
+                $eliable_redeem_points = $current_balance - $totalAmt;
+                $totalAmt = 0;
+               }
+               $redeem_points = $current_balance - $new_balance;
 
-    //          }
-    //     } else {
-    //        if ($current_balance < $totalAmt) {
-    //         $new_balance = 0;
-    //         $redeem_points = $current_balance; 
-    //        }elseif ($current_balance == $totalAmt) {
-    //        $new_balance = 0;
-    //        $redeem_points = $current_balance;
-    //       } elseif ($current_balance > $totalAmt) {
-    //       $new_balance = $current_balance - $totalAmt;
-    //       $redeem_points = $totalAmt;
-    //       }
-    //    }   ///original code 
+             }
+        } else {
+           if ($current_balance < $totalAmt) {
+            $new_balance = 0;
+            $redeem_points = $current_balance; 
+           }elseif ($current_balance == $totalAmt) {
+           $new_balance = 0;
+           $redeem_points = $current_balance;
+          } elseif ($current_balance > $totalAmt) {
+          $new_balance = $current_balance - $totalAmt;
+          $redeem_points = $totalAmt;
+          }
+       }   ///original code 
 
    //Changed code by Love
 
-if ($request->use_wallet == 'true') {  
-    if (empty($current_balance)) {
-        return response()->json([
-            'errors' => [
-                ['code' => 'payment_method', 'message' => translate('you_do_not_have_sufficient_balance_in_wallet')]
-            ]
-        ], 203);
-    } else {
-        if ($current_balance >= $totalAmt) {
-            $eliable_redeem_points = $current_balance - $totalAmt;
-            $new_balance = $current_balance - $totalAmt;
-            $totalAmt = 0;
-        } else if ($current_balance < $totalAmt) {
-            $eliable_redeem_points = $current_balance;
-            $totalAmt = $totalAmt - $current_balance;
-            $new_balance = 0;
-        }
+// if ($request->use_wallet == 'true') {  
+//     if (empty($current_balance)) {
+//         return response()->json([
+//             'errors' => [
+//                 ['code' => 'payment_method', 'message' => translate('you_do_not_have_sufficient_balance_in_wallet')]
+//             ]
+//         ], 203);
+//     } else {
+//         if ($current_balance >= $totalAmt) {
+//             $eliable_redeem_points = $current_balance - $totalAmt;
+//             $new_balance = $current_balance - $totalAmt;
+//             $totalAmt = 0;
+//         } else if ($current_balance < $totalAmt) {
+//             $eliable_redeem_points = $current_balance;
+//             $totalAmt = $totalAmt - $current_balance;
+//             $new_balance = 0;
+//         }
 
-        $redeem_points = $current_balance - $new_balance;
-    }
-} else {
-    if ($current_balance < $totalAmt) {
-        $new_balance = 0;
-        $redeem_points = $current_balance;
-    } elseif ($current_balance == $totalAmt) {
-        $new_balance = 0;
-        $redeem_points = $current_balance;
-    } elseif ($current_balance > $totalAmt) {
-        $new_balance = $current_balance - $totalAmt;
-        $redeem_points = $totalAmt;
-    }
-}
+//         $redeem_points = $current_balance - $new_balance;
+//     }
+// } else {
+//     if ($current_balance < $totalAmt) {
+//         $new_balance = 0;
+//         $redeem_points = $current_balance;
+//     } elseif ($current_balance == $totalAmt) {
+//         $new_balance = 0;
+//         $redeem_points = $current_balance;
+//     } elseif ($current_balance > $totalAmt) {
+//         $new_balance = $current_balance - $totalAmt;
+//         $redeem_points = $totalAmt;
+//     }
+// }
 
          
         $min_amount =  Helpers::get_business_settings('minimum_amount_for_cod_order');
@@ -379,12 +379,12 @@ if ($request->use_wallet == 'true') {
             'ten_percent' => round($totalTenPercentTax),
             'totalDiscountAmount' => round($totalDiscountAmount),
 
-            // Use $befortotal for COD eligibility instead of $totalAmt
-            'minOrderAmount' => (Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ($befortotal < $min_amount)) ? $min_amount : null,
-            'maxOrderAmount' => (Helpers::get_business_settings('maximum_amount_for_cod_order_status') == 1 && ($befortotal > $max_amount)) ? $max_amount : null,
+            // // Use $befortotal for COD eligibility instead of $totalAmt
+            // 'minOrderAmount' => (Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ($befortotal < $min_amount)) ? $min_amount : null,
+            // 'maxOrderAmount' => (Helpers::get_business_settings('maximum_amount_for_cod_order_status') == 1 && ($befortotal > $max_amount)) ? $max_amount : null,
 
-            // 'minOrderAmount' => (Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ( $totalAmt < $min_amount)) ? $min_amount : null,
-            // 'maxOrderAmount' => (Helpers::get_business_settings('maximum_amount_for_cod_order_status') == 1 && ( $totalAmt < $max_amount)) ? $max_amount : null,
+            'minOrderAmount' => (Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ( $totalAmt < $min_amount)) ? $min_amount : null,
+            'maxOrderAmount' => (Helpers::get_business_settings('maximum_amount_for_cod_order_status') == 1 && ( $totalAmt < $max_amount)) ? $max_amount : null,
         ]);
     }
     
