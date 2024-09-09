@@ -124,10 +124,12 @@ class OrderController extends Controller
                 'errors' => $errors
             ], 401);
         }
+
+        $dvdv = $request['order_amount'] + $request->redeem_points;
         
         $min_amount = Helpers::get_business_settings('minimum_amount_for_cod_order');
         
-        if ($request->payment_method == 'cash_on_delivery' && Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ($request['order_amount'] < $min_amount)){
+        if ($request->payment_method == 'cash_on_delivery' && Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ($dvdv < $min_amount)){
             $errors = [];
             $errors[] = ['code' => 'auth-001', 'message' => 'For Cash on Delivery, order amount must be equal or greater than '. $min_amount];
             return response()->json([
@@ -235,7 +237,6 @@ class OrderController extends Controller
                 'user_id' => $request->user()->id,
                 'browser_history_id' => !empty($browserHistory) ? $browserHistory->id : 0,
                 'order_amount' => $request['order_amount'],
-                'befor_total' => $request['befor_total'],
                 'coupon_code' =>  $request['coupon_code'],
                 //'coupon_discount_amount' => $coupon_discount_amount,
                 'coupon_discount_amount' => $request->coupon_discount_amount,
