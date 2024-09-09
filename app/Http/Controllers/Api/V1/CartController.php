@@ -378,8 +378,7 @@ if ($request->use_wallet == 'true') {
             'eight_percent' => round($totalEightPercentTax),
             'ten_percent' => round($totalTenPercentTax),
             'totalDiscountAmount' => round($totalDiscountAmount),
-            // Changes from $totalAmt to $befortotal in line 381
-            'minOrderAmount' => (Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ( $befortotal < $min_amount)) ? $min_amount : null,
+            'minOrderAmount' => (Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ( $totalAmt < $min_amount)) ? $min_amount : null,
             'maxOrderAmount' => (Helpers::get_business_settings('maximum_amount_for_cod_order_status') == 1 && ( $totalAmt < $max_amount)) ? $max_amount : null,
         ]);
     }
