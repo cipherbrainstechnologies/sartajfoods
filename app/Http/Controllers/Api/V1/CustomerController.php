@@ -305,6 +305,7 @@ class CustomerController extends Controller
          return response()->json(['wallet_balance' => $wallet_balance], 200);
     }
     /**
+     * Changes
      * @param Request $request
      * @return JsonResponse
      */
