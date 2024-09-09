@@ -235,6 +235,7 @@ class OrderController extends Controller
                 'user_id' => $request->user()->id,
                 'browser_history_id' => !empty($browserHistory) ? $browserHistory->id : 0,
                 'order_amount' => $request['order_amount'],
+                'befor_total' => $request['befor_total'],
                 'coupon_code' =>  $request['coupon_code'],
                 //'coupon_discount_amount' => $coupon_discount_amount,
                 'coupon_discount_amount' => $request->coupon_discount_amount,
