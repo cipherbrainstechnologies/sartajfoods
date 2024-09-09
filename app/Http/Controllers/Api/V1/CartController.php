@@ -295,17 +295,17 @@ class CartController extends Controller
             }
             else{
                 
-               if($current_balance < $totalAmt){
-                 $totalAmt = $totalAmt - $current_balance;
-                 $eliable_redeem_points = $current_balance;
-                 $new_balance = 0;
-               }
+            //    if($current_balance < $totalAmt){
+            //      $totalAmt = $totalAmt - $current_balance;
+            //      $eliable_redeem_points = $current_balance;
+            //      $new_balance = 0;
+            //    }
                if($current_balance == $totalAmt){
                   $totalAmt = $totalAmt - $current_balance;
                   $eliable_redeem_points = $current_balance;
                   $new_balance = 0;
                }
-               if($current_balance  > $totalAmt){
+               if($current_balance  >= $totalAmt){
                 $new_balance = $current_balance - $totalAmt;
                 $eliable_redeem_points = $current_balance - $totalAmt;
                 $totalAmt = 0;
