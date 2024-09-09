@@ -283,7 +283,7 @@ class CartController extends Controller
             // If no, subtract 1
             $totalAmt = floor($totalAmt);
         }
-        $befortotal = $totalAmt;
+        $befortotal = $subTotalAmt + $deliveryCharge + round($totalEightPercentTax) + round($totalTenPercentTax) ;
  
 
    //Changed code by Love
@@ -343,8 +343,8 @@ class CartController extends Controller
             // 'minOrderAmount' => (Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ($befortotal < $min_amount)) ? $min_amount : null,
             // 'maxOrderAmount' => (Helpers::get_business_settings('maximum_amount_for_cod_order_status') == 1 && ($befortotal > $max_amount)) ? $max_amount : null,
 
-            'minOrderAmount' => (Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ( $totalAmt < $min_amount)) ? $min_amount : null,
-            'maxOrderAmount' => (Helpers::get_business_settings('maximum_amount_for_cod_order_status') == 1 && ( $totalAmt < $max_amount)) ? $max_amount : null,
+            'minOrderAmount' => (Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ( $befortotal < $min_amount)) ? $min_amount : null,
+            'maxOrderAmount' => (Helpers::get_business_settings('maximum_amount_for_cod_order_status') == 1 && ( $befortotal < $max_amount)) ? $max_amount : null,
         ]);
     }
     
