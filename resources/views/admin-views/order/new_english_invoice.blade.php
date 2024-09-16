@@ -270,7 +270,7 @@
                                 @endif
                                 @if($order->redeem_points!=0)
                                     <tr>
-                                        <td width="55%">Redeem Points</td>
+                                        <td width="55%">Redeemed Points</td>
                                         <td width="5%">¥</td>
                                         <td width="40%" style="text-align:right;"> - {{$order->redeem_points}}</td>
                                     </tr>
