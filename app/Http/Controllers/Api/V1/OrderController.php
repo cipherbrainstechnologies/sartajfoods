@@ -147,10 +147,9 @@ class OrderController extends Controller
             // $type = $c['variation'][0]['type'];
 
             $order_qty = $c['quantity'];
-           
             if ($order_qty > $c['product']['total_stock'] ) {
                 return response()->json([
-                    'message' => '' . $c['product']['name'] . 'Stock is insufficient! available stock ' . $c['product']['total_stock'],
+                    'message' => 'Stock for ' . $c['product']['name'] . ' insufficient! Available stock: ' . $c['product']['total_stock'],
                 ], 404);
             }
             
