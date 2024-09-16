@@ -150,7 +150,7 @@ class OrderController extends Controller
            
             if ($order_qty > $c['product']['total_stock'] ) {
                 return response()->json([
-                    'message' => 'Stock is insufficient! available stock ' . $c['product']['total_stock'],
+                    'message' => '' . $c['product']['name'] . 'Stock is insufficient! available stock ' . $c['product']['total_stock'],
                 ], 404);
             }
             
