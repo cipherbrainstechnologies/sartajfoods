@@ -420,7 +420,7 @@
                                     @if($order['redeem_points'])
                                     <dt class="col-6 text-left">
                                             <div class="ml-auto max-w-130px">
-                                                {{translate('Reedem Points')}} :
+                                                {{translate('Redeemed Points')}} :
                                             </div>
                                         </dt>
                                         <dd class="col-6 col-xl-5 pr-5">
