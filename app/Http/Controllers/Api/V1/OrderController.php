@@ -182,7 +182,7 @@ class OrderController extends Controller
 
         if (!empty($insufficientStockMessages)) {
             return response()->json([
-                'message' => implode("\n   ", $insufficientStockMessages),
+                'message' => implode("\n\n", $insufficientStockMessages),
             ], 404);
         }
         $free_delivery_amount = 0;
