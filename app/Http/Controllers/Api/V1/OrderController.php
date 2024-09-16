@@ -140,25 +140,50 @@ class OrderController extends Controller
             ], 401);
         }
         }
-        foreach ($request['cart'] as $c) {
+        // foreach ($request['cart'] as $c) {
             
+        //     // $product = $this->product->find($c['product_id']);
+        //     $product = $this->product->find($c['id']);
+        //     // $type = $c['variation'][0]['type'];
+
+        //     $order_qty = $c['quantity'];
+        //     if ($order_qty > $c['product']['total_stock'] ) {
+        //         return response()->json([ 
+        //             'message' => 'Stock for ' . $c['product']['name'] . ' insufficient! Available stock: ' . $c['product']['total_stock'],
+        //         ], 404);
+        //     }
+            
+        //     // $type = $c['variations'][0]['type'];
+        //     // foreach (json_decode($product['variations'], true) as $var) {
+        //     //     if ($type == $var['type'] && $var['stock'] < $c['quantity']) {
+        //     //         $validator->getMessageBag()->add('stock', 'Stock is insufficient! available stock ' . $var['stock']);
+        //     //     }
+        //     // }
+        // }
+        $insufficientStockMessages = [];
+
+        foreach ($request['cart'] as $c) {
+
             // $product = $this->product->find($c['product_id']);
             $product = $this->product->find($c['id']);
-            // $type = $c['variation'][0]['type'];
-
             $order_qty = $c['quantity'];
-            if ($order_qty > $c['product']['total_stock'] ) {
-                return response()->json([
-                    'message' => 'Stock for ' . $c['product']['name'] . ' insufficient! Available stock: ' . $c['product']['total_stock'],
-                ], 404);
+
+            if ($order_qty > $c['product']['total_stock']) {
+                $insufficientStockMessages[] = 'Stock for ' . $c['product']['name'] . ' insufficient! Available stock: ' . $c['product']['total_stock'];
             }
-            
+
             // $type = $c['variations'][0]['type'];
             // foreach (json_decode($product['variations'], true) as $var) {
             //     if ($type == $var['type'] && $var['stock'] < $c['quantity']) {
             //         $validator->getMessageBag()->add('stock', 'Stock is insufficient! available stock ' . $var['stock']);
             //     }
             // }
+        }
+
+        if (!empty($insufficientStockMessages)) {
+            return response()->json([
+                'message' => implode("\n", $insufficientStockMessages),
+            ], 404);
         }
         $free_delivery_amount = 0;
         if ($request['order_type'] == 'self_pickup'){
