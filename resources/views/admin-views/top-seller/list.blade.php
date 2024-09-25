@@ -33,7 +33,7 @@
                         <tr>
                             <th>{{translate('#')}}</th>
                             <th>{{translate('Product')}}</th> <!-- Merged column for Product Name and Image -->
-                            <th>{{translate('Sold Quantity')}}</th>
+                            <th class="dfd">{{translate('Sold Quantity')}}</th>
                         </tr>
                     </thead>
 
