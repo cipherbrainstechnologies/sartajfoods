@@ -10,13 +10,19 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use App\Model\Product;
+use App\CentralLogics\CategoryLogic;
+
 
 class ManufacturerController extends Controller
 {
     public function __construct(
-        private Manufacturer   $manufacturer,
-        private Translation $translation
+        private Manufacturer $manufacturer,
+        private Translation $translation,
+        private Product $product
     ){} 
+    
+
 
     public function addImageUrl($manufacturers){
         $baseUrl = config('app.url');
@@ -68,6 +74,7 @@ class ManufacturerController extends Controller
         $type = Helpers::seo_type_test($request->seo);
         return response()->json(["type" =>$type], 200);
     }
+    
     public function get_manufacturer():\Illuminate\Http\JsonResponse
     {
        try {
@@ -93,10 +100,9 @@ class ManufacturerController extends Controller
         } catch (\Exception $e) {
         return response()->json(['error' => $e->getMessage()], 500);
         }
-    }
+    } 
     public function get_products($id): \Illuminate\Http\JsonResponse
     {
         return response()->json(Helpers::product_data_formatting(CategoryLogic::getProductsByManufacturer($id), true), 200);
-    } 
-
-}
+    }
+}  
