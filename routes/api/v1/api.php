@@ -233,7 +233,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
     // Route::group(['prefix' => 'paypal'], function () {
        
     // });
-
+    Route::get('/list-manufacturer', 'ManufacturerController@get_manufacturer');
     // Product Seo Manage
     Route::get('product_seo/{seo}', 'ProductController@get_seo_product')->where('seo', '.*');
     Route::get('manufacture_seo/{seo}', 'ManufacturerController@get_seo_manufacturer')->where('seo', '.*');
