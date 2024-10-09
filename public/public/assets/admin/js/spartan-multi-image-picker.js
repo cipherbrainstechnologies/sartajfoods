@@ -71,7 +71,7 @@
                                         `<img style="width: ${placeholderImageWidth}; margin: 0 auto; vertical-align: middle;" data-spartanindexi="${count}" src="${placeholderImageTarget}" class="spartan_image_placeholder" /> `+
                                         `<p data-spartanlbldropfile="${count}" style="color : #5FAAE1; display: none; width : auto; ">${dropFileLabel}</p>`+
                                         `<img style="width: 100%; vertical-align: middle; display:none;" class="img_" data-spartanindeximage="${count}">`+
-                                        `<input class="form-control spartan_image_input" accept="image/*" data-spartanindexinput="${count}" style="display : none"  name="${fieldName}" type="file">`+
+                                        `<input class="form-control spartan_image_input" accept="image/png, image/jpeg, image/gif, image/webp" data-spartanindexinput="${count}" style="display : none"  name="${fieldName}" type="file">`+
                                    `</label> `+
                                 `</div>`+
                            `</div>`;
