@@ -460,4 +460,17 @@ class CustomerController extends Controller
         // }
     }
 
+    public function deleteAccount(Request $request): JsonResponse
+    {
+        $customer = $this->user->find($request->user()->id);
+        if(isset($customer)) {
+            Helpers::file_remover('profile/', $customer->image);
+            $customer->delete();
+            return response()->json(['status_code' => 200, 'message' => translate('Successfully deleted')], 200);
+
+        } else {
+            return response()->json(['status_code' => 404, 'message' => translate('Not found')], 200);
+        }
+    }
+
 }
