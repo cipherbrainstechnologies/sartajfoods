@@ -2267,4 +2267,5 @@
   'Order deleted!' => 'Order deleted!',
   'completed' => 'Completed',
   'All Day' => 'All Day',
+  'COD' => 'COD',
 );
