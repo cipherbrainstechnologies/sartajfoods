@@ -2267,6 +2267,7 @@
   'Order deleted!' => 'Order deleted!',
   'completed' => 'Completed',
   'All Day' => 'All Day',
+<<<<<<< Updated upstream
   'Order Delivered' => 'Order Delivered',
   '10% Taxable Amount' => '10% Taxable Amount',
   'Order Processing' => 'Order Processing',
@@ -2293,3 +2294,9 @@
   'you_do_not_have_sufficient_balance_in_wallet' => 'You do not have sufficient balance in wallet',
   'Redeemed Points' => 'Redeemed Points',
 );
+=======
+  'Top Selling Products' => 'Top Selling Products',
+  'Sold Quantity' => 'Sold Quantity',
+  'Export to Excel' => 'Export to Excel',
+);
+>>>>>>> Stashed changes
