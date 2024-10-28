@@ -145,3 +145,7 @@ Route::any('6cash/make-payment', 'SixCashPaymentController@make_payment')->name(
 Route::any('6cash/callback','SixCashPaymentController@callback')->name('6cash.callback');
 
 Route::get('verify-email/{id}/{token}', [App\Http\Controllers\Api\V1\Auth\CustomerAuthController::class, 'email_varification'])->name('email-verification');
+
+
+Route::get('lang/{locale}', 'LanguageController@lang')->name('lang');
+Route::get('/available-languages', [LanguageController::class, 'getAvailableLanguages']);
