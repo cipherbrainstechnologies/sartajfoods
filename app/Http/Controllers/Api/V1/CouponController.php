@@ -26,15 +26,26 @@ class CouponController extends Controller
     public function list(Request $request): JsonResponse
     {
         try {
-            $coupon = $this->coupon->where('status', 1)
-                ->where('start_date', '<=', now()->format('Y-m-d'))
+            $coupons = $this->coupon->where('status', 1)
                 ->where('expire_date', '>=', now()->format('Y-m-d'))
                 ->where(function($query) use ($request) {
                     $query->where('customer_id', $request->user()->id)
                         ->orWhere('customer_id', null);
                 })
                 ->get();
-            return response()->json($coupon, 200);
+            //get cart details
+            $validCoupons = [];
+            $cartDetails = Cart::with('product')->where(['user_id'=>$request->user()->id])->get();
+            $orderAmount =  $cartDetails->sum('sub_total') + $cartDetails->sum('eight_percent') + $cartDetails->sum('ten_percent');  
+            foreach($coupons as $coupon) {
+                if(!empty($coupon->min_purchase)) {
+                    if($coupon->min_purchase <= $orderAmount && ($coupon->limit == null || $coupon->limit !=0)) {
+                        $validCoupons[] = $coupon;
+                    }
+                }
+            }
+            
+            return response()->json($validCoupons, 200);
         } catch (\Exception $e) {
             return response()->json(['errors' => $e], 403);
         }
@@ -102,6 +113,10 @@ class CouponController extends Controller
                         $discountPrice = $coupon['discount'];
                         $coupon->discount_price = round($discountPrice,2);
                         $coupon->orderAmount = round(($orderAmount - $discountPrice) + $deliveryCharge - $redeem_points,2);
+                        $is_remove = ($request->is_remove) ? $request->is_remove : 0;
+                        if(!empty($request->is_remove)) {
+                            $coupon->orderAmount = $coupon->orderAmount + $discountPrice;
+                        }
                         return response()->json($coupon, 200);
                     }else{
                         $errors[] = ['code' => 'auth-001', 'message' => 'order amount is less than minimum purchase amount'];
