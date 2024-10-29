@@ -143,7 +143,7 @@ class DeliveryManController extends Controller
         ]);
 
         if ($request->has('image')) {
-            $image_name = Helpers::upload('delivery-man/', 'png', $request->file('image'));
+            $image_name = Helpers::upload('delivery-man/', 'webp', $request->file('image'));
         } else {
             $image_name = 'def.png';
         }
@@ -151,7 +151,7 @@ class DeliveryManController extends Controller
         $id_img_names = [];
         if (!empty($request->file('identity_image'))) {
             foreach ($request->identity_image as $img) {
-                $identity_image = Helpers::upload('delivery-man/', 'png', $img);
+                $identity_image = Helpers::upload('delivery-man/', 'webp', $img);
                 $id_img_names[] = $identity_image;
             }
             $identity_image = json_encode($id_img_names);
@@ -229,7 +229,7 @@ class DeliveryManController extends Controller
         }
 
         if ($request->has('image')) {
-            $image_name = Helpers::update('delivery-man/', $delivery_man->image, 'png', $request->file('image'));
+            $image_name = Helpers::update('delivery-man/', $delivery_man->image, 'webp', $request->file('image'));
         } else {
             $image_name = $delivery_man['image'];
         }
@@ -242,7 +242,7 @@ class DeliveryManController extends Controller
             }
             $img_keeper = [];
             foreach ($request->identity_image as $img) {
-                $identity_image = Helpers::upload('delivery-man/', 'png', $img);
+                $identity_image = Helpers::upload('delivery-man/', 'webp', $img);
                 $img_keeper[] = $identity_image;
             }
             $identity_image = json_encode($img_keeper);

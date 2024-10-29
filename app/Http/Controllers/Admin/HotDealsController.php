@@ -47,11 +47,11 @@ class HotDealsController extends Controller
 
        if(!empty($hotDeals)) {
         $hotDealsData = $this->hotDeals->find($hotDeals->id);
-        $hotDealsData->image = $request->has('image') ? Helpers::update('deals/', $hotDealsData->image, 'png', $request->file('image')) : $hotDealsData->image;
+        $hotDealsData->image = $request->has('image') ? Helpers::update('deals/', $hotDealsData->image, 'webp', $request->file('image')) : $hotDealsData->image;
         Toastr::success(translate('Deals updated successfully!'));
        } else {
         $hotDealsData = new HotDeals();
-        $hotDealsData->image =  Helpers::upload('deals/', 'png', $request->file('image'));
+        $hotDealsData->image =  Helpers::upload('deals/', 'webp', $request->file('image'));
         Toastr::success(translate('Deals added successfully!'));
        }
        dd($request->product);

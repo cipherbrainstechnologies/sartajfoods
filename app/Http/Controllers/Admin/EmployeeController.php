@@ -68,7 +68,7 @@ class EmployeeController extends Controller
         }
 
         if ($request->has('image')) {
-            $image_name = Helpers::upload('admin/', 'png', $request->file('image'));
+            $image_name = Helpers::upload('admin/', 'webp', $request->file('image'));
         } else {
             $image_name = 'def.png';
         }
@@ -76,7 +76,7 @@ class EmployeeController extends Controller
         $id_img_names = [];
         if (!empty($request->file('identity_image'))) {
             foreach ($request->identity_image as $img) {
-                $identity_image = Helpers::upload('admin/', 'png', $img);
+                $identity_image = Helpers::upload('admin/', 'webp', $img);
                 $id_img_names[] = $identity_image;
             }
             $identity_image = json_encode($id_img_names);
@@ -177,7 +177,7 @@ class EmployeeController extends Controller
 
 
         if ($request->has('image')) {
-            $e['image'] = Helpers::update('admin/', $e['image'], 'png', $request->file('image'));
+            $e['image'] = Helpers::update('admin/', $e['image'], 'webp', $request->file('image'));
         }
 
         if ($request->has('identity_image')){
@@ -188,7 +188,7 @@ class EmployeeController extends Controller
             }
             $img_keeper = [];
             foreach ($request->identity_image as $img) {
-                $identity_image = Helpers::upload('admin/', 'png', $img);
+                $identity_image = Helpers::upload('admin/', 'webp', $img);
                 $img_keeper[] = $identity_image;
             }
             $identity_image = json_encode($img_keeper);

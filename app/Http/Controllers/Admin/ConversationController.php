@@ -65,7 +65,7 @@ class ConversationController extends Controller
         if ($request->images) {
             $id_img_names = [];
             foreach ($request->images as $img) {
-                $image = Helpers::upload('conversation/', 'png', $img);
+                $image = Helpers::upload('conversation/', 'webp', $img);
                 $image_url = $image;
                 $id_img_names[] = $image_url;
             }

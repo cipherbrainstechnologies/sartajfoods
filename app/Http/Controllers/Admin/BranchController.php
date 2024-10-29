@@ -90,7 +90,7 @@ class   BranchController extends Controller
 
         //image upload
         if (!empty($request->file('image'))) {
-            $image_name = Helpers::upload('branch/', 'png', $request->file('image'));
+            $image_name = Helpers::upload('branch/', 'webp', $request->file('image'));
         } else {
             $image_name = 'def.png';
         }
@@ -144,7 +144,7 @@ class   BranchController extends Controller
         $branch->latitude = $request->latitude;
         $branch->coverage = $request->coverage ? $request->coverage : 0;
         $branch->address = $request->address;
-        $branch->image = $request->has('image') ? Helpers::update('branch/', $branch->image, 'png', $request->file('image')) : $branch->image;
+        $branch->image = $request->has('image') ? Helpers::update('branch/', $branch->image, 'webp', $request->file('image')) : $branch->image;
         if ($request['password'] != null) {
             $branch->password = bcrypt($request->password);
         }
