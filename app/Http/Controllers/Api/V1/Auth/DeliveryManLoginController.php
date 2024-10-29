@@ -49,7 +49,7 @@ class DeliveryManLoginController extends Controller
         }
 
         if ($request->has('image')) {
-            $image_name = Helpers::upload('delivery-man/', 'png', $request->file('image'));
+            $image_name = Helpers::upload('delivery-man/', 'webp', $request->file('image'));
         } else {
             $image_name = 'download.png';
         }
@@ -57,7 +57,7 @@ class DeliveryManLoginController extends Controller
         $id_img_names = [];
         if (!empty($request->file('identity_image'))) {
             foreach ($request->identity_image as $img) {
-                $identity_image = Helpers::upload('delivery-man/', 'png', $img);
+                $identity_image = ('delivery-man/', 'webp', $img);
                 $id_img_names[] = $identity_image;
             }
             $identity_image = json_encode($id_img_names);

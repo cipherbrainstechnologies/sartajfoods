@@ -198,7 +198,7 @@ class CategoryController extends Controller
 
         //image upload
         if (!empty($request->file('image'))) {
-            $image_name = Helpers::upload('product/', 'png', $request->file('image'));
+            $image_name = Helpers::upload('product/', 'webp', $request->file('image'));
         } else {
             $image_name = 'def.png';
         }
@@ -334,7 +334,7 @@ class CategoryController extends Controller
             $category->meta_keywords = $request->meta_keywords[array_search('en', $request->lang)];
         // }
 
-        $category->image = $request->has('image') ? Helpers::update('product/', $category->image, 'png', $request->file('image')) : $category->image;
+        $category->image = $request->has('image') ? Helpers::update('product/', $category->image, 'webp', $request->file('image')) : $category->image;
         $category->save();
         foreach ($request->lang as $index => $key) {
             // if ($key != 'en') {

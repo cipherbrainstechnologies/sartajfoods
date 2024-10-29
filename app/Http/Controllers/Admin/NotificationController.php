@@ -59,7 +59,7 @@ class NotificationController extends Controller
         ]);
 
         if ($request->has('image')) {
-            $image_name = Helpers::upload('notification/', 'png', $request->file('image'));
+            $image_name = Helpers::upload('notification/', 'webp', $request->file('image'));
         } else {
             $image_name = null;
         }
@@ -110,7 +110,7 @@ class NotificationController extends Controller
         $notification = $this->notification->find($id);
 
         if ($request->has('image')) {
-            $image_name = Helpers::update('notification/', $notification->image, 'png', $request->file('image'));
+            $image_name = Helpers::update('notification/', $notification->image, 'webp', $request->file('image'));
         } else {
             $image_name = $notification['image'];
         }

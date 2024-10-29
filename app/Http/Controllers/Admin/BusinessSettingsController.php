@@ -213,7 +213,7 @@ class BusinessSettingsController extends Controller
 
         $curr_logo = $this->business_settings->where(['key' => 'logo'])->first();
         if ($request->has('logo')) {
-            $image_name = Helpers::update('restaurant/', $curr_logo->value, 'png', $request->file('logo'));
+            $image_name = Helpers::update('restaurant/', $curr_logo->value, 'webp', $request->file('logo'));
         } else {
             $image_name = $curr_logo['value'];
         }
@@ -244,7 +244,7 @@ class BusinessSettingsController extends Controller
 
         $curr_fav_icon = $this->business_settings->where(['key' => 'fav_icon'])->first();
         DB::table('business_settings')->updateOrInsert(['key' => 'fav_icon'], [
-            'value' => $request->has('fav_icon') ? Helpers::update('restaurant/', $curr_fav_icon->value, 'png', $request->file('fav_icon')) : $curr_fav_icon->value
+            'value' => $request->has('fav_icon') ? Helpers::update('restaurant/', $curr_fav_icon->value, 'webp', $request->file('fav_icon')) : $curr_fav_icon->value
         ]);
 
         Toastr::success(translate('Settings updated!'));

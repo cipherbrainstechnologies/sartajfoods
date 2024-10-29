@@ -63,7 +63,7 @@ class ConversationController extends Controller
             $id_img_names = [];
             if (!empty($request->file('image'))) {
                 foreach ($request->image as $img) {
-                    $image = Helpers::upload('conversation/', 'png', $img);
+                    $image = Helpers::upload('conversation/', 'webp', $img);
                     $image_url = asset('storage/app/public/conversation') . '/' . $image;
                     $id_img_names[] = $image_url;
                 }
@@ -181,7 +181,7 @@ class ConversationController extends Controller
         $id_img_names = [];
         if (!empty($request->file('image'))) {
             foreach ($request->image as $img) {
-                $image = Helpers::upload('conversation/', 'png', $img);
+                $image = Helpers::upload('conversation/', 'webp', $img);
                 $image_url = asset('storage/app/public/conversation') . '/' . $image;
                 $id_img_names[] = $image_url;
             }

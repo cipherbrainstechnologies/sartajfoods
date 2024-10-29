@@ -57,7 +57,7 @@ class SystemController extends Controller
         $branch = $this->branch->find(auth('branch')->id());
 
         if ($request->has('image')) {
-            $image_name =Helpers::update('branch/', $branch->image, 'png', $request->file('image'));
+            $image_name =Helpers::update('branch/', $branch->image, 'webp', $request->file('image'));
         } else {
             $image_name = $branch['image'];
         }

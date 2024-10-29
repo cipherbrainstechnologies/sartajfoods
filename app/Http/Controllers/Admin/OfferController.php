@@ -68,7 +68,7 @@ class OfferController extends Controller
         ]);
 
         if (!empty($request->file('image'))) {
-            $image_name = Helpers::upload('offer/', 'png', $request->file('image'));
+            $image_name = Helpers::upload('offer/', 'webp', $request->file('image'));
         } else {
             $image_name = 'def.png';
         }
@@ -148,7 +148,7 @@ class OfferController extends Controller
         $flash_deal->title = $request->title;
         $flash_deal->start_date = $request->start_date;
         $flash_deal->end_date = $request->end_date;
-        $flash_deal->image = $request->has('image') ? Helpers::update('offer/', $flash_deal->image, 'png', $request->file('image')) : $flash_deal->image;
+        $flash_deal->image = $request->has('image') ? Helpers::update('offer/', $flash_deal->image, 'webp', $request->file('image')) : $flash_deal->image;
         $flash_deal->save();
         Toastr::success(translate('Flash deal updated successfully!'));
         return redirect()->route('admin.offer.flash.index');

@@ -79,7 +79,7 @@ class manufacturerController extends Controller
 
         $image_data = '';
         if (!empty($request->file('image'))) {
-            $image_data = Helpers::upload('product/image/', 'png', $request->file('image'));
+            $image_data = Helpers::upload('product/image/', 'webp', $request->file('image'));
         }
         $manufacturer->image = $image_data;
         $manufacturer->sort_order = $request->sort_order;
@@ -172,7 +172,7 @@ class manufacturerController extends Controller
         $manufacturer->seo_en = $request->en_seo;
         $manufacturer->seo_ja = $request->ja_seo;
         if (!empty($request->file('image'))) {
-            $image_data = Helpers::upload('product/image/', 'png', $request->file('image'));
+            $image_data = Helpers::upload('product/image/', 'webp', $request->file('image'));
         }
         $manufacturer->image = $image_data;
         $manufacturer->sort_order = $request->sort_order;
