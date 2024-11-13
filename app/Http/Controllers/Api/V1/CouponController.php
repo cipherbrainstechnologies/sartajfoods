@@ -103,19 +103,20 @@ class CouponController extends Controller
                             ], 401);
                         } 
                     }else{
-                        $$discountPrice = $coupon->discount;
+                        $discountPrice = $coupon->discount;
                         $coupon->discount_price = round($discountPrice,2);
                         $coupon->orderAmount = round(($orderAmount - $discountPrice) +$deliveryCharge -$redeem_points ,2);
                         return response()->json($coupon, 200);
                     }
                 }else{
                     if($orderAmount > $coupon['min_purchase']){
-                        $discountPrice = $coupon['discount'];
+                        $discountPrice = (empty($request->is_remove)) ? $coupon['discount'] : 0;
                         $coupon->discount_price = round($discountPrice,2);
                         $coupon->orderAmount = round(($orderAmount - $discountPrice) + $deliveryCharge - $redeem_points,2);
                         $is_remove = ($request->is_remove) ? $request->is_remove : 0;
                         if(!empty($request->is_remove)) {
                             $coupon->orderAmount = $coupon->orderAmount + $discountPrice;
+                            $coupon->discount = 0;
                         }
                         return response()->json($coupon, 200);
                     }else{

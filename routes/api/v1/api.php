@@ -144,7 +144,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
 
         // cart
         Route::group(['prefix' => 'cart'], function () {
-            Route::get('/{region_id?}/{use_wallet?}', 'CartController@listCarts');
+            Route::get('/', 'CartController@listCarts');
             Route::post('add-to-cart', 'CartController@addToCart');
             Route::put('update-cart', 'CartController@updateToCart');
             Route::delete('remove-to-cart/{product_id}', 'CartController@removeToCart');
