@@ -6,14 +6,13 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Model\Cart;
-use App\User;
 use App\Model\Product;
 use App\CentralLogics\Helpers;
 use App\Model\Regions;
 use DateTime;
 
 
-/*class CartController extends Controller
+class CartController extends Controller
 {
     public function listCarts(Request $request)
     {
@@ -24,11 +23,10 @@ use DateTime;
         $ten_percent = 0;
         $FrozenWeight = 0;
         $DryProductAmount = 0;
-        $redeem_points=0;
-        $eliable_redeem_points =0;
         $deliveryCharge= 0;
         $new_balance =0;
-
+        $eliable_redeem_points =0;
+        $redeem_points = 0;
         $regionDetails = Regions::find($region_id);
 
         // if(empty($regionDetails)){
@@ -38,7 +36,6 @@ use DateTime;
         // Fetch cart products for the authenticated user
         $cartProducts = Cart::with('product.rating')->where('user_id', $user->id)->get();
         $current_balance = $user->wallet_balance;
-
         
         $cartProducts->map(function ($cartProduct) use($eight_percent,$ten_percent,$FrozenWeight,$DryProductAmount){
             $cartData = $cartProduct;
@@ -147,7 +144,7 @@ use DateTime;
         $regionDetails1= in_array($region_id,['6', '8', '9']);
         $regionDetails2= in_array($region_id,['1', '2', '3','4','5','7']);
 
-        
+
 
         // if ($regionDetails==$regionDetails2) {
         //         if($totalFrozenWeight >0 && $totalFrozenWeight < 5  && $totalDryProductAmount < 6500)
@@ -286,35 +283,45 @@ use DateTime;
             // If no, subtract 1
             $totalAmt = floor($totalAmt);
         }
-        if($request->use_wallet == 'true')
-        {  
-            if(empty($current_balance)){
-            return response()->json([
-                'errors' => [
-                    ['code' => 'payment_method', 'message' => translate('you_do_not_have_sufficient_balance_in_wallet')]
-                ]
-            ], 203);
-            }
-            else{
-               if($current_balance < $totalAmt){
-                 $totalAmt = $totalAmt - $current_balance;
-                 $eliable_redeem_points = $current_balance;
-                 $new_balance = 0;
-               }
-               if($current_balance == $totalAmt){
-                  $totalAmt = $totalAmt - $current_balance;
-                  $eliable_redeem_points = $current_balance;
-                  $new_balance = 0;
-               }
-               if($current_balance  > $totalAmt){
-                $new_balance = $current_balance - $totalAmt;
-                $eliable_redeem_points = $current_balance - $totalAmt;
-                $totalAmt = 0;
-               }
-               $redeem_points = $current_balance- $new_balance;
-            }
+        $befortotal = $subTotalAmt + $deliveryCharge + round($totalEightPercentTax) + round($totalTenPercentTax) ;
+ 
+
+   //Changed code by Love
+
+            if ($request->use_wallet == 'true') {  
+                if (empty($current_balance)) {
+                    return response()->json([
+                        'errors' => [
+                            ['code' => 'payment_method', 'message' => translate('you_do_not_have_sufficient_balance_in_wallet')]
+                        ]
+                    ], 203);
+                } else {
+                    if ($current_balance >= $totalAmt) {
+                        $eliable_redeem_points = $current_balance - $totalAmt;
+                        $new_balance = $current_balance - $totalAmt;
+                        $totalAmt = 0;
+                    } else if ($current_balance < $totalAmt) {
+            $eliable_redeem_points = $current_balance;
+            $totalAmt = $totalAmt - $current_balance;
+            $new_balance = 0;
         }
 
+        $redeem_points = $current_balance - $new_balance;
+    }
+            } else {
+                if ($current_balance < $totalAmt) {
+                    $new_balance = 0;
+                    $redeem_points = $current_balance;
+                } elseif ($current_balance == $totalAmt) {
+                    $new_balance = 0;
+                    $redeem_points = $current_balance;
+                } elseif ($current_balance > $totalAmt) {
+                    $new_balance = $current_balance - $totalAmt;
+                    $redeem_points = $totalAmt;
+                }
+            }
+
+         
         $min_amount =  Helpers::get_business_settings('minimum_amount_for_cod_order');
         $max_amount =  Helpers::get_business_settings('maximum_amount_for_cod_order');
         return response()->json([
@@ -322,129 +329,24 @@ use DateTime;
             'cartProducts' => $cartProducts,
             'delivery_charge' => $deliveryCharge,
             'total_sub_amt' => round($subTotalAmt),
+            'befor_total' => round($befortotal),
             'total_amt' => round($totalAmt),
             'redeem_points' =>$current_balance,
             'eligible_redeem_points' => $redeem_points,  // Points eligible for redemption
             'expected_remaining_points' => $new_balance, // Remaining points after transaction
-            // 'current_wallet_balance' =>$current_balance,
+            'current_wallet_balance' =>$current_balance,
             'eight_percent' => round($totalEightPercentTax),
             'ten_percent' => round($totalTenPercentTax),
             'totalDiscountAmount' => round($totalDiscountAmount),
-            'minOrderAmount' => (Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ( $totalAmt < $min_amount)) ? $min_amount : null,
-            'maxOrderAmount' => (Helpers::get_business_settings('maximum_amount_for_cod_order_status') == 1 && ( $totalAmt < $max_amount)) ? $max_amount : null,
-        ]);
-    }*/
 
+            // // Use $befortotal for COD eligibility instead of $totalAmt
+            // 'minOrderAmount' => (Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ($befortotal < $min_amount)) ? $min_amount : null,
+            // 'maxOrderAmount' => (Helpers::get_business_settings('maximum_amount_for_cod_order_status') == 1 && ($befortotal > $max_amount)) ? $max_amount : null,
 
-class CartController extends Controller
-{
-    public function listCarts(Request $request)
-    {
-        // Retrieve the authenticated user
-        $user = auth()->user();
-        $eight_percent = 0;
-        $ten_percent = 0;
-        $FrozenWeight = 0;
-        $DryProductAmount = 0;
-        $redeem_points = 0;
-        $eliable_redeem_points = 0;
-        $deliveryCharge = 0;
-        $new_balance = 0;
-
-        // Get default region if none provided
-        $region_id = $request->region_id;
-        
-        // Fetch cart products for the authenticated user
-        $cartProducts = Cart::with('product.rating')->where('user_id', $user->id)->get();
-        $current_balance = $user->wallet_balance;
-
-        // If we don't have a region_id, return cart data without delivery charges
-        if (empty($region_id)) {
-            return response()->json([
-                'user' => $user,
-                'cartProducts' => $cartProducts,
-                'total_sub_amt' => round($cartProducts->sum('sub_total')),
-                'redeem_points' => $current_balance,
-                'eight_percent' => round($cartProducts->sum('eight_percent')),
-                'ten_percent' => round($cartProducts->sum('ten_percent')),
-                'totalDiscountAmount' => round($cartProducts->sum('total_discount')),
-                'requires_region' => true, // Flag to indicate region selection is needed
-                'available_regions' => Regions::select('id', 'name')->get() // List of available regions
-            ]);
-        }
-
-        // Get region details
-        $regionDetails = Regions::find($region_id);
-        if (empty($regionDetails)) {
-            return response()->json([
-                'errors' => ['Invalid region selected. Please choose a valid delivery region.']
-            ], 400);
-        }
-
-        // Rest of your existing code for calculating cart totals and delivery charges
-        $cartProducts->map(function ($cartProduct) use($eight_percent, $ten_percent, $FrozenWeight, $DryProductAmount) {
-            // Your existing cart product mapping code...
-        });
-        
-        $totalFrozenWeight = ($cartProducts->sum('frozen_weight')/1000) ?? 0;
-        $totalDryProductAmount = $cartProducts->sum('dry_product_amount');
-        $totalDiscountAmount = $cartProducts->sum('total_discount');
-        $totalEightPercentTax = $cartProducts->sum('eight_percent');
-        $totalTenPercentTax = $cartProducts->sum('ten_percent');
-        $subTotalAmt = $cartProducts->sum('sub_total');
-
-        // Your existing delivery charge calculation code
-        $regionDetails1 = in_array($region_id, ['6', '8', '9']);
-        $regionDetails2 = in_array($region_id, ['1', '2', '3', '4', '5', '7']);
-
-        if ($regionDetails == $regionDetails2) {
-            if ($totalFrozenWeight >= 5 || $totalFrozenWeight == 0) {
-                $deliveryCharge += 0;
-            } else {
-                $deliveryCharge += 1500;
-            }
-            if ($totalDryProductAmount >= 6500 || $totalDryProductAmount == 0) {
-                $deliveryCharge += 0;
-            } else {
-                $deliveryCharge += 600;
-            }
-        } elseif ($regionDetails == $regionDetails1) {
-            if ($totalDryProductAmount && $totalFrozenWeight) {
-                $deliveryCharge = 2000 + 2500;
-            } elseif ($totalDryProductAmount) {
-                $deliveryCharge = 2000;
-            } elseif ($totalFrozenWeight) {
-                $deliveryCharge = 2500;
-            }
-        }
-
-        // Rest of your calculations...
-        $totalAmt = $subTotalAmt + $deliveryCharge + round($totalEightPercentTax) + round($totalTenPercentTax);
-        
-        // Your existing rounding and wallet calculations...
-
-        $min_amount = Helpers::get_business_settings('minimum_amount_for_cod_order');
-        $max_amount = Helpers::get_business_settings('maximum_amount_for_cod_order');
-
-        return response()->json([
-            'user' => $user,
-            'cartProducts' => $cartProducts,
-            'delivery_charge' => $deliveryCharge,
-            'total_sub_amt' => round($subTotalAmt),
-            'total_amt' => round($totalAmt),
-            'redeem_points' => $current_balance,
-            'eligible_redeem_points' => $redeem_points,
-            'expected_remaining_points' => $new_balance,
-            'eight_percent' => round($totalEightPercentTax),
-            'ten_percent' => round($totalTenPercentTax),
-            'totalDiscountAmount' => round($totalDiscountAmount),
-            'minOrderAmount' => (Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ($totalAmt < $min_amount)) ? $min_amount : null,
-            'maxOrderAmount' => (Helpers::get_business_settings('maximum_amount_for_cod_order_status') == 1 && ($totalAmt < $max_amount)) ? $max_amount : null,
-            'selected_region' => $regionDetails
+            'minOrderAmount' => (Helpers::get_business_settings('minimum_amount_for_cod_order_status') == 1 && ( $befortotal < $min_amount)) ? $min_amount : null,
+            'maxOrderAmount' => (Helpers::get_business_settings('maximum_amount_for_cod_order_status') == 1 && ( $befortotal < $max_amount)) ? $max_amount : null,
         ]);
     }
-
-    // ... rest of your controller methods ...
     
     public function addToCart(Request $request)
     {
@@ -799,4 +701,54 @@ class CartController extends Controller
         }
         
     }
+    public function statusOfCart(Request $request)
+    {
+        $user = auth()->user();
+
+        // Fetch the user's cart
+        $cartItems = Cart::where('user_id', $user->id)->get();
+
+       // Check if the cart is empty
+        if ($cartItems->isEmpty()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Your cart is empty.',
+            ]);
+        }
+
+        $outOfStockItems = [];
+        $allItemsAvailable = true;
+
+        foreach ($cartItems as $item) {
+            $product = Product::find($item->product_id);
+
+        // Check if product exists and its stock quantity
+            if (!$product || $product->total_stock < $item->quantity) {
+                $allItemsAvailable = false;
+                $availableQuantity = $product ? $product->total_stock : 0;
+
+            // Add to out-of-stock array with available quantity
+                $outOfStockItems[] = [
+                    'product_id' => $item->product_id,
+                    'product_name' => $product->name,
+                    'requested_quantity' => $item->quantity,
+                    'available_quantity' => $availableQuantity,
+                ];
+            }
+        }
+
+        if ($allItemsAvailable) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'All products are available for checkout.',
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Some products are out of stock or have limited quantity.',
+            'out_of_stock_items' => $outOfStockItems,
+        ]);
+    }
+
 }
