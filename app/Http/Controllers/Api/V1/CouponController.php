@@ -72,7 +72,7 @@ class CouponController extends Controller
         // $deliveryCharge = Helpers::get_business_settings('delivery_charge');
         $deliveryCharge = $this->get_delivery_charge($cartDetails, $region_id);
         $user = auth()->user();
-        $redeem_points = !empty($request->use_wallet) ? $user->wallet_balance : 0;
+        $redeem_points = ($request->use_wallet != 'false') ? $user->wallet_balance : 0; 
 
         if($redeem_points >= ($orderAmount + $deliveryCharge)) {
             return response()->json([
