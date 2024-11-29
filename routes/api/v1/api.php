@@ -19,8 +19,8 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         Route::post('verify-token', 'PasswordResetController@verify_token');
         // Route::put('reset-password', 'PasswordResetController@reset_password_submit');
 
-        Route::post('reset-password', 'CustomerAuthController@password_reset'); 
-        
+        Route::post('reset-password', 'CustomerAuthController@password_reset');
+
         Route::group(['prefix' => 'delivery-man'], function () {
             Route::post('register', 'DeliveryManLoginController@registration');
             Route::post('login', 'DeliveryManLoginController@login');
@@ -85,10 +85,10 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         Route::get('products/{category_id}', 'CategoryController@get_products');
         Route::get('products/{category_id}/all', 'CategoryController@get_all_products');
 
-        // Route::get('products/tag/{category_id}','CategoryController@getTags'); 
-        
-        
-    }); 
+        // Route::get('products/tag/{category_id}','CategoryController@getTags');
+
+
+    });
 
     Route::group(['prefix' => 'customer', 'middleware' => ['auth:api', 'customer_is_block']], function () {
         Route::get('info', 'CustomerController@info');
@@ -145,6 +145,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
         // cart
         Route::group(['prefix' => 'cart'], function () {
             Route::get('/', 'CartController@listCarts');
+            Route::get('{region_id?}/{redeem?}', 'CartController@listCarts');
             Route::post('add-to-cart', 'CartController@addToCart');
             Route::put('update-cart', 'CartController@updateToCart');
             Route::delete('remove-to-cart/{product_id}', 'CartController@removeToCart');
@@ -152,8 +153,9 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
             Route::post('add-items','CartController@addCartItems');
             Route::get('current/status-cart', 'CartController@statusofCart');
 
+
         });
-        
+
         Route::group(['prefix' => 'reviews'], function () {
             Route::get('/', 'CustomerController@get_reviews');
             // Route::get('rating/{product_id}', 'CustomerController@get_rating');
@@ -232,7 +234,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware'=>'localization'], function (
     });
 
     // Route::group(['prefix' => 'paypal'], function () {
-       
+
     // });
     Route::get('/list-manufacturer', 'ManufacturerController@get_manufacturer');
     // Product Seo Manage

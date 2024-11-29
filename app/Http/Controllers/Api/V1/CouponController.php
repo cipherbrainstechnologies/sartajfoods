@@ -36,7 +36,7 @@ class CouponController extends Controller
             //get cart details
             $validCoupons = [];
             $cartDetails = Cart::with('product')->where(['user_id'=>$request->user()->id])->get();
-            $orderAmount =  $cartDetails->sum('sub_total') + $cartDetails->sum('eight_percent') + $cartDetails->sum('ten_percent');  
+            $orderAmount =  $cartDetails->sum('sub_total') + $cartDetails->sum('eight_percent') + $cartDetails->sum('ten_percent');
             foreach($coupons as $coupon) {
                 if(!empty($coupon->min_purchase)) {
                     if($coupon->min_purchase <= $orderAmount && ($coupon->limit == null || $coupon->limit !=0)) {
@@ -44,7 +44,7 @@ class CouponController extends Controller
                     }
                 }
             }
-            
+
             return response()->json($validCoupons, 200);
         } catch (\Exception $e) {
             return response()->json(['errors' => $e], 403);
@@ -61,7 +61,7 @@ class CouponController extends Controller
         $coupon = $this->coupon->active()->where(['code' => $request['code']])->first();
         $cartDetails = Cart::with('product')->where(['user_id'=>$request->user()->id])->get();
         $orderAmount =  $cartDetails->sum('sub_total') + $cartDetails->sum('eight_percent') + $cartDetails->sum('ten_percent');
-        // dd($orderAmount);
+
         if(empty($cartDetails)){
             return response()->json([
                 'errors' => [
@@ -69,18 +69,24 @@ class CouponController extends Controller
                 ]
             ], 404);
         }
-        // $deliveryCharge = Helpers::get_business_settings('delivery_charge');
+
         $deliveryCharge = $this->get_delivery_charge($cartDetails, $region_id);
         $user = auth()->user();
-        $redeem_points = ($request->use_wallet != 'false') ? $user->wallet_balance : 0; 
+        $redeem_points = ($request->use_wallet != 'false') ? $user->wallet_balance : 0;
 
         if($redeem_points >= ($orderAmount + $deliveryCharge)) {
+            // Update wallet balance here since entire amount is being paid from wallet
+            if($request->use_wallet != 'false') {
+                $user->wallet_balance -= ($orderAmount + $deliveryCharge);
+                $user->save();
+            }
             return response()->json([
                 'errors' => [
                     ['code' => 'coupon', 'message' => 'coupon not apply']
                 ]
             ], 404);
         }
+
         if (isset($coupon)) {
             if ($coupon['coupon_type'] == 'free_delivery') {
                 $free_delivery_amount = Helpers::get_delivery_charge($request['distance']);
@@ -88,32 +94,63 @@ class CouponController extends Controller
                 $delivery_charge = 0;
             } else {
                 if($coupon['discount_type'] == "percent"){
-                    $discountPrice = ($orderAmount *  $coupon['discount'])/100;
+                    $discountPrice = ($orderAmount * $coupon['discount'])/100;
                     if($discountPrice > $coupon['max_discount']){
                         if($orderAmount > $coupon['min_purchase']){
                             $discountPrice = $coupon['max_discount'];
                             $coupon->discount_price = round($discountPrice,2);
-                            $coupon->orderAmount = round(($orderAmount - $discountPrice) +$deliveryCharge - $redeem_points ,2);
-                            
+                            $final_amount = round(($orderAmount - $discountPrice) + $deliveryCharge, 2);
+
+                            // Update wallet balance if being used
+                            if($request->use_wallet != 'false') {
+                                $deduction_amount = min($redeem_points, $final_amount);
+                                $user->wallet_balance -= $deduction_amount;
+                                $user->save();
+                                $coupon->orderAmount = $final_amount - $deduction_amount;
+                            } else {
+                                $coupon->orderAmount = $final_amount;
+                            }
+
                             return response()->json($coupon, 200);
                         }else{
                             $errors[] = ['code' => 'auth-001', 'message' => 'order amount is less than minimum purchase amount'];
                             return response()->json([
                                 'errors' => $errors
                             ], 401);
-                        } 
+                        }
                     }else{
                         $discountPrice = $coupon->discount;
                         $coupon->discount_price = round($discountPrice,2);
-                        $coupon->orderAmount = round(($orderAmount - $discountPrice) +$deliveryCharge -$redeem_points ,2);
+                        $final_amount = round(($orderAmount - $discountPrice) + $deliveryCharge, 2);
+
+                        // Update wallet balance if being used
+                        if($request->use_wallet != 'false') {
+                            $deduction_amount = min($redeem_points, $final_amount);
+                            $user->wallet_balance -= $deduction_amount;
+                            $user->save();
+                            $coupon->orderAmount = $final_amount - $deduction_amount;
+                        } else {
+                            $coupon->orderAmount = $final_amount;
+                        }
+
                         return response()->json($coupon, 200);
                     }
                 }else{
                     if($orderAmount > $coupon['min_purchase']){
                         $discountPrice = (empty($request->is_remove)) ? $coupon['discount'] : 0;
                         $coupon->discount_price = round($discountPrice,2);
-                        $coupon->orderAmount = round(($orderAmount - $discountPrice) + $deliveryCharge - $redeem_points,2);
-                        $is_remove = ($request->is_remove) ? $request->is_remove : 0;
+                        $final_amount = round(($orderAmount - $discountPrice) + $deliveryCharge, 2);
+
+                        // Update wallet balance if being used
+                        if($request->use_wallet != 'false') {
+                            $deduction_amount = min($redeem_points, $final_amount);
+                            $user->wallet_balance -= $deduction_amount;
+                            $user->save();
+                            $coupon->orderAmount = $final_amount - $deduction_amount;
+                        } else {
+                            $coupon->orderAmount = $final_amount;
+                        }
+
                         if(!empty($request->is_remove)) {
                             $coupon->orderAmount = $coupon->orderAmount + $discountPrice;
                             $coupon->discount = 0;
@@ -124,9 +161,8 @@ class CouponController extends Controller
                         return response()->json([
                             'errors' => $errors
                         ], 401);
-                    } 
+                    }
                 }
-                // $coupon_discount = !empty($request['coupon_discount_amount']) ? $request['coupon_discount_amount'] : 0;
             }
         }else {
             return response()->json([
@@ -234,43 +270,46 @@ class CouponController extends Controller
     //     }
     // }
 
-    public function get_delivery_charge($cartProducts, $region_id)
-    {   
-        $totalFrozenWeight = ($cartProducts->sum('frozen_weight')/1000) ?? 0;
-        $totalDryProductAmount = $cartProducts->sum('dry_product_amount');
-        
-        $regionDetails1= in_array($region_id,['6', '8', '9']);
-        $regionDetails2= in_array($region_id,['1', '2', '3','4','5','7']);
+public function get_delivery_charge($cartProducts, $region_id)
+{
+    // Convert frozen weight to kg and calculate total dry product amount
+    $totalFrozenWeight = ($cartProducts->sum('frozen_weight')/1000) ?? 0;
+    $totalDryProductAmount = $cartProducts->sum('dry_product_amount');
 
-        $regionDetails = Regions::find($region_id);
-        
-        $deliveryCharge = 0;
+    $deliveryCharge = 0;
 
-        if ($regionDetails==$regionDetails2){
+    // Clear handling of different region groups
+    $specialRegions = ['6', '8', '9'];
+    $standardRegions = ['1', '2', '3', '4', '5', '7'];
 
-            if($totalFrozenWeight >= 5 || $totalFrozenWeight == 0){
-                $deliveryCharge += 0;
-            }                
-            else{
-                $deliveryCharge += 1500;
-            }
-            if($totalDryProductAmount >= 6500 || $totalDryProductAmount == 0){
-                $deliveryCharge += 0;
-            }
-            else{
-                $deliveryCharge += 600;
-            }
-            
-        } elseif ($regionDetails == $regionDetails1) {
-            if ($totalDryProductAmount && $totalFrozenWeight) {
-                $deliveryCharge = 2000 + 2500; // Dry + Frozen
-            } elseif ($totalDryProductAmount) {
-                $deliveryCharge = 2000; // Only Dry
-            } elseif ($totalFrozenWeight) {
-                $deliveryCharge = 2500; // Only Frozen
-            }
+    // For special regions (6, 8, 9)
+    if (in_array((string)$region_id, $specialRegions)) {
+        $hasDryProducts = $totalDryProductAmount > 0;
+        $hasFrozenProducts = $totalFrozenWeight > 0;
+
+        if ($hasDryProducts && $hasFrozenProducts) {
+            $deliveryCharge = 4500; // 2000 (dry) + 2500 (frozen)
+        } elseif ($hasDryProducts) {
+            $deliveryCharge = 2000; // Only dry products
+        } elseif ($hasFrozenProducts) {
+            $deliveryCharge = 2500; // Only frozen products
+        }
+    }
+    // For standard regions (1, 2, 3, 4, 5, 7)
+    elseif (in_array((string)$region_id, $standardRegions)) {
+        // Frozen products charge
+        if ($totalFrozenWeight > 0 && $totalFrozenWeight < 5) {
+            $deliveryCharge += 1500;
         }
 
-        return $deliveryCharge;
+        // Dry products charge
+        if ($totalDryProductAmount > 0 && $totalDryProductAmount < 6500) {
+            $deliveryCharge += 600;
+        }
     }
+
+    return $deliveryCharge;
 }
+
+
+//Love Chauhan
